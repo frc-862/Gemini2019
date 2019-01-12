@@ -7,44 +7,44 @@
 
 package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj.DoubleSolenoid;
-import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+
+import edu.wpi.first.wpilibj.SpeedController;
+import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import frc.robot.commands.CollectCargo;
 
 /**
  * Add your docs here.
  */
-public class HatchCollector extends Subsystem {
+public class CargoCollector extends Subsystem {
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
 
-  DoubleSolenoid hatchCollector;
-
-  public HatchCollector(){
-    hatchCollector = new DoubleSolenoid(11, 4, 5);
-  }
+  private final TalonSRX winchMotor1 = new TalonSRX(7);
+  //private final TalonSRX winchMotor2 = new TalonSRX(6);
 
   @Override
   public void initDefaultCommand() {
     // Set the default command for a subsystem here.
     // setDefaultCommand(new MySpecialCommand());
+    setDefaultCommand(new CollectCargo());
   }
 
-  public void extendHatchCollector(){
-    hatchCollector.set(DoubleSolenoid.Value.kForward);
+  public void stop(){
+    winchMotor1.set(ControlMode.PercentOutput, 0.0);
+    //winchMotor2.set(ControlMode.PercentOutput, 0.0);
   }
 
-  public void changeCollectorState(){
-    DoubleSolenoid.Value state = hatchCollector.get();
-    if(state == Value.kForward){
-      retractHatchCollector();
-    }else{
-      extendHatchCollector();
-    }
+  public void collect(){
+    winchMotor1.set(ControlMode.PercentOutput, 0.5);
+    //winchMotor2.set(ControlMode.PercentOutput, 0.5);
   }
 
-  public void retractHatchCollector(){
-    hatchCollector.set(DoubleSolenoid.Value.kReverse);
+  public void eject(){
+    winchMotor1.set(ControlMode.PercentOutput, -0.5);
+    //winchMotor2.set(ControlMode.PercentOutput, -0.5);
   }
 
 }

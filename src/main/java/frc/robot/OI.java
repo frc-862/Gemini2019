@@ -11,6 +11,9 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import frc.robot.commands.CloseHatchCollector;
+import frc.robot.commands.CollectCargo;
+import frc.robot.commands.EjectCargo;
+import frc.robot.commands.HatchCollectorStateChange;
 import frc.robot.commands.MotionProfile;
 import frc.robot.commands.OpenHatchCollector;
 import frc.robot.commands.Shoot;
@@ -24,7 +27,8 @@ public class OI {
   private Joystick driverLeft = new Joystick(1);
   private Joystick copilot = new Joystick(2);
 
-  private Button shootButton = new JoystickButton(copilot, RobotMap.shootButton);
+  private Button collectButton = new JoystickButton(driverLeft, 1);
+  private Button ejectButton = new JoystickButton(driverLeft, 2);
 
   private Button pneumaticButton = new JoystickButton(driverRight, 1);
 
@@ -38,7 +42,10 @@ public class OI {
   
   public OI() {
     //shootButton.whenPressed(new MotionProfile());//used to be shoot
-    pneumaticButton.whenPressed(new OpenHatchCollector());
-    pneumaticButton.whenReleased(new CloseHatchCollector());
+    pneumaticButton.whenPressed(new HatchCollectorStateChange());
+    collectButton.whileHeld(new CollectCargo());
+    ejectButton.whileHeld(new EjectCargo());
+ //   pneumaticButton.whenPressed(new OpenHatchCollector());
+ //   pneumaticButton.whenReleased(new CloseHatchCollector());
   }
 }

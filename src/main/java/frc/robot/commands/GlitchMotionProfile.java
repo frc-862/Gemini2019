@@ -18,7 +18,7 @@ import frc.robot.Constants;
 import frc.robot.Robot;
 import frc.robot.paths.CirclePath;
 
-public class MotionProfile extends Command {
+public class GlitchMotionProfile extends Command {
 
   BufferedTrajectoryPointStream bufferedStreamLeft = new BufferedTrajectoryPointStream();
   BufferedTrajectoryPointStream bufferedStreamRight = new BufferedTrajectoryPointStream();
@@ -28,10 +28,10 @@ public class MotionProfile extends Command {
 
 
 
-  public MotionProfile() {
+  public GlitchMotionProfile() {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
-    requires(Robot.drivetrain);
+    requires(Robot.glitchDriveTrain);
   }
 
   // Called just before this Command runs the first time
@@ -56,9 +56,9 @@ public class MotionProfile extends Command {
     // _config.slot0.allowableClosedloopError // left default for this example
     // _config.slot0.maxIntegralAccumulator; // left default for this example
     // _config.slot0.closedLoopPeriod; // left default for this example
-    Robot.drivetrain.configAllSettings(config);
-    Robot.drivetrain.getLeftMaster().startMotionProfile(bufferedStreamLeft, CirclePath.DeformedCircleLeft.length, ControlMode.MotionProfile);
-    Robot.drivetrain.getRightMaster().startMotionProfile(bufferedStreamLeft, CirclePath.DeformedCircleLeft.length, ControlMode.MotionProfile);
+    Robot.glitchDriveTrain.configureMotors();//Right one???
+    Robot.glitchDriveTrain.getLeftMaster().startMotionProfile(bufferedStreamLeft, CirclePath.DeformedCircleLeft.length, ControlMode.MotionProfile);
+    Robot.glitchDriveTrain.getRightMaster().startMotionProfile(bufferedStreamLeft, CirclePath.DeformedCircleLeft.length, ControlMode.MotionProfile);
 
   }
 
@@ -71,13 +71,13 @@ public class MotionProfile extends Command {
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return Robot.drivetrain.getLeftMaster().isMotionProfileFinished() && Robot.drivetrain.getRightMaster().isMotionProfileFinished();
+    return Robot.glitchDriveTrain.getLeftMaster().isMotionProfileFinished() && Robot.glitchDriveTrain.getRightMaster().isMotionProfileFinished();
   }
 
   // Called once after isFinished returns true
   @Override
   protected void end() {
-    Robot.drivetrain.stop();
+    Robot.glitchDriveTrain.stop();
   }
 
   // Called when another command which requires one or more of the same
