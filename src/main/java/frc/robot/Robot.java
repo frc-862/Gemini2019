@@ -8,11 +8,14 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.RobotController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.lightning.LightningRobot;
 import frc.lightning.subsystems.LightningDrivetrain;
 import frc.lightning.util.FaultMonitor;
 import frc.lightning.util.FaultCode.Codes;
+import frc.robot.commands.DriveForwardAtPercent;
 import frc.robot.commands.MotionProfile;
+import frc.robot.commands.TankDrive;
 import frc.robot.subsystems.Core;
 import frc.robot.subsystems.HatchCollector;
 import frc.robot.subsystems.OBotDrivetrain;
@@ -43,7 +46,8 @@ public class Robot extends LightningRobot {
     super();
     System.out.println("Initializing our robot");
 
-    
+    SmartDashboard.putData(new DriveForwardAtPercent());
+    SmartDashboard.putNumber("Drive Forward Percent", 0.6);
     
     this.registerAutonomousCommmand("Test Motion Path", new MotionProfile());
 
