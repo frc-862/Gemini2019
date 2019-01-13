@@ -36,8 +36,8 @@ public class GlitchMotionProfile extends Command {
     TalonSRXConfiguration config = new TalonSRXConfiguration();
 
     /* fill our buffer object with the excel points */
-    initBuffer(CirclePath.DeformedCircleLeft, CirclePath.DeformedCircleLeft.length, bufferedStreamLeft);
-    initBuffer(CirclePath.DeformedCircleRight, CirclePath.DeformedCircleRight.length, bufferedStreamRight);
+    initBuffer(CirclePath.Left, CirclePath.Left.length, bufferedStreamLeft);
+    initBuffer(CirclePath.Right, CirclePath.Right.length, bufferedStreamRight);
 
     /* _config the master specific settings */
     config.primaryPID.selectedFeedbackSensor = FeedbackDevice.QuadEncoder;
@@ -52,8 +52,8 @@ public class GlitchMotionProfile extends Command {
     // _config.slot0.maxIntegralAccumulator; // left default for this example
     // _config.slot0.closedLoopPeriod; // left default for this example
     Robot.glitchDriveTrain.configureMotors();//Right one???
-    Robot.glitchDriveTrain.getLeftMaster().startMotionProfile(bufferedStreamLeft, CirclePath.DeformedCircleLeft.length, ControlMode.MotionProfile);
-    Robot.glitchDriveTrain.getRightMaster().startMotionProfile(bufferedStreamLeft, CirclePath.DeformedCircleLeft.length, ControlMode.MotionProfile);
+    Robot.glitchDriveTrain.getLeftMaster().startMotionProfile(bufferedStreamLeft, CirclePath.Left.length, ControlMode.MotionProfile);
+    Robot.glitchDriveTrain.getRightMaster().startMotionProfile(bufferedStreamRight, CirclePath.Right.length, ControlMode.MotionProfile);
 
   }
 

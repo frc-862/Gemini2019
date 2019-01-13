@@ -7,12 +7,9 @@
 
 package frc.robot.paths;
 
-/**
- * Add your docs here.
- */
-public class CirclePath {
+public class CirclePath{
     //p, v, a, h
-    public static double[][] DeformedCircleLeft = new double[][] {
+    public static double[][] Left = new double[][] {
         {0,0,0,89.9997},
         {0.0044,0.2188,10.7947,89.9888},
         {0.017,0.6382,21.2456,89.9487},
@@ -230,7 +227,7 @@ public class CirclePath {
         {29.938,0.4909,-22.7441,90.0445}
     };
 
-    public static double[][] DeformedCircleRight = new double[][] {
+    public static double[][] Right = new double[][] {
         {0,0,0,89.9997},
         {0.0041,0.2001,9.8722,89.9888},
         {0.0153,0.5673,18.6036,89.9487},
