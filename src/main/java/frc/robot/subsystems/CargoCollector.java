@@ -20,8 +20,12 @@ public class CargoCollector extends Subsystem {
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
 
-  private final TalonSRX winchMotor1 = new TalonSRX(7);
+  private final TalonSRX winchMotor1;
   //private final TalonSRX winchMotor2 = new TalonSRX(6);
+
+  public CargoCollector(){
+    winchMotor1 = new TalonSRX(7);
+  }
 
   @Override
   public void initDefaultCommand() {

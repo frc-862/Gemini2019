@@ -12,7 +12,6 @@ import frc.lightning.LightningRobot;
 import frc.lightning.util.FaultMonitor;
 import frc.lightning.util.FaultCode.Codes;
 import frc.robot.commands.GlitchMotionProfile;
-import frc.robot.commands.MotionProfile;
 import frc.robot.subsystems.CargoCollector;
 import frc.robot.subsystems.Core;
 import frc.robot.subsystems.GlitchDrivetrain;
