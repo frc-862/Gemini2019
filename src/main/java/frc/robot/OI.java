@@ -10,27 +10,23 @@ package frc.robot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
-import frc.robot.commands.CloseHatchCollector;
 import frc.robot.commands.CollectCargo;
 import frc.robot.commands.EjectCargo;
 import frc.robot.commands.HatchCollectorStateChange;
-import frc.robot.commands.MotionProfile;
-import frc.robot.commands.OpenHatchCollector;
-import frc.robot.commands.Shoot;
 
 /**
  * This class is the glue that binds the controls on the physical operator
  * interface to the commands and command groups that allow control of the robot.
  */
 public class OI {
-  private Joystick driverRight = new Joystick(0);
-  private Joystick driverLeft = new Joystick(1);
-  private Joystick copilot = new Joystick(2);
+  //Drive Joysticks
+  private Joystick driverRight = new Joystick(Constants.driverRightJoy);//0
+  private Joystick driverLeft = new Joystick(Constants.driverLeftJoy);//1
 
-  private Button collectButton = new JoystickButton(driverLeft, 1);
-  private Button ejectButton = new JoystickButton(driverLeft, 2);
-
-  private Button pneumaticButton = new JoystickButton(driverRight, 1);
+  //Mechanism Buttons
+  private Button collectButton = new JoystickButton(driverLeft, Constants.collectButton);//1
+  private Button ejectButton = new JoystickButton(driverLeft, Constants.ejectButton);//2
+  private Button hatchToggle = new JoystickButton(driverRight, Constants.hatchToggle);//1
 
   public double getLeftPower() { 
     return -driverLeft.getRawAxis(Constants.leftThrottleAxis);
@@ -42,10 +38,10 @@ public class OI {
   
   public OI() {
     //shootButton.whenPressed(new MotionProfile());//used to be shoot
-    pneumaticButton.whenPressed(new HatchCollectorStateChange());
+    hatchToggle.whenPressed(new HatchCollectorStateChange());
     collectButton.whileHeld(new CollectCargo());
     ejectButton.whileHeld(new EjectCargo());
- //   pneumaticButton.whenPressed(new OpenHatchCollector());
- //   pneumaticButton.whenReleased(new CloseHatchCollector());
+    //pneumaticButton.whenPressed(new OpenHatchCollector());
+    //pneumaticButton.whenReleased(new CloseHatchCollector());
   }
 }

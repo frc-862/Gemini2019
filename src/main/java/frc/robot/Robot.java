@@ -9,9 +9,9 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.RobotController;
 import frc.lightning.LightningRobot;
-import frc.lightning.subsystems.LightningDrivetrain;
 import frc.lightning.util.FaultMonitor;
 import frc.lightning.util.FaultCode.Codes;
+import frc.robot.commands.GlitchMotionProfile;
 import frc.robot.commands.MotionProfile;
 import frc.robot.subsystems.CargoCollector;
 import frc.robot.subsystems.Core;
@@ -19,7 +19,6 @@ import frc.robot.subsystems.GlitchDrivetrain;
 import frc.robot.subsystems.HatchCollector;
 import frc.robot.subsystems.OBotDrivetrain;
 import frc.robot.subsystems.Shooter;
-import frc.robot.subsystems.SiriusDrivetrain;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -30,27 +29,22 @@ import frc.robot.subsystems.SiriusDrivetrain;
  */
 public class Robot extends LightningRobot {
   public static Core core = new Core();
+  //Drive Trains
   public static OBotDrivetrain drivetrain = OBotDrivetrain.create();
-
   public static GlitchDrivetrain glitchDriveTrain = GlitchDrivetrain.create();
-
+  //Mechanism Objects
   public static Shooter shooter = new Shooter();
-
   public static HatchCollector collector = new HatchCollector();
   public static CargoCollector cargoCollector = new CargoCollector();
 
   public static OI oi = new OI();
 
-
-
   public Robot() {
-    // this.registerAutonomousCommmand(name, command);
+    //this.registerAutonomousCommmand(name, command);
     super();
     System.out.println("Initializing our robot");
 
-    
-    
-    this.registerAutonomousCommmand("Test Motion Path", new MotionProfile());
+    this.registerAutonomousCommmand("Test Motion Path - Glitch", new GlitchMotionProfile());
 
     // Shuffleboard
     FaultMonitor.register(new FaultMonitor(Codes.INTERNAL_ERROR, () -> RobotController.getUserButton()));

@@ -23,11 +23,6 @@ public class GlitchMotionProfile extends Command {
   BufferedTrajectoryPointStream bufferedStreamLeft = new BufferedTrajectoryPointStream();
   BufferedTrajectoryPointStream bufferedStreamRight = new BufferedTrajectoryPointStream();
 
-  /** very simple state machine to prevent calling set() while firing MP. */
-  int state = 0;
-
-
-
   public GlitchMotionProfile() {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);

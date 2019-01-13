@@ -1,12 +1,24 @@
 package frc.robot;
 
 import frc.lightning.ConstantBase;
+import frc.robot.misc.Gains;
 
 public class Constants extends ConstantBase {    
+
+	//For Joystick Input
 	public static int leftThrottleAxis = 1;
-    public static int rightThrottleAxis = 1;  
+    public static int rightThrottleAxis = 1;
+	public static int driverRightJoy = 0;
+	public static int driverLeftJoy = 1;
+	public static int collectButton = 1;
+	public static int ejectButton = 2;
+	public static int hatchToggle = 1;  
     
-    
+	
+	
+
+	//For Motion Profiling:
+
     /**
 	 * How many sensor units per rotation.
 	 * Using CTRE Magnetic Encoder.
