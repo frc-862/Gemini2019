@@ -7,6 +7,9 @@
 
 package frc.robot;
 
+import edu.wpi.cscore.UsbCamera;
+import edu.wpi.cscore.VideoSource;
+import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.lightning.LightningRobot;
@@ -21,6 +24,12 @@ import frc.robot.subsystems.HatchCollector;
 import frc.robot.subsystems.OBotDrivetrain;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.SiriusDrivetrain;
+
+import org.opencv.core.Mat;
+import org.opencv.imgproc.Imgproc;
+
+import edu.wpi.cscore.CvSink;
+import edu.wpi.cscore.CvSource;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -53,5 +62,9 @@ public class Robot extends LightningRobot {
 
     // Shuffleboard
     FaultMonitor.register(new FaultMonitor(Codes.INTERNAL_ERROR, () -> RobotController.getUserButton()));
+  }
+
+  public void robotInit() {
+    CameraServer.getInstance().startAutomaticCapture();
   }
 }
