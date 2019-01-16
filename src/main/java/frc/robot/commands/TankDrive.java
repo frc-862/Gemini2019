@@ -14,6 +14,7 @@ public class TankDrive extends Command {
   public TankDrive() {
     // Use requires() here to declare subsystem dependencies
     requires(Robot.drivetrain);
+    //requires(Robot.glitchDriveTrain);
   }
 
   // Called repeatedly when this Command is scheduled to run

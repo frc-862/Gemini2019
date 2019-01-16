@@ -25,8 +25,8 @@ public class Shooter extends Subsystem {
   private DoubleSolenoid kicker = new DoubleSolenoid(RobotMap.compressorCANId, 
       RobotMap.kickerCANId1, RobotMap.kickerCANId2);
 
-  private WPI_TalonSRX leftFlywheel = new WPI_TalonSRX(RobotMap.leftFlywheelCANId);
-  private WPI_TalonSRX rightFlywheel = new WPI_TalonSRX(RobotMap.rightFlywheelCANId);
+  private WPI_TalonSRX leftFlywheel ;//= new WPI_TalonSRX(RobotMap.leftFlywheelCANId);
+  private WPI_TalonSRX rightFlywheel ;//= new WPI_TalonSRX(RobotMap.rightFlywheelCANId);
 
   private MotorConfig flywheelConfig = MotorConfig.get("flywheels.json");
 

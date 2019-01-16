@@ -8,10 +8,11 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.RobotController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.lightning.LightningRobot;
 import frc.lightning.util.FaultMonitor;
 import frc.lightning.util.FaultCode.Codes;
-import frc.robot.commands.GlitchMotionProfile;
+import frc.robot.commands.MotionProfile;
 import frc.robot.subsystems.CargoCollector;
 import frc.robot.subsystems.Core;
 import frc.robot.subsystems.GlitchDrivetrain;
@@ -29,12 +30,16 @@ import frc.robot.subsystems.Shooter;
 public class Robot extends LightningRobot {
   public static Core core = new Core();
   //Drive Trains
-  public static OBotDrivetrain drivetrain = OBotDrivetrain.create();
-  public static GlitchDrivetrain glitchDriveTrain = GlitchDrivetrain.create();
+  //public static OBotDrivetrain drivetrain = OBotDrivetrain.create();
+  public static GlitchDrivetrain drivetrain = GlitchDrivetrain.create();
+
+    //dont really need...
+    //public static GlitchDrivetrain glitchDriveTrain = GlitchDrivetrain.create();
+  
   //Mechanism Objects
-  public static Shooter shooter = new Shooter();
+  public static Shooter shooter;// = new Shooter();
   public static HatchCollector collector = new HatchCollector();
-  public static CargoCollector cargoCollector = new CargoCollector();
+  public static CargoCollector cargoCollector;// = new CargoCollector();
 
   public static OI oi = new OI();
 
@@ -43,9 +48,11 @@ public class Robot extends LightningRobot {
     super();
     System.out.println("Initializing our robot");
 
-    this.registerAutonomousCommmand("Test Motion Path - Glitch", new GlitchMotionProfile());
+    this.registerAutonomousCommmand("Test Motion Path", new MotionProfile());
+
+    //SmartDashboard.putData("MotionPath", new MotionProfile());
 
     // Shuffleboard
-    FaultMonitor.register(new FaultMonitor(Codes.INTERNAL_ERROR, () -> RobotController.getUserButton()));
+    // FaultMonitor.register(new FaultMonitor(Codes.INTERNAL_ERROR, () -> RobotController.getUserButton()));
   }
 }

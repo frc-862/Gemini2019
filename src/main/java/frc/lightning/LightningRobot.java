@@ -15,6 +15,7 @@ import frc.lightning.util.FaultMonitor;
 import frc.lightning.util.TimedFaultMonitor;
 import frc.lightning.util.FaultCode.Codes;
 import frc.robot.Constants;
+import frc.robot.commands.MotionProfile;
 
 /**
  * Base robot class, provides {@link frc.lightning.ConstantBase constants}, 
@@ -182,7 +183,7 @@ public class LightningRobot extends TimedRobot {
   @Override
   public void autonomousInit() {
     // LightningServer.stop_server();
-    autonomousCommand = chooser.getSelected();
+    autonomousCommand = chooser.getSelected();//changed
 
     // schedule the autonomous command (example)
     if (autonomousCommand != null) {

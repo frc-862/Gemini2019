@@ -29,18 +29,20 @@ public class OI {
   private Button hatchToggle = new JoystickButton(driverRight, Constants.hatchToggle);//1
 
   public double getLeftPower() { 
-    return -driverLeft.getRawAxis(Constants.leftThrottleAxis);
+    // return driverLeft.getRawAxis(Constants.leftThrottleAxis); // GLITCH
+    return -driverLeft.getRawAxis(Constants.leftThrottleAxis); // OBOT
   }
 
   public double getRightPower() {
-    return -driverRight.getRawAxis(Constants.rightThrottleAxis);
+    // return driverRight.getRawAxis(Constants.rightThrottleAxis); // GLITCH
+    return driverRight.getRawAxis(Constants.rightThrottleAxis); // OBOT
   }
   
   public OI() {
     //shootButton.whenPressed(new MotionProfile());//used to be shoot
     hatchToggle.whenPressed(new HatchCollectorStateChange());
-    collectButton.whileHeld(new CollectCargo());
-    ejectButton.whileHeld(new EjectCargo());
+    //collectButton.whileHeld(new CollectCargo());
+    //ejectButton.whileHeld(new EjectCargo());
     //pneumaticButton.whenPressed(new OpenHatchCollector());
     //pneumaticButton.whenReleased(new CloseHatchCollector());
   }

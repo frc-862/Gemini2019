@@ -14,6 +14,7 @@ import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.TalonSRXConfiguration;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants;
 import frc.robot.Robot;
 import frc.robot.paths.CirclePath;
@@ -26,7 +27,7 @@ public class MotionProfile extends Command {
   /** very simple state machine to prevent calling set() while firing MP. */
   int state = 0;
 
-
+  TalonSRXConfiguration config;
 
   public MotionProfile() {
     // Use requires() here to declare subsystem dependencies
@@ -38,25 +39,26 @@ public class MotionProfile extends Command {
   @Override
   protected void initialize() {
 
-    TalonSRXConfiguration config = new TalonSRXConfiguration();
+    config = new TalonSRXConfiguration();
 
-    /* fill our buffer object with the excel points */
     initBuffer(CirclePath.Left, CirclePath.Left.length, bufferedStreamLeft);
     initBuffer(CirclePath.Right, CirclePath.Right.length, bufferedStreamRight);
 
-    /* _config the master specific settings */
     config.primaryPID.selectedFeedbackSensor = FeedbackDevice.QuadEncoder;
-    config.neutralDeadband = Constants.kNeutralDeadband; /* 0.1 % super small for best low-speed control */
+    config.neutralDeadband = Constants.kNeutralDeadband; // 0.1 % super small for best low-speed control 
     config.slot0.kF = Constants.kGains_MotProf.kF;
     config.slot0.kP = Constants.kGains_MotProf.kP;
     config.slot0.kI = Constants.kGains_MotProf.kI;
     config.slot0.kD = Constants.kGains_MotProf.kD;
     config.slot0.integralZone = (int) Constants.kGains_MotProf.kIzone;
     config.slot0.closedLoopPeakOutput = Constants.kGains_MotProf.kPeakOutput;
-    // _config.slot0.allowableClosedloopError // left default for this example
-    // _config.slot0.maxIntegralAccumulator; // left default for this example
-    // _config.slot0.closedLoopPeriod; // left default for this example
-    Robot.drivetrain.configAllSettings(config);
+    //config.slot0.allowableClosedloopError; // left default for this example
+    //config.slot0.closedLoopPeriod; // left default for this example
+    //config.slot0.maxIntegralAccumulator; // left default for this example
+
+    //config motors
+    Robot.drivetrain.configureMotors();
+
     Robot.drivetrain.getLeftMaster().startMotionProfile(bufferedStreamLeft, CirclePath.Left.length, ControlMode.MotionProfile);
     Robot.drivetrain.getRightMaster().startMotionProfile(bufferedStreamRight, CirclePath.Right.length, ControlMode.MotionProfile);
 
@@ -65,6 +67,20 @@ public class MotionProfile extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
+    
+    SmartDashboard.putNumber("Left", Robot.drivetrain.getLeftMaster().getMotionProfileTopLevelBufferCount());
+    SmartDashboard.putNumber("Right", Robot.drivetrain.getRightMaster().getMotionProfileTopLevelBufferCount());
+
+    SmartDashboard.putNumber("Left Output", Robot.drivetrain.getLeftMaster().getMotorOutputPercent());
+    SmartDashboard.putNumber("Right Output", Robot.drivetrain.getRightMaster().getMotorOutputPercent());
+
+    //Robot.drivetrain.getLeftMaster().
+    //Robot.drivetrain.getRightMaster().
+
+    //Robot.drivetrain.setPower(0.3, 0.3);
+
+    //Robot.drivetrain.getLeftMaster().startMotionProfile(bufferedStreamLeft, CirclePath.Left.length, ControlMode.MotionProfile);
+    //Robot.drivetrain.getRightMaster().startMotionProfile(bufferedStreamRight, CirclePath.Right.length, ControlMode.MotionProfile);
 
   }
 
