@@ -13,6 +13,7 @@ import frc.lightning.LightningRobot;
 import frc.lightning.util.FaultMonitor;
 import frc.lightning.util.FaultCode.Codes;
 import frc.robot.commands.MotionProfile;
+import frc.robot.commands.TestMove;
 import frc.robot.subsystems.CargoCollector;
 import frc.robot.subsystems.Core;
 import frc.robot.subsystems.GlitchDrivetrain;
@@ -49,6 +50,7 @@ public class Robot extends LightningRobot {
     System.out.println("Initializing our robot");
 
     this.registerAutonomousCommmand("Test Motion Path", new MotionProfile());
+    this.registerAutonomousCommmand("Test Velocity", new TestMove());
 
     //SmartDashboard.putData("MotionPath", new MotionProfile());
 

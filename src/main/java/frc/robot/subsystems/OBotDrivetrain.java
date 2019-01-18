@@ -11,6 +11,7 @@ import java.util.function.Consumer;
 
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.TalonSRXConfiguration;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import frc.lightning.subsystems.CANDrivetrain;
 import frc.lightning.util.MotorConfig;
@@ -20,24 +21,24 @@ import frc.robot.commands.TankDrive;
  * Add your docs here.
  */
 public class OBotDrivetrain extends CANDrivetrain {
-  TalonSRX leftFollow1;
-  TalonSRX leftFollow2;
+  WPI_TalonSRX leftFollow1;
+  WPI_TalonSRX leftFollow2;
 
-  TalonSRX rightFollow1;
-  TalonSRX rightFollow2;
+  WPI_TalonSRX rightFollow1;
+  WPI_TalonSRX rightFollow2;
 
   public static OBotDrivetrain create() {
     return new OBotDrivetrain(
-      new TalonSRX(1),
-      new TalonSRX(2),
-      new TalonSRX(3),
-      new TalonSRX(4),
-      new TalonSRX(5),
-      new TalonSRX(6)
+      new WPI_TalonSRX(1),
+      new WPI_TalonSRX(2),
+      new WPI_TalonSRX(3),
+      new WPI_TalonSRX(4),
+      new WPI_TalonSRX(5),
+      new WPI_TalonSRX(6)
     );    
   }
 
-  public OBotDrivetrain(TalonSRX left, TalonSRX left2, TalonSRX left3, TalonSRX right, TalonSRX right2, TalonSRX right3) {
+  public OBotDrivetrain(WPI_TalonSRX left, WPI_TalonSRX left2, WPI_TalonSRX left3, WPI_TalonSRX right, WPI_TalonSRX right2, WPI_TalonSRX right3) {
     super(left, right);
   
     leftFollow1 = left2;

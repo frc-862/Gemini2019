@@ -44,6 +44,8 @@ public class MotionProfile extends Command {
     initBuffer(CirclePath.Left, CirclePath.Left.length, bufferedStreamLeft);
     initBuffer(CirclePath.Right, CirclePath.Right.length, bufferedStreamRight);
 
+    System.out.println("Paths initialized");
+
     config.primaryPID.selectedFeedbackSensor = FeedbackDevice.QuadEncoder;
     config.neutralDeadband = Constants.kNeutralDeadband; // 0.1 % super small for best low-speed control 
     config.slot0.kF = Constants.kGains_MotProf.kF;
@@ -59,14 +61,20 @@ public class MotionProfile extends Command {
     //config motors
     Robot.drivetrain.configureMotors();
 
+    System.out.println("things configured");
+
     Robot.drivetrain.getLeftMaster().startMotionProfile(bufferedStreamLeft, CirclePath.Left.length, ControlMode.MotionProfile);
     Robot.drivetrain.getRightMaster().startMotionProfile(bufferedStreamRight, CirclePath.Right.length, ControlMode.MotionProfile);
+
+    System.out.println("started");
 
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
+
+    System.out.println("should be moving . . . ");
     
     SmartDashboard.putNumber("Left", Robot.drivetrain.getLeftMaster().getMotionProfileTopLevelBufferCount());
     SmartDashboard.putNumber("Right", Robot.drivetrain.getRightMaster().getMotionProfileTopLevelBufferCount());
@@ -87,13 +95,16 @@ public class MotionProfile extends Command {
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
+    System.out.println("We are done.");
     return Robot.drivetrain.getLeftMaster().isMotionProfileFinished() && Robot.drivetrain.getRightMaster().isMotionProfileFinished();
   }
 
   // Called once after isFinished returns true
   @Override
   protected void end() {
+
     Robot.drivetrain.stop();
+    System.out.println("we have stopped.");
   }
 
   // Called when another command which requires one or more of the same
@@ -138,6 +149,8 @@ public class MotionProfile extends Command {
         point.arbFeedFwd = 0; /* you can add a constant offset to add to PID[0] output here */
 
         bufferedStream.Write(point);
+
+        System.out.println("A buffer has been initialized.");
     }
 }
 
