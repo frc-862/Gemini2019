@@ -49,12 +49,7 @@ public class Robot extends LightningRobot {
     super();
     System.out.println("Initializing our robot");
 
-    this.registerAutonomousCommmand("Test Motion Path", new MotionProfile());
-    this.registerAutonomousCommmand("Test Velocity", new TestMove());
-
-    //SmartDashboard.putData("MotionPath", new MotionProfile());
-
-    // Shuffleboard
-    // FaultMonitor.register(new FaultMonitor(Codes.INTERNAL_ERROR, () -> RobotController.getUserButton()));
+    this.registerAutonomousCommmand("T_MotionProfile", new MotionProfile());
+    this.registerAutonomousCommmand("T_DriveVelocity", new TestMove());
   }
 }
