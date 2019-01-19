@@ -1,0 +1,48 @@
+doctype html
+html
+   head
+      meta(http-equiv="Content-Type", content="text/html; charset=utf-8")
+      title Lightning 862 RoboRio
+      link(rel="stylesheet", href="/css/dygraph.css")
+      link(rel="stylesheet", type="text/css", href="/css/styles.css")
+   body
+      section(id="page")
+         header
+            hgroup
+               h1 Lightning FRC 862
+               h3 You should have joined programming
+            
+            nav(class="clear")
+               ul
+                  li
+                     a(href="/") Logging
+                  li
+                     a(href="/faults") Faults
+                  li
+                     a(href="/motor/config") Motor Config
+                  li
+                     a(href="/constants") Constants
+                  li
+                     a(href="/live.html") Live
+                     
+         section(id="articles")
+            div(class="line")
+            article(id="article1")
+               h2 Motor Configurations            
+               div(class="line")
+               select(id="configNames", name="Motor Config Names")
+                  for config in motors
+                     option(id=config) #{config}
+               div(class="line")
+               div(class="articleBody clear")
+               div(id="configModel")
+               div(class="line")
+
+         footer
+            div(class="line")
+            p Copyright 2019 - Lightning Robotics
+            a(href="http://lightningrobotics.com/", class="by") Lighting Robotics
+
+      script("src="/js/jquery-3.3.1.min.js")
+      script("src="/js/jquery.jeditable.mini.js")
+      script("src="/js/motorconfig.js")

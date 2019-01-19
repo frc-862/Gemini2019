@@ -1,0 +1,17 @@
+body {
+  background: blue;
+}
+
+h1 {
+  color: orange;
+}
+
+#graph1 {
+  margin: 10px;
+  background: lightgray;
+}
+
+.selectframe {
+  margin: 10px;
+  color: white;
+}
