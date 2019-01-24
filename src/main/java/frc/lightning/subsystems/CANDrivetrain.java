@@ -12,6 +12,7 @@ import java.util.function.Consumer;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import frc.lightning.logging.DataLogger;
 
@@ -21,10 +22,10 @@ import frc.lightning.logging.DataLogger;
 public abstract class CANDrivetrain extends LightningDrivetrain {
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
-  protected TalonSRX leftMaster;
-  protected TalonSRX rightMaster;
+  protected WPI_TalonSRX leftMaster;
+  protected WPI_TalonSRX rightMaster;
 
-  protected CANDrivetrain(TalonSRX left, TalonSRX right) {
+  protected CANDrivetrain(WPI_TalonSRX left, WPI_TalonSRX right) {
     leftMaster = left;
     rightMaster = right;
   }
@@ -38,21 +39,21 @@ public abstract class CANDrivetrain extends LightningDrivetrain {
     });
   }
 
-  protected void withEachMaster(Consumer<TalonSRX> fn) {
+  protected void withEachMaster(Consumer<WPI_TalonSRX> fn) {
     fn.accept(leftMaster);
     fn.accept(rightMaster);
   }
 
-  protected void withEachMaster(BiConsumer<String,TalonSRX> fn) {
+  protected void withEachMaster(BiConsumer<String,WPI_TalonSRX> fn) {
     fn.accept("left", leftMaster);
     fn.accept("right", rightMaster);
   }
 
-  public TalonSRX getLeftMaster() {
+  public WPI_TalonSRX getLeftMaster() {
     return leftMaster;
   }
 
-  public TalonSRX getRightMaster() {
+  public WPI_TalonSRX getRightMaster() {
     return rightMaster;
   }
 

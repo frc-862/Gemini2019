@@ -20,8 +20,8 @@ import frc.robot.commands.HatchCollectorStateChange;
  */
 public class OI {
   //Drive Joysticks
-  private Joystick driverRight = new Joystick(Constants.driverRightJoy);//0
-  private Joystick driverLeft = new Joystick(Constants.driverLeftJoy);//1
+  private Joystick driverRight = new Joystick(1);// Constants.driverRightJoy);   //0
+  private Joystick driverLeft = new Joystick(0);// Constants.driverLeftJoy);   //1
 
   //Mechanism Buttons
   private Button collectButton = new JoystickButton(driverLeft, Constants.collectButton);//1
@@ -29,13 +29,17 @@ public class OI {
   private Button hatchToggle = new JoystickButton(driverRight, Constants.hatchToggle);//1
 
   public double getLeftPower() { 
-    // return driverLeft.getRawAxis(Constants.leftThrottleAxis); // GLITCH
-    return -driverLeft.getRawAxis(Constants.leftThrottleAxis); // OBOT
+    return -driverLeft.getRawAxis(Constants.leftThrottleAxis); // GLITCH
+    // return -driverLeft.getRawAxis(Constants.leftThrottleAxis); // OBOT
   }
 
   public double getRightPower() {
-    // return driverRight.getRawAxis(Constants.rightThrottleAxis); // GLITCH
-    return driverRight.getRawAxis(Constants.rightThrottleAxis); // OBOT
+    return -driverRight.getRawAxis(Constants.rightThrottleAxis); // GLITCH
+    // return driverRight.getRawAxis(Constants.rightThrottleAxis); // OBOT
+  }
+
+  public double getRightSlider(){
+    return (driverRight.getRawAxis(3)+1)/2;
   }
   
   public OI() {
