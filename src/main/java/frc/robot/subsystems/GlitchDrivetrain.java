@@ -38,6 +38,8 @@ public class GlitchDrivetrain extends CANDrivetrain {
   WPI_VictorSPX rightFollow1;
   WPI_VictorSPX rightFollow2;
 
+  private final double num =  33.4125968643;
+
   public static GlitchDrivetrain create() {
     return new GlitchDrivetrain(
       new WPI_TalonSRX(1), 
@@ -65,12 +67,14 @@ public class GlitchDrivetrain extends CANDrivetrain {
       LiveWindow.add(m)
     );
     enableLogging();
-    DataLogger.addDataElement("leftVel", () -> LightningMath.talon2fps(getLeftVelocity()));
-    DataLogger.addDataElement("rightVel", () -> LightningMath.talon2fps(getRightVelocity()));
+    
+    //DataLogger.addDataElement("leftVel", () -> LightningMath.talon2fps(getLeftVelocity()));
+    //DataLogger.addDataElement("rightVel", () -> LightningMath.talon2fps(getRightVelocity()));
     DataLogger.addDataElement("R_Current_Pos", () -> LightningMath.ticks2feet(Robot.drivetrain.getRightMaster().getSelectedSensorPosition()));
     DataLogger.addDataElement("L_Current_Pos", () -> LightningMath.ticks2feet(Robot.drivetrain.getLeftMaster().getSelectedSensorPosition()));
-    DataLogger.addDataElement("R_Expected_Pos", () -> LightningMath.ticks2feet(Robot.drivetrain.getRightMaster().getClosedLoopError()+Robot.drivetrain.getRightMaster().getSelectedSensorPosition()));
-    DataLogger.addDataElement("L_Expected_Pos", () -> LightningMath.ticks2feet(Robot.drivetrain.getLeftMaster().getClosedLoopError()+Robot.drivetrain.getLeftMaster().getSelectedSensorPosition()));
+    DataLogger.addDataElement("R_Expected_Pos", () -> LightningMath.ticks2feet(Robot.drivetrain.getRightMaster().getActiveTrajectoryPosition()));
+    DataLogger.addDataElement("L_Expected_Pos", () -> LightningMath.ticks2feet(Robot.drivetrain.getLeftMaster().getActiveTrajectoryPosition()));
+
   }
 
   public void withEachMotor(Consumer<BaseMotorController> fn)  {

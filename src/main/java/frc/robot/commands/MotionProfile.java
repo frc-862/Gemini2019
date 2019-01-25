@@ -22,6 +22,7 @@ import frc.robot.Robot;
 import frc.robot.paths.CirclePath;
 import frc.robot.paths.LinePath;
 import frc.robot.paths.Path;
+import frc.robot.paths.TenFtPath;
 
 public class MotionProfile extends Command {
 
@@ -29,7 +30,7 @@ public class MotionProfile extends Command {
   BufferedTrajectoryPointStream bufferedStreamRight = new BufferedTrajectoryPointStream();
 
   /** very simple state machine to prevent calling set() while firing MP. */
-  int state = 0;
+  // int state = 0;
   // Path path = new LinePath();
   // Path path = new CirclePath();
 
@@ -87,23 +88,11 @@ public class MotionProfile extends Command {
     SmartDashboard.putNumber("LeftPoints", Robot.drivetrain.getLeftMaster().getMotionProfileTopLevelBufferCount());
     SmartDashboard.putNumber("RightPoints", Robot.drivetrain.getRightMaster().getMotionProfileTopLevelBufferCount());
 
-    SmartDashboard.putNumber("LeftEncoder", Robot.drivetrain.getLeftMaster().getSelectedSensorPosition());
-    SmartDashboard.putNumber("RightEncoder", Robot.drivetrain.getRightMaster().getSelectedSensorPosition());
+    SmartDashboard.putNumber("LeftEncoder",  LightningMath.ticks2feet(Robot.drivetrain.getLeftMaster ().getSelectedSensorPosition()));
+    SmartDashboard.putNumber("RightEncoder", LightningMath.ticks2feet(Robot.drivetrain.getRightMaster().getSelectedSensorPosition()));
 
     SmartDashboard.putNumber("Left Output", Robot.drivetrain.getLeftMaster().getMotorOutputPercent());
     SmartDashboard.putNumber("Right Output", Robot.drivetrain.getRightMaster().getMotorOutputPercent());
-
-    //Robot.drivetrain.getLeftMaster().
-    //Robot.drivetrain.getRightMaster().
-
-    
-
-    //Robot.drivetrain.setPower(0.3, 0.3);
-
-    // Robot.drivetrain.setVelocity(left, right);
-
-    //Robot.drivetrain.getLeftMaster().startMotionProfile(bufferedStreamLeft, CirclePath.Left.length, ControlMode.MotionProfile);
-    //Robot.drivetrain.getRightMaster().startMotionProfile(bufferedStreamRight, CirclePath.Right.length, ControlMode.MotionProfile);
 
   }
 
@@ -164,7 +153,7 @@ public class MotionProfile extends Command {
 
         bufferedStream.Write(point);
 
-        System.out.println("A buffer has been initialized.");
+        System.out.println("Position = " + point.position + " ticks");
     }
 }
 

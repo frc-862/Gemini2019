@@ -7,6 +7,7 @@
 
 package frc.robot;
 
+import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.lightning.LightningRobot;
@@ -45,11 +46,16 @@ public class Robot extends LightningRobot {
   public static OI oi = new OI();
 
   public Robot() {
-    //this.registerAutonomousCommmand(name, command);
     super();
     System.out.println("Initializing our robot");
 
+    //this.registerAutonomousCommmand(name, command);
     this.registerAutonomousCommmand("T_MotionProfile", new MotionProfile());
     this.registerAutonomousCommmand("T_DriveVelocity", new TestMove());
   }
+/*
+  public void robotInit() {
+    CameraServer.getInstance().startAutomaticCapture();
+  }
+*/
 }

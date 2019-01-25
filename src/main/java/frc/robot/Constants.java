@@ -24,7 +24,7 @@ public class Constants extends ConstantBase {
 	 * Using CTRE Magnetic Encoder.
 	 * @link https://github.com/CrossTheRoadElec/Phoenix-Documentation#what-are-the-units-of-my-sensor
 	 */
-	public final static int kSensorUnitsPerRotation = 4096;//??????? find all units
+	public final static int kSensorUnitsPerRotation = 4 * 360;//??????? find all units
 	
 	/**
 	 * Motor neutral dead-band, set to the minimum 0.1%.

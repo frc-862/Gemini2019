@@ -29,12 +29,14 @@ public class OI {
   private Button hatchToggle = new JoystickButton(driverRight, Constants.hatchToggle);//1
 
   public double getLeftPower() { 
-    return -driverLeft.getRawAxis(Constants.leftThrottleAxis); // GLITCH
+    return (Math.abs(driverLeft.getRawAxis(Constants.leftThrottleAxis))>0.05) ? -driverLeft.getRawAxis(Constants.leftThrottleAxis) : 0.00;//glitch
+    // return -driverLeft.getRawAxis(Constants.leftThrottleAxis); // GLITCH
     // return -driverLeft.getRawAxis(Constants.leftThrottleAxis); // OBOT
   }
 
   public double getRightPower() {
-    return -driverRight.getRawAxis(Constants.rightThrottleAxis); // GLITCH
+    return (Math.abs(driverRight.getRawAxis(Constants.rightThrottleAxis))>0.05) ? -driverRight.getRawAxis(Constants.rightThrottleAxis) : 0.00;//glitch
+    // return -driverRight.getRawAxis(Constants.rightThrottleAxis); // GLITCH
     // return driverRight.getRawAxis(Constants.rightThrottleAxis); // OBOT
   }
 

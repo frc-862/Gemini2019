@@ -10,7 +10,7 @@ package frc.robot.paths;
 /**
  * Add your docs here.
  */
-public class LinePath extends Path{
+public class LinePath{
     //p, v, a, h
     public static double[][] Left = new double[][] {
         {0,0,0,0},
