@@ -35,17 +35,17 @@ public class GeminiDrivetrain extends CANDrivetrain {
     return new GeminiDrivetrain(
       new WPI_TalonSRX(1), 
       new WPI_VictorSPX(2), 
-      new WPI_TalonSRX(3),
-      new WPI_VictorSPX(4));
+      new WPI_TalonSRX(4),
+      new WPI_VictorSPX(5));
       
   
   }
 
   public GeminiDrivetrain(WPI_TalonSRX left, WPI_VictorSPX left2, WPI_TalonSRX right, WPI_VictorSPX right2) {
-    super(left, right);//1, 3
+    super(left, right);//1, 4
   
     leftFollow1 = left2;//2
-    rightFollow1 = right2;//4
+    rightFollow1 = right2;//5
 
     configureMotors();
 
@@ -75,9 +75,10 @@ public class GeminiDrivetrain extends CANDrivetrain {
   public void configureMotors() {
     getLeftMaster().setInverted(true);
     leftFollow1.follow(getLeftMaster());
+    leftFollow1.setInverted(true);
 
     rightFollow1.follow(getRightMaster());
-    rightFollow1.setInverted(true);
+    //rightFollow1.setInverted(true);
 
     withEachMaster((m) -> {
       m.configOpenloopRamp(0.2);
