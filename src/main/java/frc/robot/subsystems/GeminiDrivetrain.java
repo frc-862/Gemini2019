@@ -75,10 +75,10 @@ public class GeminiDrivetrain extends CANDrivetrain {
   public void configureMotors() {
     getLeftMaster().setInverted(true);
     leftFollow1.follow(getLeftMaster());
-    leftFollow1.setInverted(true);
+    //leftFollow1.setInverted(true);
 
     rightFollow1.follow(getRightMaster());
-    //rightFollow1.setInverted(true);
+    rightFollow1.setInverted(true);
 
     withEachMaster((m) -> {
       m.configOpenloopRamp(0.2);
