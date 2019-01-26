@@ -44,9 +44,9 @@ public class Constants extends ConstantBase {
 	public final static int elevatorTopHeight = 5000;
 	public final static int elevatorMiddleHeight = 2500;
 	public final static int elevatorBottomHeight = 1000;
-	public final static double elevatorDownPower=-0.2;
-	public final static double elevatorUpPower=0.4;
-	public final static double elevatorHoldPower=0.07;
+	public final static double elevatorDownPower = -0.2;
+	public final static double elevatorUpPower = 0.4;
+	public final static double elevatorHoldPower = 0.07;
 	// Cargo Collector Constants
 	public final static double collectPower = 1;
 	public final static double ejectPower = -1;

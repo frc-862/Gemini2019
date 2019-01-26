@@ -25,9 +25,9 @@ public class setElevatorMed extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    if (Robot.elevator.motor1.getSelectedSensorPosition()>Constants.elevatorMiddleHeight) {
+    if (Robot.elevator.motor1.getSelectedSensorPosition() > Constants.elevatorMiddleHeight) {
     Robot.elevator.setpower(Constants.elevatorDownPower);  
-    }else{
+    } else {
       Robot.elevator.setpower(Constants.elevatorUpPower);   
     } 
   }
