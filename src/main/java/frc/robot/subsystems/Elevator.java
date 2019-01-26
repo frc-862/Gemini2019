@@ -19,7 +19,6 @@ public class Elevator extends Subsystem {
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
 
-
   public TalonSRX motor1;
   public TalonSRX motor2;
 
