@@ -14,12 +14,10 @@ import frc.lightning.util.FaultMonitor;
 import frc.lightning.util.FaultCode.Codes;
 import frc.robot.commands.MotionProfile;
 import frc.robot.commands.TestMove;
-import frc.robot.subsystems.CargoCollector;
-import frc.robot.subsystems.Core;
-import frc.robot.subsystems.GlitchDrivetrain;
-import frc.robot.subsystems.HatchCollector;
-import frc.robot.subsystems.OBotDrivetrain;
-import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.*;
+
+import java.io.File;
+
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -30,9 +28,18 @@ import frc.robot.subsystems.Shooter;
  */
 public class Robot extends LightningRobot {
   public static Core core = new Core();
-  //Drive Trains
+
+
+  //Drive Train Chooser 
+  public static boolean isOBot() {
+    return new File("/home/lvuser/obot").exists();
+  }
+  public static boolean isGlitch() {
+    return new File("/home/lvuser/glitch").exists();
+  }
   //public static OBotDrivetrain drivetrain = OBotDrivetrain.create();
-  public static GlitchDrivetrain drivetrain = GlitchDrivetrain.create();
+  //public static GlitchDrivetrain drivetrain = GlitchDrivetrain.create();
+  public static GeminiDrivetrain drivetrain = GeminiDrivetrain.create();
 
     //dont really need...
     //public static GlitchDrivetrain glitchDriveTrain = GlitchDrivetrain.create();
@@ -41,7 +48,8 @@ public class Robot extends LightningRobot {
   public static Shooter shooter;// = new Shooter();
   public static HatchCollector collector = new HatchCollector();
   public static CargoCollector cargoCollector;// = new CargoCollector();
-
+  public static HatchGroundCollector hatchGroundCollector = new HatchGroundCollector();
+  public static Elevator elevator = new Elevator();
   public static OI oi = new OI();
 
   public Robot() {
