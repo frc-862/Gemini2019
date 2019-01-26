@@ -17,6 +17,7 @@ import frc.robot.commands.MotionProfile;
 import frc.robot.commands.TestMove;
 import frc.robot.subsystems.CargoCollector;
 import frc.robot.subsystems.Core;
+import frc.robot.subsystems.GeminiDrivetrain;
 import frc.robot.subsystems.GlitchDrivetrain;
 import frc.robot.subsystems.HatchCollector;
 import frc.robot.subsystems.OBotDrivetrain;
@@ -33,15 +34,13 @@ public class Robot extends LightningRobot {
   public static Core core = new Core();
   //Drive Trains
   //public static OBotDrivetrain drivetrain = OBotDrivetrain.create();
-  public static GlitchDrivetrain drivetrain = GlitchDrivetrain.create();
-
-    //dont really need...
-    //public static GlitchDrivetrain glitchDriveTrain = GlitchDrivetrain.create();
+  //public static GlitchDrivetrain drivetrain = GlitchDrivetrain.create();
+  public static GeminiDrivetrain drivetrain = GeminiDrivetrain.create();
   
   //Mechanism Objects
   public static Shooter shooter;// = new Shooter();
-  public static HatchCollector collector = new HatchCollector();
-  public static CargoCollector cargoCollector = new CargoCollector();
+  public static HatchCollector collector; // = new HatchCollector();
+  public static CargoCollector cargoCollector; // = new CargoCollector();
 
   public static OI oi = new OI();
 
