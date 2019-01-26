@@ -19,7 +19,7 @@ public class HatchGroundCollector extends Subsystem {
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
 
-DoubleSolenoid deployer;
+  DoubleSolenoid deployer;
 
   @Override
   public void initDefaultCommand() {

@@ -1,5 +1,6 @@
 package frc.lightning;
 
+import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Timer;
@@ -64,6 +65,9 @@ public class LightningRobot extends TimedRobot {
     LightningServer.start_server();
     FaultMonitor.register(new TimedFaultMonitor(Codes.SLOW_LOOPER, () -> getLoopTime() > getPeriod(), 
       0.08, "Loop is running slow: " + getLoopTime()));
+
+    CameraServer.getInstance().startAutomaticCapture();
+
   }
 
   double getLoopTime() {
