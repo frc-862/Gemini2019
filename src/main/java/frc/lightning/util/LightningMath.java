@@ -1,9 +1,9 @@
 package frc.lightning.util;
 
 public class LightningMath {
-    public static final double wheelRadius = 6.0;
-    public static final double wheelCircumference = wheelRadius * Math.PI * 2;
-    public static final double TICS_PER_ROTATION = 4 * 1024;
+    public static final double wheelRadius = 3.0;
+    public static final double wheelCircumference = wheelRadius * Math.PI * 2;//1.5707 ft
+    public static final double TICS_PER_ROTATION = 4 * 360;
 
     public static double talon2ips(double talon) {
         // multiply 100ms by 10 to get seconds
@@ -11,7 +11,7 @@ public class LightningMath {
     }
 
     public static double talon2fps(double talon){
-        return (talon2ips(talon)/12);//ips / 12 to get foot
+        return (talon2ips(talon))/12;//ips / 12 to get foot
     }
 
     public static double fps2talon(double fps){
@@ -25,6 +25,15 @@ public class LightningMath {
 
     public static double inches2ticks(double inches) {
         return inches / wheelCircumference * TICS_PER_ROTATION;
+    }
+
+    public static double feet2ticks(double feet) {
+        return inches2ticks(feet/12);
+        
+    }
+
+    public static double ticks2feet(double ticks) {
+        return (ticks2inches(ticks))/12;
     }
 
     public static double ticks2inches(double ticks) {

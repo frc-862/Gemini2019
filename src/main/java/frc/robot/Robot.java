@@ -7,6 +7,7 @@
 
 package frc.robot;
 
+import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.lightning.LightningRobot;
@@ -17,7 +18,6 @@ import frc.robot.commands.TestMove;
 import frc.robot.subsystems.*;
 
 import java.io.File;
-
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -40,29 +40,26 @@ public class Robot extends LightningRobot {
   //public static OBotDrivetrain drivetrain = OBotDrivetrain.create();
   //public static GlitchDrivetrain drivetrain = GlitchDrivetrain.create();
   public static GeminiDrivetrain drivetrain = GeminiDrivetrain.create();
-
-    //dont really need...
-    //public static GlitchDrivetrain glitchDriveTrain = GlitchDrivetrain.create();
   
   //Mechanism Objects
   public static Shooter shooter;// = new Shooter();
-  public static HatchCollector collector = new HatchCollector();
+  public static HatchCollector collector;// = new HatchCollector();
   public static CargoCollector cargoCollector;// = new CargoCollector();
   public static HatchGroundCollector hatchGroundCollector = new HatchGroundCollector();
   public static Elevator elevator = new Elevator();
   public static OI oi = new OI();
 
   public Robot() {
-    //this.registerAutonomousCommmand(name, command);
     super();
     System.out.println("Initializing our robot");
 
-    this.registerAutonomousCommmand("Test Motion Path", new MotionProfile());
-    this.registerAutonomousCommmand("Test Velocity", new TestMove());
-
-    //SmartDashboard.putData("MotionPath", new MotionProfile());
-
-    // Shuffleboard
-    // FaultMonitor.register(new FaultMonitor(Codes.INTERNAL_ERROR, () -> RobotController.getUserButton()));
+    //this.registerAutonomousCommmand(name, command);
+    this.registerAutonomousCommmand("T_MotionProfile", new MotionProfile());
+    this.registerAutonomousCommmand("T_DriveVelocity", new TestMove());
   }
+/*
+  public void robotInit() {
+    CameraServer.getInstance().startAutomaticCapture();
+  }
+*/
 }

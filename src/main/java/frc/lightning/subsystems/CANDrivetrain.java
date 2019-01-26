@@ -32,10 +32,10 @@ public abstract class CANDrivetrain extends LightningDrivetrain {
 
   protected void enableLogging() {
     withEachMaster((label, talon) -> {
-      DataLogger.addDelayedDataElement(label + "Position", () -> talon.getSelectedSensorPosition());
-      DataLogger.addDelayedDataElement(label + "Velocity", () -> talon.getSelectedSensorVelocity());
-      DataLogger.addDelayedDataElement(label + "MasterCurrent", () -> talon.getOutputCurrent());
-      DataLogger.addDelayedDataElement(label + "MasterOutputPercent", () -> talon.getMotorOutputPercent());
+      //DataLogger.addDelayedDataElement(label + "Position", () -> talon.getSelectedSensorPosition());
+      //DataLogger.addDelayedDataElement(label + "Velocity", () -> talon.getSelectedSensorVelocity());
+      //DataLogger.addDelayedDataElement(label + "MasterCurrent", () -> talon.getOutputCurrent());
+      //DataLogger.addDelayedDataElement(label + "MasterOutputPercent", () -> talon.getMotorOutputPercent());
     });
   }
 

@@ -8,6 +8,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
 
 public class TankDrive extends Command {
@@ -23,6 +24,10 @@ public class TankDrive extends Command {
     double left = Robot.oi.getLeftPower();
     double right = Robot.oi.getRightPower();
     Robot.drivetrain.setPower(left, right);
+
+    SmartDashboard.putNumber("LeftVelocity", Robot.drivetrain.getLeftVelocity());
+    SmartDashboard.putNumber("RightVelocity", Robot.drivetrain.getRightVelocity());
+
   }
 
   @Override

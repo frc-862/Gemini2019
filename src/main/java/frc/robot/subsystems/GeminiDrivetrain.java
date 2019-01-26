@@ -23,6 +23,7 @@ import frc.lightning.subsystems.CANDrivetrain;
 import frc.lightning.util.LightningMath;
 import frc.lightning.util.MotorConfig;
 import frc.robot.commands.TankDrive;
+import frc.robot.misc.Gains;
 
 /**
  * Add your docs here.
@@ -72,6 +73,15 @@ public class GeminiDrivetrain extends CANDrivetrain {
     fn.accept(rightFollow1);
   }
 
+  public void configurePID(Gains g) {
+    withEachMaster((m) -> {
+      m.config_kP(0, g.kP);
+      m.config_kI(0, g.kI);
+      m.config_kD(0, g.kD);
+      m.config_kF(0, g.kF);
+    });
+  }
+  
   public void configureMotors() {
     getLeftMaster().setInverted(true);
     leftFollow1.follow(getLeftMaster());
@@ -121,5 +131,5 @@ public class GeminiDrivetrain extends CANDrivetrain {
     // Set the default command for a subsystem here.
     setDefaultCommand(new TankDrive());
   }
+  
 }
- 

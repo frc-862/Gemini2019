@@ -15,9 +15,14 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRXConfiguration;
 
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.lightning.logging.DataLogger;
+import frc.lightning.util.LightningMath;
 import frc.robot.Constants;
 import frc.robot.Robot;
 import frc.robot.paths.CirclePath;
+import frc.robot.paths.LinePath;
+import frc.robot.paths.Path;
+import frc.robot.paths.TenFtPath;
 
 public class MotionProfile extends Command {
 
@@ -25,9 +30,13 @@ public class MotionProfile extends Command {
   BufferedTrajectoryPointStream bufferedStreamRight = new BufferedTrajectoryPointStream();
 
   /** very simple state machine to prevent calling set() while firing MP. */
-  int state = 0;
+  // int state = 0;
+  // Path path = new LinePath();
+  // Path path = new CirclePath();
 
   TalonSRXConfiguration config;
+  static double expectedLeft;
+  static double expectedRight;
 
   public MotionProfile() {
     // Use requires() here to declare subsystem dependencies
@@ -39,19 +48,19 @@ public class MotionProfile extends Command {
   @Override
   protected void initialize() {
 
+    System.out.println("Hello There \n we is initializing");
+
     config = new TalonSRXConfiguration();
 
-    initBuffer(CirclePath.Left, CirclePath.Left.length, bufferedStreamLeft);
-    initBuffer(CirclePath.Right, CirclePath.Right.length, bufferedStreamRight);
+    System.out.println("left.initBuffer");
+    initBuffer(LinePath.Left, LinePath.Left.length, bufferedStreamLeft);
+    System.out.println("right.initBuffer");
+    initBuffer(LinePath.Right, LinePath.Right.length, bufferedStreamRight);
 
     System.out.println("Paths initialized");
 
     config.primaryPID.selectedFeedbackSensor = FeedbackDevice.QuadEncoder;
     config.neutralDeadband = Constants.kNeutralDeadband; // 0.1 % super small for best low-speed control 
-    config.slot0.kF = Constants.kGains_MotProf.kF;
-    config.slot0.kP = Constants.kGains_MotProf.kP;
-    config.slot0.kI = Constants.kGains_MotProf.kI;
-    config.slot0.kD = Constants.kGains_MotProf.kD;
     config.slot0.integralZone = (int) Constants.kGains_MotProf.kIzone;
     config.slot0.closedLoopPeakOutput = Constants.kGains_MotProf.kPeakOutput;
     //config.slot0.allowableClosedloopError; // left default for this example
@@ -59,12 +68,12 @@ public class MotionProfile extends Command {
     //config.slot0.maxIntegralAccumulator; // left default for this example
 
     //config motors
-    Robot.drivetrain.configureMotors();
+    Robot.drivetrain.configurePID(Constants.kGains_MotProf);
 
     System.out.println("things configured");
 
-    Robot.drivetrain.getLeftMaster().startMotionProfile(bufferedStreamLeft, CirclePath.Left.length, ControlMode.MotionProfile);
-    Robot.drivetrain.getRightMaster().startMotionProfile(bufferedStreamRight, CirclePath.Right.length, ControlMode.MotionProfile);
+    Robot.drivetrain.getLeftMaster().startMotionProfile(bufferedStreamLeft, LinePath.Left.length, ControlMode.MotionProfile);
+    Robot.drivetrain.getRightMaster().startMotionProfile(bufferedStreamRight, LinePath.Right.length, ControlMode.MotionProfile);
 
     System.out.println("started");
 
@@ -76,26 +85,20 @@ public class MotionProfile extends Command {
 
     System.out.println("should be moving . . . ");
     
-    SmartDashboard.putNumber("Left", Robot.drivetrain.getLeftMaster().getMotionProfileTopLevelBufferCount());
-    SmartDashboard.putNumber("Right", Robot.drivetrain.getRightMaster().getMotionProfileTopLevelBufferCount());
+    SmartDashboard.putNumber("LeftPoints", Robot.drivetrain.getLeftMaster().getMotionProfileTopLevelBufferCount());
+    SmartDashboard.putNumber("RightPoints", Robot.drivetrain.getRightMaster().getMotionProfileTopLevelBufferCount());
+
+    SmartDashboard.putNumber("LeftEncoder",  LightningMath.ticks2feet(Robot.drivetrain.getLeftMaster ().getSelectedSensorPosition()));
+    SmartDashboard.putNumber("RightEncoder", LightningMath.ticks2feet(Robot.drivetrain.getRightMaster().getSelectedSensorPosition()));
 
     SmartDashboard.putNumber("Left Output", Robot.drivetrain.getLeftMaster().getMotorOutputPercent());
     SmartDashboard.putNumber("Right Output", Robot.drivetrain.getRightMaster().getMotorOutputPercent());
-
-    //Robot.drivetrain.getLeftMaster().
-    //Robot.drivetrain.getRightMaster().
-
-    //Robot.drivetrain.setPower(0.3, 0.3);
-
-    //Robot.drivetrain.getLeftMaster().startMotionProfile(bufferedStreamLeft, CirclePath.Left.length, ControlMode.MotionProfile);
-    //Robot.drivetrain.getRightMaster().startMotionProfile(bufferedStreamRight, CirclePath.Right.length, ControlMode.MotionProfile);
 
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    System.out.println("We are done.");
     return Robot.drivetrain.getLeftMaster().isMotionProfileFinished() && Robot.drivetrain.getRightMaster().isMotionProfileFinished();
   }
 
@@ -129,8 +132,8 @@ public class MotionProfile extends Command {
     for (int i = 0; i < totalCnt; ++i) {
   
         double direction = forward ? +1 : -1;
-        double positionRot = profile[i][0];
-        double velocityRPM = profile[i][1];
+        double positionRot = LightningMath.feet2ticks(profile[i][0]);
+        double velocityRPM = LightningMath.fps2talon(profile[i][1]);
         int durationMilliseconds = 20;
 
         /* for each point, fill our structure and pass it to API */
@@ -150,7 +153,7 @@ public class MotionProfile extends Command {
 
         bufferedStream.Write(point);
 
-        System.out.println("A buffer has been initialized.");
+        System.out.println("Position = " + point.position + " ticks");
     }
 }
 

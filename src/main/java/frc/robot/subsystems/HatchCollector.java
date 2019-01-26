@@ -21,7 +21,8 @@ public class HatchCollector extends Subsystem {
   DoubleSolenoid hatchCollector;
 
   public HatchCollector(){
-    hatchCollector = new DoubleSolenoid(11, 4, 5);
+    hatchCollector = new DoubleSolenoid(11, 0, 1);// OBOT - 11, 4, 5
+    // constructor - DoubleSolenoid(moduleNumber, forwardChannel, reverseChannel)
   }
 
   @Override
