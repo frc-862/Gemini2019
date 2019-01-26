@@ -48,7 +48,8 @@ public class Robot extends LightningRobot {
   public static Shooter shooter;// = new Shooter();
   public static HatchCollector collector = new HatchCollector();
   public static CargoCollector cargoCollector;// = new CargoCollector();
-
+  public static HatchGroundCollector hatchGroundCollector = new HatchGroundCollector();
+  public static Elevator elevator = new Elevator();
   public static OI oi = new OI();
 
   public Robot() {
