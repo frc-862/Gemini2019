@@ -10,11 +10,14 @@ package frc.robot.subsystems;
 import java.util.function.Consumer;
 
 import com.ctre.phoenix.motorcontrol.can.BaseMotorController;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 
 import edu.wpi.first.wpilibj.Sendable;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.lightning.logging.DataLogger;
 import frc.lightning.subsystems.CANDrivetrain;
 import frc.lightning.util.LightningMath;
@@ -77,8 +80,8 @@ public class GeminiDrivetrain extends CANDrivetrain {
       m.config_kD(0, g.kD);
       m.config_kF(0, g.kF);
     });
-  } 
-
+  }
+  
   public void configureMotors() {
     getLeftMaster().setInverted(true);
     leftFollow1.follow(getLeftMaster());
@@ -128,4 +131,5 @@ public class GeminiDrivetrain extends CANDrivetrain {
     // Set the default command for a subsystem here.
     setDefaultCommand(new TankDrive());
   }
+  
 }

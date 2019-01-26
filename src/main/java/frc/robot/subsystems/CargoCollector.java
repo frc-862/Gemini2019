@@ -15,8 +15,10 @@ import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.RobotMap;
-import frc.robot.commands.CollectCargo;
 import frc.robot.commands.HABClimb;
+import frc.robot.Constants;
+import frc.robot.commands.CollectCargo;
+import edu.wpi.first.wpilibj.DoubleSolenoid;
 
 /**
  * Add your docs here.
@@ -27,8 +29,8 @@ public class CargoCollector extends Subsystem {
 
   private final WPI_VictorSPX  leftGripper;
   private final WPI_VictorSPX rightGripper;
-
   private final WPI_TalonSRX fourbar;
+  DoubleSolenoid deployer;
 
   public CargoCollector(){
     leftGripper = new WPI_VictorSPX(21);
@@ -56,7 +58,6 @@ public class CargoCollector extends Subsystem {
   public void stopFourbar(){
     fourbar.set(ControlMode.PercentOutput, 0.0);  
   }
-
   public void stop(){
     System.out.println("STOP");
     leftGripper.set(0.0);
@@ -71,6 +72,13 @@ public class CargoCollector extends Subsystem {
     System.out.println("power " + pwr);
     leftGripper.set(pwr);
     rightGripper.set(pwr);
+  }
+  public void toggleDeployer() {
+    if (deployer.get() == DoubleSolenoid.Value.kForward) {
+      deployer.set(DoubleSolenoid.Value.kReverse);
+    } else {
+      deployer.set(DoubleSolenoid.Value.kForward);
+    }
   }
 
   public void collect(){
