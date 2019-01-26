@@ -12,6 +12,8 @@ import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import frc.robot.commands.CollectCargo;
 import frc.robot.commands.EjectCargo;
+import frc.robot.commands.FourbarCollect;
+import frc.robot.commands.FourbarEject;
 import frc.robot.commands.HatchCollectorStateChange;
 
 /**
@@ -26,7 +28,9 @@ public class OI {
   //Mechanism Buttons
   private Button collectButton = new JoystickButton(driverLeft, Constants.collectButton);//1
   private Button ejectButton = new JoystickButton(driverLeft, Constants.ejectButton);//2
-  private Button hatchToggle = new JoystickButton(driverRight, Constants.hatchToggle);//1
+  //private Button hatchToggle ;//= new JoystickButton(driverRight, Constants.hatchToggle);//1
+  private Button fourbarCollect = new JoystickButton(driverRight, 1);
+  private Button fourbarEject = new JoystickButton(driverRight, 2);
 
   public double getLeftPower() { 
     return (Math.abs(driverLeft.getRawAxis(Constants.leftThrottleAxis))>0.05) ? -driverLeft.getRawAxis(Constants.leftThrottleAxis) : 0.00;//glitch
@@ -46,9 +50,11 @@ public class OI {
   
   public OI() {
     //shootButton.whenPressed(new MotionProfile());//used to be shoot
-    hatchToggle.whenPressed(new HatchCollectorStateChange());
-    //collectButton.whileHeld(new CollectCargo());
-    //ejectButton.whileHeld(new EjectCargo());
+    //hatchToggle.whenPressed(new HatchCollectorStateChange());
+    collectButton.whileHeld(new CollectCargo());
+    ejectButton.whileHeld(new EjectCargo());
+    fourbarCollect.whileHeld(new FourbarCollect());
+    fourbarEject.whileHeld(new FourbarEject());
     //pneumaticButton.whenPressed(new OpenHatchCollector());
     //pneumaticButton.whenReleased(new CloseHatchCollector());
   }

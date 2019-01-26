@@ -8,30 +8,42 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
 
-public class TankDrive extends Command {
-  public TankDrive() {
+public class FourbarEject extends Command {
+  public FourbarEject() {
     // Use requires() here to declare subsystem dependencies
-    requires(Robot.drivetrain);
-    //requires(Robot.glitchDriveTrain);
+    // eg. requires(chassis);
+    requires(Robot.cargoCollector);
+  }
+
+  // Called just before this Command runs the first time
+  @Override
+  protected void initialize() {
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    double left = Robot.oi.getLeftPower();
-    double right = Robot.oi.getRightPower();
-    Robot.drivetrain.setPower(left, right);
-
-    SmartDashboard.putNumber("LeftVelocity", Robot.drivetrain.getLeftVelocity());
-    SmartDashboard.putNumber("RightVelocity", Robot.drivetrain.getRightVelocity());
-
+    Robot.cargoCollector.ejectBall();
   }
 
+  // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
     return false;
+  }
+
+  // Called once after isFinished returns true
+  @Override
+  protected void end() {
+    Robot.cargoCollector.stopFourbar();
+  }
+
+  // Called when another command which requires one or more of the same
+  // subsystems is scheduled to run
+  @Override
+  protected void interrupted() {
+    end();
   }
 }
