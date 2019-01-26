@@ -26,6 +26,7 @@ public class EjectCargo extends Command {
   @Override
   protected void execute() {
     Robot.cargoCollector.eject();
+    Robot.cargoCollector.ejectBall();
   }
 
   // Make this return true when this Command no longer needs to run execute()
@@ -38,7 +39,9 @@ public class EjectCargo extends Command {
   @Override
   protected void end() {
     Robot.cargoCollector.stop();
+    Robot.cargoCollector.stopFourbar();
   }
+
 
   // Called when another command which requires one or more of the same
   // subsystems is scheduled to run

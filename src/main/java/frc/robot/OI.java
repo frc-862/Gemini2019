@@ -49,13 +49,8 @@ public class OI {
   }
   
   public OI() {
-    //shootButton.whenPressed(new MotionProfile());//used to be shoot
     //hatchToggle.whenPressed(new HatchCollectorStateChange());
     //collectButton.whileHeld(new CollectCargo());
     //ejectButton.whileHeld(new EjectCargo());
-    //fourbarCollect.whileHeld(new FourbarCollect());
-    //fourbarEject.whileHeld(new FourbarEject());
-    //pneumaticButton.whenPressed(new OpenHatchCollector());
-    //pneumaticButton.whenReleased(new CloseHatchCollector());
   }
 }

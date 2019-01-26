@@ -48,18 +48,20 @@ public class CargoCollector extends Subsystem {
   }
 
   public void collectBall(){
+    System.out.println("collect it");
     fourbar.set(ControlMode.PercentOutput, 1.0);
   }
 
   public void ejectBall(){
+    System.out.println("eject it");
     fourbar.set(ControlMode.PercentOutput, -1.0);
   }
 
   public void stopFourbar(){
+    System.out.println("stop it");
     fourbar.set(ControlMode.PercentOutput, 0.0);  
   }
   public void stop(){
-    System.out.println("STOP");
     leftGripper.set(0.0);
     rightGripper.set(0.0);
   }
@@ -69,7 +71,6 @@ public class CargoCollector extends Subsystem {
   }
 
   public void setPower(double pwr){
-    System.out.println("power " + pwr);
     leftGripper.set(pwr);
     rightGripper.set(pwr);
   }
@@ -82,13 +83,11 @@ public class CargoCollector extends Subsystem {
   }
 
   public void collect(){
-    System.out.println("COLLECT");
     rightGripper.set(-0.6);
     leftGripper.set(0.6);
   }
 
   public void eject(){
-    System.out.println("EJECT");
     rightGripper.set(0.6);
     leftGripper.set(-0.6);
   }

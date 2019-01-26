@@ -47,22 +47,5 @@ public class RobotMap {
   public static BaseMotorController leftSlave;
   public static BaseMotorController rightSlave;
 
-  public static void init(){
-    if (Robot.isOBot()) {
-      leftSlave1 = new WPI_TalonSRX(2);
-      leftSlave2 = new WPI_TalonSRX(3);
-      rightSlave1 = new WPI_TalonSRX(5);
-      rightSlave2 = new WPI_TalonSRX(6);
-    }
-    else if (Robot.isGlitch()) {
-      leftSlave1 = new WPI_VictorSPX(2);
-      leftSlave2 = new WPI_VictorSPX(3);
-      rightSlave1 = new WPI_VictorSPX(5);
-      rightSlave2 = new WPI_VictorSPX(6);
-    }
-   else { // if (Robot.isGemini() || Robot.isNebula())  {
-      leftSlave = new WPI_VictorSPX(2);
-      rightSlave = new WPI_VictorSPX(4);
-    }
-  }
+
 }

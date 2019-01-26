@@ -29,14 +29,6 @@ import java.io.File;
 public class Robot extends LightningRobot {
   public static Core core = new Core();
 
-
-  //Drive Train Chooser 
-  public static boolean isOBot() {
-    return new File("/home/lvuser/obot").exists();
-  }
-  public static boolean isGlitch() {
-    return new File("/home/lvuser/glitch").exists();
-  }
   //public static OBotDrivetrain drivetrain = OBotDrivetrain.create();
   //public static GlitchDrivetrain drivetrain = GlitchDrivetrain.create();
   public static GeminiDrivetrain drivetrain = GeminiDrivetrain.create();

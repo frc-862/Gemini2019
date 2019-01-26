@@ -50,6 +50,16 @@ public class GeminiDrivetrain extends CANDrivetrain {
 
     configureMotors();
 
+    getLeftMaster().setSubsystem("drivetrain");
+    getRightMaster().setSubsystem("drivetrain");
+    leftFollow1.setSubsystem("drivetrain");
+    rightFollow1.setSubsystem("drivetrain");
+
+    SmartDashboard.putData("Left Master", getLeftMaster());
+    SmartDashboard.putData("Right Master", getRightMaster());
+    SmartDashboard.putData("Left Slave", leftFollow1);
+    SmartDashboard.putData("Right Slave", rightFollow1);
+    
     MotorConfig drive = MotorConfig.get("drive.json");
     withEachSendableMotor((m)-> 
       LiveWindow.add(m)
@@ -83,10 +93,11 @@ public class GeminiDrivetrain extends CANDrivetrain {
   }
   
   public void configureMotors() {
-    getLeftMaster().setInverted(true);
+    getLeftMaster().setInverted(false);
     leftFollow1.follow(getLeftMaster());
-    //leftFollow1.setInverted(true);
+    leftFollow1.setInverted(false);
 
+    getRightMaster().setInverted(true);
     rightFollow1.follow(getRightMaster());
     rightFollow1.setInverted(true);
 
