@@ -75,14 +75,14 @@ public class CargoCollector extends Subsystem {
 
   public void collect(){
     System.out.println("COLLECT");
-    rightGripper.set(1.0);
-    leftGripper.set(-1.0);
+    rightGripper.set(-0.6);
+    leftGripper.set(0.6);
   }
 
   public void eject(){
     System.out.println("EJECT");
-    rightGripper.set(-1.0);
-    leftGripper.set(1.0);
+    rightGripper.set(0.6);
+    leftGripper.set(-0.6);
   }
 
 }
