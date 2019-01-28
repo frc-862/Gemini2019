@@ -32,7 +32,8 @@ public class DataLoggingWebSocket {
             try {
                 session.getRemote().sendString(message);
             } catch (IOException e) {
-                System.err.println("Error writing to websocket logging client: " + e);            }
+                System.err.println("Error writing to websocket logging client: " + e);
+            }
         });
     }
 

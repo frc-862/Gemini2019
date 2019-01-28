@@ -62,7 +62,7 @@ public class JoystickFilter {
     public double filter(double input) {
         boolean negative = (input < 0);
         double output = 0;
-        
+
         input = Math.abs(input);
         if (input < deadband)
             input = 0;
@@ -77,7 +77,7 @@ public class JoystickFilter {
             break;
 
         case CUBED:
-            output = LightningMath.scale(input * input * input, deadband * deadband * deadband , 1, minPower, maxPower);
+            output = LightningMath.scale(input * input * input, deadband * deadband * deadband, 1, minPower, maxPower);
             break;
         }
 

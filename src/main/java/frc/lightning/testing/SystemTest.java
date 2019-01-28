@@ -17,7 +17,9 @@ public class SystemTest {
         completed = false;
     }
 
-    public int getPriority() { return priority; }
+    public int getPriority() {
+        return priority;
+    }
 
     public void setup() {}
     public void tearDown() {}
@@ -45,7 +47,7 @@ public class SystemTest {
 
         if (didFail()) {
             failed();
-            setCompleted(); 
+            setCompleted();
         } else if (didPass()) {
             passed();
             setCompleted();

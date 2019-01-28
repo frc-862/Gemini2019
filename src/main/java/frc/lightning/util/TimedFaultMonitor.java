@@ -16,11 +16,11 @@ public class TimedFaultMonitor extends AbstractFaultMonitor {
         this.duration = duration;
     }
 
-	@Override
-	public boolean checkFault() {
+    @Override
+    public boolean checkFault() {
         if (!fn.getAsBoolean()) {
             timer.reset();
         }
-        return timer.get() >= duration;    
+        return timer.get() >= duration;
     }
 }

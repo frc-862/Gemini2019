@@ -66,6 +66,7 @@ public class LightningRobot extends TimedRobot {
     FaultMonitor.register(new TimedFaultMonitor(Codes.SLOW_LOOPER, () -> getLoopTime() > getPeriod(), 
       0.08, "Loop is running slow: " + getLoopTime()));
 
+    // TODO should this be in Robot.java and not LightningRobot?
     CameraServer.getInstance().startAutomaticCapture();
 
   }

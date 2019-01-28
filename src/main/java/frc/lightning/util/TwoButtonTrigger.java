@@ -4,7 +4,7 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.buttons.Trigger;
 
 /**
- * 
+ *
  * Only performs the action, when both buttons are pressed. Can be used
  * to guard against dangerous actions or to setup a set of "shift" operations
  * if you run out of buttons.

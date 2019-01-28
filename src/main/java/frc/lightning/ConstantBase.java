@@ -25,9 +25,9 @@ import org.json.simple.parser.ParseException;
 
 public class ConstantBase {
     public static final int CANTimeout = 100;
-	public static double settleTime = 15;
+    public static double settleTime = 15;
 
-	protected String getFileName() {
+    protected String getFileName() {
         return "~/config.yaml";
     }
 
@@ -176,7 +176,7 @@ public class ConstantBase {
         } catch (ParseException e) {
             System.err.println("Error parsing JSON: " + e);
             e.printStackTrace();
-		}
+        }
     }
 
     public void updateFromObject(String name, Object object) {
@@ -184,34 +184,34 @@ public class ConstantBase {
             Field f = this.getClass().getField(name);
             f.setAccessible(true);
 
-                Class<?> klass = f.getType();
-                if (klass.isArray()) {
-                    ArrayList<?> list = (ArrayList<?>) object;
-                    Class<?> ctype = klass.getComponentType();
-                    if (!ctype.isPrimitive()) {
-                        f.set(this, list.toArray());
-                    } else if (ctype.equals(long.class)) {
-                        Object array = Array.newInstance(ctype, list.size());
-                        for (int i = 0; i < list.size(); ++i) {
-                            Array.set(array, i, ((Long) list.get(i)).longValue());
-                        }
-                        f.set(this, array);
-                    } else if (ctype.equals(int.class)) {
-                        Object array = Array.newInstance(ctype, list.size());
-                        for (int i = 0; i < list.size(); ++i) {
-                            Array.set(array, i, ((Integer) list.get(i)).intValue());
-                        }
-                        f.set(this, array);
-                    } else if (ctype.equals(double.class)) {
-                        Object array = Array.newInstance(ctype, list.size());
-                        for (int i = 0; i < list.size(); ++i) {
-                            Array.set(array, i, ((Double) list.get(i)).doubleValue());
-                        }
-                        f.set(this, array);
+            Class<?> klass = f.getType();
+            if (klass.isArray()) {
+                ArrayList<?> list = (ArrayList<?>) object;
+                Class<?> ctype = klass.getComponentType();
+                if (!ctype.isPrimitive()) {
+                    f.set(this, list.toArray());
+                } else if (ctype.equals(long.class)) {
+                    Object array = Array.newInstance(ctype, list.size());
+                    for (int i = 0; i < list.size(); ++i) {
+                        Array.set(array, i, ((Long) list.get(i)).longValue());
                     }
-                } else {
-                    f.set(this, object);
+                    f.set(this, array);
+                } else if (ctype.equals(int.class)) {
+                    Object array = Array.newInstance(ctype, list.size());
+                    for (int i = 0; i < list.size(); ++i) {
+                        Array.set(array, i, ((Integer) list.get(i)).intValue());
+                    }
+                    f.set(this, array);
+                } else if (ctype.equals(double.class)) {
+                    Object array = Array.newInstance(ctype, list.size());
+                    for (int i = 0; i < list.size(); ++i) {
+                        Array.set(array, i, ((Double) list.get(i)).doubleValue());
+                    }
+                    f.set(this, array);
                 }
+            } else {
+                f.set(this, object);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }

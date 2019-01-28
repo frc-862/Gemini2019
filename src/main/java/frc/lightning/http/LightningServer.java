@@ -49,7 +49,7 @@ public class LightningServer {
             if (req.contentType() == "application/json") {
                 res.type("application/json");
                 return constants.toJSONString();
-            } 
+            }
 
             String fname = Filesystem.getDeployDirectory().getAbsolutePath() + "/constants.jade";
             JadeTemplate template = Jade4J.getTemplate(fname);
@@ -69,8 +69,8 @@ public class LightningServer {
 
         get("/faultlog", (req, res)-> {
             String faults = new String(Files.readAllBytes(Paths.get(
-                Filesystem.getDeployDirectory().getAbsoluteFile() + "/../faults.log")), 
-                StandardCharsets.UTF_8);
+                                           Filesystem.getDeployDirectory().getAbsoluteFile() + "/../faults.log")),
+                                       StandardCharsets.UTF_8);
             return faults;
         });
 
@@ -109,7 +109,7 @@ public class LightningServer {
         post("/update_motor/:file", (req, res) -> {
             String[] values = req.body().split("&");
             String name = UrlDecode.path(values[1].split("=")[1].replace("+", " "));
-            String param = UrlDecode.path(values[0].split("=")[1].replace("+", " "));            
+            String param = UrlDecode.path(values[0].split("=")[1].replace("+", " "));
 
             double value;
             if (param.equals("on") || param.equals("true")) {
@@ -169,7 +169,7 @@ public class LightningServer {
             String[] values = req.body().split("&");
             String name = UrlDecode.path(values[1].split("=")[1].replace("+", " "));
             String value = UrlDecode.path(values[0].split("=")[1].replace("+", " "));
-            
+
             Object obj;
             JSONParser parser = new JSONParser();
             try {
@@ -195,7 +195,7 @@ public class LightningServer {
         get("/header", (req,res) -> {
             return DataLogger.getLogger().getJSONHeader();
         });
-        
+
         // get("/log/:file", (req, res)-> {
         //     // res.type("application/json");
         //     File log = new File("/u/log/" + req.params(":file"));

@@ -15,7 +15,7 @@ public abstract class LightningDrivetrain extends Subsystem {
     public abstract double getRightVelocity();
 
     public abstract void resetDistance();
-    
+
     public void stop() {
         setPower(0,0);
         brake();
