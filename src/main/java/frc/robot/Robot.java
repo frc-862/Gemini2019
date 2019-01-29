@@ -7,14 +7,9 @@
 
 package frc.robot;
 
-import edu.wpi.first.cameraserver.CameraServer;
-import edu.wpi.first.wpilibj.RobotController;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.lightning.LightningRobot;
-import frc.lightning.util.FaultMonitor;
-import frc.lightning.util.FaultCode.Codes;
 import frc.robot.commands.MotionProfile;
-import frc.robot.commands.TestMove;
+import frc.robot.commands.test.TestMove;
 import frc.robot.subsystems.*;
 
 import java.io.File;
@@ -42,8 +37,8 @@ public class Robot extends LightningRobot {
   public static GeminiDrivetrain drivetrain = GeminiDrivetrain.create();
   
   //Mechanism Objects
-  public static HatchCollector collector;// = new HatchCollector();
-  public static CargoCollector cargoCollector;// = new CargoCollector();
+  public static HatchCollector collector;// = new hatch();
+  public static CargoCollector cargoCollector;// = new cargo();
   public static HatchGroundCollector hatchGroundCollector;// = new HatchGroundCollector();
   public static Elevator elevator;// = new Elevator();
   public static OI oi = new OI();

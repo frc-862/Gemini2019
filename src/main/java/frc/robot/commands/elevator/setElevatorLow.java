@@ -5,14 +5,14 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands;
+package frc.robot.commands.elevator;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Constants;
 import frc.robot.Robot;
 
-public class setElevatorHigh extends Command {
-  public setElevatorHigh() {
+public class setElevatorLow extends Command {
+  public setElevatorLow() {
     requires(Robot.elevator); 
   }
 
@@ -25,7 +25,7 @@ public class setElevatorHigh extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    if (Robot.elevator.motor1.getSelectedSensorPosition()>Constants.elevatorTopHeight) {
+    if (Robot.elevator.motor1.getSelectedSensorPosition()>Constants.elevatorBottomHeight) {
     Robot.elevator.setpower(Constants.elevatorDownPower);  
     }else{
       Robot.elevator.setpower(Constants.elevatorUpPower);   
@@ -35,7 +35,7 @@ public class setElevatorHigh extends Command {
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return epsilon(Robot.elevator.motor1.getSelectedSensorPosition(), Constants.elevatorTopHeight, 10);
+    return epsilon(Robot.elevator.motor1.getSelectedSensorPosition(), Constants.elevatorBottomHeight, 10);
   }
 
   // Called once after isFinished returns true

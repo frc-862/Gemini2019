@@ -226,20 +226,20 @@ public class LightningRobot extends TimedRobot {
   @Override 
   public void testInit() {
     NetworkTableEntry userInstructions = Shuffleboard.getTab("SystemTests")
-     .getLayout("List", "System Tests")
+     .getLayout("List", "System test")
      .add("UserTestMessage", "Follow instructions")
      .getEntry();
 
     userInstructions.setString("Press Button to begin");
     NetworkTableEntry testButton = Shuffleboard.getTab("SystemTests")
-     .getLayout("List", "System Tests")
+     .getLayout("List", "System test")
      .add("TestButton", false)
      .withWidget("Toggle Button")
      .getEntry();
     testButton.setBoolean(false);
     FaultCode.eachCode((Codes code, Boolean state) -> {
      Shuffleboard.getTab("SystemTests")
-     .getLayout("List", "System Tests")
+     .getLayout("List", "System test")
      .add(code.toString(), state)
      .withWidget("Toggle Button")
      .getEntry();

@@ -5,45 +5,52 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands;
+package frc.robot.commands.elevator;
 
 import edu.wpi.first.wpilibj.command.Command;
+import frc.robot.Constants;
 import frc.robot.Robot;
 
-public class EjectCargo extends Command {
-  public EjectCargo() {
-    // Use requires() here to declare subsystem dependencies
-    // eg. requires(chassis);
-    requires(Robot.cargoCollector);
+public class setElevatorHigh extends Command {
+  public setElevatorHigh() {
+    requires(Robot.elevator); 
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
+  Robot.elevator.motor1.getSelectedSensorPosition();
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    Robot.cargoCollector.eject();
+    if (Robot.elevator.motor1.getSelectedSensorPosition()>Constants.elevatorTopHeight) {
+    Robot.elevator.setpower(Constants.elevatorDownPower);  
+    }else{
+      Robot.elevator.setpower(Constants.elevatorUpPower);   
+    } 
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return false;
+    return epsilon(Robot.elevator.motor1.getSelectedSensorPosition(), Constants.elevatorTopHeight, 10);
   }
 
   // Called once after isFinished returns true
   @Override
   protected void end() {
-    Robot.cargoCollector.stop();
+    Robot.elevator.setpower(Constants.elevatorHoldPower);  
   }
 
   // Called when another command which requires one or more of the same
   // subsystems is scheduled to run
   @Override
   protected void interrupted() {
-    end();
+  }
+
+  private boolean epsilon(double value, double target, double tolerance) {
+    return Math.abs(value - target) <= tolerance;
   }
 }

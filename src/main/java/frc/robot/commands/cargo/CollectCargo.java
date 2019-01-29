@@ -5,13 +5,13 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands;
+package frc.robot.commands.cargo;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
-public class HABClimb extends Command {
-  public HABClimb() {
+public class CollectCargo extends Command {
+  public CollectCargo() {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
     requires(Robot.cargoCollector);
@@ -25,7 +25,8 @@ public class HABClimb extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    Robot.cargoCollector.setPower(Robot.oi.getRightSlider());
+    Robot.cargoCollector.collect();
+    Robot.cargoCollector.collectBall();
   }
 
   // Make this return true when this Command no longer needs to run execute()
@@ -37,11 +38,13 @@ public class HABClimb extends Command {
   // Called once after isFinished returns true
   @Override
   protected void end() {
+    Robot.cargoCollector.stop();
   }
 
   // Called when another command which requires one or more of the same
   // subsystems is scheduled to run
   @Override
   protected void interrupted() {
+    end();
   }
 }

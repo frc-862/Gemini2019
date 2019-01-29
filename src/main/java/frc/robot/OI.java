@@ -10,11 +10,6 @@ package frc.robot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
-import frc.robot.commands.CollectCargo;
-import frc.robot.commands.EjectCargo;
-import frc.robot.commands.FourbarCollect;
-import frc.robot.commands.FourbarEject;
-import frc.robot.commands.HatchCollectorStateChange;
 
 /**
  * This class is the glue that binds the controls on the physical operator

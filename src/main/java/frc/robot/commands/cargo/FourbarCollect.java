@@ -5,13 +5,13 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands;
+package frc.robot.commands.cargo;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
-public class CollectCargo extends Command {
-  public CollectCargo() {
+public class FourbarCollect extends Command {
+  public FourbarCollect() {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
     requires(Robot.cargoCollector);
@@ -25,7 +25,6 @@ public class CollectCargo extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    Robot.cargoCollector.collect();
     Robot.cargoCollector.collectBall();
   }
 
@@ -39,7 +38,6 @@ public class CollectCargo extends Command {
   @Override
   protected void end() {
     Robot.cargoCollector.stop();
-    Robot.cargoCollector.stopFourbar();
   }
 
   // Called when another command which requires one or more of the same
