@@ -22,7 +22,7 @@ public class Constants extends ConstantBase {
     /**
      * How many sensor units per rotation.
      * Using CTRE Magnetic Encoder.
-     * @link https://github.com/CrossTheRoadElec/Phoenix-Documentation#what-are-the-units-of-my-sensor
+     * @see <a href='https://github.com/CrossTheRoadElec/Phoenix-Documentation#what-are-the-units-of-my-sensor'>External Units</a>
      */
     public final static int kSensorUnitsPerRotation = 4 * 360;//??????? find all units
 
