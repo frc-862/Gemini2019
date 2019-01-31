@@ -31,21 +31,21 @@ public class TestMove extends Command {
   protected void execute() {
 
     //1000
-    Robot.drivetrain.setVelocity(0.5, 0.5);
-    SmartDashboard.putNumber("R Velocity", Robot.drivetrain.getRightVelocity());
-    SmartDashboard.putNumber("L Velocity", Robot.drivetrain.getLeftVelocity());
+    //double pwr = 0.40;
+    Robot.drivetrain.setPower(1.0, 1.0);
 
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return false;
+    return (1.5d <= this.timeSinceInitialized());
   }
 
   // Called once after isFinished returns true
   @Override
   protected void end() {
+    Robot.drivetrain.setPower(0.0, 0.0);
   }
 
   // Called when another command which requires one or more of the same

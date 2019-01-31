@@ -45,7 +45,8 @@ public class Robot extends LightningRobot {
     System.out.println("Initializing our robot");
 
     //this.registerAutonomousCommmand(name, command);
-    this.registerAutonomousCommmand("T_MotionProfile", new MotionProfile());
     this.registerAutonomousCommmand("T_DriveVelocity", new TestMove());
+    this.registerAutonomousCommmand("T_MotionProfile", new MotionProfile());
+    
   }
 }

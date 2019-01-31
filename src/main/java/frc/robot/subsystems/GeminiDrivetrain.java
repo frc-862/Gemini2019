@@ -9,6 +9,8 @@ package frc.robot.subsystems;
 
 import java.util.function.Consumer;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.BaseMotorController;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
@@ -40,6 +42,15 @@ public class GeminiDrivetrain extends CANDrivetrain {
       new WPI_VictorSPX(5));
       
   
+  }
+
+  
+  @Override
+  public void setPower(double left, double right) {
+    leftMaster.set(ControlMode.PercentOutput, left);
+    leftFollow1.set(ControlMode.PercentOutput, left);
+    rightMaster.set(ControlMode.PercentOutput, right);
+    rightFollow1.set(ControlMode.PercentOutput, right);
   }
 
   public GeminiDrivetrain(WPI_TalonSRX left, WPI_VictorSPX left2, WPI_TalonSRX right, WPI_VictorSPX right2) {
@@ -100,6 +111,8 @@ public class GeminiDrivetrain extends CANDrivetrain {
     getRightMaster().setInverted(true);
     rightFollow1.follow(getRightMaster());
     rightFollow1.setInverted(true);
+
+    withEachMotor((m) -> m.setNeutralMode(NeutralMode.Brake));
 
     withEachMaster((m) -> {
       m.configOpenloopRamp(0.2);
