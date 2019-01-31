@@ -10,7 +10,7 @@ package frc.robot.paths;
 /**
  * Add your docs here.
  */
-public class TenFtPath extends Path{
+public class TenFtPath extends Path {
     public static double[][] Left = new double[][] {
         {0,0,0,0},
         {0.0008,0.042,2.0908,0},

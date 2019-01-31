@@ -28,108 +28,108 @@ import frc.robot.misc.Gains;
 /**
  * Add your docs here.
  */
-public class GeminiDrivetrain extends CANDrivetrain {  
-  WPI_VictorSPX leftFollow1;
-  WPI_VictorSPX rightFollow1;
+public class GeminiDrivetrain extends CANDrivetrain {
+    WPI_VictorSPX leftFollow1;
+    WPI_VictorSPX rightFollow1;
 
-  public static GeminiDrivetrain create() {
-    return new GeminiDrivetrain(
-      new WPI_TalonSRX(1), 
-      new WPI_VictorSPX(2), 
-      new WPI_TalonSRX(4),
-      new WPI_VictorSPX(5));
-      
-  
-  }
+    public static GeminiDrivetrain create() {
+        return new GeminiDrivetrain(
+                   new WPI_TalonSRX(1),
+                   new WPI_VictorSPX(2),
+                   new WPI_TalonSRX(4),
+                   new WPI_VictorSPX(5));
 
-  public GeminiDrivetrain(WPI_TalonSRX left, WPI_VictorSPX left2, WPI_TalonSRX right, WPI_VictorSPX right2) {
-    super(left, right);//1, 4
-  
-    leftFollow1 = left2;//2
-    rightFollow1 = right2;//5
 
-    configureMotors();
+    }
 
-    MotorConfig drive = MotorConfig.get("drive.json");
-    withEachSendableMotor((m)-> 
-      LiveWindow.add(m)
-    );
-    enableLogging();
-    DataLogger.addDataElement("leftVel", () -> LightningMath.talon2fps(getLeftVelocity()));
-    DataLogger.addDataElement("rightVel", () -> LightningMath.talon2fps(getRightVelocity()));
-  }
+    public GeminiDrivetrain(WPI_TalonSRX left, WPI_VictorSPX left2, WPI_TalonSRX right, WPI_VictorSPX right2) {
+        super(left, right);//1, 4
 
-  public void withEachMotor(Consumer<BaseMotorController> fn)  {
-    fn.accept(getLeftMaster());
-    fn.accept(getRightMaster());
-    fn.accept(leftFollow1);
-    fn.accept(rightFollow1);
-  }
+        leftFollow1 = left2;//2
+        rightFollow1 = right2;//5
 
-  public void withEachSendableMotor(Consumer<Sendable> fn)  {
-    fn.accept(getLeftMaster());
-    fn.accept(getRightMaster());
-    fn.accept(leftFollow1);
-    fn.accept(rightFollow1);
-  }
+        configureMotors();
 
-  public void configurePID(Gains g) {
-    withEachMaster((m) -> {
-      m.config_kP(0, g.kP);
-      m.config_kI(0, g.kI);
-      m.config_kD(0, g.kD);
-      m.config_kF(0, g.kF);
-    });
-  }
-  
-  public void configureMotors() {
-    getLeftMaster().setInverted(true);
-    leftFollow1.follow(getLeftMaster());
-    //leftFollow1.setInverted(true);
+        MotorConfig drive = MotorConfig.get("drive.json");
+        withEachSendableMotor((m)->
+                              LiveWindow.add(m)
+                             );
+        enableLogging();
+        DataLogger.addDataElement("leftVel", () -> LightningMath.talon2fps(getLeftVelocity()));
+        DataLogger.addDataElement("rightVel", () -> LightningMath.talon2fps(getRightVelocity()));
+    }
 
-    rightFollow1.follow(getRightMaster());
-    rightFollow1.setInverted(true);
+    public void withEachMotor(Consumer<BaseMotorController> fn)  {
+        fn.accept(getLeftMaster());
+        fn.accept(getRightMaster());
+        fn.accept(leftFollow1);
+        fn.accept(rightFollow1);
+    }
 
-    withEachMaster((m) -> {
-      m.configOpenloopRamp(0.2);
-      m.configClosedloopRamp(0.2);
-    });
+    public void withEachSendableMotor(Consumer<Sendable> fn)  {
+        fn.accept(getLeftMaster());
+        fn.accept(getRightMaster());
+        fn.accept(leftFollow1);
+        fn.accept(rightFollow1);
+    }
 
-    //withEachMotor(fn); // ????????
-    withEachMotor((m) -> {
-      //m.config_k(slotIdx, value)
-      m.config_kP(0, 0.5);
-      m.config_kI(0, 0.0);
-      m.config_kD(0, 0.0);
-      m.config_kF(0, 1.4614284);
-    });
-    enableLogging();
-  }
+    public void configurePID(Gains g) {
+        withEachMaster((m) -> {
+            m.config_kP(0, g.kP);
+            m.config_kI(0, g.kI);
+            m.config_kD(0, g.kD);
+            m.config_kF(0, g.kF);
+        });
+    }
 
-  @Override
-  public void setVelocity(double left, double right) {
-    // convert from ft/s to talon units (enc ticks/ 100ms)
-    double lrpm = LightningMath.fps2rpm(left);
-    double left_talon_units = lrpm * 60 * 10; // 60 changes rpm to rps (rev per sec) * 10 changes to per 100ms
-    double rrpm = LightningMath.fps2rpm(right);
-    double right_talon_units = rrpm * 60 * 10;
-    super.setVelocity(left_talon_units, right_talon_units);
-  }
+    public void configureMotors() {
+        getLeftMaster().setInverted(true);
+        leftFollow1.follow(getLeftMaster());
+        //leftFollow1.setInverted(true);
 
-  @Override
-  public double getRightVelocity() {
-    return ((super.getRightVelocity() / 10)/60);//return fps
-  }
+        rightFollow1.follow(getRightMaster());
+        rightFollow1.setInverted(true);
 
-  @Override
-  public double getLeftVelocity() {
-    return ((super.getLeftVelocity() / 10)/60);//return fps
-  }
+        withEachMaster((m) -> {
+            m.configOpenloopRamp(0.2);
+            m.configClosedloopRamp(0.2);
+        });
 
-  @Override
-  public void initDefaultCommand() {
-    // Set the default command for a subsystem here.
-    setDefaultCommand(new TankDrive());
-  }
-  
+        //withEachMotor(fn); // ????????
+        withEachMotor((m) -> {
+            //m.config_k(slotIdx, value)
+            m.config_kP(0, 0.5);
+            m.config_kI(0, 0.0);
+            m.config_kD(0, 0.0);
+            m.config_kF(0, 1.4614284);
+        });
+        enableLogging();
+    }
+
+    @Override
+    public void setVelocity(double left, double right) {
+        // convert from ft/s to talon units (enc ticks/ 100ms)
+        double lrpm = LightningMath.fps2rpm(left);
+        double left_talon_units = lrpm * 60 * 10; // 60 changes rpm to rps (rev per sec) * 10 changes to per 100ms
+        double rrpm = LightningMath.fps2rpm(right);
+        double right_talon_units = rrpm * 60 * 10;
+        super.setVelocity(left_talon_units, right_talon_units);
+    }
+
+    @Override
+    public double getRightVelocity() {
+        return ((super.getRightVelocity() / 10)/60);//return fps
+    }
+
+    @Override
+    public double getLeftVelocity() {
+        return ((super.getLeftVelocity() / 10)/60);//return fps
+    }
+
+    @Override
+    public void initDefaultCommand() {
+        // Set the default command for a subsystem here.
+        setDefaultCommand(new TankDrive());
+    }
+
 }

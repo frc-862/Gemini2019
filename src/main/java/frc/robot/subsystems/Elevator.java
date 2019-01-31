@@ -16,23 +16,23 @@ import edu.wpi.first.wpilibj.command.Subsystem;
  * Add your docs here.
  */
 public class Elevator extends Subsystem {
-  // Put methods for controlling this subsystem
-  // here. Call these from Commands.
+    // Put methods for controlling this subsystem
+    // here. Call these from Commands.
 
-  public TalonSRX motor1;
-  public TalonSRX motor2;
+    public TalonSRX motor1;
+    public TalonSRX motor2;
 
-  @Override
-  public void initDefaultCommand() {
-    // Set the default command for a subsystem here.
-    // setDefaultCommand(new MySpecialCommand());
+    @Override
+    public void initDefaultCommand() {
+        // Set the default command for a subsystem here.
+        // setDefaultCommand(new MySpecialCommand());
 
-  }
+    }
 
-  public void setpower(double power){
-    motor1.set(ControlMode.PercentOutput, power);
-    motor2.set(ControlMode.PercentOutput, power);
-  }
+    public void setpower(double power) {
+        motor1.set(ControlMode.PercentOutput, power);
+        motor2.set(ControlMode.PercentOutput, power);
+    }
 
 }
 

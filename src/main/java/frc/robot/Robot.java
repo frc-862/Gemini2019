@@ -22,33 +22,33 @@ import java.io.File;
  * project.
  */
 public class Robot extends LightningRobot {
-  public static Core core = new Core();
+    public static Core core = new Core();
 
 
-  //Drive Train Chooser 
-  public static boolean isOBot() {
-    return new File("/home/lvuser/obot").exists();
-  }
-  public static boolean isGlitch() {
-    return new File("/home/lvuser/glitch").exists();
-  }
-  //public static OBotDrivetrain drivetrain = OBotDrivetrain.create();
-  //public static GlitchDrivetrain drivetrain = GlitchDrivetrain.create();
-  public static GeminiDrivetrain drivetrain = GeminiDrivetrain.create();
-  
-  //Mechanism Objects
-  public static HatchCollector collector;// = new hatch();
-  public static CargoCollector cargoCollector;// = new cargo();
-  public static HatchGroundCollector hatchGroundCollector;// = new HatchGroundCollector();
-  public static Elevator elevator;// = new Elevator();
-  public static OI oi = new OI();
+    //Drive Train Chooser
+    public static boolean isOBot() {
+        return new File("/home/lvuser/obot").exists();
+    }
+    public static boolean isGlitch() {
+        return new File("/home/lvuser/glitch").exists();
+    }
+    //public static OBotDrivetrain drivetrain = OBotDrivetrain.create();
+    //public static GlitchDrivetrain drivetrain = GlitchDrivetrain.create();
+    public static GeminiDrivetrain drivetrain = GeminiDrivetrain.create();
 
-  public Robot() {
-    super();
-    System.out.println("Initializing our robot");
+    //Mechanism Objects
+    public static HatchCollector collector;// = new hatch();
+    public static CargoCollector cargoCollector;// = new cargo();
+    public static HatchGroundCollector hatchGroundCollector;// = new HatchGroundCollector();
+    public static Elevator elevator;// = new Elevator();
+    public static OI oi = new OI();
 
-    //this.registerAutonomousCommmand(name, command);
-    this.registerAutonomousCommmand("T_MotionProfile", new MotionProfile());
-    this.registerAutonomousCommmand("T_DriveVelocity", new TestMove());
-  }
+    public Robot() {
+        super();
+        System.out.println("Initializing our robot");
+
+        //this.registerAutonomousCommmand(name, command);
+        this.registerAutonomousCommmand("T_MotionProfile", new MotionProfile());
+        this.registerAutonomousCommmand("T_DriveVelocity", new TestMove());
+    }
 }

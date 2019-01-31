@@ -16,21 +16,21 @@ import edu.wpi.first.wpilibj.command.Subsystem;
  * Add your docs here.
  */
 public class HatchGroundCollector extends Subsystem {
-  // Put methods for controlling this subsystem
-  // here. Call these from Commands.
+    // Put methods for controlling this subsystem
+    // here. Call these from Commands.
 
-  DoubleSolenoid deployer;
+    DoubleSolenoid deployer;
 
-  @Override
-  public void initDefaultCommand() {
-    // Set the default command for a subsystem here.
-    // setDefaultCommand(new MySpecialCommand());
-  }
-  public void toggleDeployer() {
-    if (deployer.get() == DoubleSolenoid.Value.kForward) {
-      deployer.set(DoubleSolenoid.Value.kReverse);
-    } else {
-      deployer.set(DoubleSolenoid.Value.kForward);
+    @Override
+    public void initDefaultCommand() {
+        // Set the default command for a subsystem here.
+        // setDefaultCommand(new MySpecialCommand());
     }
-  }
+    public void toggleDeployer() {
+        if (deployer.get() == DoubleSolenoid.Value.kForward) {
+            deployer.set(DoubleSolenoid.Value.kReverse);
+        } else {
+            deployer.set(DoubleSolenoid.Value.kForward);
+        }
+    }
 }

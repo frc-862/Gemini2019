@@ -12,45 +12,45 @@ import frc.robot.Constants;
 import frc.robot.Robot;
 
 public class setElevatorMed extends Command {
-  public setElevatorMed() {
-    requires(Robot.elevator); 
-  }
+    public setElevatorMed() {
+        requires(Robot.elevator);
+    }
 
-  // Called just before this Command runs the first time
-  @Override
-  protected void initialize() {
-  Robot.elevator.motor1.getSelectedSensorPosition();
-  }
+    // Called just before this Command runs the first time
+    @Override
+    protected void initialize() {
+        Robot.elevator.motor1.getSelectedSensorPosition();
+    }
 
-  // Called repeatedly when this Command is scheduled to run
-  @Override
-  protected void execute() {
-    if (Robot.elevator.motor1.getSelectedSensorPosition()>Constants.elevatorMiddleHeight) {
-    Robot.elevator.setpower(Constants.elevatorDownPower);  
-    }else{
-      Robot.elevator.setpower(Constants.elevatorUpPower);   
-    } 
-  }
+    // Called repeatedly when this Command is scheduled to run
+    @Override
+    protected void execute() {
+        if (Robot.elevator.motor1.getSelectedSensorPosition()>Constants.elevatorMiddleHeight) {
+            Robot.elevator.setpower(Constants.elevatorDownPower);
+        } else {
+            Robot.elevator.setpower(Constants.elevatorUpPower);
+        }
+    }
 
-  // Make this return true when this Command no longer needs to run execute()
-  @Override
-  protected boolean isFinished() {
-    return epsilon(Robot.elevator.motor1.getSelectedSensorPosition(), Constants.elevatorMiddleHeight, 10);
-  }
+    // Make this return true when this Command no longer needs to run execute()
+    @Override
+    protected boolean isFinished() {
+        return epsilon(Robot.elevator.motor1.getSelectedSensorPosition(), Constants.elevatorMiddleHeight, 10);
+    }
 
-  // Called once after isFinished returns true
-  @Override
-  protected void end() {
-    Robot.elevator.setpower(Constants.elevatorHoldPower);  
-  }
+    // Called once after isFinished returns true
+    @Override
+    protected void end() {
+        Robot.elevator.setpower(Constants.elevatorHoldPower);
+    }
 
-  // Called when another command which requires one or more of the same
-  // subsystems is scheduled to run
-  @Override
-  protected void interrupted() {
-  }
+    // Called when another command which requires one or more of the same
+    // subsystems is scheduled to run
+    @Override
+    protected void interrupted() {
+    }
 
-  private boolean epsilon(double value, double target, double tolerance) {
-    return Math.abs(value - target) <= tolerance;
-  }
+    private boolean epsilon(double value, double target, double tolerance) {
+        return Math.abs(value - target) <= tolerance;
+    }
 }

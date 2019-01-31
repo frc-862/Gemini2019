@@ -22,51 +22,51 @@ import frc.robot.commands.TankDrive;
  */
 public class OBotDrivetrain extends CANDrivetrain {
 
-  public static OBotDrivetrain create() {
-    return new OBotDrivetrain(
-      new WPI_TalonSRX(1),
-      new WPI_TalonSRX(2),
-      new WPI_TalonSRX(3),
-      new WPI_TalonSRX(4),
-      new WPI_TalonSRX(5),
-      new WPI_TalonSRX(6)
-    );    
-  }
+    public static OBotDrivetrain create() {
+        return new OBotDrivetrain(
+                   new WPI_TalonSRX(1),
+                   new WPI_TalonSRX(2),
+                   new WPI_TalonSRX(3),
+                   new WPI_TalonSRX(4),
+                   new WPI_TalonSRX(5),
+                   new WPI_TalonSRX(6)
+               );
+    }
 
-  public OBotDrivetrain(WPI_TalonSRX left, WPI_TalonSRX left2, WPI_TalonSRX left3, WPI_TalonSRX right, WPI_TalonSRX right2, WPI_TalonSRX right3) {
-    super(left, right);
-    getLeftMaster().setInverted(true);
+    public OBotDrivetrain(WPI_TalonSRX left, WPI_TalonSRX left2, WPI_TalonSRX left3, WPI_TalonSRX right, WPI_TalonSRX right2, WPI_TalonSRX right3) {
+        super(left, right);
+        getLeftMaster().setInverted(true);
 
-    addLeftFollower(left2);
-    addLeftFollower(left3);
+        addLeftFollower(left2);
+        addLeftFollower(left3);
 
-    addRightFollower(right2, true);
-    addRightFollower(right3, true);
+        addRightFollower(right2, true);
+        addRightFollower(right3, true);
 
-    MotorConfig drive = MotorConfig.get("drive.json");
-    withEachMotor((m) -> drive.registerMotor(m));
-  }
+        MotorConfig drive = MotorConfig.get("drive.json");
+        withEachMotor((m) -> drive.registerMotor(m));
+    }
 
-    
-  public void configAllSettings(TalonSRXConfiguration config){
-    withEachMaster((m) -> m.configAllSettings(config));
-  }
 
-  public void configureMotors() {
-    getLeftMaster().setInverted(true);
-    super.configureMotors();
+    public void configAllSettings(TalonSRXConfiguration config) {
+        withEachMaster((m) -> m.configAllSettings(config));
+    }
 
-    withEachMaster((m) -> {
-      m.configOpenloopRamp(0.2);
-      m.configClosedloopRamp(0.2);
-    });
+    public void configureMotors() {
+        getLeftMaster().setInverted(true);
+        super.configureMotors();
 
-    enableLogging();
-  }
+        withEachMaster((m) -> {
+            m.configOpenloopRamp(0.2);
+            m.configClosedloopRamp(0.2);
+        });
 
-  @Override
-  public void initDefaultCommand() {
-    // Set the default command for a subsystem here.
-    setDefaultCommand(new TankDrive());
-  }
+        enableLogging();
+    }
+
+    @Override
+    public void initDefaultCommand() {
+        // Set the default command for a subsystem here.
+        setDefaultCommand(new TankDrive());
+    }
 }

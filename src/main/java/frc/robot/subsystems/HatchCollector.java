@@ -15,37 +15,37 @@ import edu.wpi.first.wpilibj.command.Subsystem;
  * Add your docs here.
  */
 public class HatchCollector extends Subsystem {
-  // Put methods for controlling this subsystem
-  // here. Call these from Commands.
+    // Put methods for controlling this subsystem
+    // here. Call these from Commands.
 
-  DoubleSolenoid hatchCollector;
+    DoubleSolenoid hatchCollector;
 
-  public HatchCollector(){
-    hatchCollector = new DoubleSolenoid(11, 0, 1);// OBOT - 11, 4, 5
-    // constructor - DoubleSolenoid(moduleNumber, forwardChannel, reverseChannel)
-  }
-
-  @Override
-  public void initDefaultCommand() {
-    // Set the default command for a subsystem here.
-    // setDefaultCommand(new MySpecialCommand());
-  }
-
-  public void extendHatchCollector(){
-    hatchCollector.set(DoubleSolenoid.Value.kForward);
-  }
-
-  public void changeCollectorState(){
-    DoubleSolenoid.Value state = hatchCollector.get();
-    if(state == Value.kForward){
-      retractHatchCollector();
-    }else{
-      extendHatchCollector();
+    public HatchCollector() {
+        hatchCollector = new DoubleSolenoid(11, 0, 1);// OBOT - 11, 4, 5
+        // constructor - DoubleSolenoid(moduleNumber, forwardChannel, reverseChannel)
     }
-  }
 
-  public void retractHatchCollector(){
-    hatchCollector.set(DoubleSolenoid.Value.kReverse);
-  }
+    @Override
+    public void initDefaultCommand() {
+        // Set the default command for a subsystem here.
+        // setDefaultCommand(new MySpecialCommand());
+    }
+
+    public void extendHatchCollector() {
+        hatchCollector.set(DoubleSolenoid.Value.kForward);
+    }
+
+    public void changeCollectorState() {
+        DoubleSolenoid.Value state = hatchCollector.get();
+        if(state == Value.kForward) {
+            retractHatchCollector();
+        } else {
+            extendHatchCollector();
+        }
+    }
+
+    public void retractHatchCollector() {
+        hatchCollector.set(DoubleSolenoid.Value.kReverse);
+    }
 
 }

@@ -7,7 +7,7 @@
 
 package frc.robot.paths;
 
-public class CirclePath extends Path{
+public class CirclePath extends Path {
     //p, v, a, h
     public double[][] Left = new double[][] {
         {0,0,0,89.9997},

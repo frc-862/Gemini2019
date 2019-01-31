@@ -10,11 +10,11 @@ public class LightningMath {
         return ticks2inches(talon * 10);
     }
 
-    public static double talon2fps(double talon){
+    public static double talon2fps(double talon) {
         return (talon2ips(talon))/12;//ips / 12 to get foot
     }
 
-    public static double fps2talon(double fps){
+    public static double fps2talon(double fps) {
         return ips2talon(fps*12);//fps*12 = ips
     }
 
@@ -39,13 +39,13 @@ public class LightningMath {
         return ticks2feet(ticks) * 12;
     }
 
-	public static double meters2feet(double meters) {
-		return meters * 0.3048;
-	}
+    public static double meters2feet(double meters) {
+        return meters * 0.3048;
+    }
 
-	public static double feet2meters(double feet) {
-		return feet * 3.28084;
-	}
+    public static double feet2meters(double feet) {
+        return feet * 3.28084;
+    }
 
     public static double limit(double v, double low, double high) {
         return (v < low) ? low : ((v > high) ? high : v);
@@ -84,7 +84,7 @@ public class LightningMath {
     }
 
     public static int scale(int input,
-            int lowInput, int highInput, int lowOutput, int highOutput)
+                            int lowInput, int highInput, int lowOutput, int highOutput)
     {
         final int inputRange = highInput - lowInput;
         final int outputRange = highOutput - lowOutput;

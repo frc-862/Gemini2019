@@ -14,20 +14,20 @@ import frc.robot.Robot;
  * Add your docs here.
  */
 public class HatchCollectorStateChange extends InstantCommand {
-  /**
-   * Add your docs here.
-   */
-  public HatchCollectorStateChange() {
-    super();
-    // Use requires() here to declare subsystem dependencies
-    // eg. requires(chassis);
-    requires(Robot.collector);
-  }
+    /**
+     * Add your docs here.
+     */
+    public HatchCollectorStateChange() {
+        super();
+        // Use requires() here to declare subsystem dependencies
+        // eg. requires(chassis);
+        requires(Robot.collector);
+    }
 
-  // Called once when the command executes
-  @Override
-  protected void initialize() {
-    Robot.collector.changeCollectorState();
-  }
+    // Called once when the command executes
+    @Override
+    protected void initialize() {
+        Robot.collector.changeCollectorState();
+    }
 
 }

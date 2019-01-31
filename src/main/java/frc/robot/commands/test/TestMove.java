@@ -12,26 +12,26 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
 
 public class TestMove extends Command {
-  public TestMove() {
-    requires(Robot.drivetrain);
-  }
+    public TestMove() {
+        requires(Robot.drivetrain);
+    }
 
-  // Called repeatedly when this Command is scheduled to run
-  @Override
-  protected void execute() {
-    Robot.drivetrain.setVelocity(0.5, 0.5);
-    SmartDashboard.putNumber("R Velocity", Robot.drivetrain.getRightVelocity());
-    SmartDashboard.putNumber("L Velocity", Robot.drivetrain.getLeftVelocity());
-  }
+    // Called repeatedly when this Command is scheduled to run
+    @Override
+    protected void execute() {
+        Robot.drivetrain.setVelocity(0.5, 0.5);
+        SmartDashboard.putNumber("R Velocity", Robot.drivetrain.getRightVelocity());
+        SmartDashboard.putNumber("L Velocity", Robot.drivetrain.getLeftVelocity());
+    }
 
-  // Make this return true when this Command no longer needs to run execute()
-  @Override
-  protected boolean isFinished() {
-    return false;
-  }
+    // Make this return true when this Command no longer needs to run execute()
+    @Override
+    protected boolean isFinished() {
+        return false;
+    }
 
-  @Override
-  protected void end() {
-      Robot.drivetrain.stop();
-  }
+    @Override
+    protected void end() {
+        Robot.drivetrain.stop();
+    }
 }

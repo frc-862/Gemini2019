@@ -92,7 +92,7 @@ public class TalonMotionProfile extends Command {
     @Override
     protected boolean isFinished() {
         return Robot.drivetrain.getLeftMaster().isMotionProfileFinished() &&
-                Robot.drivetrain.getRightMaster().isMotionProfileFinished();
+               Robot.drivetrain.getRightMaster().isMotionProfileFinished();
     }
 
     @Override

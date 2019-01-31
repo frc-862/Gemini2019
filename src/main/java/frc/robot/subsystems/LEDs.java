@@ -14,26 +14,26 @@ import edu.wpi.first.wpilibj.command.Subsystem;
  */
 
 enum State {
-  //normal chasers
-  NORMAL,
+    //normal chasers
+    NORMAL,
 
-  //game piece/collecting-related
-  CARGO_COLLECTED, HATCH_COLLECTED, HAND_OFF_READY,
+    //game piece/collecting-related
+    CARGO_COLLECTED, HATCH_COLLECTED, HAND_OFF_READY,
 
-  //other stuff
-  LINE_FOLLOWING, /*SANDSTORM*/
+    //other stuff
+    LINE_FOLLOWING, /*SANDSTORM*/
 }
 
 
 
 
 public class LEDs extends Subsystem {
-  // Put methods for controlling this subsystem
-  // here. Call these from Commands.
+    // Put methods for controlling this subsystem
+    // here. Call these from Commands.
 
-  @Override
-  public void initDefaultCommand() {
-    // Set the default command for a subsystem here.
-    // setDefaultCommand(new MySpecialCommand());
-  }
+    @Override
+    public void initDefaultCommand() {
+        // Set the default command for a subsystem here.
+        // setDefaultCommand(new MySpecialCommand());
+    }
 }

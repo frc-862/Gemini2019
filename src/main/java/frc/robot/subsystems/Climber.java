@@ -16,30 +16,30 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
  * Add your docs here.
  */
 public class Climber extends Subsystem {
-  // Put methods for controlling this subsystem
-  // here. Call these from Commands.
-  
-  TalonSRX motor;
-  DoubleSolenoid deployer;
+    // Put methods for controlling this subsystem
+    // here. Call these from Commands.
 
-  @Override
-  public void initDefaultCommand() {
+    TalonSRX motor;
+    DoubleSolenoid deployer;
 
-    // Set the default command for a subsystem here.
-    // setDefaultCommand(new MySpecialCommand());
-  }
+    @Override
+    public void initDefaultCommand() {
 
-  public void setPower(double power){
-    motor.set(ControlMode.PercentOutput, power);
-
-  }
-
-  public void toggleDeployer() {
-    if (deployer.get() == DoubleSolenoid.Value.kForward) {
-      deployer.set(DoubleSolenoid.Value.kReverse);
-    } else {
-      deployer.set(DoubleSolenoid.Value.kForward);
+        // Set the default command for a subsystem here.
+        // setDefaultCommand(new MySpecialCommand());
     }
-  }
+
+    public void setPower(double power) {
+        motor.set(ControlMode.PercentOutput, power);
+
+    }
+
+    public void toggleDeployer() {
+        if (deployer.get() == DoubleSolenoid.Value.kForward) {
+            deployer.set(DoubleSolenoid.Value.kReverse);
+        } else {
+            deployer.set(DoubleSolenoid.Value.kForward);
+        }
+    }
 
 }

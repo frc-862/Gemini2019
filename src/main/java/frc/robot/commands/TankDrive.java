@@ -12,26 +12,26 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
 
 public class TankDrive extends Command {
-  public TankDrive() {
-    // Use requires() here to declare subsystem dependencies
-    requires(Robot.drivetrain);
-    //requires(Robot.glitchDriveTrain);
-  }
+    public TankDrive() {
+        // Use requires() here to declare subsystem dependencies
+        requires(Robot.drivetrain);
+        //requires(Robot.glitchDriveTrain);
+    }
 
-  // Called repeatedly when this Command is scheduled to run
-  @Override
-  protected void execute() {
-    double left = Robot.oi.getLeftPower();
-    double right = Robot.oi.getRightPower();
-    Robot.drivetrain.setPower(left, right);
+    // Called repeatedly when this Command is scheduled to run
+    @Override
+    protected void execute() {
+        double left = Robot.oi.getLeftPower();
+        double right = Robot.oi.getRightPower();
+        Robot.drivetrain.setPower(left, right);
 
-    SmartDashboard.putNumber("LeftVelocity", Robot.drivetrain.getLeftVelocity());
-    SmartDashboard.putNumber("RightVelocity", Robot.drivetrain.getRightVelocity());
+        SmartDashboard.putNumber("LeftVelocity", Robot.drivetrain.getLeftVelocity());
+        SmartDashboard.putNumber("RightVelocity", Robot.drivetrain.getRightVelocity());
 
-  }
+    }
 
-  @Override
-  protected boolean isFinished() {
-    return false;
-  }
+    @Override
+    protected boolean isFinished() {
+        return false;
+    }
 }
