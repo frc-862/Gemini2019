@@ -7,7 +7,12 @@
 
 package frc.robot;
 
+import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.wpilibj.RobotController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.lightning.LightningRobot;
+import frc.lightning.util.FaultMonitor;
+import frc.lightning.util.FaultCode.Codes;
 import frc.robot.commands.MotionProfile;
 import frc.robot.commands.test.TestMove;
 import frc.robot.subsystems.*;
@@ -23,7 +28,6 @@ import java.io.File;
  */
 public class Robot extends LightningRobot {
     public static Core core = new Core();
-
 
     //Drive Train Chooser
     public static boolean isOBot() {
@@ -50,5 +54,6 @@ public class Robot extends LightningRobot {
         //this.registerAutonomousCommmand(name, command);
         this.registerAutonomousCommmand("T_MotionProfile", new MotionProfile());
         this.registerAutonomousCommmand("T_DriveVelocity", new TestMove());
+
     }
 }

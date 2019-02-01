@@ -27,7 +27,7 @@ public class HatchCollectorStateChange extends InstantCommand {
     // Called once when the command executes
     @Override
     protected void initialize() {
-        Robot.collector.changeCollectorState();
+        //Robot.collector.changeCollectorState();
     }
 
 }

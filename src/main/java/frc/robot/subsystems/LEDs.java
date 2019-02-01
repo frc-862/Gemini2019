@@ -20,12 +20,14 @@ enum State {
     //game piece/collecting-related
     CARGO_COLLECTED, HATCH_COLLECTED, HAND_OFF_READY,
 
+    // Indicates that we have detected
+    // the vision or line targets and
+    // the driver can give up control
+    VISION_READY, LINE_FOLLOW_READY,
+
     //other stuff
     LINE_FOLLOWING, /*SANDSTORM*/
 }
-
-
-
 
 public class LEDs extends Subsystem {
     // Put methods for controlling this subsystem
@@ -35,5 +37,9 @@ public class LEDs extends Subsystem {
     public void initDefaultCommand() {
         // Set the default command for a subsystem here.
         // setDefaultCommand(new MySpecialCommand());
+    }
+
+    public void set(State state) {
+        // TODO set light color based on state
     }
 }

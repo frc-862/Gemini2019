@@ -14,11 +14,6 @@ public class Constants extends ConstantBase {
     public static int ejectButton = 2;
     public static int hatchToggle = 1;
 
-
-
-
-    //For Motion Profiling:
-
     /**
      * How many sensor units per rotation.
      * Using CTRE Magnetic Encoder.

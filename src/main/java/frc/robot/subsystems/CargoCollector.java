@@ -9,15 +9,20 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
-
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 
 /**
- * Add your docs here.
+ * CargoCollector includes both ground collect
+ * and elevator collect wheels
+ *
  */
 public class CargoCollector extends Subsystem {
-    private final WPI_VictorSPX leftGripper;
+    final double collectPower = -0.6;
+    final double holdPower = -0.2;
+    final double hasCargoDistance = 0.7;
+
+    private final WPI_VictorSPX  leftGripper;
     private final WPI_VictorSPX rightGripper;
     private final WPI_VictorSPX collector;
     private final DoubleSolenoid deployer;
@@ -36,8 +41,21 @@ public class CargoCollector extends Subsystem {
         rightGripper = rightGrip;
         this.collector = collector;
         this.deployer = deployer;
-
         stop();
+    }
+
+    /**
+     * Will be linked to TOF (Time of Flight) sensor when
+     * electrical/controls get it setup for us
+     *
+     * TODO link this up
+     */
+    public double cargoDistanceSensor() {
+        return -1;
+    }
+
+    public boolean hasCargo() {
+        return cargoDistanceSensor() >= 0 && cargoDistanceSensor() <= hasCargoDistance;
     }
 
     @Override
@@ -46,47 +64,45 @@ public class CargoCollector extends Subsystem {
     }
 
     public void collectBall() {
+        System.out.println("collect it");
         collector.set(ControlMode.PercentOutput, 1.0);
     }
 
     public void ejectBall() {
+        System.out.println("eject it");
         collector.set(ControlMode.PercentOutput, -1.0);
     }
 
     public void stop() {
-        leftGripper.set(ControlMode.PercentOutput, 0);
-        rightGripper.set(ControlMode.PercentOutput, 0);
+        leftGripper.set(0.0);
+        rightGripper.set(0.0);
         collector.set(ControlMode.PercentOutput, 0);
     }
 
     public void hold() {
-
+        setPower(holdPower);
     }
 
-    public void setPower(double pwr) {
-        System.out.println("power " + pwr);
-        leftGripper.set(pwr);
-        rightGripper.set(pwr);
+    private void setPower(double pwr) {
+        leftGripper.set(ControlMode.PercentOutput, pwr);
+        rightGripper.set(ControlMode.PercentOutput, pwr);
     }
 
-    public void toggleDeployer() {
-        if (deployer.get() == DoubleSolenoid.Value.kForward) {
-            deployer.set(DoubleSolenoid.Value.kReverse);
-        } else {
-            deployer.set(DoubleSolenoid.Value.kForward);
-        }
+
+    public void deployGroundCollect() {
+        deployer.set(DoubleSolenoid.Value.kForward);
+    }
+
+    public void retractGroundCollect() {
+        deployer.set(DoubleSolenoid.Value.kReverse);
     }
 
     public void collect() {
-        System.out.println("COLLECT");
-        rightGripper.set(-0.6);
-        leftGripper.set(0.6);
+        setPower(collectPower);
     }
 
     public void eject() {
-        System.out.println("EJECT");
-        rightGripper.set(0.6);
-        leftGripper.set(-0.6);
+        setPower(-collectPower);
     }
 
 }

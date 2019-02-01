@@ -8,8 +8,6 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.buttons.Button;
-import edu.wpi.first.wpilibj.buttons.JoystickButton;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -21,11 +19,11 @@ public class OI {
     private Joystick driverLeft = new Joystick(0);// Constants.driverLeftJoy);   //1
 
     //Mechanism Buttons
-    private Button collectButton = new JoystickButton(driverLeft, Constants.collectButton);//1
-    private Button ejectButton = new JoystickButton(driverLeft, Constants.ejectButton);//2
-    //private Button hatchToggle ;//= new JoystickButton(driverRight, Constants.hatchToggle);//1
-    private Button fourbarCollect = new JoystickButton(driverRight, 1);
-    private Button fourbarEject = new JoystickButton(driverRight, 2);
+//    private Button collectButton = new JoystickButton(driverLeft, Constants.collectButton);//1
+//    private Button ejectButton = new JoystickButton(driverLeft, Constants.ejectButton);//2
+//    //private Button hatchToggle ;//= new JoystickButton(driverRight, Constants.hatchToggle);//1
+//    private Button fourbarCollect = new JoystickButton(driverRight, 1);
+//    private Button fourbarEject = new JoystickButton(driverRight, 2);
 
     public double getLeftPower() {
         return (Math.abs(driverLeft.getRawAxis(Constants.leftThrottleAxis))>0.05) ? -driverLeft.getRawAxis(Constants.leftThrottleAxis) : 0.00;//glitch
@@ -39,9 +37,9 @@ public class OI {
         // return driverRight.getRawAxis(Constants.rightThrottleAxis); // OBOT
     }
 
-    public double getRightSlider() {
-        return (driverRight.getRawAxis(3)+1)/2;
-    }
+//    public double getRightSlider() {
+//        return (driverRight.getRawAxis(3)+1)/2;
+//    }
 
     public OI() {
         //shootButton.whenPressed(new MotionProfile());//used to be shoot

@@ -19,18 +19,12 @@ public class setElevatorLow extends Command {
     // Called just before this Command runs the first time
     @Override
     protected void initialize() {
-        Robot.elevator.motor1.getSelectedSensorPosition();
+        Robot.elevator.goToLow();
     }
 
     // Called repeatedly when this Command is scheduled to run
     @Override
-    protected void execute() {
-        if (Robot.elevator.motor1.getSelectedSensorPosition()>Constants.elevatorBottomHeight) {
-            Robot.elevator.setpower(Constants.elevatorDownPower);
-        } else {
-            Robot.elevator.setpower(Constants.elevatorUpPower);
-        }
-    }
+    protected void execute() { }
 
     // Make this return true when this Command no longer needs to run execute()
     @Override
@@ -40,15 +34,7 @@ public class setElevatorLow extends Command {
 
     // Called once after isFinished returns true
     @Override
-    protected void end() {
-        Robot.elevator.setpower(Constants.elevatorHoldPower);
-    }
-
-    // Called when another command which requires one or more of the same
-    // subsystems is scheduled to run
-    @Override
-    protected void interrupted() {
-    }
+    protected void end() { }
 
     private boolean epsilon(double value, double target, double tolerance) {
         return Math.abs(value - target) <= tolerance;
