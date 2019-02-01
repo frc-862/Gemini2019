@@ -39,7 +39,7 @@ public class EjectCargo extends Command {
   @Override
   protected void end() {
     Robot.cargoCollector.stop();
-    Robot.cargoCollector.stopFourbar();
+    Robot.cargoCollector.stopGroundCollect();
   }
 
 

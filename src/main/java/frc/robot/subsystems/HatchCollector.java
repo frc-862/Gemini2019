@@ -7,6 +7,7 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -18,11 +19,16 @@ public class HatchCollector extends Subsystem {
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
 
-  DoubleSolenoid hatchCollector;
+  DoubleSolenoid hatchExtend;
+  DoubleSolenoid hatchGrabber;
+  DigitalInput hatchDetector;
 
   public HatchCollector(){
-    hatchCollector = new DoubleSolenoid(11, 0, 1);// OBOT - 11, 4, 5
+    hatchExtend = new DoubleSolenoid(11, 0, 1);// OBOT - 11, 4, 5
+    hatchGrabber = new DoubleSolenoid(11, 2, 3); // TODO find correct values
     // constructor - DoubleSolenoid(moduleNumber, forwardChannel, reverseChannel)
+
+    hatchDetector = new DigitalInput(1); // TODO check wiring
   }
 
   @Override
@@ -31,21 +37,23 @@ public class HatchCollector extends Subsystem {
     // setDefaultCommand(new MySpecialCommand());
   }
 
-  public void extendHatchCollector(){
-    hatchCollector.set(DoubleSolenoid.Value.kForward);
+  public boolean hatchDetected() {
+    return hatchDetector.get(); 
   }
 
-  public void changeCollectorState(){
-    DoubleSolenoid.Value state = hatchCollector.get();
-    if(state == Value.kForward){
-      retractHatchCollector();
-    }else{
-      extendHatchCollector();
-    }
+  public void extendHatchCollector(){
+    hatchExtend.set(DoubleSolenoid.Value.kForward);
   }
 
   public void retractHatchCollector(){
-    hatchCollector.set(DoubleSolenoid.Value.kReverse);
+    hatchExtend.set(DoubleSolenoid.Value.kReverse);
   }
 
+  public void grabHatchPanel() {
+    hatchGrabber.set(DoubleSolenoid.Value.kForward);
+  }
+
+  public void releaseHatchPanel() {
+    hatchGrabber.set(DoubleSolenoid.Value.kReverse);
+  }
 }

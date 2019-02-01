@@ -16,28 +16,53 @@ import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.RobotMap;
 import frc.robot.commands.HABClimb;
+import frc.lightning.logging.DataLogger;
 import frc.robot.Constants;
 import frc.robot.commands.CollectCargo;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 
 /**
- * Add your docs here.
+ * CargoCollector includes both ground collect
+ * and elevator collect wheels
+ * 
  */
 public class CargoCollector extends Subsystem {
+  final double collectPower = -0.6;
+  final double holdPower = -0.2;
+  final double hasCargoDistance = 0.7;
+  
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
 
-  private final WPI_VictorSPX  leftGripper;
+  private final WPI_VictorSPX leftGripper;
   private final WPI_VictorSPX rightGripper;
-  private final WPI_TalonSRX fourbar;
+  private final WPI_TalonSRX groundCollect;
   DoubleSolenoid deployer;
 
   public CargoCollector(){
     leftGripper = new WPI_VictorSPX(21);
+    leftGripper.setInverted(true);
     rightGripper = new WPI_VictorSPX(20);//?????
-    fourbar = new WPI_TalonSRX(29);
+    groundCollect = new WPI_TalonSRX(29);
+
+    DataLogger.addDataElement("CargoDistanceSensor", this::cargoDistanceSensor);
+    
     stop();
-    stopFourbar();
+    stopGroundCollect();
+  }
+
+  /** 
+   * Will be linked to TOF (Time of Flight) sensor when 
+   * electrical/controls get it setup for us
+   * 
+   * TODO link this up
+   */
+  public double cargoDistanceSensor() {
+    return -1;
+  }
+
+  public boolean hasCargo() {
+    return cargoDistanceSensor() >= 0 && cargoDistanceSensor() <= hasCargoDistance;
   }
 
   @Override
@@ -46,50 +71,49 @@ public class CargoCollector extends Subsystem {
     // setDefaultCommand(new MySpecialCommand());
     //setDefaultCommand(new HABClimb());
   }
-
+    
   public void collectBall(){
     System.out.println("collect it");
-    fourbar.set(ControlMode.PercentOutput, 1.0);
+    groundCollect.set(ControlMode.PercentOutput, 1.0);
   }
 
   public void ejectBall(){
     System.out.println("eject it");
-    fourbar.set(ControlMode.PercentOutput, -1.0);
+    groundCollect.set(ControlMode.PercentOutput, -1.0);
   }
 
-  public void stopFourbar(){
+  public void stopGroundCollect(){
     System.out.println("stop it");
-    fourbar.set(ControlMode.PercentOutput, 0.0);  
+    groundCollect.set(ControlMode.PercentOutput, 0.0);  
   }
+
   public void stop(){
-    leftGripper.set(0.0);
-    rightGripper.set(0.0);
+    setPower(0.0);
   }
 
-  public void hold(){
-    
+  public void hold() {
+    setPower(holdPower);
   }
 
-  public void setPower(double pwr){
-    leftGripper.set(pwr);
-    rightGripper.set(pwr);
-  }
-  public void toggleDeployer() {
-    if (deployer.get() == DoubleSolenoid.Value.kForward) {
-      deployer.set(DoubleSolenoid.Value.kReverse);
-    } else {
-      deployer.set(DoubleSolenoid.Value.kForward);
-    }
+  private void setPower(double pwr){
+    leftGripper.set(ControlMode.PercentOutput, pwr);
+    rightGripper.set(ControlMode.PercentOutput, pwr);
   }
 
-  public void collect(){
-    rightGripper.set(-0.6);
-    leftGripper.set(0.6);
+  public void deployGroundCollect() {
+    deployer.set(DoubleSolenoid.Value.kForward);
+  }
+
+  public void retractGroundCollect() {
+    deployer.set(DoubleSolenoid.Value.kReverse);
+  }
+
+  public void collect() {
+    setPower(collectPower);
   }
 
   public void eject(){
-    rightGripper.set(0.6);
-    leftGripper.set(-0.6);
+    setPower(-collectPower);
   }
 
 }

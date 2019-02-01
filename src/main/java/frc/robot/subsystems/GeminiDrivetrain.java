@@ -105,7 +105,7 @@ public class GeminiDrivetrain extends CANDrivetrain {
   
   public void configureMotors() {
     getLeftMaster().setInverted(false);
-    leftFollow1.follow(getLeftMaster());
+    leftFollow1.follow(getLeftMaster());// TODO move to after pidf config & remove from setPwr()
     leftFollow1.setInverted(false);
 
     getRightMaster().setInverted(true);
