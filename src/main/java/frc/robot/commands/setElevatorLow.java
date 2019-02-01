@@ -25,11 +25,7 @@ public class setElevatorLow extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    if (Robot.elevator.motor1.getSelectedSensorPosition()>Constants.elevatorBottomHeight) {
-    Robot.elevator.setpower(Constants.elevatorDownPower);  
-    }else{
-      Robot.elevator.setpower(Constants.elevatorUpPower);   
-    } 
+    Robot.elevator.goToLow();
   }
 
   // Make this return true when this Command no longer needs to run execute()
@@ -41,7 +37,7 @@ public class setElevatorLow extends Command {
   // Called once after isFinished returns true
   @Override
   protected void end() {
-    Robot.elevator.setpower(Constants.elevatorHoldPower);  
+    //Robot.elevator.setpower(Constants.elevatorHoldPower);  
   }
 
   // Called when another command which requires one or more of the same
