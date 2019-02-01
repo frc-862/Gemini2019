@@ -12,47 +12,6 @@ import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
 public class DeployGroundHatchCollector extends Command {
-<<<<<<< Updated upstream
-    public DeployGroundHatchCollector() {
-        // Use requires() here to declare subsystem dependencies
-        // eg. requires(chassis);
-        requires(Robot.hatchGroundCollector);
-
-    }
-
-    double startTime;
-
-    // Called just before this Command runs the first time
-    @Override
-    protected void initialize() {
-        Robot.hatchGroundCollector.toggleDeployer();
-        startTime = Timer.getFPGATimestamp();
-    }
-
-    // Called repeatedly when this Command is scheduled to run
-    @Override
-    protected void execute() {
-    }
-
-    // Make this return true when this Command no longer needs to run execute()
-    @Override
-    protected boolean isFinished() {
-        return Timer.getFPGATimestamp() - startTime >= 0.2;
-    }
-
-    // Called once after isFinished returns true
-    @Override
-    protected void end() {
-        Robot.hatchGroundCollector.toggleDeployer();
-    }
-
-    // Called when another command which requires one or more of the same
-    // subsystems is scheduled to run
-    @Override
-    protected void interrupted() {
-        end();
-    }
-=======
   public DeployGroundHatchCollector() {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
@@ -89,5 +48,4 @@ public class DeployGroundHatchCollector extends Command {
   protected void interrupted() {
     end();
   }
->>>>>>> Stashed changes
 }

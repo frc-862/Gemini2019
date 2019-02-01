@@ -22,40 +22,6 @@ import frc.robot.RobotMap;
  * Add your docs here.
  */
 public class Core extends Subsystem {
-<<<<<<< Updated upstream
-    // Put methods for controlling this subsystem
-    // here. Call these from Commajnds.
-    // private AHRS navx;
-    private Compressor compressor = new Compressor(RobotMap.compressorCANId);
-    // private PowerDistributionPanel pdp = new PowerDistributionPanel(RobotMap.pdpCANId);
-
-    public Core() {
-        // navx = new AHRS(SPI.Port.kMXP);
-        // DataLogger.addDataElement("heading", () -> getHeading());
-
-        // monitor if the heading is exactly the same, there is always
-        // some jitter in the reading, so this will not be the case
-        // if we are getting valid values from the sensor for >= 3 seconds
-
-        // FaultMonitor.register(new UnchangingFaultMonitor(Codes.NAVX_ERROR, () -> navx.getUpdateCount(),
-        //     2.0, 0, "NavX unresponsive"));
-
-        // addChild("PDP", pdp);
-        // addChild("NavX", navx);
-        addChild("Compressor", compressor);
-    }
-
-    public double getHeading() {
-        // return navx.getFusedHeading();
-        return 0;
-    }
-
-    @Override
-    public void initDefaultCommand() {
-        // Set the default command for a subsystem here.
-        // setDefaultCommand(new MySpecialCommand());
-    }
-=======
   // Put methods for controlling this subsystem
   // here. Call these from Commajnds.
   // private AHRS navx;
@@ -92,6 +58,4 @@ public class Core extends Subsystem {
   public boolean hasHatchCollector(){
     return false; //TODO make it return the sensor value
   }
-
->>>>>>> Stashed changes
 }

@@ -29,7 +29,6 @@ public class waitForHatchPanel extends Command {
   @Override
   protected boolean isFinished() {
     return Robot.core.hasHatchCollector();
-
   }
 
   // Called once after isFinished returns true

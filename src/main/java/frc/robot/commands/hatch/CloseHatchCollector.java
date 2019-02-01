@@ -15,37 +15,20 @@ import edu.wpi.first.wpilibj.Timer;
  * Add your docs here.
  */
 public class CloseHatchCollector extends InstantCommand {
-<<<<<<< Updated upstream
-    /**
-     * Add your docs here.
-     */
-    public CloseHatchCollector() {
-        super();
-        // Use requires() here to declare subsystem dependencies
-        // eg. requires(chassis);
-        requires(Robot.collector);
-    }
-
-    // Called once when the command executes
-    @Override
-    protected void initialize() {
-        Robot.collector.retractHatchCollector();
-    }
-=======
   /**
-   * Add your docs here.
-   */
+  * Add your docs here.
+  */
   public CloseHatchCollector() {
-    super();
-    // Use requires() here to declare subsystem dependencies
-    // eg. requires(chassis);
-    requires(Robot.hatchPanelCollector);
+      super();
+      // Use requires() here to declare subsystem dependencies
+      // eg. requires(chassis);
+      requires(Robot.hatchPanelCollector);
   }
 
   // Called once when the command executes
   @Override
   protected void initialize() {
-    Robot.hatchPanelCollector.close();
+      Robot.hatchPanelCollector.retract();
   }
 
   // Called repeatedly when this Command is scheduled to run
@@ -72,6 +55,5 @@ public class CloseHatchCollector extends InstantCommand {
   protected void interrupted() {
     end();
   }
->>>>>>> Stashed changes
 
 }

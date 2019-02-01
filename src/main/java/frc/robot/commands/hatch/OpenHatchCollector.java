@@ -14,23 +14,6 @@ import edu.wpi.first.wpilibj.Timer;
  * Add your docs here.
  */
 public class OpenHatchCollector extends InstantCommand {
-<<<<<<< Updated upstream
-    /**
-     * Add your docs here.
-     */
-    public OpenHatchCollector() {
-        super();
-        // Use requires() here to declare subsystem dependencies
-        // eg. requires(chassis);
-        requires(Robot.collector);
-    }
-
-    // Called once when the command executes
-    @Override
-    protected void initialize() {
-        Robot.collector.extendHatchCollector();
-    }
-=======
   /**
    * Add your docs here.
    */
@@ -70,6 +53,5 @@ public class OpenHatchCollector extends InstantCommand {
   protected void interrupted() {
     end();
   }
->>>>>>> Stashed changes
 
 }

@@ -27,8 +27,8 @@ import java.io.File;
  * project.
  */
 public class Robot extends LightningRobot {
-<<<<<<< Updated upstream
     public static Core core = new Core();
+    public static LEDs leds = new LEDs();
 
     //Drive Train Chooser
     public static boolean isOBot() {
@@ -42,7 +42,7 @@ public class Robot extends LightningRobot {
     public static GeminiDrivetrain drivetrain = GeminiDrivetrain.create();
 
     //Mechanism Objects
-    public static HatchCollector collector;// = new hatch();
+    public static HatchCollector hatchPanelCollector;// = new hatch();
     public static CargoCollector cargoCollector;// = new cargo();
     public static HatchGroundCollector hatchGroundCollector;// = new HatchGroundCollector();
     public static Elevator elevator;// = new Elevator();
@@ -57,36 +57,4 @@ public class Robot extends LightningRobot {
         this.registerAutonomousCommmand("T_DriveVelocity", new TestMove());
 
     }
-=======
-  public static Core core = new Core();
-  public static LEDs leds = new LEDs();
-
-
-  //Drive Train Chooser 
-  public static boolean isOBot() {
-    return new File("/home/lvuser/obot").exists();
-  }
-  public static boolean isGlitch() {
-    return new File("/home/lvuser/glitch").exists();
-  }
-  //public static OBotDrivetrain drivetrain = OBotDrivetrain.create();
-  //public static GlitchDrivetrain drivetrain = GlitchDrivetrain.create();
-  public static GeminiDrivetrain drivetrain = GeminiDrivetrain.create();
-  
-  //Mechanism Objects
-  public static HatchCollector hatchPanelCollector;// = new hatch();
-  public static CargoCollector cargoCollector;// = new cargo();
-  public static HatchGroundCollector hatchGroundCollector;// = new HatchGroundCollector();
-  public static Elevator elevator;// = new Elevator();
-  public static OI oi = new OI();
-
-  public Robot() {
-    super();
-    System.out.println("Initializing our robot");
-
-    //this.registerAutonomousCommmand(name, command);
-    this.registerAutonomousCommmand("T_MotionProfile", new MotionProfile());
-    this.registerAutonomousCommmand("T_DriveVelocity", new TestMove());
-  }
->>>>>>> Stashed changes
 }
