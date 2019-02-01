@@ -30,6 +30,7 @@ enum State {
 }
 
 public class LEDs extends Subsystem {
+<<<<<<< Updated upstream
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
 
@@ -42,4 +43,17 @@ public class LEDs extends Subsystem {
     public void set(State state) {
         // TODO set light color based on state
     }
+=======
+  // Put methods for controlling this subsystem
+  // here. Call these from Commands.
+
+  @Override
+  public void initDefaultCommand() {
+    // Set the default command for a subsystem here.
+    // setDefaultCommand(new MySpecialCommand());
+  }
+public void setYellow(){
+  //TODO: Make actually change color
+}
+>>>>>>> Stashed changes
 }

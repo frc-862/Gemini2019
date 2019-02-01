@@ -7,45 +7,17 @@
 
 package frc.robot.commands.hatch;
 
-import edu.wpi.first.wpilibj.command.InstantCommand;
+import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
-import edu.wpi.first.wpilibj.Timer;
-
-/**
- * Add your docs here.
- */
-public class CloseHatchCollector extends InstantCommand {
-<<<<<<< Updated upstream
-    /**
-     * Add your docs here.
-     */
-    public CloseHatchCollector() {
-        super();
-        // Use requires() here to declare subsystem dependencies
-        // eg. requires(chassis);
-        requires(Robot.collector);
-    }
-
-    // Called once when the command executes
-    @Override
-    protected void initialize() {
-        Robot.collector.retractHatchCollector();
-    }
-=======
-  /**
-   * Add your docs here.
-   */
-  public CloseHatchCollector() {
-    super();
+public class waitForHatchPanel extends Command {
+  public waitForHatchPanel() {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
-    requires(Robot.hatchPanelCollector);
   }
 
-  // Called once when the command executes
+  // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    Robot.hatchPanelCollector.close();
   }
 
   // Called repeatedly when this Command is scheduled to run
@@ -56,22 +28,18 @@ public class CloseHatchCollector extends InstantCommand {
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return this.timeSinceInitialized() >= 0.1; 
-  
+    return Robot.core.hasHatchCollector();
+
   }
 
   // Called once after isFinished returns true
   @Override
   protected void end() {
-   
   }
 
   // Called when another command which requires one or more of the same
   // subsystems is scheduled to run
   @Override
   protected void interrupted() {
-    end();
   }
->>>>>>> Stashed changes
-
 }

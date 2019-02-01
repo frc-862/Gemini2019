@@ -5,7 +5,7 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands.hatch;
+package frc.robot.commands.LEDs;
 
 import edu.wpi.first.wpilibj.command.InstantCommand;
 import frc.robot.Robot;
@@ -13,39 +13,21 @@ import frc.robot.Robot;
 /**
  * Add your docs here.
  */
-public class HatchCollectorStateChange extends InstantCommand {
-<<<<<<< Updated upstream
-    /**
-     * Add your docs here.
-     */
-    public HatchCollectorStateChange() {
-        super();
-        // Use requires() here to declare subsystem dependencies
-        // eg. requires(chassis);
-        requires(Robot.collector);
-    }
-
-    // Called once when the command executes
-    @Override
-    protected void initialize() {
-        //Robot.collector.changeCollectorState();
-    }
-=======
+public class LEDsSetYellow extends InstantCommand {
   /**
    * Add your docs here.
    */
-  public HatchCollectorStateChange() {
+  public LEDsSetYellow() {
     super();
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
-    requires(Robot.hatchPanelCollector);
+    requires(Robot.leds);
   }
 
   // Called once when the command executes
   @Override
   protected void initialize() {
-    Robot.hatchPanelCollector.toggleExtenderState();
+    Robot.leds.setYellow();
   }
->>>>>>> Stashed changes
 
 }
