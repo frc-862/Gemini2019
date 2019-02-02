@@ -35,11 +35,11 @@ public class RobotMap {
     public static final int glitchRightSlave2 = 6;
     // Hatch Collector
     public static final int extenderModule = 11;
-    public static final int extenderFwdChan = 0;
-    public static final int extenderRevChan = 1;
+    public static final int extenderFwdChan = 2;
+    public static final int extenderRevChan = 3;
     public static final int grabberModule = 11;
-    public static final int grabberFwdChan = 2;
-    public static final int grabberRevChan = 3;
+    public static final int grabberFwdChan = 0;
+    public static final int grabberRevChan = 1;
     public static final int hatchDetector = 1;
     // Obot Drive Train
     public static final int obotLeftMaster = 1;

@@ -22,7 +22,8 @@ public class OI {
     private Joystick copilot = new Joystick(2);
 
     //Buttons
-    private Button cargoCollectButton = new JoystickButton(copilot, 4); 
+    private Button cargoCollectButton = new JoystickButton(copilot, 4);
+    private Button hatchToggle = new JoystickButton(driverRight, JoystickConstants.hatchToggle); 
 
     public double getLeftPower() {
         return (Math.abs(driverLeft.getRawAxis(JoystickConstants.leftThrottleAxis))>0.05) ? -driverLeft.getRawAxis(JoystickConstants.leftThrottleAxis) : 0.00;
@@ -39,6 +40,8 @@ public class OI {
     public OI() {
         //Add Button Command Mapping (Dashboard & Joystick) Here
         //Use whenPressed() and whileHeld()
+        hatchToggle.whenPressed(new HatchCollectorStateChange());
         SmartDashboard.putData("TestMove", new TestMove());
+        //SmartDashboard.putData("SYSTEM_TESTS", new RunTests());
     }
 }

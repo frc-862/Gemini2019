@@ -37,18 +37,11 @@ public class Robot extends LightningRobot {
         super();
         System.out.println("Initializing our robot");
         //Create Things
-        initRobotHardware();
-        //this.registerAutonomousCommmand(name, command);
-        this.registerAutonomousCommmand("T_MotionProfile", new MotionProfile());
-    }
-
-    private void initRobotHardware() {
-        oi = new OI();
-        core = new Core();
         if(isOBot()){
             drivetrain = OBotDrivetrain.create();
         }else if(isGlitch()){
             drivetrain = GlitchDrivetrain.create();
+            hatchPanelCollector = new HatchCollector();
         }else if (isGemini()){
             drivetrain = GeminiDrivetrain.create();
             leds = new LEDs();
@@ -59,20 +52,24 @@ public class Robot extends LightningRobot {
         }else if (isFlash()){
             elevator = new Elevator();
         }
+        core = new Core();
+        oi = new OI();
+        //this.registerAutonomousCommmand(name, command);
+        this.registerAutonomousCommmand("T_MotionProfile", new MotionProfile());
     }
 
     //Drive Train Chooser
     public static boolean isOBot() {
-        return new File("/home/lvuser/obot").exists();
+        return (new File("/home/lvuser/obot")).exists();
     }
     public static boolean isGlitch() {
-        return new File("/home/lvuser/glitch").exists();
+        return (new File("/home/lvuser/glitch")).exists();
     }
     public static boolean isGemini() {
-        return new File("/home/lvuser/gemini").exists();//TODO make file on robot
+        return (new File("/home/lvuser/gemini")).exists();//TODO make file on robot
     }
     public static boolean isFlash() {
-        return new File("/home/lvuser/flash").exists();
+        return (new File("/home/lvuser/flash")).exists();
     }
 
 }
