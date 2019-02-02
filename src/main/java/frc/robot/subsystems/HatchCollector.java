@@ -32,19 +32,16 @@ public class HatchCollector extends Subsystem {
   public void extend(){
     extender.set(DoubleSolenoid.Value.kForward);
   }
-  public void open(){
+  public void collect() {
     grabber.set(DoubleSolenoid.Value.kForward);
   }
-  public void close(){
+  public void eject() {
     grabber.set(DoubleSolenoid.Value.kReverse);
   }
-  public void toggleExtenderState(){
-    DoubleSolenoid.Value state = extender.get();
-    if(state == Value.kForward){
-      retract();
-    }else{
-      extend();
-    }
+
+  public DoubleSolenoid.Value getPosition() {
+    return grabber.get();
+  }
 
     @Override
     public void initDefaultCommand() {
