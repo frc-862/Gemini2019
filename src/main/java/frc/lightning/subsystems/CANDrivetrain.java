@@ -17,6 +17,7 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.wpilibj.Sendable;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.lightning.logging.DataLogger;
+import frc.lightning.util.LightningMath;
 
 /**
  * Add your docs here.
@@ -96,8 +97,8 @@ public abstract class CANDrivetrain extends LightningDrivetrain {
     protected void enableLogging() {
         if (!loggingEnabled) {
             withEachMaster((label, talon) -> {
-                DataLogger.addDelayedDataElement(label + "Position", () -> talon.getSelectedSensorPosition());
-                DataLogger.addDelayedDataElement(label + "Velocity", () -> talon.getSelectedSensorVelocity());
+                DataLogger.addDelayedDataElement(label + "Position", () -> LightningMath.ticks2feet(talon.getSelectedSensorPosition()));
+                DataLogger.addDelayedDataElement(label + "Velocity", () -> LightningMath.talon2fps(talon.getSelectedSensorVelocity()));
                 DataLogger.addDelayedDataElement(label + "MasterCurrent", () -> talon.getOutputCurrent());
                 DataLogger.addDelayedDataElement(label + "MasterOutputPercent", () -> talon.getMotorOutputPercent());
             });

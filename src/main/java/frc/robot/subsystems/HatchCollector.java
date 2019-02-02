@@ -24,8 +24,8 @@ public class HatchCollector extends Subsystem {
     DigitalInput hatchDetector;
 
     public HatchCollector() {
-        hatchExtend = new DoubleSolenoid(11, 0, 1);// OBOT - 11, 4, 5
-        hatchGrabber = new DoubleSolenoid(11, 2, 3); // TODO find correct values
+        hatchExtend = new DoubleSolenoid(11, 3, 2);// OBOT - 11, 4, 5
+        hatchGrabber = new DoubleSolenoid(11, 0, 1); // TODO find correct values
         // constructor - DoubleSolenoid(moduleNumber, forwardChannel, reverseChannel)
 
         hatchDetector = new DigitalInput(1); // TODO check wiring
@@ -35,6 +35,10 @@ public class HatchCollector extends Subsystem {
     public void initDefaultCommand() {
         // Set the default command for a subsystem here.
         // setDefaultCommand(new MySpecialCommand());
+    }
+
+    public DoubleSolenoid.Value getPosition(){
+        return hatchGrabber.get();
     }
 
     public boolean hatchDetected() {

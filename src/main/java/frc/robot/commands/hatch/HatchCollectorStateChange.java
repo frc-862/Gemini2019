@@ -7,6 +7,7 @@
 
 package frc.robot.commands.hatch;
 
+import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.command.InstantCommand;
 import frc.robot.Robot;
 
@@ -28,6 +29,8 @@ public class HatchCollectorStateChange extends InstantCommand {
     @Override
     protected void initialize() {
         //Robot.collector.changeCollectorState();
+        if(Robot.collector.getPosition().equals(DoubleSolenoid.Value.kReverse)) Robot.collector.releaseHatchPanel();
+        else Robot.collector.grabHatchPanel();
     }
 
 }

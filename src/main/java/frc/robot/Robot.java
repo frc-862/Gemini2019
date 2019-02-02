@@ -27,6 +27,7 @@ import java.io.File;
  * project.
  */
 public class Robot extends LightningRobot {
+
     public static Core core = new Core();
 
     //Drive Train Chooser
@@ -41,7 +42,7 @@ public class Robot extends LightningRobot {
     public static GeminiDrivetrain drivetrain = GeminiDrivetrain.create();
 
     //Mechanism Objects
-    public static HatchCollector collector;// = new hatch();
+    public static HatchCollector collector;// = new HatchCollector();
     public static CargoCollector cargoCollector;// = new cargo();
     public static HatchGroundCollector hatchGroundCollector;// = new HatchGroundCollector();
     public static Elevator elevator;// = new Elevator();
@@ -50,10 +51,7 @@ public class Robot extends LightningRobot {
     public Robot() {
         super();
         System.out.println("Initializing our robot");
-
         //this.registerAutonomousCommmand(name, command);
         this.registerAutonomousCommmand("T_MotionProfile", new MotionProfile());
-        this.registerAutonomousCommmand("T_DriveVelocity", new TestMove());
-
     }
 }
