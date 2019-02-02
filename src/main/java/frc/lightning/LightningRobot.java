@@ -16,7 +16,7 @@ import frc.lightning.util.FaultMonitor;
 import frc.lightning.util.TimedFaultMonitor;
 import frc.lightning.util.FaultCode.Codes;
 import frc.robot.Constants;
-import frc.robot.commands.MotionProfile;
+import frc.robot.commands.driveTrain.MotionProfile;
 import frc.robot.commands.test.RunTests;
 
 /**

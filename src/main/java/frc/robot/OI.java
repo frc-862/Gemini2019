@@ -23,6 +23,7 @@ public class OI {
     //Drive Joysticks
     private Joystick driverRight = new Joystick(1);// Constants.driverRightJoy);   //0
     private Joystick driverLeft = new Joystick(0);// Constants.driverLeftJoy);   //1
+    private Joystick copilot = new Joystick(2);
 
     //Mechanism Buttons
 //    private Button collectButton = new JoystickButton(driverLeft, Constants.collectButton);//1
@@ -30,6 +31,7 @@ public class OI {
 //     private Button hatchToggle = new JoystickButton(driverRight, Constants.hatchToggle);//1
 //    private Button fourbarCollect = new JoystickButton(driverRight, 1);
 //    private Button fourbarEject = new JoystickButton(driverRight, 2);
+private Button cargoCollectButton = new JoystickButton(copilot, 4); 
 
     public double getLeftPower() {
         return (Math.abs(driverLeft.getRawAxis(Constants.leftThrottleAxis))>0.05) ? -driverLeft.getRawAxis(Constants.leftThrottleAxis) : 0.00;//glitch
@@ -43,6 +45,10 @@ public class OI {
         // return driverRight.getRawAxis(Constants.rightThrottleAxis); // OBOT
     }
 
+    public boolean getCargoCollectButton(){
+        return cargoCollectButton.get();
+    }
+    
 //    public double getRightSlider() {
 //        return (driverRight.getRawAxis(3)+1)/2;
 //    }

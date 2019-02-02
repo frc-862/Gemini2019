@@ -13,7 +13,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.lightning.LightningRobot;
 import frc.lightning.util.FaultMonitor;
 import frc.lightning.util.FaultCode.Codes;
-import frc.robot.commands.MotionProfile;
+import frc.robot.commands.driveTrain.MotionProfile;
 import frc.robot.commands.test.TestMove;
 import frc.robot.subsystems.*;
 

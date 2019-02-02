@@ -10,8 +10,8 @@ package frc.robot.commands.cargo;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
-public class EjectCargo extends Command {
-    public EjectCargo() {
+public class EjectCargoWhileHeld extends Command {
+    public EjectCargoWhileHeld() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
         requires(Robot.cargoCollector);
