@@ -27,6 +27,7 @@ import java.io.File;
  * project.
  */
 public class Robot extends LightningRobot {
+
     public static Core core = new Core();
     public static LEDs leds = new LEDs();
 
@@ -51,10 +52,7 @@ public class Robot extends LightningRobot {
     public Robot() {
         super();
         System.out.println("Initializing our robot");
-
         //this.registerAutonomousCommmand(name, command);
         this.registerAutonomousCommmand("T_MotionProfile", new MotionProfile());
-        this.registerAutonomousCommmand("T_DriveVelocity", new TestMove());
-
     }
 }

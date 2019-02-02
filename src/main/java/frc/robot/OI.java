@@ -8,6 +8,12 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.buttons.Button;
+import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.commands.hatch.HatchCollectorStateChange;
+import frc.robot.commands.test.RunTests;
+import frc.robot.commands.test.TestMove;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -21,7 +27,7 @@ public class OI {
     //Mechanism Buttons
 //    private Button collectButton = new JoystickButton(driverLeft, Constants.collectButton);//1
 //    private Button ejectButton = new JoystickButton(driverLeft, Constants.ejectButton);//2
-//    //private Button hatchToggle ;//= new JoystickButton(driverRight, Constants.hatchToggle);//1
+//     private Button hatchToggle = new JoystickButton(driverRight, Constants.hatchToggle);//1
 //    private Button fourbarCollect = new JoystickButton(driverRight, 1);
 //    private Button fourbarEject = new JoystickButton(driverRight, 2);
 
@@ -50,5 +56,6 @@ public class OI {
         //fourbarEject.whileHeld(new FourbarEject());
         //pneumaticButton.whenPressed(new OpenHatchCollector());
         //pneumaticButton.whenReleased(new CloseHatchCollector());
+        SmartDashboard.putData("TestMove", new TestMove());
     }
 }
