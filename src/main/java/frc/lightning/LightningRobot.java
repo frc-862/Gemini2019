@@ -17,6 +17,7 @@ import frc.lightning.util.TimedFaultMonitor;
 import frc.lightning.util.FaultCode.Codes;
 import frc.robot.Constants;
 import frc.robot.commands.driveTrain.MotionProfile;
+import frc.robot.commands.test.RunTests;
 
 /**
  * Base robot class, provides {@link frc.lightning.ConstantBase constants},
@@ -244,5 +245,12 @@ public class LightningRobot extends TimedRobot {
             .withWidget("Toggle Button")
             .getEntry();
         });
+
+        SmartDashboard.putData("SYSTEM_TESTS", new RunTests());
+
+    }
+    @Override
+    public void testPeriodic(){
+        super.testPeriodic();
     }
 }

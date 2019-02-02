@@ -25,6 +25,7 @@ import frc.lightning.subsystems.CANDrivetrain;
 import frc.lightning.util.LightningMath;
 import frc.lightning.util.MotorConfig;
 import frc.robot.commands.driveTrain.TankDrive;
+import frc.robot.Robot;
 import frc.robot.misc.Gains;
 
 /**
@@ -76,8 +77,26 @@ public class GeminiDrivetrain extends CANDrivetrain {
                               LiveWindow.add(m)
                              );
         enableLogging();
-        DataLogger.addDataElement("leftVel", () -> LightningMath.talon2fps(getLeftVelocity()));
-        DataLogger.addDataElement("rightVel", () -> LightningMath.talon2fps(getRightVelocity()));
+        //DataLogger.addDataElement("leftVel", () -> LightningMath.talon2fps(getLeftVelocity()));
+        //DataLogger.addDataElement("rightVel", () -> LightningMath.talon2fps(getRightVelocity()));
+    }
+    
+    @Override
+    public double getLeftDistance() {
+        return LightningMath.ticks2feet(super.getLeftDistance());
+    }
+
+    @Override
+    public double getRightDistance() {
+        return LightningMath.ticks2feet(super.getRightDistance());
+    }
+
+    @Override
+    public void periodic(){
+        SmartDashboard.putNumber("R_Velocity", getRightVelocity());
+        SmartDashboard.putNumber("L_Velocity", getLeftVelocity());
+        SmartDashboard.putNumber("R_Pos", getRightDistance());
+        SmartDashboard.putNumber("L_Pos", getLeftDistance());
     }
 
     public void withEachMotor(Consumer<BaseMotorController> fn)  {

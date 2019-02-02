@@ -11,7 +11,10 @@ public class LightningMath {
     }
 
     public static double talon2fps(double talon) {
-        return (talon2ips(talon))/12;//ips / 12 to get foot
+        // ticks /  100ms = talon
+        double ticksps = talon * 10;  // ticks / sec
+        double fps = ticks2feet(ticksps);
+        return fps; 
     }
 
     public static double fps2talon(double fps) {

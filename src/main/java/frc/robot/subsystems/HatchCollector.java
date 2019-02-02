@@ -45,7 +45,6 @@ public class HatchCollector extends Subsystem {
     }else{
       extend();
     }
-    }
 
     @Override
     public void initDefaultCommand() {
