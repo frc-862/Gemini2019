@@ -26,6 +26,7 @@ import frc.lightning.util.LightningMath;
 import frc.lightning.util.MotorConfig;
 import frc.robot.commands.driveTrain.TankDrive;
 import frc.robot.Robot;
+import frc.robot.RobotMap;
 import frc.robot.misc.Gains;
 
 /**
@@ -37,10 +38,10 @@ public class GeminiDrivetrain extends CANDrivetrain {
 
     public static GeminiDrivetrain create() {
         return new GeminiDrivetrain(
-                   new WPI_TalonSRX(1),
-                   new WPI_VictorSPX(2),
-                   new WPI_TalonSRX(4),
-                   new WPI_VictorSPX(5));
+                   new WPI_TalonSRX(RobotMap.geminiLeftMaster),//1
+                   new WPI_VictorSPX(RobotMap.geminiLeftSlave),//2
+                   new WPI_TalonSRX(RobotMap.geminiRightMaster),//4
+                   new WPI_VictorSPX(RobotMap.geminiRIghtSlave));//5
 
 
     }

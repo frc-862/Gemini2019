@@ -11,41 +11,41 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import com.ctre.phoenix.motorcontrol.can.BaseMotorController;
 
-
-/**
- * The RobotMap is a mapping from the ports sensors and actuators are wired into
- * to a variable name. This provides flexibility changing wiring, makes checking
- * the wiring easier and significantly reduces the number of magic numbers
- * floating around.
- */
 public class RobotMap {
-    public static final int shootButton = 6;
-
-    public static final int rightMotor1 = 0;
-    public static final int rightMotor2 = 1;
-    public static final int leftMotor1 = 2;
-    public static final int leftMotor2 = 3;
-
-    public static final int leftEncoder1 = 0;
-    public static final int leftEncoder2 = 1;
-    public static final int rightEncoder1 = 2;
-    public static final int rightEncoder2 = 3;
-
-    public static int compressorCANId = 11;
-    public static int pdpCANId = 10;
-
-    public static final int kickerCANId1 = 2;
-    public static final int kickerCANId2 = 3;
-
-    public static final int leftFlywheelCANId = 4;
-    public static final int rightFlywheelCANId = 5;
-
-    public static BaseMotorController leftSlave1;
-    public static BaseMotorController leftSlave2;
-    public static BaseMotorController rightSlave1;
-    public static BaseMotorController rightSlave2;
-    public static BaseMotorController leftSlave;
-    public static BaseMotorController rightSlave;
-
-
+    // Core
+    public static final int compressorCANId = 11;
+    // Cargo Collector
+    public static final int cargoMotor = 21;
+    public static final int cargoSolenoidModule = 11;
+    public static final int cargoSolenoidFwdChan = 1;
+    public static final int cargoSolenoidRevChan = 2;
+    // Elevator
+    public static final int pieceDetector = 0;
+    // Gemini Drive Train
+    public static final int geminiLeftMaster = 1;
+    public static final int geminiLeftSlave = 2;
+    public static final int geminiRightMaster = 4;
+    public static final int geminiRIghtSlave = 5;
+    // Glitch Drive Train
+    public static final int glitchLeftMaster = 1;
+    public static final int glitchLeftSlave = 2;
+    public static final int glitchLeftSlave2 = 3;
+    public static final int glitchRightMaster = 4;
+    public static final int glitchRIghtSlave = 5;
+    public static final int glitchRightSlave2 = 6;
+    // Hatch Collector
+    public static final int extenderModule = 11;
+    public static final int extenderFwdChan = 2;
+    public static final int extenderRevChan = 3;
+    public static final int grabberModule = 11;
+    public static final int grabberFwdChan = 0;
+    public static final int grabberRevChan = 1;
+    public static final int hatchDetector = 1;
+    // Obot Drive Train
+    public static final int obotLeftMaster = 1;
+    public static final int obotLeftSlave = 2;
+    public static final int obotLeftSlave2 = 3;
+    public static final int obotRightMaster = 4;
+    public static final int obotRightSlave = 5;
+    public static final int obotRightSlave2 = 6;
 }

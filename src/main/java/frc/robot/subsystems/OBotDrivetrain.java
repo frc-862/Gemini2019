@@ -15,6 +15,7 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import frc.lightning.subsystems.CANDrivetrain;
 import frc.lightning.util.MotorConfig;
+import frc.robot.RobotMap;
 import frc.robot.commands.driveTrain.TankDrive;
 
 /**
@@ -24,12 +25,12 @@ public class OBotDrivetrain extends CANDrivetrain {
 
     public static OBotDrivetrain create() {
         return new OBotDrivetrain(
-                   new WPI_TalonSRX(1),
-                   new WPI_TalonSRX(2),
-                   new WPI_TalonSRX(3),
-                   new WPI_TalonSRX(4),
-                   new WPI_TalonSRX(5),
-                   new WPI_TalonSRX(6)
+                   new WPI_TalonSRX(RobotMap.obotLeftMaster),
+                   new WPI_TalonSRX(RobotMap.obotLeftSlave),
+                   new WPI_TalonSRX(RobotMap.obotLeftSlave2),
+                   new WPI_TalonSRX(RobotMap.obotRightMaster),
+                   new WPI_TalonSRX(RobotMap.obotRightSlave),
+                   new WPI_TalonSRX(RobotMap.obotRightSlave2)
                );
     }
 

@@ -25,14 +25,20 @@ public class RunTests extends Command {
   protected void initialize() {
     // engine.registerTest(test);
     engine.runTests();
+    System.out.println("Tests Initialized");
   }
 
   @Override
   protected void execute() {
+    System.out.println("Tests Running");
   }
 
   @Override
   protected boolean isFinished() {
     return engine.isAllDone();
+  }
+  @Override
+  protected void end() {
+    System.out.println("Tests Finished");
   }
 }

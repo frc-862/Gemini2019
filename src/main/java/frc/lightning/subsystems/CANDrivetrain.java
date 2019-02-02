@@ -18,6 +18,7 @@ import edu.wpi.first.wpilibj.Sendable;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.lightning.logging.DataLogger;
 import frc.lightning.util.LightningMath;
+import frc.robot.misc.Gains;
 
 /**
  * Add your docs here.
@@ -168,6 +169,15 @@ public abstract class CANDrivetrain extends LightningDrivetrain {
     @Override
     public double getRightDistance() {
         return rightMaster.getSelectedSensorPosition();
+    }
+
+    public void configurePID(Gains g) {
+        withEachMaster((m) -> {
+            m.config_kP(0, g.kP);
+            m.config_kI(0, g.kI);
+            m.config_kD(0, g.kD);
+            m.config_kF(0, g.kF);
+        });
     }
 
     @Override

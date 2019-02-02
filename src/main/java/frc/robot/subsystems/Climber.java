@@ -11,6 +11,8 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import frc.robot.RobotConstants;
+
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.LimitSwitchNormal;
 import com.ctre.phoenix.motorcontrol.LimitSwitchSource;
@@ -18,14 +20,12 @@ import com.ctre.phoenix.motorcontrol.LimitSwitchSource;
  * Add your docs here.
  */
 public class Climber extends Subsystem {
-    final private int retractedPosition = 0;
-    final private int extendedPosition = 42; // TODO calibrate this value
-
+   
     TalonSRX motor;
     DoubleSolenoid deployer;
 
     public Climber() {
-        motor = null;  // TODO create with correct CAN ID
+        motor = null;  // TODO create with correct CAN ID in robot map
         deployer = null; // TODO create with correct solenoid values
 
         motor.configForwardLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen, 0);
@@ -40,9 +40,9 @@ public class Climber extends Subsystem {
         var sensors = motor.getSensorCollection();
         // Set the default command for a subsystem here.
         if (sensors.isFwdLimitSwitchClosed()) {
-            motor.setSelectedSensorPosition(extendedPosition);
+            motor.setSelectedSensorPosition(RobotConstants.extendedPosition);
         } else if (sensors.isRevLimitSwitchClosed()) {
-            motor.setSelectedSensorPosition(retractedPosition);
+            motor.setSelectedSensorPosition(RobotConstants.retractedPosition);
         }
     }
 
@@ -54,11 +54,11 @@ public class Climber extends Subsystem {
     }
 
     public void extendJack() {
-        motor.set(ControlMode.MotionMagic, extendedPosition);
+        motor.set(ControlMode.MotionMagic, RobotConstants.extendedPosition);
     }
 
     public void retractJack() {
-        motor.set(ControlMode.MotionMagic, retractedPosition);
+        motor.set(ControlMode.MotionMagic, RobotConstants.retractedPosition);
     }
 
     public void stopJack() {

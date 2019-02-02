@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import frc.robot.RobotMap;
 
 /**
  * Add your docs here.
@@ -23,10 +24,10 @@ public class HatchCollector extends Subsystem {
   DigitalInput hatchDetector;
 
   public HatchCollector(){
-    extender = new DoubleSolenoid(11, 0, 1);// OBOT - 11, 4, 5 TODO change these
-    grabber = new DoubleSolenoid(1, 5, 2);// TODO change these
+    extender = new DoubleSolenoid(RobotMap.extenderModule, RobotMap.extenderFwdChan, RobotMap.extenderRevChan);// OBOT - 11, 4, 5 TODO change these
+    grabber = new DoubleSolenoid(RobotMap.grabberModule, RobotMap.grabberFwdChan, RobotMap.grabberRevChan);// TODO change these
     // constructor - DoubleSolenoid(moduleNumber, forwardChannel, reverseChannel)
-    hatchDetector = new DigitalInput(1); // TODO check wiring
+    hatchDetector = new DigitalInput(RobotMap.hatchDetector); // TODO check wiring
   }
 
   public void extend(){

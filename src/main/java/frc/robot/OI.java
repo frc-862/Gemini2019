@@ -15,53 +15,33 @@ import frc.robot.commands.hatch.HatchCollectorStateChange;
 import frc.robot.commands.test.RunTests;
 import frc.robot.commands.test.TestMove;
 
-/**
- * This class is the glue that binds the controls on the physical operator
- * interface to the commands and command groups that allow control of the robot.
- */
 public class OI {
     //Drive Joysticks
-    private Joystick driverRight = new Joystick(1);// Constants.driverRightJoy);   //0
-    private Joystick driverLeft = new Joystick(0);// Constants.driverLeftJoy);   //1
+    private Joystick driverRight = new Joystick(1);
+    private Joystick driverLeft = new Joystick(0);
     private Joystick copilot = new Joystick(2);
 
-    //Mechanism Buttons
-//    private Button collectButton = new JoystickButton(driverLeft, Constants.collectButton);//1
-//    private Button ejectButton = new JoystickButton(driverLeft, Constants.ejectButton);//2
-//     private Button hatchToggle = new JoystickButton(driverRight, Constants.hatchToggle);//1
-//    private Button fourbarCollect = new JoystickButton(driverRight, 1);
-//    private Button fourbarEject = new JoystickButton(driverRight, 2);
-private Button cargoCollectButton = new JoystickButton(copilot, 4); 
+    //Buttons
+    private Button cargoCollectButton = new JoystickButton(copilot, 4);
+    private Button hatchToggle = new JoystickButton(driverRight, JoystickConstants.hatchToggle); 
 
     public double getLeftPower() {
-        return (Math.abs(driverLeft.getRawAxis(Constants.leftThrottleAxis))>0.05) ? -driverLeft.getRawAxis(Constants.leftThrottleAxis) : 0.00;//glitch
-        // return -driverLeft.getRawAxis(Constants.leftThrottleAxis); // GLITCH
-        // return -driverLeft.getRawAxis(Constants.leftThrottleAxis); // OBOT
+        return (Math.abs(driverLeft.getRawAxis(JoystickConstants.leftThrottleAxis))>0.05) ? -driverLeft.getRawAxis(JoystickConstants.leftThrottleAxis) : 0.00;
     }
 
     public double getRightPower() {
-        return (Math.abs(driverRight.getRawAxis(Constants.rightThrottleAxis))>0.05) ? -driverRight.getRawAxis(Constants.rightThrottleAxis) : 0.00;//glitch
-        // return -driverRight.getRawAxis(Constants.rightThrottleAxis); // GLITCH
-        // return driverRight.getRawAxis(Constants.rightThrottleAxis); // OBOT
+        return (Math.abs(driverRight.getRawAxis(JoystickConstants.rightThrottleAxis))>0.05) ? -driverRight.getRawAxis(JoystickConstants.rightThrottleAxis) : 0.00;
     }
 
     public boolean getCargoCollectButton(){
         return cargoCollectButton.get();
     }
-    
-//    public double getRightSlider() {
-//        return (driverRight.getRawAxis(3)+1)/2;
-//    }
 
     public OI() {
-        //shootButton.whenPressed(new MotionProfile());//used to be shoot
-        //hatchToggle.whenPressed(new HatchCollectorStateChange());
-        //collectButton.whileHeld(new CollectCargo());
-        //ejectButton.whileHeld(new EjectCargo());
-        //fourbarCollect.whileHeld(new FourbarCollect());
-        //fourbarEject.whileHeld(new FourbarEject());
-        //pneumaticButton.whenPressed(new OpenHatchCollector());
-        //pneumaticButton.whenReleased(new CloseHatchCollector());
+        //Add Button Command Mapping (Dashboard & Joystick) Here
+        //Use whenPressed() and whileHeld()
+        hatchToggle.whenPressed(new HatchCollectorStateChange());
         SmartDashboard.putData("TestMove", new TestMove());
+        //SmartDashboard.putData("SYSTEM_TESTS", new RunTests());
     }
 }
