@@ -48,6 +48,7 @@ public abstract class CANDrivetrain extends LightningDrivetrain {
         leftMaster.setSubsystem(getClass().getSimpleName());
         rightMaster.setSubsystem(getClass().getSimpleName());
 
+
         SmartDashboard.putData(leftMaster);
         SmartDashboard.putData(rightMaster);
     }
@@ -140,7 +141,7 @@ public abstract class CANDrivetrain extends LightningDrivetrain {
     @Override
     public void setPower(double left, double right) {
         leftMaster.set(ControlMode.PercentOutput, left);
-        rightMaster.set(ControlMode.PercentOutput, right);
+        rightMaster.set(ControlMode.PercentOutput, -right);
     }
 
     @Override

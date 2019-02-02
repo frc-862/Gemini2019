@@ -30,7 +30,7 @@ import java.io.File;
 public class Robot extends LightningRobot {
     public static Core core = new Core();
     public static LEDs leds = new LEDs();
-/*
+
     //Drive Train Chooser
     public static boolean isOBot() {
         return new File("/home/lvuser/obot").exists();
@@ -38,11 +38,11 @@ public class Robot extends LightningRobot {
     public static boolean isGlitch() {
         return new File("/home/lvuser/glitch").exists();
     }
-    //public static OBotDrivetrain drivetrain = OBotDrivetrain.create();
+    public static OBotDrivetrain drivetrain = OBotDrivetrain.create();
     //public static GlitchDrivetrain drivetrain = GlitchDrivetrain.create();
-    public static GeminiDrivetrain drivetrain = GeminiDrivetrain.create();
-*/
-    public static SiriusDrivetrain drivetrain = SiriusDrivetrain.create();
+    //public static GeminiDrivetrain drivetrain = GeminiDrivetrain.create();
+
+    //public static SiriusDrivetrain drivetrain = SiriusDrivetrain.create();
     public static Vision vision = new Vision();
     //Mechanism Objects
     public static HatchCollector hatchPanelCollector;// = new hatch();

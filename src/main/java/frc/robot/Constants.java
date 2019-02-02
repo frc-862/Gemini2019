@@ -7,7 +7,7 @@ public class Constants extends ConstantBase {
 
     //For Joystick Input
     public static int leftThrottleAxis = 1;
-    public static int rightThrottleAxis = 1;
+    public static int rightThrottleAxis = 3;
     public static int driverRightJoy = 0;
     public static int driverLeftJoy = 1;
     public static int collectButton = 1;

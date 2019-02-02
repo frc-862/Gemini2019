@@ -7,6 +7,8 @@
 
 package frc.lightning.commands;
 
+import com.ctre.phoenix.motorcontrol.can.TalonSRXConfiguration;
+
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.lightning.util.NoTargetException;
@@ -72,6 +74,7 @@ public class WaypointThenTarget extends Command {
         }
         break;
       case ROTATE_TO_WAYPOINT:
+        SmartDashboard.putNumber("gyro", Robot.core.getHeading());
         if(Math.abs(waypointSquint - (Robot.core.getHeading() - startRotation)) > 3) {
           Robot.drivetrain.setPower(0.4 * Math.signum(waypointSquint - (Robot.core.getHeading() - startRotation)), 0.4 * - Math.signum(waypointSquint - (Robot.core.getHeading() - startRotation)));
         }
@@ -83,9 +86,11 @@ public class WaypointThenTarget extends Command {
         }
         break;
       case APPROACH_WAYPOINT:
-        double distanceTraveled = (Robot.drivetrain.getLeftDistance() - startLeftEncoderDist + Robot.drivetrain.getRightDistance() - startRightEncoderDist) / 2.0 / 12;
+        double distanceTraveled = (Robot.drivetrain.getLeftDistance() - startLeftEncoderDist + Robot.drivetrain.getRightDistance() - startRightEncoderDist) / 2.0;
         SmartDashboard.putNumber("waypoint standoff", waypointStandoff);
         SmartDashboard.putNumber("right encoder", Robot.drivetrain.getRightDistance());
+        SmartDashboard.putNumber("left encoder", Robot.drivetrain.getLeftDistance()); 
+       
         if(Math.abs(waypointStandoff - distanceTraveled) > 12) {
           Robot.drivetrain.setPower(0.25, 0.25);
         }

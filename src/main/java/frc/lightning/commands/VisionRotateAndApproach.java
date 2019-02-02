@@ -48,12 +48,17 @@ public class VisionRotateAndApproach extends Command {
           
 
       }
-      else {
+      else if (target.standoff() > 5) {
 
           double power = 0.035 * target.standoff() + 0.075;
           Robot.drivetrain.setPower(power, power);
           SmartDashboard.putString("vision turn status", "not turning");
           
+      }
+
+      else {
+        Robot.drivetrain.setPower(0,0);
+        SmartDashboard.putString("target reached", "not moving");
       }
 
   } catch(NoTargetException e) {

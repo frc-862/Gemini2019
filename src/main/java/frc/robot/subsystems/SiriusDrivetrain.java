@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.Victor;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.lightning.logging.DataLogger;
 import frc.lightning.subsystems.SpeedControllerDrivetrain;
 import frc.robot.RobotMap;
@@ -32,20 +33,20 @@ public class SiriusDrivetrain extends SpeedControllerDrivetrain {
 
         right.setInverted(true);
 
-      // Encoder leftEncoder = new Encoder(RobotMap.leftEncoder1, RobotMap.leftEncoder2);
-      //  Encoder rightEncoder = new Encoder(RobotMap.rightEncoder1, RobotMap.rightEncoder2);
+       Encoder leftEncoder = new Encoder(RobotMap.leftEncoder1, RobotMap.leftEncoder2);
+        Encoder rightEncoder = new Encoder(RobotMap.rightEncoder1, RobotMap.rightEncoder2);
 
-        return new SiriusDrivetrain(left, right);
+        return new SiriusDrivetrain(left, right,leftEncoder,rightEncoder);
     }
 
-    public SiriusDrivetrain(SpeedController left, SpeedController right) {
-        super(left, right);
+    public SiriusDrivetrain(SpeedController left, SpeedController right,Encoder lEncoder, Encoder rEncoder) {
+        super(left, lEncoder, right, rEncoder);
 
         DataLogger.addDataElement("leftPower", () -> left.get());
         DataLogger.addDataElement("rightPower", () -> right.get());
 
-     //   DataLogger.addDataElement("leftPosition", () -> leftEncoder.getDistance());
-     //   DataLogger.addDataElement("rightPosition", () -> rightEncoder.getDistance());
+        DataLogger.addDataElement("leftPosition", () -> leftEncoder.getDistance());
+        DataLogger.addDataElement("rightPosition", () -> rightEncoder.getDistance());
 
      //   DataLogger.addDataElement("leftVelocity", () -> leftEncoder.getRate());
      //   DataLogger.addDataElement("rightVelocity", () -> rightEncoder.getRate());
@@ -55,5 +56,10 @@ public class SiriusDrivetrain extends SpeedControllerDrivetrain {
     public void initDefaultCommand() {
         // Set the default command for a subsystem here.
         setDefaultCommand(new TankDrive());
+    }
+
+    public void periodic() {
+        SmartDashboard.putNumber("right encoder", getRightDistance());
+        SmartDashboard.putNumber("left encoder", getLeftDistance()); 
     }
 }

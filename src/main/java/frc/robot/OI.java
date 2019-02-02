@@ -10,6 +10,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import frc.lightning.commands.VisionRotateAndApproach;
 import frc.lightning.commands.WaypointThenTarget;
 
 /**
@@ -27,7 +28,8 @@ public class OI {
 //    //private Button hatchToggle ;//= new JoystickButton(driverRight, Constants.hatchToggle);//1
 //    private Button fourbarCollect = new JoystickButton(driverRight, 1);
 //    private Button fourbarEject = new JoystickButton(driverRight, 2);
-    private Button visionTestButton = new JoystickButton(driver, 2);
+    private Button visionTestButtonA = new JoystickButton(driver, 2);
+    private Button visionTestButtonX = new JoystickButton(driver, 1);
 
     public double getLeftPower() {
         return (Math.abs(driver.getRawAxis(Constants.leftThrottleAxis))>0.05) ? -driver.getRawAxis(Constants.leftThrottleAxis) : 0.00;//glitch
@@ -54,6 +56,7 @@ public class OI {
         //fourbarEject.whileHeld(new FourbarEject());
         //pneumaticButton.whenPressed(new OpenHatchCollector());
         //pneumaticButton.whenReleased(new CloseHatchCollector());
-        visionTestButton.whileHeld(new WaypointThenTarget());
+        visionTestButtonA.whileHeld(new WaypointThenTarget());
+        visionTestButtonX.whileHeld(new VisionRotateAndApproach());
     }
 }
