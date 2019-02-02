@@ -5,24 +5,28 @@ import frc.lightning.util.FaultCode;
 public class SystemTest {
     FaultCode.Codes code;
     boolean completed;
-    int priority;
+    Priority priority;
+
+    static enum Priority{
+        DO_NOW, HIGH, MED, LOW, DONT_CARE
+    };
 
     public SystemTest(FaultCode.Codes code) {
-        this(code, 100);
+        this(code, Priority.MED);
     }
 
-    public SystemTest(FaultCode.Codes code, int priority) {
+    public SystemTest(FaultCode.Codes code, Priority priority) {
         this.code = code;
         this.priority = priority;
         completed = false;
     }
 
-    public int getPriority() {
+    public Priority getPriority() {
         return priority;
     }
 
-    public void setup() {}
-    public void tearDown() {}
+    public void setup() {/* Config - Talon Modes */}
+    public void tearDown() {/* Set Powers to 0.0d */}
 
     public boolean didPass() {
         return false;
@@ -40,18 +44,25 @@ public class SystemTest {
         completed = true;
     }
 
-    public void testLoop() {}
+    public void periodic() {/* Actuation Here */}
 
     boolean test() {
-        testLoop();
-
-        if (didFail()) {
-            failed();
-            setCompleted();
-        } else if (didPass()) {
-            passed();
-            setCompleted();
+        setup();
+        try{
+            while(!getCompleted()){
+                periodic();
+                if (didFail()) {
+                    failed();
+                    setCompleted();
+                } else if (didPass()) {
+                    passed();
+                    setCompleted();
+                }
+            }
+        } finally {
+            tearDown();
         }
+        
 
         return getCompleted();
     }
