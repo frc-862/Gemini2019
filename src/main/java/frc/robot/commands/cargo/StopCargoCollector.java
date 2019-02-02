@@ -5,25 +5,22 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands;
+package frc.robot.commands.cargo;
 
 import edu.wpi.first.wpilibj.command.Command;
-import frc.robot.Constants;
 import frc.robot.Robot;
 
-public class DriveBackDuration extends Command {
-  private double duration;
-  public DriveBackDuration(double duration) {
+public class StopCargoCollector extends Command {
+  public StopCargoCollector() {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
-    requires(Robot.drivetrain);
-    this.duration = duration;
+    requires(Robot.cargoCollector);
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    Robot.drivetrain.setVelocity(Constants.driveBackwardVelocity, Constants.driveBackwardVelocity);
+    Robot.cargoCollector.stop();
   }
 
   // Called repeatedly when this Command is scheduled to run
@@ -34,7 +31,7 @@ public class DriveBackDuration extends Command {
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return this.timeSinceInitialized() >= duration;
+    return false;
   }
 
   // Called once after isFinished returns true

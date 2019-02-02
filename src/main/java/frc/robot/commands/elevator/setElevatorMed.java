@@ -11,8 +11,8 @@ import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Constants;
 import frc.robot.Robot;
 
-public class setElevatorMed extends Command {
-    public setElevatorMed() {
+public class SetElevatorMed extends Command {
+    public SetElevatorMed() {
         requires(Robot.elevator);
     }
 

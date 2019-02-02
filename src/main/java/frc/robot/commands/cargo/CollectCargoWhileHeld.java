@@ -10,8 +10,8 @@ package frc.robot.commands.cargo;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
-public class FourbarEject extends Command {
-    public FourbarEject() {
+public class CollectCargoWhileHeld extends Command {
+    public CollectCargoWhileHeld() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
         requires(Robot.cargoCollector);
@@ -25,7 +25,7 @@ public class FourbarEject extends Command {
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-        Robot.cargoCollector.ejectBall();
+        Robot.cargoCollector.collect();
     }
 
     // Make this return true when this Command no longer needs to run execute()

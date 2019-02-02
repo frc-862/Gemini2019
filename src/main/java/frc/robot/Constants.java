@@ -44,16 +44,33 @@ public class Constants extends ConstantBase {
 	 */
 	public final static int elevatorTopHeight = 5000;
 	public final static int elevatorMiddleHeight = 2500;
-	public final static int elevatorBottomHeight = 1000;
+	public static final int elevatorCollectHeight = 1000;
+	public final static int elevatorBottomHeight = 750;
 	public final static double elevatorDownPower=-0.2;
 	public final static double elevatorUpPower=0.4;
 	public final static double elevatorHoldPower=0.07;
+	public static final int elevatorHatchPanelF = 0;
+	public static final int elevatorCargoF = 0;
+	public static final int elevatorEmptyF = 0;
+	public final static Gains elevatorPIDF = new Gains(0, 0, 0, 0, 0, 0);
+	public static final int kPIDLoopIdx = 0;
+	public static final int kTimeoutMs = 0;
+	public static final int kSlotIdx = 0;
+
+
+	
 	// Cargo Collector Constants
 	public final static double collectPower = 1;
-	public final static double ejectPower = -1;
+    public final static double ejectPower = -1;
+ 
 
 
 	// for Hatch Panel Collect
 
 	public final static double driveBackwardVelocity = 1;
+
+	// for DriveTrain
+	public final static double velocityMultiplier = 15;
+	public final static Gains drivePIDF = new Gains(862, 0, 0, 8.62, 0, 0);
+
 }

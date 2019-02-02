@@ -24,7 +24,7 @@ import frc.lightning.logging.DataLogger;
 import frc.lightning.subsystems.CANDrivetrain;
 import frc.lightning.util.LightningMath;
 import frc.lightning.util.MotorConfig;
-import frc.robot.commands.TankDrive;
+import frc.robot.commands.driveTrain.TankDrive;
 import frc.robot.misc.Gains;
 
 /**

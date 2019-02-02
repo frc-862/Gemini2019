@@ -11,8 +11,8 @@ import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Constants;
 import frc.robot.Robot;
 
-public class setElevatorLow extends Command {
-    public setElevatorLow() {
+public class SetElevatorLow extends Command {
+    public SetElevatorLow() {
         requires(Robot.elevator);
     }
 

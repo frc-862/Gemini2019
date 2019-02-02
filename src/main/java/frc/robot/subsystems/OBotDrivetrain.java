@@ -15,7 +15,7 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import frc.lightning.subsystems.CANDrivetrain;
 import frc.lightning.util.MotorConfig;
-import frc.robot.commands.TankDrive;
+import frc.robot.commands.driveTrain.TankDrive;
 
 /**
  * Add your docs here.

@@ -10,6 +10,7 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import frc.robot.Constants;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 
 /**
@@ -22,23 +23,19 @@ public class CargoCollector extends Subsystem {
     final double holdPower = -0.2;
     final double hasCargoDistance = 0.7;
 
-    private final WPI_VictorSPX  leftGripper;
-    private final WPI_VictorSPX rightGripper;
+
     private final WPI_VictorSPX collector;
     private final DoubleSolenoid deployer;
 
     public CargoCollector create() {
         return new CargoCollector(
                    new WPI_VictorSPX(21),
-                   new WPI_VictorSPX(20),
-                   new WPI_VictorSPX(29),
                    new DoubleSolenoid(11, 1, 2)
                );
     }
 
-    public CargoCollector(WPI_VictorSPX collector, WPI_VictorSPX leftGrip, WPI_VictorSPX rightGrip, DoubleSolenoid deployer) {
-        leftGripper = leftGrip;
-        rightGripper = rightGrip;
+    public CargoCollector(WPI_VictorSPX collector, DoubleSolenoid deployer) {
+     
         this.collector = collector;
         this.deployer = deployer;
         stop();
@@ -63,46 +60,35 @@ public class CargoCollector extends Subsystem {
         //setDefaultCommand(new HABClimb());
     }
 
-    public void collectBall() {
-        System.out.println("collect it");
-        collector.set(ControlMode.PercentOutput, 1.0);
-    }
-
-    public void ejectBall() {
-        System.out.println("eject it");
-        collector.set(ControlMode.PercentOutput, -1.0);
-    }
-
-    public void stop() {
-        leftGripper.set(0.0);
-        rightGripper.set(0.0);
-        collector.set(ControlMode.PercentOutput, 0);
-    }
-
-    public void hold() {
-        setPower(holdPower);
-    }
-
-    private void setPower(double pwr) {
-        leftGripper.set(ControlMode.PercentOutput, pwr);
-        rightGripper.set(ControlMode.PercentOutput, pwr);
-    }
-
-
-    public void deployGroundCollect() {
-        deployer.set(DoubleSolenoid.Value.kForward);
-    }
-
-    public void retractGroundCollect() {
-        deployer.set(DoubleSolenoid.Value.kReverse);
-    }
-
     public void collect() {
-        setPower(collectPower);
+        System.out.println("collect it");
+        collector.set(ControlMode.PercentOutput, Constants.collectPower);
     }
 
     public void eject() {
-        setPower(-collectPower);
+        System.out.println("eject it");
+        collector.set(ControlMode.PercentOutput, Constants.ejectPower);
     }
+
+    public void stop() {
+        collector.set(ControlMode.PercentOutput, 0);
+    }
+
+
+    private void setPower(double pwr) {
+        collector.set(ControlMode.PercentOutput, pwr);
+    }
+
+
+    public void deploy() {
+        deployer.set(DoubleSolenoid.Value.kForward);
+    }
+
+    public void retract() {
+        deployer.set(DoubleSolenoid.Value.kReverse);
+    }
+
+  
+    
 
 }
