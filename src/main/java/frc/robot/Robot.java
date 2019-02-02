@@ -11,7 +11,7 @@ import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.lightning.LightningRobot;
-import frc.lightning.subsystems.VisionSystem;
+import frc.robot.subsystems.Vision;
 import frc.lightning.util.FaultMonitor;
 import frc.lightning.util.FaultCode.Codes;
 import frc.robot.commands.MotionProfile;
@@ -43,7 +43,7 @@ public class Robot extends LightningRobot {
     public static GeminiDrivetrain drivetrain = GeminiDrivetrain.create();
 */
     public static SiriusDrivetrain drivetrain = SiriusDrivetrain.create();
-    public static VisionSystem vision = new VisionSystem();
+    public static Vision vision = new Vision();
     //Mechanism Objects
     public static HatchCollector hatchPanelCollector;// = new hatch();
     public static CargoCollector cargoCollector;// = new cargo();

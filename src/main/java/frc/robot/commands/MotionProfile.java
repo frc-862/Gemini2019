@@ -68,12 +68,12 @@ public class MotionProfile extends Command {
         //config.slot0.maxIntegralAccumulator; // left default for this example
 
         //config motors
-        Robot.drivetrain.configurePID(Constants.kGains_MotProf);
+        //Robot.drivetrain.configurePID(Constants.kGains_MotProf);
 
         System.out.println("things configured");
 
-        Robot.drivetrain.getLeftMaster().startMotionProfile(bufferedStreamLeft, LinePath.Left.length, ControlMode.MotionProfile);
-        Robot.drivetrain.getRightMaster().startMotionProfile(bufferedStreamRight, LinePath.Right.length, ControlMode.MotionProfile);
+        //Robot.drivetrain.getLeftMaster().startMotionProfile(bufferedStreamLeft, LinePath.Left.length, ControlMode.MotionProfile);
+        //Robot.drivetrain.getRightMaster().startMotionProfile(bufferedStreamRight, LinePath.Right.length, ControlMode.MotionProfile);
 
         System.out.println("started");
 
@@ -85,21 +85,22 @@ public class MotionProfile extends Command {
 
         System.out.println("should be moving . . . ");
 
-        SmartDashboard.putNumber("LeftPoints", Robot.drivetrain.getLeftMaster().getMotionProfileTopLevelBufferCount());
-        SmartDashboard.putNumber("RightPoints", Robot.drivetrain.getRightMaster().getMotionProfileTopLevelBufferCount());
+        //SmartDashboard.putNumber("LeftPoints", Robot.drivetrain.getLeftMaster().getMotionProfileTopLevelBufferCount());
+        //SmartDashboard.putNumber("RightPoints", Robot.drivetrain.getRightMaster().getMotionProfileTopLevelBufferCount());
 
-        SmartDashboard.putNumber("LeftEncoder",  LightningMath.ticks2feet(Robot.drivetrain.getLeftMaster ().getSelectedSensorPosition()));
-        SmartDashboard.putNumber("RightEncoder", LightningMath.ticks2feet(Robot.drivetrain.getRightMaster().getSelectedSensorPosition()));
+        //SmartDashboard.putNumber("LeftEncoder",  LightningMath.ticks2feet(Robot.drivetrain.getLeftMaster ().getSelectedSensorPosition()));
+        //SmartDashboard.putNumber("RightEncoder", LightningMath.ticks2feet(Robot.drivetrain.getRightMaster().getSelectedSensorPosition()));
 
-        SmartDashboard.putNumber("Left Output", Robot.drivetrain.getLeftMaster().getMotorOutputPercent());
-        SmartDashboard.putNumber("Right Output", Robot.drivetrain.getRightMaster().getMotorOutputPercent());
+        //SmartDashboard.putNumber("Left Output", Robot.drivetrain.getLeftMaster().getMotorOutputPercent());
+        //SmartDashboard.putNumber("Right Output", Robot.drivetrain.getRightMaster().getMotorOutputPercent());
 
     }
 
     // Make this return true when this Command no longer needs to run execute()
     @Override
     protected boolean isFinished() {
-        return Robot.drivetrain.getLeftMaster().isMotionProfileFinished() && Robot.drivetrain.getRightMaster().isMotionProfileFinished();
+        return true;
+        //return Robot.drivetrain.getLeftMaster().isMotionProfileFinished() && Robot.drivetrain.getRightMaster().isMotionProfileFinished();
     }
 
     // Called once after isFinished returns true

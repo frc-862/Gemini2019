@@ -61,8 +61,8 @@ public class TalonMotionProfile extends Command {
     @Override
     protected void initialize() {
         logger.reset();
-        Robot.drivetrain.getLeftMaster().startMotionProfile(leftPS, 10, ControlMode.MotionProfile);
-        Robot.drivetrain.getRightMaster().startMotionProfile(rightPS, 10, ControlMode.MotionProfile);
+        //Robot.drivetrain.getLeftMaster().startMotionProfile(leftPS, 10, ControlMode.MotionProfile);
+        //Robot.drivetrain.getRightMaster().startMotionProfile(rightPS, 10, ControlMode.MotionProfile);
     }
 
 
@@ -73,15 +73,15 @@ public class TalonMotionProfile extends Command {
     @Override
     protected void execute() {
         // log something useful
-        WPI_TalonSRX left = Robot.drivetrain.getLeftMaster();
-        WPI_TalonSRX right = Robot.drivetrain.getRightMaster();
-        var ls = Robot.drivetrain.getLeftMaster().getSensorCollection();
-        var rs = Robot.drivetrain.getRightMaster().getSensorCollection();
+        //WPI_TalonSRX left = Robot.drivetrain.getLeftMaster();
+        //WPI_TalonSRX right = Robot.drivetrain.getRightMaster();
+        //var ls = Robot.drivetrain.getLeftMaster().getSensorCollection();
+        //var rs = Robot.drivetrain.getRightMaster().getSensorCollection();
 
-        logger.set("leftProjected", left.getClosedLoopTarget());
-        logger.set("rightProjected", right.getClosedLoopTarget());
-        logger.set("leftActual", ls.getQuadraturePosition());
-        logger.set("rightActual", rs.getQuadraturePosition());
+        //logger.set("leftProjected", left.getClosedLoopTarget());
+        //logger.set("rightProjected", right.getClosedLoopTarget());
+        //logger.set("leftActual", ls.getQuadraturePosition());
+        //logger.set("rightActual", rs.getQuadraturePosition());
 
         logger.writeValues();
     }
@@ -91,8 +91,9 @@ public class TalonMotionProfile extends Command {
      */
     @Override
     protected boolean isFinished() {
-        return Robot.drivetrain.getLeftMaster().isMotionProfileFinished() &&
-               Robot.drivetrain.getRightMaster().isMotionProfileFinished();
+        return true;
+        //return Robot.drivetrain.getLeftMaster().isMotionProfileFinished() &&
+        //       Robot.drivetrain.getRightMaster().isMotionProfileFinished();
     }
 
     @Override
