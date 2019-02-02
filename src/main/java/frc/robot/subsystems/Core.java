@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.lightning.logging.DataLogger;
 import frc.lightning.util.FaultMonitor;
 import frc.lightning.util.UnchangingFaultMonitor;
@@ -48,6 +49,9 @@ public class Core extends Subsystem {
     return navx.getFusedHeading();
     //return 0;
   }
+  public double getContinuousHeading() {
+    return navx.getAngle();
+  }
 
   @Override
   public void initDefaultCommand() {
@@ -57,5 +61,10 @@ public class Core extends Subsystem {
   }
   public boolean hasHatchCollector(){
     return false; //TODO make it return the sensor value
+  }
+
+  public void periodic() {
+    SmartDashboard.putNumber("gyro accumulated angle", getContinuousHeading());
+    SmartDashboard.putNumber("gyro fused angle", getHeading());
   }
 }

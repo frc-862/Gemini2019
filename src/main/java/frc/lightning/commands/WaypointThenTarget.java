@@ -26,7 +26,7 @@ public class WaypointThenTarget extends Command {
 
   private state currentState = state.SEEKING;
   //The distance from the waypoint to the target is this proportion of standoff.
-  private final double WAYPOINT_DISTANCE_SCALE = 0.5;
+  private final double WAYPOINT_DISTANCE_SCALE = 0.2;
 
   public WaypointThenTarget() {
     // Use requires() here to declare subsystem dependencies
@@ -44,6 +44,7 @@ public class WaypointThenTarget extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
+    SmartDashboard.putString("vision state", currentState.toString());
     switch(currentState) {
       case SEEKING:
         try {
@@ -65,18 +66,26 @@ public class WaypointThenTarget extends Command {
               Math.toRadians(90 - Math.abs(target.squint()) - Math.abs(target.rotation()))
                / waypointStandoff * target.standoff() * WAYPOINT_DISTANCE_SCALE))) - Math.abs(target.squint());
           
-          waypointRotationToTarget = Math.signum(target.rotation()) * -1 * (180 - (180 - (waypointSquint - Math.abs(target.squint())) - (90 - Math.abs(target.squint()) - Math.abs(target.rotation()))));
+          waypointRotationToTarget = Math.signum(
+            target.rotation()) * -1 * 
+            /*(180 - 
+            (180 - 
+            (Math.abs(waypointSquint) + Math.abs(target.squint())) - 
+            (90 - Math.abs(target.squint()) - Math.abs(target.rotation()))));*/
+            (180 - Math.abs(target.rotation()) - (90 - Math.abs(waypointSquint)));
 
-          startRotation = Robot.core.getHeading();
+          startRotation = Robot.core.getContinuousHeading();
           currentState = state.ROTATE_TO_WAYPOINT;
         } catch(NoTargetException e) {
           Robot.drivetrain.setPower(0, 0);
         }
         break;
       case ROTATE_TO_WAYPOINT:
-        SmartDashboard.putNumber("gyro", Robot.core.getHeading());
-        if(Math.abs(waypointSquint - (Robot.core.getHeading() - startRotation)) > 3) {
-          Robot.drivetrain.setPower(0.4 * Math.signum(waypointSquint - (Robot.core.getHeading() - startRotation)), 0.4 * - Math.signum(waypointSquint - (Robot.core.getHeading() - startRotation)));
+        SmartDashboard.putNumber("waypoint squint", waypointSquint);
+        SmartDashboard.putNumber("start rotation", startRotation);
+        SmartDashboard.putNumber("degrees turned", Robot.core.getContinuousHeading() - startRotation);
+        if(Math.abs(waypointSquint - (Robot.core.getContinuousHeading() - startRotation)) > 3) {
+          Robot.drivetrain.setPower(0.3 * Math.signum(waypointSquint - (Robot.core.getContinuousHeading() - startRotation)), 0.3 * - Math.signum(waypointSquint - (Robot.core.getContinuousHeading() - startRotation)));
         }
         else {
           Robot.drivetrain.setPower(0, 0);
@@ -88,21 +97,22 @@ public class WaypointThenTarget extends Command {
       case APPROACH_WAYPOINT:
         double distanceTraveled = (Robot.drivetrain.getLeftDistance() - startLeftEncoderDist + Robot.drivetrain.getRightDistance() - startRightEncoderDist) / 2.0;
         SmartDashboard.putNumber("waypoint standoff", waypointStandoff);
-        SmartDashboard.putNumber("right encoder", Robot.drivetrain.getRightDistance());
-        SmartDashboard.putNumber("left encoder", Robot.drivetrain.getLeftDistance()); 
        
         if(Math.abs(waypointStandoff - distanceTraveled) > 12) {
           Robot.drivetrain.setPower(0.25, 0.25);
         }
         else {
           Robot.drivetrain.setPower(0, 0);
-          startRotation = Robot.core.getHeading();
+          startRotation = Robot.core.getContinuousHeading();
           currentState = state.ROTATE_TO_TARGET;
         }
         break;
       case ROTATE_TO_TARGET:
-        if(Math.abs(waypointRotationToTarget - (Robot.core.getHeading() - startRotation)) > 3) {
-          Robot.drivetrain.setPower(0.4 * Math.signum(waypointRotationToTarget - (Robot.core.getHeading() - startRotation)), 0.4 * - Math.signum(waypointRotationToTarget - (Robot.core.getHeading() - startRotation)));
+        SmartDashboard.putNumber("rotation to target", waypointRotationToTarget);
+        SmartDashboard.putNumber("start rotation", startRotation);
+        SmartDashboard.putNumber("degrees turned", Robot.core.getContinuousHeading() - startRotation);
+        if(Math.abs(waypointRotationToTarget - (Robot.core.getContinuousHeading() - startRotation)) > 3) {
+          Robot.drivetrain.setPower(0.4 * Math.signum(waypointRotationToTarget - (Robot.core.getContinuousHeading() - startRotation)), 0.4 * - Math.signum(waypointRotationToTarget - (Robot.core.getContinuousHeading() - startRotation)));
         }
         else {
           Robot.drivetrain.setPower(0, 0);

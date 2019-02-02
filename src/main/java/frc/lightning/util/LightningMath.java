@@ -4,14 +4,14 @@ import frc.robot.Robot;
 import frc.robot.RobotConstants;
 
 public class LightningMath {
-    public static double wheelRadius;
+    public static double wheelRadius = 4.0;
     static{
         if(Robot.isOBot()) wheelRadius = RobotConstants.obotWheelDiameter/2;
         else if(Robot.isGlitch()) wheelRadius = RobotConstants.glitchWheelDiameter/2;
     }
 
     
-    public static double wheelCircumference = wheelRadius * Math.PI * 2;//1.5707 ft
+    public static double wheelCircumference = wheelRadius * Math.PI * 2 / 12;//1.5707 ft
     public static final double TICS_PER_ROTATION = 4 * 360;
 
     public static double talon2ips(double talon) {

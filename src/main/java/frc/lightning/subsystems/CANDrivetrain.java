@@ -17,6 +17,7 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.wpilibj.Sendable;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.lightning.logging.DataLogger;
+import frc.lightning.util.LightningMath;
 
 /**
  * Add your docs here.
@@ -162,12 +163,12 @@ public abstract class CANDrivetrain extends LightningDrivetrain {
 
     @Override
     public double  getLeftDistance() {
-        return leftMaster.getSelectedSensorPosition();
+        return -LightningMath.ticks2inches(leftMaster.getSelectedSensorPosition());
     }
 
     @Override
     public double getRightDistance() {
-        return rightMaster.getSelectedSensorPosition();
+        return LightningMath.ticks2inches(rightMaster.getSelectedSensorPosition());
     }
 
     @Override
@@ -183,5 +184,10 @@ public abstract class CANDrivetrain extends LightningDrivetrain {
     @Override
     public void resetDistance() {
         withEachMaster((m) -> m.setSelectedSensorPosition(0));
+    }
+
+    public void periodic() {
+        SmartDashboard.putNumber("right encoder", getRightDistance());
+        SmartDashboard.putNumber("left encoder", getLeftDistance()); 
     }
 }
