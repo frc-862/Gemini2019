@@ -7,6 +7,8 @@
 
 package frc.robot.subsystems;
 
+import java.util.function.DoubleSupplier;
+
 import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
@@ -17,11 +19,36 @@ import frc.lightning.util.FaultMonitor;
 import frc.lightning.util.UnchangingFaultMonitor;
 import frc.lightning.util.FaultCode.Codes;
 import frc.robot.RobotMap;
+import edu.wpi.first.wpilibj.AnalogInput;
+import edu.wpi.first.wpilibj.DigitalInput;
 
 /**
  * Add your docs here.
  */
 public class Core extends Subsystem {
+  private DigitalInput pressure1 = new DigitalInput(0);
+
+  private DigitalInput outerLeft = new DigitalInput(1);
+  private DigitalInput midLeft = new DigitalInput(2);
+  private AnalogInput innerLeft = new AnalogInput(0);
+  private AnalogInput centerLeft = new AnalogInput(1);
+
+  private AnalogInput centerRight = new AnalogInput(2);
+  private AnalogInput innerRight = new AnalogInput(3);
+  private DigitalInput midRight = new DigitalInput(3);
+  private DigitalInput outerRight = new DigitalInput(4);
+  
+  private double lineWeights[] = { -7, -5, -3, -1, 1, 3, 5, 7};
+  private DoubleSupplier sensorValues[] = {
+      () -> outerLeft.get() ? 1.0 : 0,
+      () -> midLeft.get() ? 1.0 : 0,
+      () -> innerLeft.getVoltage() / 5.0,
+      () -> centerLeft.getVoltage() / 5.0,
+      () -> centerRight.getVoltage() / 5.0,
+      () -> innerRight.getVoltage() / 5.0,
+      () -> midRight.get() ? 1.0 : 0,
+      () -> outerRight.get() ? 1.0 : 0,
+  };
   // Put methods for controlling this subsystem
   // here. Call these from Commajnds.
   // private AHRS navx;
@@ -54,4 +81,21 @@ public class Core extends Subsystem {
     // Set the default command for a subsystem here.
     // setDefaultCommand(new MySpecialCommand());
   }
+  public double lineSensor() {
+        
+        
+
+    double weight = 0;
+    double sensors = 0;
+    for(int loop=0;loop>7;loop++)
+    {
+        double value = sensorValues[loop].getAsDouble();
+        weight += value * lineWeights[loop];
+        sensors += value;
+    }
+
+    return weight / sensors;
+
+        
+}
 }
