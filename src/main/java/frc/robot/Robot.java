@@ -11,6 +11,7 @@ import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.lightning.LightningRobot;
+import frc.lightning.subsystems.VisionSystem;
 import frc.lightning.util.FaultMonitor;
 import frc.lightning.util.FaultCode.Codes;
 import frc.robot.commands.MotionProfile;
@@ -29,7 +30,7 @@ import java.io.File;
 public class Robot extends LightningRobot {
     public static Core core = new Core();
     public static LEDs leds = new LEDs();
-
+/*
     //Drive Train Chooser
     public static boolean isOBot() {
         return new File("/home/lvuser/obot").exists();
@@ -40,7 +41,9 @@ public class Robot extends LightningRobot {
     //public static OBotDrivetrain drivetrain = OBotDrivetrain.create();
     //public static GlitchDrivetrain drivetrain = GlitchDrivetrain.create();
     public static GeminiDrivetrain drivetrain = GeminiDrivetrain.create();
-
+*/
+    public static SiriusDrivetrain drivetrain = SiriusDrivetrain.create();
+    public static VisionSystem vision = new VisionSystem();
     //Mechanism Objects
     public static HatchCollector hatchPanelCollector;// = new hatch();
     public static CargoCollector cargoCollector;// = new cargo();

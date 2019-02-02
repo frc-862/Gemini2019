@@ -8,6 +8,9 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.buttons.Button;
+import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import frc.lightning.commands.WaypointThenTarget;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -15,8 +18,8 @@ import edu.wpi.first.wpilibj.Joystick;
  */
 public class OI {
     //Drive Joysticks
-    private Joystick driverRight = new Joystick(1);// Constants.driverRightJoy);   //0
-    private Joystick driverLeft = new Joystick(0);// Constants.driverLeftJoy);   //1
+    //private Joystick driverRight = new Joystick(1);// Constants.driverRightJoy);   //0
+    private Joystick driver = new Joystick(0);// Constants.driverLeftJoy);   //1
 
     //Mechanism Buttons
 //    private Button collectButton = new JoystickButton(driverLeft, Constants.collectButton);//1
@@ -24,15 +27,16 @@ public class OI {
 //    //private Button hatchToggle ;//= new JoystickButton(driverRight, Constants.hatchToggle);//1
 //    private Button fourbarCollect = new JoystickButton(driverRight, 1);
 //    private Button fourbarEject = new JoystickButton(driverRight, 2);
+    private Button visionTestButton = new JoystickButton(driver, 2);
 
     public double getLeftPower() {
-        return (Math.abs(driverLeft.getRawAxis(Constants.leftThrottleAxis))>0.05) ? -driverLeft.getRawAxis(Constants.leftThrottleAxis) : 0.00;//glitch
+        return (Math.abs(driver.getRawAxis(Constants.leftThrottleAxis))>0.05) ? -driver.getRawAxis(Constants.leftThrottleAxis) : 0.00;//glitch
         // return -driverLeft.getRawAxis(Constants.leftThrottleAxis); // GLITCH
         // return -driverLeft.getRawAxis(Constants.leftThrottleAxis); // OBOT
     }
 
     public double getRightPower() {
-        return (Math.abs(driverRight.getRawAxis(Constants.rightThrottleAxis))>0.05) ? -driverRight.getRawAxis(Constants.rightThrottleAxis) : 0.00;//glitch
+        return (Math.abs(driver.getRawAxis(Constants.rightThrottleAxis))>0.05) ? -driver.getRawAxis(Constants.rightThrottleAxis) : 0.00;//glitch
         // return -driverRight.getRawAxis(Constants.rightThrottleAxis); // GLITCH
         // return driverRight.getRawAxis(Constants.rightThrottleAxis); // OBOT
     }
@@ -50,5 +54,6 @@ public class OI {
         //fourbarEject.whileHeld(new FourbarEject());
         //pneumaticButton.whenPressed(new OpenHatchCollector());
         //pneumaticButton.whenReleased(new CloseHatchCollector());
+        visionTestButton.whileHeld(new WaypointThenTarget());
     }
 }
