@@ -25,6 +25,7 @@ import frc.lightning.subsystems.CANDrivetrain;
 import frc.lightning.util.LightningMath;
 import frc.lightning.util.MotorConfig;
 import frc.robot.Robot;
+import frc.robot.RobotMap;
 import frc.robot.commands.driveTrain.TankDrive;
 import frc.robot.misc.Gains;
 
@@ -42,12 +43,12 @@ public class GlitchDrivetrain extends CANDrivetrain {
 
     public static GlitchDrivetrain create() {
         return new GlitchDrivetrain(
-                   new WPI_TalonSRX(1),
-                   new WPI_VictorSPX(2),
-                   new WPI_VictorSPX(3),//
-                   new WPI_TalonSRX(4),
-                   new WPI_VictorSPX(5),
-                   new WPI_VictorSPX(6));//
+                   new WPI_TalonSRX(RobotMap.glitchLeftMaster),
+                   new WPI_VictorSPX(RobotMap.glitchLeftSlave),
+                   new WPI_VictorSPX(RobotMap.glitchLeftSlave2),//
+                   new WPI_TalonSRX(RobotMap.glitchRightMaster),
+                   new WPI_VictorSPX(RobotMap.glitchRIghtSlave),
+                   new WPI_VictorSPX(RobotMap.glitchRightSlave2));//
 
 
     }

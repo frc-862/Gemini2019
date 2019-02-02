@@ -19,6 +19,7 @@ import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.Constants;
+import frc.robot.RobotMap;
 
 /**
  * Add your docs here.
@@ -31,10 +32,10 @@ public class Elevator extends Subsystem {
     public TalonSRX motor1;
     public VictorSPX motor2;
 
-    public DigitalInput pieceDetector = new DigitalInput(0);
+    public DigitalInput pieceDetector = new DigitalInput(RobotMap.pieceDetector);
 
     public Elevator() {
-        motor1 = null; // TODO init me
+        motor1 = null; // TODO init me in robot map
         motor2 = null;
 
         motor2.follow(motor1);
