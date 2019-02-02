@@ -7,22 +7,17 @@
 
 package frc.robot.commands.hatch;
 
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
-
-public class DeployGroundHatchCollector extends Command {
-  public DeployGroundHatchCollector() {
+public class waitForHatchPanel extends Command {
+  public waitForHatchPanel() {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
-    requires(Robot.hatchGroundCollector);
-  
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    Robot.hatchGroundCollector.toggleDeployer();
   }
 
   // Called repeatedly when this Command is scheduled to run
@@ -33,19 +28,17 @@ public class DeployGroundHatchCollector extends Command {
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return this.timeSinceInitialized() >= 0.2; 
+    return Robot.core.hasHatchCollector();
   }
 
   // Called once after isFinished returns true
   @Override
   protected void end() {
-    Robot.hatchGroundCollector.toggleDeployer();
   }
 
   // Called when another command which requires one or more of the same
   // subsystems is scheduled to run
   @Override
   protected void interrupted() {
-    end();
   }
 }

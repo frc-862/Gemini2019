@@ -16,19 +16,34 @@ import edu.wpi.first.wpilibj.command.Subsystem;
  * Add your docs here.
  */
 public class HatchCollector extends Subsystem {
-    // Put methods for controlling this subsystem
-    // here. Call these from Commands.
+  // Put methods for controlling this subsystem
+  // here. Call these from Commands.
 
-    DoubleSolenoid hatchExtend;
-    DoubleSolenoid hatchGrabber;
-    DigitalInput hatchDetector;
+  DoubleSolenoid extender, grabber;
+  DigitalInput hatchDetector;
 
-    public HatchCollector() {
-        hatchExtend = new DoubleSolenoid(11, 3, 2);// OBOT - 11, 4, 5
-        hatchGrabber = new DoubleSolenoid(11, 0, 1); // TODO find correct values
-        // constructor - DoubleSolenoid(moduleNumber, forwardChannel, reverseChannel)
+  public HatchCollector(){
+    extender = new DoubleSolenoid(11, 0, 1);// OBOT - 11, 4, 5 TODO change these
+    grabber = new DoubleSolenoid(1, 5, 2);// TODO change these
+    // constructor - DoubleSolenoid(moduleNumber, forwardChannel, reverseChannel)
+    hatchDetector = new DigitalInput(1); // TODO check wiring
+  }
 
-        hatchDetector = new DigitalInput(1); // TODO check wiring
+  public void extend(){
+    extender.set(DoubleSolenoid.Value.kForward);
+  }
+  public void open(){
+    grabber.set(DoubleSolenoid.Value.kForward);
+  }
+  public void close(){
+    grabber.set(DoubleSolenoid.Value.kReverse);
+  }
+  public void toggleExtenderState(){
+    DoubleSolenoid.Value state = extender.get();
+    if(state == Value.kForward){
+      retract();
+    }else{
+      extend();
     }
 
     @Override
@@ -37,27 +52,7 @@ public class HatchCollector extends Subsystem {
         // setDefaultCommand(new MySpecialCommand());
     }
 
-    public DoubleSolenoid.Value getPosition(){
-        return hatchGrabber.get();
-    }
-
-    public boolean hatchDetected() {
-        return hatchDetector.get();
-    }
-
-    public void extendHatchCollector() {
-        hatchExtend.set(DoubleSolenoid.Value.kForward);
-    }
-
-    public void retractHatchCollector() {
-        hatchExtend.set(DoubleSolenoid.Value.kReverse);
-    }
-
-    public void grabHatchPanel() {
-        hatchGrabber.set(DoubleSolenoid.Value.kForward);
-    }
-
-    public void releaseHatchPanel() {
-        hatchGrabber.set(DoubleSolenoid.Value.kReverse);
-    }
+  public void retract(){
+    extender.set(DoubleSolenoid.Value.kReverse);
+  }
 }

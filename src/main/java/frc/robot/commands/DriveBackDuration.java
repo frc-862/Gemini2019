@@ -5,24 +5,25 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands.hatch;
+package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
+import frc.robot.Constants;
 import frc.robot.Robot;
 
-public class DeployGroundHatchCollector extends Command {
-  public DeployGroundHatchCollector() {
+public class DriveBackDuration extends Command {
+  private double duration;
+  public DriveBackDuration(double duration) {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
-    requires(Robot.hatchGroundCollector);
-  
+    requires(Robot.drivetrain);
+    this.duration = duration;
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    Robot.hatchGroundCollector.toggleDeployer();
+    Robot.drivetrain.setVelocity(Constants.driveBackwardVelocity, Constants.driveBackwardVelocity);
   }
 
   // Called repeatedly when this Command is scheduled to run
@@ -33,19 +34,17 @@ public class DeployGroundHatchCollector extends Command {
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return this.timeSinceInitialized() >= 0.2; 
+    return this.timeSinceInitialized() >= duration;
   }
 
   // Called once after isFinished returns true
   @Override
   protected void end() {
-    Robot.hatchGroundCollector.toggleDeployer();
   }
 
   // Called when another command which requires one or more of the same
   // subsystems is scheduled to run
   @Override
   protected void interrupted() {
-    end();
   }
 }

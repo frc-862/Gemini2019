@@ -29,6 +29,7 @@ import java.io.File;
 public class Robot extends LightningRobot {
 
     public static Core core = new Core();
+    public static LEDs leds = new LEDs();
 
     //Drive Train Chooser
     public static boolean isOBot() {
@@ -42,7 +43,7 @@ public class Robot extends LightningRobot {
     public static GeminiDrivetrain drivetrain = GeminiDrivetrain.create();
 
     //Mechanism Objects
-    public static HatchCollector collector;// = new HatchCollector();
+    public static HatchCollector hatchPanelCollector;// = new hatch();
     public static CargoCollector cargoCollector;// = new cargo();
     public static HatchGroundCollector hatchGroundCollector;// = new HatchGroundCollector();
     public static Elevator elevator;// = new Elevator();
