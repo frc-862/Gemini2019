@@ -70,10 +70,10 @@ public class GlitchDrivetrain extends CANDrivetrain {
 
         //DataLogger.addDataElement("leftVel", () -> LightningMath.talon2fps(getLeftVelocity()));
         //DataLogger.addDataElement("rightVel", () -> LightningMath.talon2fps(getRightVelocity()));
-        DataLogger.addDataElement("R_Current_Pos", () -> LightningMath.ticks2feet(Robot.drivetrain.getRightMaster().getSelectedSensorPosition()));
-        DataLogger.addDataElement("L_Current_Pos", () -> LightningMath.ticks2feet(Robot.drivetrain.getLeftMaster().getSelectedSensorPosition()));
-        DataLogger.addDataElement("R_Expected_Pos", () -> LightningMath.ticks2feet(Robot.drivetrain.getRightMaster().getActiveTrajectoryPosition()));
-        DataLogger.addDataElement("L_Expected_Pos", () -> LightningMath.ticks2feet(Robot.drivetrain.getLeftMaster().getActiveTrajectoryPosition()));
+        //DataLogger.addDataElement("R_Current_Pos", () -> LightningMath.ticks2feet(Robot.drivetrain.getRightMaster().getSelectedSensorPosition()));
+        //DataLogger.addDataElement("L_Current_Pos", () -> LightningMath.ticks2feet(Robot.drivetrain.getLeftMaster().getSelectedSensorPosition()));
+        //DataLogger.addDataElement("R_Expected_Pos", () -> LightningMath.ticks2feet(Robot.drivetrain.getRightMaster().getActiveTrajectoryPosition()));
+        //DataLogger.addDataElement("L_Expected_Pos", () -> LightningMath.ticks2feet(Robot.drivetrain.getLeftMaster().getActiveTrajectoryPosition()));
 
     }
 
