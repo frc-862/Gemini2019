@@ -62,14 +62,16 @@ public class Robot extends LightningRobot {
     public static boolean isOBot() {
         return (new File("/home/lvuser/obot")).exists();
     }
+
     public static boolean isGlitch() {
         return (new File("/home/lvuser/glitch")).exists();
     }
+
     public static boolean isGemini() {
         return (new File("/home/lvuser/gemini")).exists();//TODO make file on robot
     }
+
     public static boolean isFlash() {
         return (new File("/home/lvuser/flash")).exists();
     }
-
 }
