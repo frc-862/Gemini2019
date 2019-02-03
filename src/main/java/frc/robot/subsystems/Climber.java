@@ -11,6 +11,7 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import frc.robot.Constants;
 import frc.robot.RobotConstants;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
@@ -40,9 +41,9 @@ public class Climber extends Subsystem {
         var sensors = motor.getSensorCollection();
         // Set the default command for a subsystem here.
         if (sensors.isFwdLimitSwitchClosed()) {
-            motor.setSelectedSensorPosition(RobotConstants.extendedPosition);
+            motor.setSelectedSensorPosition(Constants.extendedPosition);
         } else if (sensors.isRevLimitSwitchClosed()) {
-            motor.setSelectedSensorPosition(RobotConstants.retractedPosition);
+            motor.setSelectedSensorPosition(Constants.retractedPosition);
         }
     }
 
@@ -54,11 +55,11 @@ public class Climber extends Subsystem {
     }
 
     public void extendJack() {
-        motor.set(ControlMode.MotionMagic, RobotConstants.extendedPosition);
+        motor.set(ControlMode.MotionMagic, Constants.extendedPosition);
     }
 
     public void retractJack() {
-        motor.set(ControlMode.MotionMagic, RobotConstants.retractedPosition);
+        motor.set(ControlMode.MotionMagic, Constants.retractedPosition);
     }
 
     public void stopJack() {

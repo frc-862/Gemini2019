@@ -7,16 +7,8 @@
 
 package frc.robot;
 
-import edu.wpi.first.cameraserver.CameraServer;
-import edu.wpi.first.wpilibj.RobotController;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.lightning.LightningRobot;
-import frc.lightning.subsystems.CANDrivetrain;
-import frc.lightning.subsystems.LightningDrivetrain;
-import frc.lightning.util.FaultMonitor;
-import frc.lightning.util.FaultCode.Codes;
 import frc.robot.commands.driveTrain.MotionProfile;
-import frc.robot.commands.test.TestMove;
 import frc.robot.subsystems.*;
 
 import java.io.File;
@@ -24,7 +16,7 @@ import java.io.File;
 public class Robot extends LightningRobot {
 
     //Subsystems
-    public static CANDrivetrain drivetrain;
+    public static GeminiDrivetrain drivetrain;
     public static Core core;
     public static LEDs leds;
     public static HatchCollector hatchPanelCollector;
@@ -33,45 +25,32 @@ public class Robot extends LightningRobot {
     public static Elevator elevator;
     public static OI oi;
 
+    private static boolean gemini = true;
+
     public Robot() {
         super();
         System.out.println("Initializing our robot");
-        //Create Things
-        if(isOBot()){
-            drivetrain = OBotDrivetrain.create();
-        }else if(isGlitch()){
-            drivetrain = GlitchDrivetrain.create();
-            hatchPanelCollector = new HatchCollector();
-        }else if (isGemini()){
-            drivetrain = GeminiDrivetrain.create();
-            leds = new LEDs();
-            hatchGroundCollector = new HatchGroundCollector();
-            hatchPanelCollector = new HatchCollector();
-            cargoCollector = CargoCollector.create();
-            elevator = new Elevator();
-        }else if (isFlash()){
-            elevator = new Elevator();
-        }
+        drivetrain = GeminiDrivetrain.create();
+        leds = new LEDs();
+        hatchGroundCollector = new HatchGroundCollector();
+        hatchPanelCollector = new HatchCollector();
+        cargoCollector = CargoCollector.create();
+        elevator = new Elevator();
+
         core = new Core();
         oi = new OI();
-        //this.registerAutonomousCommmand(name, command);
+
+        // set a flag, it is either gemini or nebula
+        gemini = ((new File("/home/lvuser/gemini")).exists());
+
         this.registerAutonomousCommmand("T_MotionProfile", new MotionProfile());
     }
 
-    //Drive Train Chooser
-    public static boolean isOBot() {
-        return (new File("/home/lvuser/obot")).exists();
-    }
-
-    public static boolean isGlitch() {
-        return (new File("/home/lvuser/glitch")).exists();
-    }
-
     public static boolean isGemini() {
-        return (new File("/home/lvuser/gemini")).exists();//TODO make file on robot
+        return gemini;
     }
 
-    public static boolean isFlash() {
-        return (new File("/home/lvuser/flash")).exists();
+    public static boolean isNebula() {
+        return !gemini;
     }
 }

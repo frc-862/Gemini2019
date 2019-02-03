@@ -4,6 +4,15 @@ import frc.lightning.ConstantBase;
 import frc.robot.misc.Gains;
 
 public class Constants extends ConstantBase {
+	public static final double TICS_PER_ROTATION = 4 * 360;
+
+	// Cargo Collector
+	public static final double collectPower = -0.6;
+	public static final double holdPower = -0.2;
+	public static final double hasCargoDistance = 0.7;
+	// Climber 
+	public static final int retractedPosition = 0;
+	public static final int extendedPosition = 42; // TODO calibrate this value
 
 	public final static int kSensorUnitsPerRotation = 4 * 360;
 	public final static double kNeutralDeadband = 0.001;

@@ -49,7 +49,7 @@ public class CargoCollector extends Subsystem {
     }
 
     public boolean hasCargo() {
-        return cargoDistanceSensor() >= 0 && cargoDistanceSensor() <= RobotConstants.hasCargoDistance;
+        return cargoDistanceSensor() >= 0 && cargoDistanceSensor() <= Constants.hasCargoDistance;
     }
 
     @Override
@@ -59,12 +59,12 @@ public class CargoCollector extends Subsystem {
 
     public void collect() {
         System.out.println("collect it");
-        collector.set(ControlMode.PercentOutput, RobotConstants.collectPower);
+        collector.set(ControlMode.PercentOutput, Constants.collectPower);
     }
 
     public void eject() {
         System.out.println("eject it");
-        collector.set(ControlMode.PercentOutput, -RobotConstants.collectPower);
+        collector.set(ControlMode.PercentOutput, -Constants.collectPower);
     }
 
     public void stop() {
