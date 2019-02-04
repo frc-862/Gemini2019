@@ -18,7 +18,6 @@ import frc.lightning.util.FaultCode.Codes;
 import frc.robot.Constants;
 import frc.robot.Robot;
 import frc.robot.commands.driveTrain.MotionProfile;
-import frc.robot.commands.test.RunTests;
 
 /**
  * Base robot class, provides {@link frc.lightning.ConstantBase constants},
@@ -64,7 +63,7 @@ public class LightningRobot extends TimedRobot {
         // By this point all datalog fields should be registered
         DataLogger.preventNewDataElements();
 
-        LightningServer.start_server();
+        // LightningServer.start_server();
         FaultMonitor.register(new TimedFaultMonitor(Codes.SLOW_LOOPER, () -> getLoopTime() > getPeriod(),
                               0.08, "Loop is running slow: " + getLoopTime()));
 
@@ -225,35 +224,4 @@ public class LightningRobot extends TimedRobot {
     public void teleopPeriodic() {
         Scheduler.getInstance().run();
     }
-    @Override
-    public void testInit() {
-        NetworkTableEntry userInstructions = Shuffleboard.getTab("SystemTests")
-                                             .getLayout("List", "System test")
-                                             .add("UserTestMessage", "Follow instructions")
-                                             .getEntry();
-
-        userInstructions.setString("Press Button to begin");
-        NetworkTableEntry testButton = Shuffleboard.getTab("SystemTests")
-                                       .getLayout("List", "System test")
-                                       .add("TestButton", false)
-                                       .withWidget("Toggle Button")
-                                       .getEntry();
-        testButton.setBoolean(false);
-        FaultCode.eachCode((Codes code, Boolean state) -> {
-            Shuffleboard.getTab("SystemTests")
-            .getLayout("List", "System test")
-            .add(code.toString(), state)
-            .withWidget("Toggle Button")
-            .getEntry();
-        });
-
-        SmartDashboard.putData("SYSTEM_TESTS", new RunTests());
-
-    }
-    
-    @Override
-    public void testPeriodic(){
-        Scheduler.getInstance().run();
-    }
-    
 }

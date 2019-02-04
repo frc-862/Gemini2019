@@ -27,7 +27,7 @@ public class CargoCollector extends Subsystem {
     public static CargoCollector create() {
         return new CargoCollector(
                    new WPI_VictorSPX(RobotMap.cargoMotor),
-                   new DoubleSolenoid(RobotMap.cargoSolenoidModule, RobotMap.cargoSolenoidFwdChan, RobotMap.cargoSolenoidRevChan)
+                   new DoubleSolenoid(RobotMap.compressorCANId, RobotMap.cargoSolenoidFwdChan, RobotMap.cargoSolenoidRevChan)
                );
     }
 

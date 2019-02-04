@@ -14,10 +14,12 @@ import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.lightning.logging.DataLogger;
+import frc.lightning.testing.SystemTest;
 import frc.lightning.util.FaultMonitor;
 import frc.lightning.util.UnchangingFaultMonitor;
 import frc.lightning.util.FaultCode.Codes;
 import frc.robot.RobotMap;
+import frc.robot.commands.test.NavXTest;
 
 /**
  * Add your docs here.
@@ -31,6 +33,8 @@ public class Core extends Subsystem {
 
   public Core() {
     navx = new AHRS(SPI.Port.kMXP);
+    navx.setSubsystem("Core");
+
     DataLogger.addDataElement("heading", () -> getHeading());
 
     // monitor if the heading is exactly the same, there is always 
@@ -43,6 +47,8 @@ public class Core extends Subsystem {
     // addChild("PDP", pdp);
     // addChild("NavX", navx);
     addChild("Compressor", compressor);
+
+    SystemTest.register(new NavXTest());
   }
 
   @Override

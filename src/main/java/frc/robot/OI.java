@@ -12,8 +12,7 @@ import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.hatch.HatchCollectorStateChange;
-import frc.robot.commands.test.RunTests;
-import frc.robot.commands.test.TestMove;
+import frc.robot.commands.calibration.TestMove;;
 
 public class OI {
     //Drive Joysticks

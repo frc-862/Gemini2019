@@ -17,7 +17,7 @@ public class FaultCode {
     public enum Codes {
         LEFT_ENCODER_NOT_FOUND, RIGHT_ENCODER_NOT_FOUND,
         LOW_MAIN_VOLTAGE, SLOW_LOOPER, MISMATCHED_MOTION_PROFILES,
-        NAVX_ERROR, INTERNAL_ERROR
+        NAVX_ERROR, INTERNAL_ERROR, DRIVETRAIN
     }
 
     private static HashSet<Codes> faults = new HashSet<>();
