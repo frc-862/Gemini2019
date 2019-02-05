@@ -10,6 +10,7 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import frc.robot.Constants;
 import frc.robot.RobotConstants;
 import frc.robot.RobotMap;
@@ -32,9 +33,21 @@ public class CargoCollector extends Subsystem {
     }
 
     public CargoCollector(WPI_VictorSPX collector, DoubleSolenoid deployer) {
-     
         this.collector = collector;
+        this.collector.setSubsystem(this.getClass().getSimpleName());
+        if (!collector.isAlive()) {
+            LiveWindow.disableTelemetry(collector);
+            System.out.println("collector disabled");
+        }
+
         this.deployer = deployer;
+        this.deployer.setSubsystem(this.getClass().getSimpleName());
+        if (deployer.isFwdSolenoidBlackListed()) {
+            LiveWindow.disableTelemetry(deployer);
+            System.out.println("deployer disabled");
+        }
+        System.out.println("CargoCollector Initialized");
+
         stop();
     }
 

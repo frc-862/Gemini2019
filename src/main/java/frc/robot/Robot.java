@@ -46,6 +46,14 @@ public class Robot extends LightningRobot {
         this.registerAutonomousCommmand("T_MotionProfile", new MotionProfile());
     }
 
+    @Override
+    protected void robotMediumPriorityPeriodic() {
+        super.robotMediumPriorityPeriodic();
+        if (!oi.fullyInitialized()) {
+            oi.initalizeControllers();
+        }
+    }
+
     public static boolean isGemini() {
         return gemini;
     }

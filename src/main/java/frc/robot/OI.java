@@ -7,6 +7,7 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
@@ -36,11 +37,52 @@ public class OI {
         return cargoCollectButton.get();
     }
 
+    public Joystick getJoystick(int port, Joystick obj) {
+        if (obj != null) return obj;
+
+        DriverStation ds = DriverStation.getInstance();
+        if (ds != null && ds.getJoystickType(port) != 0) {
+            return new Joystick(port);
+        }
+
+        return null;
+    }
+
+    public Button getButton(Joystick js, int button, Button obj) {
+        if (obj != null) return obj;
+        if (js != null) return null;
+
+        DriverStation ds = DriverStation.getInstance();
+        if (ds.getStickButtonCount(js.getPort()) >= button) {
+            return new JoystickButton(js, button);
+        }
+        return null;
+    }
+
+    public void initalizeControllers() {
+        driverLeft = getJoystick(0, driverLeft);
+        driverRight = getJoystick(1, driverRight);
+        copilot = getJoystick(2, copilot);
+
+        cargoCollectButton = getButton(copilot, 4, cargoCollectButton);
+        if (hatchToggle == null) {
+            hatchToggle = getButton(driverRight, JoystickConstants.hatchToggle, hatchToggle);
+            if (hatchToggle != null) {
+                hatchToggle.whenPressed(new HatchCollectorStateChange());
+            }
+        }
+    }
+
+    public boolean fullyInitialized() {
+        return driverLeft != null &&
+            driverRight != null &&
+            copilot != null &&
+            cargoCollectButton != null &&
+            hatchToggle != null;
+    }
+
     public OI() {
-        //Add Button Command Mapping (Dashboard & Joystick) Here
-        //Use whenPressed() and whileHeld()
-        hatchToggle.whenPressed(new HatchCollectorStateChange());
+        initalizeControllers();
         SmartDashboard.putData("TestMove", new TestMove());
-        //SmartDashboard.putData("SYSTEM_TESTS", new RunTests());
     }
 }

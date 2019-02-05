@@ -10,6 +10,8 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.function.BiConsumer;
 import java.util.stream.Collectors;
+
+import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -21,7 +23,12 @@ public class FaultCode {
     }
 
     private static HashSet<Codes> faults = new HashSet<>();
+    private static Map<Codes, NetworkTableEntry> networkTableMap = new HashMap<>();
     private static boolean dummy_light = false;
+
+    public static void setNetworkTableEntry(Codes code, NetworkTableEntry nte) {
+        networkTableMap.put(code, nte);
+    }
 
     static {
         eachCode((Codes c, Boolean state) -> {
@@ -61,11 +68,13 @@ public class FaultCode {
         try {
             if (!faults.contains(code)) {
                 faults.add(code);
+                SmartDashboard.putBoolean("FAULT_" + code.toString(), false);
+
                 Files.write(Paths.get("/home/lvuser/faults.log"),
-                            ("FAULT Detected: " + code.toString() + " " + msg + "\n").getBytes(), StandardOpenOption.CREATE,
+                            ("FAULT Detected: " + code.toString() + " " + msg + "\n").getBytes(),
+                            StandardOpenOption.CREATE,
                             StandardOpenOption.APPEND);
                 System.err.println("FAULT: " + code + " " + msg);
-                SmartDashboard.putBoolean("FAULT_" + code.toString(), false);
             }
         } catch (IOException e) {
             System.err.println("Unable to write fault code " + code);

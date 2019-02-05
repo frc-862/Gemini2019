@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.lightning.logging.DataLogger;
 import frc.lightning.testing.SystemTest;
@@ -32,6 +33,11 @@ public class Core extends Subsystem {
   // private PowerDistributionPanel pdp = new PowerDistributionPanel(RobotMap.pdpCANId);
 
   public Core() {
+    compressor.setSubsystem("Core");
+    if (compressor.getCompressorNotConnectedFault()) {
+      LiveWindow.disableTelemetry(compressor);
+    }
+
     navx = new AHRS(SPI.Port.kMXP);
     navx.setSubsystem("Core");
 

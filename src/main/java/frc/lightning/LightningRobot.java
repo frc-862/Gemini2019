@@ -1,7 +1,6 @@
 package frc.lightning;
 
 import edu.wpi.first.cameraserver.CameraServer;
-import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
@@ -16,8 +15,7 @@ import frc.lightning.util.FaultMonitor;
 import frc.lightning.util.TimedFaultMonitor;
 import frc.lightning.util.FaultCode.Codes;
 import frc.robot.Constants;
-import frc.robot.Robot;
-import frc.robot.commands.driveTrain.MotionProfile;
+import java.util.Map;
 
 /**
  * Base robot class, provides {@link frc.lightning.ConstantBase constants},
@@ -70,6 +68,14 @@ public class LightningRobot extends TimedRobot {
         // TODO should this be in Robot.java and not LightningRobot?
         CameraServer.getInstance().startAutomaticCapture();
 
+        FaultCode.eachCode((code, state) -> {
+            var nte = Shuffleboard.getTab("Fault Codes")
+                    .add("FAULT_" + code.toString(), state)
+                    .withWidget("Boolean Box")
+                    .withProperties(Map.of("colorWhenTrue", "green", "colorWhenFalse", "maroon"))
+                    .getEntry();
+            FaultCode.setNetworkTableEntry(code, nte);
+        });
     }
 
     double getLoopTime() {
@@ -136,7 +142,7 @@ public class LightningRobot extends TimedRobot {
      * long running operation, consider creating a background
      * thread.
      */
-    private void robotBackgroundPeriodic() {
+    protected void robotBackgroundPeriodic() {
         DataLogger.flush();
     }
 
@@ -149,7 +155,7 @@ public class LightningRobot extends TimedRobot {
      * long running operation, consider creating a background
      * thread.
      */
-    private void robotLowPriorityPeriodic() {
+    protected void robotLowPriorityPeriodic() {
         DataLogger.getLogger().getLogWriter().drain();
     }
 
@@ -162,7 +168,7 @@ public class LightningRobot extends TimedRobot {
      * long running operation, consider creating a background
      * thread.
      */
-    private void robotMediumPriorityPeriodic() {
+    protected void robotMediumPriorityPeriodic() {
         FaultCode.update();
     }
 
