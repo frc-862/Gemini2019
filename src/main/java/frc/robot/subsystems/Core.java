@@ -52,6 +52,9 @@ public class Core extends Subsystem {
   public double getContinuousHeading() {
     return navx.getAngle();
   }
+  public double getFlippedContinuousHeading() {
+    return -getContinuousHeading();
+  }
 
   @Override
   public void initDefaultCommand() {

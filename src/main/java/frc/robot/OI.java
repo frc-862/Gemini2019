@@ -10,6 +10,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import frc.lightning.commands.VisionDriveAndAdjust;
 import frc.lightning.commands.VisionRotateAndApproach;
 import frc.lightning.commands.WaypointThenTarget;
 
@@ -56,7 +57,7 @@ public class OI {
         //fourbarEject.whileHeld(new FourbarEject());
         //pneumaticButton.whenPressed(new OpenHatchCollector());
         //pneumaticButton.whenReleased(new CloseHatchCollector());
-        visionTestButtonA.whileHeld(new WaypointThenTarget());
+        visionTestButtonA.whileHeld(new VisionDriveAndAdjust());
         visionTestButtonX.whileHeld(new VisionRotateAndApproach());
     }
 }
