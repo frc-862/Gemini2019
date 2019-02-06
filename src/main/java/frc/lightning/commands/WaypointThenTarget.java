@@ -67,23 +67,33 @@ public class WaypointThenTarget extends Command {
               Math.toRadians(90 - Math.abs(target.squint()) - (90 - Math.abs(target.rotation()))))
                / waypointStandoff * target.standoff() * WAYPOINT_DISTANCE_SCALE));
           
-          if(targetToWaypointAngle > Math.abs(target.squint())) {
-            SmartDashboard.putString("angle relative to squint", "greater");
-            waypointSquint = Math.signum(target.squint()) * -1 * (Math.abs(targetToWaypointAngle) - Math.abs(target.squint()));
+          if(Math.signum(target.squint()) == Math.signum(target.rotation()) && Math.abs(target.squint()) > Math.abs(target.rotation()) || Math.signum(target.squint()) != Math.signum(target.rotation())) {
+            waypointSquint = Math.abs(targetToWaypointAngle) + Math.abs(target.squint());
+            waypointSquint *= Math.signum(squint);
+          }
+          else if(Math.abs(target.squint()) > Marh.abs(targetToWaypointAngle)) {
+            waypointSquint = Math.abs(target.squint()) - Math.abs(targetToWaypointAngle);
+            waypointSquint *= Math.signum(squint);
           }
           else {
-            SmartDashboard.putString("angle relative to squint", "less");
-            waypointSquint = Math.signum(target.squint()) * (Math.abs(target.squint()) - Math.abs(targetToWaypointAngle));
+            waypointSquint = Math.abs(targetToWaypointAngle) - Math.abs(target.squint());
+            waypointSquint *= Math.signum(squint) * -1;
           }
           
-          waypointRotationToTarget = Math.signum(
-            target.rotation()) * -1 * 
+          waypointRotationToTarget =
             (180 - 
             (180 - 
             targetToWaypointAngle - 
-            (90 - Math.abs(target.squint()) - Math.abs(target.rotation()))));
+            (90 - Math.abs(target.squint()) - (90 - Math.abs(target.rotation())))));
             
             //(180 - (90 - Math.abs(target.rotation())) - (90 - Math.abs(waypointSquint)));
+
+          if(Math.signum(waypointSquint) == Math.signum(target.squint()) && Math.abs(waypointSquint) > Math.abs(target.squint())) {
+            waypointRotationToTarget *= Math.signum(target.squint()) * -1;
+          }
+          else {
+            waypointRotationToTarget *= Math.signum(target.squint());
+          }
 
             SmartDashboard.putNumber("waypointStandoff", waypointStandoff);
             SmartDashboard.putNumber("waypoint squint", waypointSquint);
