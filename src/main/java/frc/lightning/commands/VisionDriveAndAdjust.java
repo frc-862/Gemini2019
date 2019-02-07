@@ -17,7 +17,7 @@ public class VisionDriveAndAdjust extends Command {
 
 
   private final double SQUINT_BOUND = 3;
-  private final double ROTATION_BOUND = 3;
+  private final double ROTATION_BOUND = 7;
 
 
   public VisionDriveAndAdjust() {
@@ -39,22 +39,23 @@ public class VisionDriveAndAdjust extends Command {
       Target target = Robot.vision.getBestTarget();
       double squint = target.squint();
 
-      if (target.standoff() > 60){
+      if (target.standoff() > 50){
 
-        double squintAdjustment = target.squint() * 0.005 * 0.0025; //power constants taken from the else if block directly below
+        double squintAdjustment = target.squint() * 0.005; //power constant taken from the else if block directly below
         Robot.drivetrain.setPower(.3 - squintAdjustment, .3 + squintAdjustment);
 
       }
 
       else if (Math.abs(squint) > SQUINT_BOUND || Math.abs(target.rotation()) > ROTATION_BOUND) {
 
-          double adjustment = target.squint() * 0.005 + Math.signum(target.rotation()) * Math.pow(Math.abs(target.rotation()), 1.3) * 0.0025;
+          //double adjustment = target.squint() * 0.005 + Math.signum(target.rotation()) * Math.pow(Math.abs(target.rotation()), 1.3) * 0.0025;
+          double adjustment = target.squint() * 0.005 * target.standoff() * 0.02 //0.02 is to account for standoff implementation
+           + Math.signum(target.rotation()) * Math.pow(Math.abs(target.rotation()), 1.3) * 0.0025 * target.standoff() * 0.02; //0.02 is to account for standoff implentation
           Robot.drivetrain.setPower(.3 - adjustment, .3 + adjustment);
           //Robot.drivetrain.setPower(0.4,0.4);
           SmartDashboard.putString("vision turn status", "turning");
         
       }
-
 
 
       else if (target.standoff() > 30) {
