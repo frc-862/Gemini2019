@@ -38,17 +38,24 @@ public class VisionRotateAndApproach extends Command {
       Target target = Robot.vision.getBestTarget();
       double squint = target.squint();
 
+      /*
       if (Math.abs(squint) > SQUINT_BOUND) {
-
-          
+   
           Robot.drivetrain.setPower(-.2 * Math.signum(squint), .2 * Math.signum(squint)); //assuming squint reversed
           //Robot.drivetrain.setPower(0.4,0.4);
           SmartDashboard.putString("vision turn status", "turning");
-  
-
       }
+      */
 
-
+      if (Math.abs(squint) > SQUINT_BOUND) {
+   
+        //assuming squint reversed
+        //0.02 to account for standoff implementation
+        Robot.drivetrain.setPower(-.2 * Math.signum(squint) * target.standoff() * 0.02, 
+         .2 * Math.signum(squint) * 0.02 * target.standoff()); 
+        //Robot.drivetrain.setPower(0.4,0.4);
+        SmartDashboard.putString("vision turn status", "turning");
+      }
     
       else if (target.standoff() > 30) {
 
