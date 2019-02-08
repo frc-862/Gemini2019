@@ -38,15 +38,19 @@ public class VisionRotateAndApproach extends Command {
       Target target = Robot.vision.getBestTarget();
       double squint = target.squint();
 
-      /*
+      
       if (Math.abs(squint) > SQUINT_BOUND) {
-   
-          Robot.drivetrain.setPower(-.2 * Math.signum(squint), .2 * Math.signum(squint)); //assuming squint reversed
+        double adjustment = Math.pow(squint, 0.5) * 0.05;
+        Robot.drivetrain.setPower(.3 + adjustment, .3 - adjustment);  
+        
+        //Robot.drivetrain.setPower(.2 * Math.signum(squint), -.2 * Math.signum(squint)); 
           //Robot.drivetrain.setPower(0.4,0.4);
           SmartDashboard.putString("vision turn status", "turning");
       }
-      */
-
+      
+      
+ 
+     /*
       if (Math.abs(squint) > SQUINT_BOUND) {
    
         
@@ -57,7 +61,7 @@ public class VisionRotateAndApproach extends Command {
         SmartDashboard.putString("vision turn status", "turning");
         
       }
-    
+    */
       else if (target.standoff() > 30) {
 
           double power = 0.035 * target.standoff() + 0.075;
