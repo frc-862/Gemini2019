@@ -12,7 +12,10 @@ public class Constants extends ConstantBase {
 	public static int driverLeftJoy = 1;
 	public static int collectButton = 1;
 	public static int ejectButton = 2;
-	public static int hatchToggle = 1;  
+	public static int hatchToggle = 1;
+	public static int shootButton=4;
+	public static int linefollowbotton=0;  
+
     
 	
 	

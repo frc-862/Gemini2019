@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import frc.robot.commands.CollectCargo;
 import frc.robot.commands.EjectCargo;
 import frc.robot.commands.HatchCollectorStateChange;
+import frc.robot.commands.LineFollow;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -27,7 +28,7 @@ public class OI {
   private Button collectButton = new JoystickButton(driverLeft, Constants.collectButton);//1
   private Button ejectButton = new JoystickButton(driverLeft, Constants.ejectButton);//2
   private Button hatchToggle = new JoystickButton(driverRight, Constants.hatchToggle);//1
-
+ 
   public double getLeftPower() { 
     return driverLeft.getRawAxis(Constants.leftThrottleAxis); // GLITCH
     // return -driverLeft.getRawAxis(Constants.leftThrottleAxis); // OBOT
@@ -37,12 +38,13 @@ public class OI {
     return driverRight.getRawAxis(Constants.rightThrottleAxis); // GLITCH
     // return driverRight.getRawAxis(Constants.rightThrottleAxis); // OBOT
   }
-  
+  private Button followLineButton = new JoystickButton(driverRight, Constants.linefollowbotton);
   public OI() {
     //shootButton.whenPressed(new MotionProfile());//used to be shoot
-    hatchToggle.whenPressed(new HatchCollectorStateChange());
+    hatchToggle.whileHeld(new HatchCollectorStateChange());
     //collectButton.whileHeld(new CollectCargo());
     //ejectButton.whileHeld(new EjectCargo());
+      followLineButton.whenPressed(new LineFollow());
     //pneumaticButton.whenPressed(new OpenHatchCollector());
     //pneumaticButton.whenReleased(new CloseHatchCollector());
   }

@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.lightning.logging.DataLogger;
 import frc.lightning.util.FaultMonitor;
 import frc.lightning.util.UnchangingFaultMonitor;
@@ -26,17 +27,19 @@ import edu.wpi.first.wpilibj.DigitalInput;
  * Add your docs here.
  */
 public class Core extends Subsystem {
-  private DigitalInput pressure1 = new DigitalInput(0);
+  //private DigitalInput pressure1 = new DigitalInput(4);
 
-  private DigitalInput outerLeft = new DigitalInput(1);
-  private DigitalInput midLeft = new DigitalInput(2);
+  private DigitalInput outerLeft = new DigitalInput(0);
+  private DigitalInput midLeft = new DigitalInput(1);
   private AnalogInput innerLeft = new AnalogInput(0);
   private AnalogInput centerLeft = new AnalogInput(1);
 
   private AnalogInput centerRight = new AnalogInput(2);
   private AnalogInput innerRight = new AnalogInput(3);
-  private DigitalInput midRight = new DigitalInput(3);
-  private DigitalInput outerRight = new DigitalInput(4);
+  private DigitalInput midRight = new DigitalInput(2);
+  private DigitalInput outerRight = new DigitalInput(3);
+
+
   
   private double lineWeights[] = { -7, -5, -3, -1, 1, 3, 5, 7};
   private DoubleSupplier sensorValues[] = {
@@ -77,6 +80,15 @@ public class Core extends Subsystem {
   }
 
   @Override
+  public void periodic() {
+    int pos = -7;
+    for (var sensor : sensorValues) {
+      SmartDashboard.putNumber("Line " + pos, sensor.getAsDouble());
+      pos += 2;
+    }
+  }
+
+  @Override
   public void initDefaultCommand() {
     // Set the default command for a subsystem here.
     // setDefaultCommand(new MySpecialCommand());
@@ -98,4 +110,14 @@ public class Core extends Subsystem {
 
         
 }
+public double getSensor(){
+  double sensors = 0;
+  for(int loop=0;loop>7;loop++)
+    {
+        sensors = sensorValues[loop].getAsDouble();
+    }
+  return sensors;
+}
+
+
 }
