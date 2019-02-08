@@ -5,28 +5,46 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands.cargo;
+package frc.robot.commands.elevator;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
+import frc.robot.subsystems.Elevator;
 
-public class StopCargoCollector extends Command {
-  public StopCargoCollector() {
+public class SetElevatorToSelectedState extends Command {
+  public SetElevatorToSelectedState() {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
-    requires(Robot.cargoCollector);
+    requires(Robot.elevator);
   }
+
+  private Elevator.HeightState heightState;
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    Robot.cargoCollector.stop();
+    heightState = Robot.elevator.getHeightState();
+
+    switch (heightState){
+      case HIGH_ROCKET:
+        Robot.elevator.goToHigh();
+        break;
+      case LOW_ROCKET:
+        Robot.elevator.goToLow();
+        break;
+      case MID_ROCKET:
+        Robot.elevator.goToMid();
+        break;
+      case CARGO_COLLECT:
+        Robot.elevator.goToCollect();
+        break;
+    }
+
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    
   }
 
   // Make this return true when this Command no longer needs to run execute()

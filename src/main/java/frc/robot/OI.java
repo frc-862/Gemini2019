@@ -13,7 +13,8 @@ import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.hatch.HatchCollectorStateChange;
-import frc.robot.commands.calibration.TestMove;;
+import frc.robot.commands.calibration.TestMove;
+import frc.robot.commands.climber.Climb;;
 
 public class OI {
     //Drive Joysticks
@@ -21,9 +22,35 @@ public class OI {
     private Joystick driverLeft = new Joystick(0);
     private Joystick copilot = new Joystick(2);
 
-    //Buttons
-    private Button cargoCollectButton = new JoystickButton(copilot, 4);
-    private Button hatchToggle = new JoystickButton(driverRight, JoystickConstants.hatchToggle); 
+    //Mechanism Buttons
+//    private Button collectButton = new JoystickButton(driverLeft, Constants.collectButton);//1
+//    private Button ejectButton = new JoystickButton(driverLeft, Constants.ejectButton);//2
+//     private Button hatchToggle = new JoystickButton(driverRight, Constants.hatchToggle);//1
+//    private Button fourbarCollect = new JoystickButton(driverRight, 1);
+//    private Button fourbarEject = new JoystickButton(driverRight, 2);
+    private Button cargoCollectButton = new JoystickButton(copilot, 4); 
+    private Button setElevatorHigh = new JoystickButton(copilot, 3);
+    private Button setElevatorLow = new JoystickButton(copilot, 6);
+    private Button setElevatorMid = new JoystickButton(copilot, 8);
+    private Button setElevatorCargoCollect = new JoystickButton(copilot, 8);
+    private Button hatchToggle = new JoystickButton(driverRight, JoystickConstants.hatchToggle);
+    private Button climb = new JoystickButton(copilot, 5);
+
+    public boolean getElevatorHighPosSelect() {
+        return setElevatorHigh.get();
+    }
+
+    public boolean getElevatorMidPosSelect() {
+        return setElevatorMid.get();
+    }
+
+    public boolean getElevatorLowPosSelect() {
+        return setElevatorLow.get();
+    }
+
+    public boolean getElevatorCargoCollectPosSelect() {
+        return setElevatorCargoCollect.get();
+    }
 
     public double getLeftPower() {
         return (Math.abs(driverLeft.getRawAxis(JoystickConstants.leftThrottleAxis))>0.05) ? -driverLeft.getRawAxis(JoystickConstants.leftThrottleAxis) : 0.00;
@@ -71,6 +98,9 @@ public class OI {
                 hatchToggle.whenPressed(new HatchCollectorStateChange());
             }
         }
+
+        climb.whenPressed(new Climb());
+
     }
 
     public boolean fullyInitialized() {
