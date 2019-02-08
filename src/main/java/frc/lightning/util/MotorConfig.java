@@ -38,8 +38,8 @@ public class MotorConfig {
         JSONObject json;
         try {
             String jsonValues = new String(Files.readAllBytes(Paths.get(
-                Filesystem.getDeployDirectory().getAbsoluteFile() + "/../motors/" + fname)), 
-                StandardCharsets.UTF_8);
+                                               Filesystem.getDeployDirectory().getAbsoluteFile() + "/../motors/" + fname)),
+                                           StandardCharsets.UTF_8);
 
             json = (JSONObject) parser.parse(jsonValues);
             JSONObject baseModel = MotorConfig.configModel();
@@ -57,7 +57,7 @@ public class MotorConfig {
         if (!motorConfigCache.containsKey(fname)) {
             motorConfigCache.put(fname, new MotorConfig(fname));
         }
-        return motorConfigCache.get(fname);        
+        return motorConfigCache.get(fname);
     }
 
     public void registerMotor(BaseMotorController motor) {
@@ -65,6 +65,15 @@ public class MotorConfig {
         for (String param : settings.keySet()) {
             System.out.println("Set " + param + " with " + settings.get(param));
             set(motor, param, settings.get(param));
+        }
+    }
+
+    public void resetMotor(BaseMotorController motor) {
+        if (motors.contains(motor)) {
+            for (String param : settings.keySet()) {
+                System.out.println("Set " + param + " with " + settings.get(param));
+                set(motor, param, settings.get(param));
+            }
         }
     }
 
@@ -80,7 +89,7 @@ public class MotorConfig {
         } catch (FileNotFoundException e) {
             System.err.println("Unable to write to " + fname + ": " + e);
         }
-    } 
+    }
 
     private void set(BaseMotorController motor, String param, double value) {
         JSONObject config = model.get(param);
@@ -135,60 +144,60 @@ public class MotorConfig {
         HashMap<String,Object> model = new HashMap<>();
 
         Arrays.stream(TalonSRX.class.getMethods()).forEach(
-            (m) -> {
-                String name = m.getName();
-                if (name.startsWith("config") || name.startsWith("set")) {
+        (m) -> {
+            String name = m.getName();
+            if (name.startsWith("config") || name.startsWith("set")) {
 
-                    if (m.getParameterCount() >= 1 && m.getParameterCount() <= 3) {
-                        boolean hasTimeout = false;
-                        boolean hasSlot = false;
-                        boolean skip = false;
+                if (m.getParameterCount() >= 1 && m.getParameterCount() <= 3) {
+                    boolean hasTimeout = false;
+                    boolean hasSlot = false;
+                    boolean skip = false;
 
-                        HashMap<String,Object> obj = new HashMap<>();
-    
-                        if (model.containsKey(name)) {
-                            JSONObject prevMethod = (JSONObject) model.get(name);
-                            Integer prevParamCount = (Integer) prevMethod.get("parameterCount");
-                            if (prevParamCount < m.getParameterCount()) {
-                                model.remove(name);
-                            }
+                    HashMap<String,Object> obj = new HashMap<>();
+
+                    if (model.containsKey(name)) {
+                        JSONObject prevMethod = (JSONObject) model.get(name);
+                        Integer prevParamCount = (Integer) prevMethod.get("parameterCount");
+                        if (prevParamCount < m.getParameterCount()) {
+                            model.remove(name);
                         }
+                    }
 
-                        Parameter[] parameters = m.getParameters();
-                        if (parameters.length > 1 && parameters[parameters.length - 1].getType().toGenericString().equals("int")) {
-                            hasTimeout = true;
-                        }
+                    Parameter[] parameters = m.getParameters();
+                    if (parameters.length > 1 && parameters[parameters.length - 1].getType().toGenericString().equals("int")) {
+                        hasTimeout = true;
+                    }
 
-                        if (hasTimeout && parameters.length > 2 && parameters[0].getType().toGenericString().equals("int")) {
-                            hasSlot = true;
-                        }
+                    if (hasTimeout && parameters.length > 2 && parameters[0].getType().toGenericString().equals("int")) {
+                        hasSlot = true;
+                    }
 
-                        if (!hasTimeout && parameters.length > 1 && parameters[0].getType().toGenericString().equals("int")) {
-                            hasSlot = true;
-                        }
-                        
-                        String parameterType = parameters[hasSlot ? 1 : 0].getType().toGenericString();
+                    if (!hasTimeout && parameters.length > 1 && parameters[0].getType().toGenericString().equals("int")) {
+                        hasSlot = true;
+                    }
 
-                        if (parameterType.contains(" ")) {
-                            skip = true;
-                        }
+                    String parameterType = parameters[hasSlot ? 1 : 0].getType().toGenericString();
 
-                        if (!skip) {
-                            obj.put("name", name);
-                            obj.put("parameterCount", m.getParameterCount());
-                            obj.put("parameterType", parameterType);
-                            obj.put("hasSlot", hasSlot);
-                            obj.put("hasTimeout", hasTimeout);
-                            model.put(m.getName(), new JSONObject(obj));
-                        }    
+                    if (parameterType.contains(" ")) {
+                        skip = true;
+                    }
+
+                    if (!skip) {
+                        obj.put("name", name);
+                        obj.put("parameterCount", m.getParameterCount());
+                        obj.put("parameterType", parameterType);
+                        obj.put("hasSlot", hasSlot);
+                        obj.put("hasTimeout", hasTimeout);
+                        model.put(m.getName(), new JSONObject(obj));
                     }
                 }
-            });
+            }
+        });
 
         return new JSONObject(model);
     }
 
-	public void delete(String params) {
+    public void delete(String params) {
         settings.remove(params);
 
         // write to file
@@ -197,5 +206,5 @@ public class MotorConfig {
         } catch (FileNotFoundException e) {
             System.err.println("Unable to write to " + fname + ": " + e);
         }
-	}
+    }
 }

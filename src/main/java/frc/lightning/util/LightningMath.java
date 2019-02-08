@@ -1,20 +1,25 @@
 package frc.lightning.util;
 
+import frc.robot.Constants;
+import frc.robot.Robot;
+import frc.robot.RobotConstants;
+
 public class LightningMath {
-    public static final double wheelRadius = 6.0;
-    public static final double wheelCircumference = wheelRadius * Math.PI * 2;
-    public static final double TICS_PER_ROTATION = 4 * 1024;
+    public static double wheelCircumference =  RobotConstants.wheelDiameter * Math.PI;
 
     public static double talon2ips(double talon) {
         // multiply 100ms by 10 to get seconds
         return ticks2inches(talon * 10);
     }
 
-    public static double talon2fps(double talon){
-        return (talon2ips(talon)/12);//ips / 12 to get foot
+    public static double talon2fps(double talon) {
+        // ticks /  100ms = talon
+        double ticksps = talon * 10;  // ticks / sec
+        double fps = ticks2feet(ticksps);
+        return fps; 
     }
 
-    public static double fps2talon(double fps){
+    public static double fps2talon(double fps) {
         return ips2talon(fps*12);//fps*12 = ips
     }
 
@@ -24,20 +29,28 @@ public class LightningMath {
     }
 
     public static double inches2ticks(double inches) {
-        return inches / wheelCircumference * TICS_PER_ROTATION;
+        return in2ft(inches) / wheelCircumference * Constants.TICS_PER_ROTATION;
+    }
+
+    public static double feet2ticks(double feet) {
+        return feet / wheelCircumference * Constants.TICS_PER_ROTATION;
+    }
+
+    public static double ticks2feet(double ticks) {
+        return ticks / Constants.TICS_PER_ROTATION * wheelCircumference;
     }
 
     public static double ticks2inches(double ticks) {
-        return ticks / TICS_PER_ROTATION * wheelCircumference;
+        return ticks2feet(ticks) * 12;
     }
 
-	public static double meters2feet(double meters) {
-		return meters * 0.3048;
-	}
+    public static double meters2feet(double meters) {
+        return meters * 0.3048;
+    }
 
-	public static double feet2meters(double feet) {
-		return feet * 3.28084;
-	}
+    public static double feet2meters(double feet) {
+        return feet * 3.28084;
+    }
 
     public static double limit(double v, double low, double high) {
         return (v < low) ? low : ((v > high) ? high : v);
@@ -76,7 +89,7 @@ public class LightningMath {
     }
 
     public static int scale(int input,
-            int lowInput, int highInput, int lowOutput, int highOutput)
+                            int lowInput, int highInput, int lowOutput, int highOutput)
     {
         final int inputRange = highInput - lowInput;
         final int outputRange = highOutput - lowOutput;
@@ -112,6 +125,10 @@ public class LightningMath {
         return rotations * wheelCircumference;
     }
 
+    public static double feet2rotations(double feet) {
+        return feet / wheelCircumference;
+    }
+
     public static double rpm2fps(double rpm) {
         // rpm * circumference will be feet / minute
         // 60 is the number of seconds in a minute
@@ -143,4 +160,10 @@ public class LightningMath {
     public static boolean epsilonEqual(double v1, double v2, double epsilon) {
         return Math.abs(v1 - v2) < epsilon;
     }
+
+    public static double feet2talon(double ft) {
+        final double rotations = feet2rotations(ft);
+        return rotations * Constants.TICS_PER_ROTATION;
+    }
+
 }

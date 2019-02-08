@@ -5,7 +5,7 @@ public class MovingAverageFilter implements ValueFilter {
     private double average = 0;
     private int pos = 0;
     private int count = 0;
-    
+
     public MovingAverageFilter(int boxes) {
         values = new double[boxes];
     }

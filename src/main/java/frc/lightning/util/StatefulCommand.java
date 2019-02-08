@@ -12,19 +12,19 @@ public class StatefulCommand extends Command {
     protected Runnable default_action = () -> {};
     private Enum<?> previous_state = null;
     private Enum<?> calling_state = null;
-    
+
     public void setState(Enum<?> new_state) {
         state = new_state;
     }
-    
+
     public Enum<?> getState() {
         return state;
     }
-    
+
     public Enum<?> getCallingState() {
         return calling_state;
     }
-    
+
     protected void setDefaultAction(Runnable action) {
         default_action = action;
     }
@@ -48,24 +48,24 @@ public class StatefulCommand extends Command {
         try {
             Method method = getClass().getMethod(method_name);
             method.invoke(this);
-        } catch (NoSuchMethodException | SecurityException | 
-                 IllegalAccessException | IllegalArgumentException | 
-                 InvocationTargetException e) {
+        } catch (NoSuchMethodException | SecurityException |
+                     IllegalAccessException | IllegalArgumentException |
+                     InvocationTargetException e) {
             System.err.println("StatefulCommand missing method: " + method_name);
             return false;
-        }        
+        }
         return true;
     }
-    
+
     protected String methodName(Enum<?> state) {
         String state_name = state.name().toLowerCase();
         String method_name = Stream.of(state_name.split("[^a-zA-Z0-9]"))
-                .map(v -> v.substring(0, 1).toUpperCase() + v.substring(1).toLowerCase())
-                .collect(Collectors.joining());
+                             .map(v -> v.substring(0, 1).toUpperCase() + v.substring(1).toLowerCase())
+                             .collect(Collectors.joining());
         method_name = method_name.substring(0, 1).toLowerCase() + method_name.substring(1);
         return method_name;
     }
-    
+
     @Override
     protected void execute() {
         if (previous_state != state) {
@@ -73,12 +73,12 @@ public class StatefulCommand extends Command {
                 String exit_method = methodName(previous_state) + "Exit";
                 call(exit_method);
             }
-            
+
             previous_state = state;
             calling_state = state;
             call(methodName(state) + "Enter");
         }
-        
+
         if (!call(methodName(state))) {
             this.default_action.run();
         }

@@ -5,7 +5,7 @@ public class ExponentialSmoothingFilter implements ValueFilter {
     private double previous;
     private double smoothing_factor;
     private double reverse_factor;
-    
+
     public ExponentialSmoothingFilter(double smoothing_factor) {
         this.smoothing_factor = smoothing_factor;
         reverse_factor = 1 - smoothing_factor;

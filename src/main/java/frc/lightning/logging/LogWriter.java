@@ -21,7 +21,7 @@ public class LogWriter implements Loop {
         drain = new Vector<>(buffer_depth);
         setFileName(file);
     }
-    
+
     public LogWriter(String fname) {
         this(fname, logDepth);
     }
@@ -80,7 +80,7 @@ public class LogWriter implements Loop {
     public void logString(String s) {
         overflow |= !buffer.offer(String.format("%6.3f: %s", Timer.getFPGATimestamp(), s));
     }
-    
+
     @Override
     public void onStart() { }
 

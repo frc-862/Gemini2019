@@ -28,8 +28,8 @@ public class FaultMonitor extends AbstractFaultMonitor {
         this(code, fn, "FAULT: " + code.toString());
     }
 
-	@Override
-	public boolean checkFault() {
+    @Override
+    public boolean checkFault() {
         return fn.getAsBoolean();
     }
 }

@@ -1,65 +1,58 @@
 package frc.lightning.testing;
 
+import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.lightning.util.FaultCode;
 
-public class SystemTest {
-    FaultCode.Codes code;
-    boolean completed;
-    int priority;
+abstract public class SystemTest implements Comparable<SystemTest> {
+
+    public static void register(SystemTest test) {
+        SystemTestCommand.register(test);
+    }
+
+    static enum Priority{
+        HIGH, MED, LOW, DONT_CARE
+    };
+
+    private FaultCode.Codes code;
+    private Priority priority;
 
     public SystemTest(FaultCode.Codes code) {
-        this(code, 100);
+        this(code, Priority.DONT_CARE);
     }
 
-    public SystemTest(FaultCode.Codes code, int priority) {
+    public SystemTest(FaultCode.Codes code, Priority priority) {
         this.code = code;
         this.priority = priority;
-        completed = false;
     }
 
-    public int getPriority() { return priority; }
+    private double startedAt;
 
-    public void setup() {}
-    public void tearDown() {}
-
-    public boolean didPass() {
-        return false;
+    public void starting() {
+        startedAt = Timer.getFPGATimestamp();
     }
 
-    public boolean didFail() {
-        return false;
+    public double timeSinceInitialized() {
+        return Timer.getFPGATimestamp() - startedAt;
     }
 
-    public boolean getCompleted() {
-        return completed;
+    public Priority getPriority() {
+        return priority;
     }
 
-    public void setCompleted() {
-        completed = true;
+    public Subsystem requires() { return null; }
+    public void setup() {/* Config - Talon Modes */}
+    public void tearDown() {/* Set Powers to 0.0d */}
+    abstract public boolean didPass();
+    public boolean isFinished() {
+        return true;
     }
+    public void periodic() {/* Actuation Here */}
 
-    public void testLoop() {}
+    public FaultCode.Codes getCode() { return code; }
 
-    boolean test() {
-        testLoop();
-
-        if (didFail()) {
-            failed();
-            setCompleted(); 
-        } else if (didPass()) {
-            passed();
-            setCompleted();
-        }
-
-        return getCompleted();
-    }
-
-    public void passed() {
-        System.out.println("Passed test for " + code);
-    }
-
-    public void failed() {
-        FaultCode.write(code);
-        System.out.println("Test triggered " + code);
+    @Override
+    public int compareTo(SystemTest other) {
+        return priority.compareTo(other.priority);
     }
 }

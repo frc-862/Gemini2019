@@ -8,50 +8,97 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-
-import edu.wpi.first.wpilibj.VictorSP;
+import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import edu.wpi.first.wpilibj.command.Subsystem;
-import frc.robot.commands.CollectCargo;
+import edu.wpi.first.wpilibj.livewindow.LiveWindow;
+import frc.robot.Constants;
+import frc.robot.RobotConstants;
+import frc.robot.RobotMap;
+import edu.wpi.first.wpilibj.DoubleSolenoid;
 
 /**
- * Add your docs here.
+ * CargoCollector includes both ground collect
+ * and elevator collect wheels
+ *
  */
 public class CargoCollector extends Subsystem {
-  // Put methods for controlling this subsystem
-  // here. Call these from Commands.
+    private final WPI_VictorSPX collector;
+    private final DoubleSolenoid deployer;
 
-  private final VictorSP winchMotor1;
-  //private final TalonSRX winchMotor2 = new TalonSRX(6);
+    public static CargoCollector create() {
+        return new CargoCollector(
+                   new WPI_VictorSPX(RobotMap.cargoMotor),
+                   new DoubleSolenoid(RobotMap.compressorCANId, RobotMap.cargoSolenoidFwdChan, RobotMap.cargoSolenoidRevChan)
+               );
+    }
 
-  public CargoCollector(){
-    winchMotor1 = new VictorSP(1);
-    stop();
-  }
+    public CargoCollector(WPI_VictorSPX collector, DoubleSolenoid deployer) {
+        this.collector = collector;
+        this.collector.setSubsystem(this.getClass().getSimpleName());
+        if (!collector.isAlive()) {
+            LiveWindow.disableTelemetry(collector);
+            System.out.println("collector disabled");
+        }
 
-  @Override
-  public void initDefaultCommand() {
-    // Set the default command for a subsystem here.
-    // setDefaultCommand(new MySpecialCommand());
-    // setDefaultCommand(new CollectCargo());
-  }
+        this.deployer = deployer;
+        this.deployer.setSubsystem(this.getClass().getSimpleName());
+        if (deployer.isFwdSolenoidBlackListed()) {
+            LiveWindow.disableTelemetry(deployer);
+            System.out.println("deployer disabled");
+        }
+        System.out.println("CargoCollector Initialized");
 
-  public void stop(){
-    System.out.println("STOP");
-    winchMotor1.set(0.0);
-    //winchMotor2.set(ControlMode.PercentOutput, 0.0);
-  }
+        stop();
+    }
 
-  public void collect(){
-    System.out.println("COLLECT");
-    winchMotor1.set(1.0);
-    //winchMotor2.set(ControlMode.PercentOutput, 0.5);
-  }
+    /**
+     * Will be linked to TOF (Time of Flight) sensor when
+     * electrical/controls get it setup for us
+     *
+     * TODO link this up
+     */
+    public double cargoDistanceSensor() {
+        return -1;
+    }
 
-  public void eject(){
-    System.out.println("EJECT");
-    winchMotor1.set(-1.0);
-    //winchMotor2.set(ControlMode.PercentOutput, -0.5);
-  }
+    public boolean hasCargo() {
+        return cargoDistanceSensor() >= 0 && cargoDistanceSensor() <= Constants.hasCargoDistance;
+    }
+
+    @Override
+    public void initDefaultCommand() {
+        //setDefaultCommand(new HABClimb());
+    }
+
+    public void collect() {
+        System.out.println("collect it");
+        collector.set(ControlMode.PercentOutput, Constants.collectPower);
+    }
+
+    public void eject() {
+        System.out.println("eject it");
+        collector.set(ControlMode.PercentOutput, -Constants.collectPower);
+    }
+
+    public void stop() {
+        collector.set(ControlMode.PercentOutput, 0.0);
+    }
+
+
+    private void setPower(double pwr) {
+        collector.set(ControlMode.PercentOutput, pwr);
+    }
+
+
+    public void deploy() {
+        deployer.set(DoubleSolenoid.Value.kForward);
+    }
+
+    public void retract() {
+        deployer.set(DoubleSolenoid.Value.kReverse);
+    }
+
+  
+    
 
 }

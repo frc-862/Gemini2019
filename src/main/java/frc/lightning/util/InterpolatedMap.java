@@ -9,14 +9,14 @@ public class InterpolatedMap extends TreeMap<Double, Double> {
     public InterpolatedMap() {
         super();
     }
-    
+
     public InterpolatedMap(Double[] doubles) {
         if (doubles.length % 2 != 0) {
             System.err.println("InterpolatedMap constructor should always have an evan number of entries, last value ignored");
         }
-        
+
         for (int i = 1; i < doubles.length; i += 2) {
-            this.put(doubles[i-1], doubles[i]);            
+            this.put(doubles[i-1], doubles[i]);
         }
     }
 
@@ -25,8 +25,8 @@ public class InterpolatedMap extends TreeMap<Double, Double> {
 
         if (l == null) {
             Double floorKey = super.floorKey(key);
-            Double ceilKey = super.ceilingKey(key); 
-            
+            Double ceilKey = super.ceilingKey(key);
+
             if (floorKey == null && ceilKey == null) {
                 System.err.println("ERROR InterpolatedMap, empty map used");
                 return 0;
@@ -37,8 +37,8 @@ public class InterpolatedMap extends TreeMap<Double, Double> {
             } else if (ceilKey == null) {
                 Map.Entry<Double, Double> result = super.lastEntry();
                 System.err.println("ERROR InterpolatedMap key: " + key + " higher than ceil: " + result.getKey());
-                return result.getValue();                
-            }  
+                return result.getValue();
+            }
             double range = ceilKey - floorKey;
             double percent = (key - floorKey) / range;
             double floor = super.get(floorKey);

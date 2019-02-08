@@ -15,13 +15,13 @@ import frc.lightning.util.Loop;
 public class DataLogger implements Loop {
     private static DataLogger logger;
     private static String baseFName = "data";
-    
+
     private LogWriter writer;
     private ArrayList<String> fieldNames = new ArrayList<>();
     private ArrayList<DoubleSupplier> fieldValues = new ArrayList<>();
     private boolean first_time = true;
     private boolean preventNewElements = false;
-    
+
     public static DataLogger getLogger() {
         if (logger == null) {
             logger = new DataLogger();
@@ -30,25 +30,27 @@ public class DataLogger implements Loop {
         return logger;
     }
 
-    public LogWriter getLogWriter() { return writer; }
-    
+    public LogWriter getLogWriter() {
+        return writer;
+    }
+
     public static void addDataElement(String name, DoubleSupplier val) {
         DataLogger.getLogger().addElement(name, val);
     }
-    
+
     public static void addDelayedDataElement(String name, DoubleSupplier val) {
         DataLogger.getLogger().addElement(name, new DataLoggerOutOfBand(val));
     }
-    
+
     public void addElement(String name, DoubleSupplier val) {
         if (preventNewElements) {
             System.err.println("Unexpected call to addDataElement: " + name);
         } else {
             fieldNames.add(name);
-            fieldValues.add(val);    
+            fieldValues.add(val);
         }
     }
-    
+
     public void onStart() {
         if (first_time) {
             writeHeader();
@@ -56,11 +58,11 @@ public class DataLogger implements Loop {
             writer.flush();
         }
     }
-    
+
     public void onStop() {
         writer.flush();
     }
-    
+
     @SuppressWarnings("unchecked")
     public String getJSONHeader() {
         JSONArray result = new JSONArray();
@@ -75,17 +77,17 @@ public class DataLogger implements Loop {
     private void writeHeader() {
         writer.logRawString(getHeader());
     }
-    
+
     private void writeValues() {
         String valueList = fieldValues.parallelStream()
-                    .map(fn -> Double.toString(fn.getAsDouble()))
-                    .collect(Collectors.joining(","));
+                           .map(fn -> Double.toString(fn.getAsDouble()))
+                           .collect(Collectors.joining(","));
 
         // System.out.println(valueList);
         writer.logRawString(valueList);
         DataLoggingWebSocket.broadcast("[" + valueList + "]");
     }
-    
+
     private DataLogger() {
         File file = logFileName();
         writer = new LogWriter(file.getAbsolutePath());
@@ -93,9 +95,9 @@ public class DataLogger implements Loop {
 
     public void checkBaseFileName() {
         var ds = DriverStation.getInstance();
-        String newName = String.format("%s-%s-%d.log", 
-            ds.getEventName(), ds.getMatchType().toString(), ds.getMatchNumber()
-        );
+        String newName = String.format("%s-%s-%d.log",
+                                       ds.getEventName(), ds.getMatchType().toString(), ds.getMatchNumber()
+                                      );
 
         if (newName != baseFName) {
             setBaseFileName(newName);
@@ -103,10 +105,10 @@ public class DataLogger implements Loop {
     }
 
     public static void setBaseFileName(String fname) {
-    		baseFName = fname;
-    		getLogger().reset_file();
+        baseFName = fname;
+        getLogger().reset_file();
     }
-    
+
     private File cachedLogFileName = null;
     private File logFileName() {
         if (cachedLogFileName != null)
@@ -146,13 +148,13 @@ public class DataLogger implements Loop {
         return result;
     }
 
-    public void reset_file() {        
+    public void reset_file() {
         cachedLogFileName = null;
         flush();
         writer.setFileName(logFileName().getAbsolutePath());
         writeHeader();
     }
-    
+
     public static void flush() {
         getLogger().writer.flush();
     }
@@ -162,14 +164,14 @@ public class DataLogger implements Loop {
         writeValues();
     }
 
-    public static void logData() {        
+    public static void logData() {
         getLogger().writeValues();
     }
 
-	public static void preventNewDataElements() {
+    public static void preventNewDataElements() {
         getLogger().lockItUp();
     }
-    
+
     private void lockItUp() {
         logger.preventNewElements = true;
         onStart();

@@ -20,11 +20,11 @@ public class CommandLogger {
     private final ArrayBlockingQueue<String> buffer = new ArrayBlockingQueue<>(logDepth);
     private final Vector<String> drain = new Vector<>(logDepth);
     private boolean overflow = false;
-    
+
     private final HashMap<String,String> values = new HashMap<>();
     private final ArrayList<String> fieldNames = new ArrayList<>();
     private boolean first_time = true;
-        
+
     public CommandLogger(String prefix) {
         this.prefix = prefix;
         reset();
@@ -50,15 +50,15 @@ public class CommandLogger {
         fieldNames.add(name);
         values.put(name, "");
     }
-    
+
     public void set(String key, String val) {
         values.put(key, val);
     }
-    
+
     public void set(String key, double val) {
         values.put(key, Double.toString(val));
     }
-    
+
     public void write() {
         if (first_time) {
             writeHeader();
@@ -66,7 +66,7 @@ public class CommandLogger {
         }
         this.writeValues();
     }
-    
+
     private void writeHeader() {
         StringBuilder header = new StringBuilder("timestamp");
         for (String fld : fieldNames) {
@@ -78,7 +78,7 @@ public class CommandLogger {
     private void logString(String s) {
         overflow |= !buffer.offer(s);
     }
-    
+
     public void writeValues() {
         StringBuilder line = new StringBuilder(Double.toString(Timer.getFPGATimestamp()));
         for (String fld : fieldNames) {
@@ -86,7 +86,7 @@ public class CommandLogger {
         }
         logString(line.toString());
     }
-    
+
     private File logFileName(String prefix) {
         File base = null;
 
@@ -119,7 +119,7 @@ public class CommandLogger {
 
     public void drain() {
         if (writer == null) {
-           return;
+            return;
         }
 
         try {
@@ -145,7 +145,7 @@ public class CommandLogger {
             e.printStackTrace();
         }
     }
-    
+
     public void flush() {
         try {
             if (writer != null) {
@@ -155,7 +155,7 @@ public class CommandLogger {
             // Do nothing
         }
     }
-    
+
     public void close() {
         try {
             if (writer != null) {

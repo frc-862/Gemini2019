@@ -7,100 +7,191 @@
 
 package frc.lightning.subsystems;
 
+import java.util.Vector;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.BaseMotorController;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
-
+import edu.wpi.first.wpilibj.Sendable;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.lightning.logging.DataLogger;
+import frc.lightning.util.LightningMath;
+import frc.robot.misc.Gains;
 
 /**
  * Add your docs here.
  */
 public abstract class CANDrivetrain extends LightningDrivetrain {
-  // Put methods for controlling this subsystem
-  // here. Call these from Commands.
-  protected WPI_TalonSRX leftMaster;
-  protected WPI_TalonSRX rightMaster;
+    // Put methods for controlling this subsystem
+    // here. Call these from Commands.
+    class FollowMotor {
+        public BaseMotorController motor;
+        public boolean inverted;
 
-  protected CANDrivetrain(WPI_TalonSRX left, WPI_TalonSRX right) {
-    leftMaster = left;
-    rightMaster = right;
-  }
+        FollowMotor(BaseMotorController m, boolean i) {
+            motor = m;
+            inverted = i;
+        }
+    }
 
-  protected void enableLogging() {
-    withEachMaster((label, talon) -> {
-      DataLogger.addDelayedDataElement(label + "Position", () -> talon.getSelectedSensorPosition());
-      DataLogger.addDelayedDataElement(label + "Velocity", () -> talon.getSelectedSensorVelocity());
-      DataLogger.addDelayedDataElement(label + "MasterCurrent", () -> talon.getOutputCurrent());
-      DataLogger.addDelayedDataElement(label + "MasterOutputPercent", () -> talon.getMotorOutputPercent());
-    });
-  }
+    protected WPI_TalonSRX leftMaster;
+    protected WPI_TalonSRX rightMaster;
+    protected Vector<FollowMotor> leftFollowers = new Vector<>();
+    protected Vector<FollowMotor> rightFollowers = new Vector<>();
 
-  protected void withEachMaster(Consumer<WPI_TalonSRX> fn) {
-    fn.accept(leftMaster);
-    fn.accept(rightMaster);
-  }
+    private boolean loggingEnabled = false;
 
-  protected void withEachMaster(BiConsumer<String,WPI_TalonSRX> fn) {
-    fn.accept("left", leftMaster);
-    fn.accept("right", rightMaster);
-  }
+    protected CANDrivetrain(WPI_TalonSRX left, WPI_TalonSRX right) {
+        leftMaster = left;
+        rightMaster = right;
 
-  public WPI_TalonSRX getLeftMaster() {
-    return leftMaster;
-  }
+        leftMaster.setSubsystem(getClass().getSimpleName());
+        rightMaster.setSubsystem(getClass().getSimpleName());
 
-  public WPI_TalonSRX getRightMaster() {
-    return rightMaster;
-  }
+        SmartDashboard.putData(leftMaster);
+        SmartDashboard.putData(rightMaster);
+    }
 
-  @Override
-  public void setPower(double left, double right) {
-    leftMaster.set(ControlMode.PercentOutput, left);
-    rightMaster.set(ControlMode.PercentOutput, right);
-  }
+    private void addFollower(BaseMotorController m, WPI_TalonSRX master, boolean inverted) {
+        m.setInverted(inverted);
+        m.follow(master);
 
-  @Override
-  public void setVelocity(double left, double right) {
-    leftMaster.set(ControlMode.Velocity, left);
-    rightMaster.set(ControlMode.Velocity, right);
-  }
+        if (m instanceof Sendable) {
+            Sendable s = (Sendable) m;
+            s.setSubsystem(getClass().getSimpleName());
+            SmartDashboard.putData(s);
+        }
+    }
 
-  @Override
-  public void brake() {
-    withEachMaster((m) -> m.setNeutralMode(NeutralMode.Brake));
-  }
+    protected void addRightFollower(BaseMotorController m, boolean inverted) {
+        rightFollowers.add(new FollowMotor(m, inverted));
+        addFollower(m, rightMaster, inverted);
+    }
 
-  @Override
-  public void coast() {
-    withEachMaster((m) -> m.setNeutralMode(NeutralMode.Coast));
-  }
+    protected void addRightFollower(BaseMotorController m) {
+        this.addRightFollower(m, false);
+    }
 
-  @Override
-  public double getLeftDistance() {
-    return leftMaster.getSelectedSensorPosition();
-  }
+    protected void addLeftFollower(BaseMotorController m, boolean inverted) {
+        leftFollowers.add(new FollowMotor(m, inverted));
+        addFollower(m, leftMaster, inverted);
+    }
 
-  @Override
-  public double getRightDistance() {
-    return rightMaster.getSelectedSensorPosition();
-  }
+    protected void addLeftFollower(BaseMotorController m) {
+        this.addLeftFollower(m, false);
+    }
 
-  @Override
-  public double getLeftVelocity() {
-    return leftMaster.getSelectedSensorVelocity();
-  }
+    public void configureMotors() {
+        leftFollowers.stream().forEach((m) -> {
+            m.motor.setInverted(m.inverted);
+            m.motor.follow(leftMaster);
+        });
 
-  @Override
-  public double getRightVelocity() {
-    return rightMaster.getSelectedSensorVelocity();
-  }
+        rightFollowers.stream().forEach((m) -> {
+            m.motor.setInverted(m.inverted);
+            m.motor.follow(rightMaster);
+        });
+    }
 
-  @Override
-  public void resetDistance() {
-    withEachMaster((m) -> m.setSelectedSensorPosition(0));
-  }
+    protected void enableLogging() {
+        if (!loggingEnabled) {
+            withEachMaster((label, talon) -> {
+                DataLogger.addDelayedDataElement(label + "Position", () -> LightningMath.ticks2feet(talon.getSelectedSensorPosition()));
+                DataLogger.addDelayedDataElement(label + "Velocity", () -> LightningMath.talon2fps(talon.getSelectedSensorVelocity()));
+                DataLogger.addDelayedDataElement(label + "MasterCurrent", () -> talon.getOutputCurrent());
+                DataLogger.addDelayedDataElement(label + "MasterOutputPercent", () -> talon.getMotorOutputPercent());
+            });
+            loggingEnabled = true;
+        }
+    }
+
+    protected void withEachMaster(Consumer<WPI_TalonSRX> fn) {
+        fn.accept(leftMaster);
+        fn.accept(rightMaster);
+    }
+
+    protected void withEachMaster(BiConsumer<String,WPI_TalonSRX> fn) {
+        fn.accept("left", leftMaster);
+        fn.accept("right", rightMaster);
+    }
+
+    protected void withEachMotor(Consumer<BaseMotorController> fn) {
+        fn.accept(leftMaster);
+        leftFollowers.stream().forEach((m) -> fn.accept(m.motor));
+        fn.accept(rightMaster);
+        rightFollowers.stream().forEach((m) -> fn.accept(m.motor));
+    }
+
+    protected void withEachMotor(BiConsumer<String,BaseMotorController> fn) {
+        fn.accept("left", leftMaster);
+        leftFollowers.stream().forEach((m) -> fn.accept("left", m.motor));
+        fn.accept("right", rightMaster);
+        rightFollowers.stream().forEach((m) -> fn.accept("right", m.motor));
+    }
+
+    public WPI_TalonSRX getLeftMaster() {
+        return leftMaster;
+    }
+
+    public WPI_TalonSRX getRightMaster() {
+        return rightMaster;
+    }
+
+    @Override
+    public void setPower(double left, double right) {
+        leftMaster.set(ControlMode.PercentOutput, left);
+        rightMaster.set(ControlMode.PercentOutput, right);
+    }
+
+    @Override
+    public void setVelocity(double left, double right) {
+        leftMaster.set(ControlMode.Velocity, left);
+        rightMaster.set(ControlMode.Velocity, right);
+    }
+
+    @Override
+    public void brake() {
+        withEachMotor((m) -> m.setNeutralMode(NeutralMode.Brake));
+    }
+
+    @Override
+    public void coast() {
+        withEachMotor((m) -> m.setNeutralMode(NeutralMode.Coast));
+    }
+
+    @Override
+    public double  getLeftDistance() {
+        return leftMaster.getSelectedSensorPosition();
+    }
+
+    @Override
+    public double getRightDistance() {
+        return rightMaster.getSelectedSensorPosition();
+    }
+
+    public void configurePID(Gains g) {
+        withEachMaster((m) -> {
+            m.config_kP(0, g.kP);
+            m.config_kI(0, g.kI);
+            m.config_kD(0, g.kD);
+            m.config_kF(0, g.kF);
+        });
+    }
+
+    @Override
+    public double getLeftVelocity() {
+        return leftMaster.getSelectedSensorVelocity();
+    }
+
+    @Override
+    public double getRightVelocity() {
+        return rightMaster.getSelectedSensorVelocity();
+    }
+
+    @Override
+    public void resetDistance() {
+        withEachMaster((m) -> m.setSelectedSensorPosition(0));
+    }
 }

@@ -7,31 +7,28 @@
 
 package frc.robot;
 
-/**
- * The RobotMap is a mapping from the ports sensors and actuators are wired into
- * to a variable name. This provides flexibility changing wiring, makes checking
- * the wiring easier and significantly reduces the number of magic numbers
- * floating around.
- */
 public class RobotMap {
-  public static final int shootButton = 6;
+    // Core
+    public static final int compressorCANId = 11;
+    // Cargo Collector
+    public static final int cargoMotor = 21;
+    public static final int cargoSolenoidFwdChan = 1;
+    public static final int cargoSolenoidRevChan = 2;
 
-  public static final int rightMotor1 = 0;
-	public static final int rightMotor2 = 1;
-	public static final int leftMotor1 = 2;
-  public static final int leftMotor2 = 3;
+    // Elevator
+    public static final int pieceDetector = 0;
+    public static final int elevatorCanId = 23;
 
-  public static final int leftEncoder1 = 0;
-  public static final int leftEncoder2 = 1;
-  public static final int rightEncoder1 = 2;
-  public static final int rightEncoder2 = 3;
+    // Gemini Drive Train
+    public static final int geminiLeftMaster = 1;
+    public static final int geminiLeftSlave = 2;
+    public static final int geminiRightMaster = 4;
+    public static final int geminiRIghtSlave = 5;
 
-  public static int compressorCANId = 11;
-  public static int pdpCANId = 10;
-  
-  public static final int kickerCANId1 = 2;
-  public static final int kickerCANId2 = 3;
-
-  public static final int leftFlywheelCANId = 4;
-  public static final int rightFlywheelCANId = 5;
+    // Hatch Collector
+    public static final int extenderFwdChan = 3;
+    public static final int extenderRevChan = 4;
+    public static final int grabberFwdChan = 5;
+    public static final int grabberRevChan = 6;
+    public static final int hatchDetector = 1;
 }

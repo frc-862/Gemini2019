@@ -20,14 +20,14 @@ public class UnchangingFaultMonitor extends AbstractFaultMonitor {
         timer.start();
     }
 
-	@Override
-	public boolean checkFault() {
+    @Override
+    public boolean checkFault() {
         double newValue = fn.getAsDouble();
         if (Math.abs(newValue - previousValue) > epsilon) {
             timer.reset();
             previousValue = newValue;
             return false;
         }
-        return timer.get() >= duration;    
+        return timer.get() >= duration;
     }
 }
