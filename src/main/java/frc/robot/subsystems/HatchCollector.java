@@ -45,7 +45,10 @@ public class HatchCollector extends Subsystem {
     }else{
       extend();
     }
-
+  }
+  public DoubleSolenoid.Value getPosition(){
+    return grabber.get();
+  }
     @Override
     public void initDefaultCommand() {
         // Set the default command for a subsystem here.

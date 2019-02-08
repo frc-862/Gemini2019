@@ -5,32 +5,30 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands.hatch;
+package frc.robot.commands.LEDs;
 
-import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.command.InstantCommand;
 import frc.robot.Robot;
 
 /**
  * Add your docs here.
  */
-public class HatchCollectorStateChange extends InstantCommand {
+public class LEDsSetPurple extends InstantCommand {
   /**
    * Add your docs here.
    */
-  public HatchCollectorStateChange() {
+  public LEDsSetPurple() {
     super();
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
-    requires(Robot.hatchPanelCollector);
+    requires(Robot.leds);
   }
 
-    // Called once when the command executes
-    @Override
-    protected void initialize() {
-        //Robot.collector.changeCollectorState();
-        if(Robot.hatchPanelCollector.getPosition().equals(DoubleSolenoid.Value.kReverse)) Robot.hatchPanelCollector.open();
-        else Robot.hatchPanelCollector.close();
-    }
+  // Called once when the command executes
+  @Override
+  protected void initialize() {
+    Robot.leds.setPurple();
+    
+  }
 
 }

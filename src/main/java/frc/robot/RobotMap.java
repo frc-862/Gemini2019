@@ -19,6 +19,15 @@ import com.ctre.phoenix.motorcontrol.can.BaseMotorController;
  * floating around.
  */
 public class RobotMap {
+
+    /**
+     * Nebula DriveTrain
+     * LeftMaster:
+     * LeftSlave:
+     * RightMaster:
+     * RightSlave:
+     */
+
     public static final int shootButton = 6;
 
     public static final int rightMotor1 = 0;

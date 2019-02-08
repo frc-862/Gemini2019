@@ -54,5 +54,9 @@ public class LEDs extends Subsystem {
     public void setGreen() {
         //TODO: Make actually change color
     }
+
+    public void setPurple() {
+        //TODO: Make actually changr colour
+    }
     
 }

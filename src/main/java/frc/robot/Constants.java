@@ -48,7 +48,7 @@ public class Constants extends ConstantBase {
 	public final static int elevatorBottomHeight = 750;
 	public final static double elevatorDownPower=-0.2;
 	public final static double elevatorUpPower=0.4;
-	public final static double elevatorHoldPower=0.07;
+	public final static double elevatorCollectorHoldPower=0.07;
 	public static final int elevatorHatchPanelF = 0;
 	public static final int elevatorCargoF = 0;
 	public static final int elevatorEmptyF = 0;
@@ -56,6 +56,11 @@ public class Constants extends ConstantBase {
 	public static final int kPIDLoopIdx = 0;
 	public static final int kTimeoutMs = 0;
 	public static final int kSlotIdx = 0;
+	public static final double cargoEjectTime = 0.2;
+	public static final double ejectDemand = 0.5;
+	public static final double cargoElevatorDistance=20;
+	public static final double hatchPanelElevatorDistance=70;
+	public static final double elevatorPieceTolerance = 5;
 
 
 	
@@ -72,5 +77,6 @@ public class Constants extends ConstantBase {
 	// for DriveTrain
 	public final static double velocityMultiplier = 15;
 	public final static Gains drivePIDF = new Gains(862, 0, 0, 8.62, 0, 0);
+	
 
 }

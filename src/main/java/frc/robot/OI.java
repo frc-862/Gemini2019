@@ -31,7 +31,27 @@ public class OI {
 //     private Button hatchToggle = new JoystickButton(driverRight, Constants.hatchToggle);//1
 //    private Button fourbarCollect = new JoystickButton(driverRight, 1);
 //    private Button fourbarEject = new JoystickButton(driverRight, 2);
-private Button cargoCollectButton = new JoystickButton(copilot, 4); 
+    private Button cargoCollectButton = new JoystickButton(copilot, 4); 
+    private Button setElevatorHigh = new JoystickButton(copilot, 3);
+    private Button setElevatorLow = new JoystickButton(copilot, 6);
+    private Button setElevatorMid = new JoystickButton(copilot, 8);
+    private Button setElevatorCargoCollect = new JoystickButton(copilot, 8);
+
+    public boolean getElevatorHighPosSelect() {
+        return setElevatorHigh.get();
+    }
+
+    public boolean getElevatorMidPosSelect() {
+        return setElevatorMid.get();
+    }
+
+    public boolean getElevatorLowPosSelect() {
+        return setElevatorLow.get();
+    }
+
+    public boolean getElevatorCargoCollectPosSelect() {
+        return setElevatorCargoCollect.get();
+    }
 
     public double getLeftPower() {
         return (Math.abs(driverLeft.getRawAxis(Constants.leftThrottleAxis))>0.05) ? -driverLeft.getRawAxis(Constants.leftThrottleAxis) : 0.00;//glitch
