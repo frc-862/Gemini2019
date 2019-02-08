@@ -11,6 +11,8 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.commands.climber.Down;
+import frc.robot.commands.climber.Up;
 import frc.robot.commands.hatch.HatchCollectorStateChange;
 import frc.robot.commands.test.RunTests;
 import frc.robot.commands.test.TestMove;
@@ -22,7 +24,9 @@ public class OI {
     private Joystick copilot = new Joystick(2);
 
     //Buttons
-    private Button cargoCollectButton = new JoystickButton(copilot, 4);
+    private Button button1 = new JoystickButton(copilot, 4);
+    private Button button2 = new JoystickButton(copilot, 5);
+
     private Button hatchToggle = new JoystickButton(driverRight, JoystickConstants.hatchToggle); 
 
     public double getLeftPower() {
@@ -34,14 +38,16 @@ public class OI {
     }
 
     public boolean getCargoCollectButton(){
-        return cargoCollectButton.get();
+        return false;//cargoCollectButton.get();
     }
 
     public OI() {
         //Add Button Command Mapping (Dashboard & Joystick) Here
         //Use whenPressed() and whileHeld()
-        hatchToggle.whenPressed(new HatchCollectorStateChange());
-        SmartDashboard.putData("TestMove", new TestMove());
+        //hatchToggle.whenPressed(new HatchCollectorStateChange());
+        //SmartDashboard.putData("TestMove", new TestMove());
+        button1.whenPressed(new Up());
+        button2.whenPressed(new Down());
         //SmartDashboard.putData("SYSTEM_TESTS", new RunTests());
     }
 }

@@ -22,10 +22,13 @@ import com.ctre.phoenix.motorcontrol.LimitSwitchSource;
 public class Climber extends Subsystem {
    
     TalonSRX motor;
+    TalonSRX motor2;
     DoubleSolenoid deployer;
 
     public Climber() {
-        motor = null;  // TODO create with correct CAN ID in robot map
+        motor = new TalonSRX(0);  // TODO create with correct CAN ID in robot map
+        motor2 = new TalonSRX(1);
+        motor2.follow(motor);
         deployer = null; // TODO create with correct solenoid values
 
         motor.configForwardLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen, 0);
@@ -44,6 +47,10 @@ public class Climber extends Subsystem {
         } else if (sensors.isRevLimitSwitchClosed()) {
             motor.setSelectedSensorPosition(RobotConstants.retractedPosition);
         }
+    }
+
+    public void setPwr(double pow) {
+        motor.set(ControlMode.PercentOutput, pow);
     }
 
     @Override

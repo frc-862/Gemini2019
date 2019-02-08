@@ -31,14 +31,18 @@ public class Robot extends LightningRobot {
     public static CargoCollector cargoCollector;
     public static HatchGroundCollector hatchGroundCollector;
     public static Elevator elevator;
+    public static Climber climber;
     public static OI oi;
 
     public Robot() {
         super();
         System.out.println("Initializing our robot");
+        climber = new Climber();
         //Create Things
         if(isOBot()){
             drivetrain = OBotDrivetrain.create();
+            climber = new Climber();
+            hatchPanelCollector = new HatchCollector();
         }else if(isGlitch()){
             drivetrain = GlitchDrivetrain.create();
             hatchPanelCollector = new HatchCollector();
@@ -55,7 +59,7 @@ public class Robot extends LightningRobot {
         core = new Core();
         oi = new OI();
         //this.registerAutonomousCommmand(name, command);
-        this.registerAutonomousCommmand("T_MotionProfile", new MotionProfile());
+        //this.registerAutonomousCommmand("T_MotionProfile", new MotionProfile());
     }
 
     //Drive Train Chooser
