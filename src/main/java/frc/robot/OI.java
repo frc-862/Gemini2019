@@ -13,7 +13,8 @@ import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.hatch.HatchCollectorStateChange;
-import frc.robot.commands.calibration.TestMove;;
+import frc.robot.commands.calibration.TestMove;
+import frc.robot.commands.climber.Climb;;
 
 public class OI {
     //Drive Joysticks
@@ -33,6 +34,7 @@ public class OI {
     private Button setElevatorMid = new JoystickButton(copilot, 8);
     private Button setElevatorCargoCollect = new JoystickButton(copilot, 8);
     private Button hatchToggle = new JoystickButton(driverRight, JoystickConstants.hatchToggle);
+    private Button climb = new JoystickButton(copilot, 5);
 
     public boolean getElevatorHighPosSelect() {
         return setElevatorHigh.get();
@@ -96,6 +98,9 @@ public class OI {
                 hatchToggle.whenPressed(new HatchCollectorStateChange());
             }
         }
+
+        climb.whenPressed(new Climb());
+
     }
 
     public boolean fullyInitialized() {
