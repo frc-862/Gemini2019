@@ -1,9 +1,11 @@
 package frc.lightning.util;
 
+import frc.robot.Constants;
+import frc.robot.Robot;
+import frc.robot.RobotConstants;
+
 public class LightningMath {
-    public static final double wheelRadius = in2ft(6.0 / 2);
-    public static final double wheelCircumference = wheelRadius * Math.PI * 2;//1.5707 ft
-    public static final double TICS_PER_ROTATION = 4 * 360;
+    public static double wheelCircumference =  RobotConstants.wheelDiameter * Math.PI;
 
     public static double talon2ips(double talon) {
         // multiply 100ms by 10 to get seconds
@@ -27,15 +29,15 @@ public class LightningMath {
     }
 
     public static double inches2ticks(double inches) {
-        return in2ft(inches) / wheelCircumference * TICS_PER_ROTATION;
+        return in2ft(inches) / wheelCircumference * Constants.TICS_PER_ROTATION;
     }
 
     public static double feet2ticks(double feet) {
-        return feet / wheelCircumference * TICS_PER_ROTATION;
+        return feet / wheelCircumference * Constants.TICS_PER_ROTATION;
     }
 
     public static double ticks2feet(double ticks) {
-        return ticks / TICS_PER_ROTATION * wheelCircumference;
+        return ticks / Constants.TICS_PER_ROTATION * wheelCircumference;
     }
 
     public static double ticks2inches(double ticks) {
@@ -161,7 +163,7 @@ public class LightningMath {
 
     public static double feet2talon(double ft) {
         final double rotations = feet2rotations(ft);
-        return rotations * TICS_PER_ROTATION;
+        return rotations * Constants.TICS_PER_ROTATION;
     }
 
 }

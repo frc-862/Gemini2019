@@ -19,7 +19,7 @@ public class HatchCollectorStateChange extends InstantCommand {
    * Add your docs here.
    */
   public HatchCollectorStateChange() {
-    super();
+    //super();
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
     requires(Robot.hatchPanelCollector);
@@ -28,9 +28,8 @@ public class HatchCollectorStateChange extends InstantCommand {
     // Called once when the command executes
     @Override
     protected void initialize() {
-        //Robot.collector.changeCollectorState();
-        if(Robot.hatchPanelCollector.getPosition().equals(DoubleSolenoid.Value.kReverse)) Robot.hatchPanelCollector.open();
-        else Robot.hatchPanelCollector.close();
+        if(Robot.hatchPanelCollector.getPosition().equals(DoubleSolenoid.Value.kReverse)) Robot.hatchPanelCollector.collect();
+        else Robot.hatchPanelCollector.eject();
     }
 
 }

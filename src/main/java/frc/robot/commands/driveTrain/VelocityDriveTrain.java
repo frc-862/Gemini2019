@@ -23,7 +23,7 @@ public class VelocityDriveTrain extends Command {
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    Robot.drivetrain.configurePID(Constants.drivePIDF);
+    Robot.drivetrain.configurePID(Constants.kGains_MotProf);
   }
 
   // Called repeatedly when this Command is scheduled to run

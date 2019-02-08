@@ -20,6 +20,7 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.lightning.util.LightningMath;
 import frc.robot.Constants;
+import frc.robot.RobotMap;
 import frc.robot.commands.elevator.SetElevatorHigh;
 import frc.robot.commands.elevator.UpdateElevatorState;
 
@@ -46,12 +47,12 @@ public class Elevator extends Subsystem {
 
 
     public Elevator() {
-        motor1 = null; // TODO init me
-        motor2 = null;
 
         pieceDetector = new AnalogInput(0);
         
 
+        motor1 = new TalonSRX(RobotMap.elevatorCanId);
+        motor2 = new VictorSPX(RobotMap.elevator2CanId);
         motor2.follow(motor1);
 
         motor1.configForwardLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen, 0);

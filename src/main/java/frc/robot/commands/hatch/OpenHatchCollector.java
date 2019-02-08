@@ -27,7 +27,7 @@ public class OpenHatchCollector extends InstantCommand {
   // Called once when the command executes
   @Override
   protected void initialize() {
-    Robot.hatchPanelCollector.open();
+    Robot.hatchPanelCollector.collect();
   }
 
   // Called repeatedly when this Command is scheduled to run

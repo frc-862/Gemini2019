@@ -12,11 +12,15 @@ import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.livewindow.LiveWindow;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.lightning.logging.DataLogger;
+import frc.lightning.testing.SystemTest;
 import frc.lightning.util.FaultMonitor;
 import frc.lightning.util.UnchangingFaultMonitor;
 import frc.lightning.util.FaultCode.Codes;
 import frc.robot.RobotMap;
+import frc.robot.commands.test.NavXTest;
 
 /**
  * Add your docs here.
@@ -24,13 +28,20 @@ import frc.robot.RobotMap;
 public class Core extends Subsystem {
   // Put methods for controlling this subsystem
   // here. Call these from Commajnds.
-  // private AHRS navx;
+  private AHRS navx;
   private Compressor compressor = new Compressor(RobotMap.compressorCANId);
   // private PowerDistributionPanel pdp = new PowerDistributionPanel(RobotMap.pdpCANId);
 
   public Core() {
-    // navx = new AHRS(SPI.Port.kMXP);
-    // DataLogger.addDataElement("heading", () -> getHeading());
+    compressor.setSubsystem("Core");
+    if (compressor.getCompressorNotConnectedFault()) {
+      LiveWindow.disableTelemetry(compressor);
+    }
+
+    navx = new AHRS(SPI.Port.kMXP);
+    navx.setSubsystem("Core");
+
+    DataLogger.addDataElement("heading", () -> getHeading());
 
     // monitor if the heading is exactly the same, there is always 
     // some jitter in the reading, so this will not be the case
@@ -42,11 +53,19 @@ public class Core extends Subsystem {
     // addChild("PDP", pdp);
     // addChild("NavX", navx);
     addChild("Compressor", compressor);
+
+    SystemTest.register(new NavXTest());
+  }
+
+  @Override
+  public void periodic() {
+    SmartDashboard.putNumber("Heading", navx.getFusedHeading());
+    SmartDashboard.putNumber("Angle", navx.getAngle());
   }
 
   public double getHeading() {
-    // return navx.getFusedHeading();
-    return 0;
+    return navx.getFusedHeading();
+    // return 0;
   }
 
   @Override

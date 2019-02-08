@@ -10,7 +10,10 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import frc.robot.Constants;
+import frc.robot.RobotConstants;
+import frc.robot.RobotMap;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 
 /**
@@ -19,25 +22,32 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
  *
  */
 public class CargoCollector extends Subsystem {
-    final double collectPower = -0.6;
-    final double holdPower = -0.2;
-    final double hasCargoDistance = 0.7;
-
-
     private final WPI_VictorSPX collector;
     private final DoubleSolenoid deployer;
 
-    public CargoCollector create() {
+    public static CargoCollector create() {
         return new CargoCollector(
-                   new WPI_VictorSPX(21),
-                   new DoubleSolenoid(11, 1, 2)
+                   new WPI_VictorSPX(RobotMap.cargoMotor),
+                   new DoubleSolenoid(RobotMap.compressorCANId, RobotMap.cargoSolenoidFwdChan, RobotMap.cargoSolenoidRevChan)
                );
     }
 
     public CargoCollector(WPI_VictorSPX collector, DoubleSolenoid deployer) {
-     
         this.collector = collector;
+        this.collector.setSubsystem(this.getClass().getSimpleName());
+        if (!collector.isAlive()) {
+            LiveWindow.disableTelemetry(collector);
+            System.out.println("collector disabled");
+        }
+
         this.deployer = deployer;
+        this.deployer.setSubsystem(this.getClass().getSimpleName());
+        if (deployer.isFwdSolenoidBlackListed()) {
+            LiveWindow.disableTelemetry(deployer);
+            System.out.println("deployer disabled");
+        }
+        System.out.println("CargoCollector Initialized");
+
         stop();
     }
 
@@ -52,7 +62,7 @@ public class CargoCollector extends Subsystem {
     }
 
     public boolean hasCargo() {
-        return cargoDistanceSensor() >= 0 && cargoDistanceSensor() <= hasCargoDistance;
+        return cargoDistanceSensor() >= 0 && cargoDistanceSensor() <= Constants.hasCargoDistance;
     }
 
     @Override
@@ -67,11 +77,11 @@ public class CargoCollector extends Subsystem {
 
     public void eject() {
         System.out.println("eject it");
-        collector.set(ControlMode.PercentOutput, Constants.ejectPower);
+        collector.set(ControlMode.PercentOutput, -Constants.collectPower);
     }
 
     public void stop() {
-        collector.set(ControlMode.PercentOutput, 0);
+        collector.set(ControlMode.PercentOutput, 0.0);
     }
 
 
