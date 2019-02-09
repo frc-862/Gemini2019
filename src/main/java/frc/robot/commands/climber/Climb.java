@@ -5,34 +5,33 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands.cargo;
+package frc.robot.commands.climber;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
-import frc.robot.Constants;
 
-public class StartEjectCargo extends Command {
-    public StartEjectCargo() {
+public class Climb extends Command {
+    public Climb() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
-        requires(Robot.cargoCollector);
+        requires(Robot.climber);
     }
 
     // Called just before this Command runs the first time
     @Override
     protected void initialize() {
+        Robot.climber.extendJack();
     }
 
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-        Robot.cargoCollector.eject();
     }
 
     // Make this return true when this Command no longer needs to run execute()
     @Override
     protected boolean isFinished() {
-        return true;
+        return false;
     }
 
     // Called once after isFinished returns true
@@ -44,6 +43,5 @@ public class StartEjectCargo extends Command {
     // subsystems is scheduled to run
     @Override
     protected void interrupted() {
-        end();
     }
 }

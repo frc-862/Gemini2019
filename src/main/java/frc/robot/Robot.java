@@ -23,6 +23,7 @@ public class Robot extends LightningRobot {
     public static CargoCollector cargoCollector;
     public static HatchGroundCollector hatchGroundCollector;
     public static Elevator elevator;
+    public static Climber climber;
     public static OI oi;
 
     private static boolean gemini = true;
@@ -36,6 +37,7 @@ public class Robot extends LightningRobot {
         hatchPanelCollector = new HatchCollector();
         cargoCollector = CargoCollector.create();
         elevator = new Elevator();
+        climber = new Climber();
 
         core = new Core();
         oi = new OI();

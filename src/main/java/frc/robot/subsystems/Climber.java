@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.Constants;
 import frc.robot.RobotConstants;
+import frc.robot.RobotMap;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.LimitSwitchNormal;
@@ -26,7 +27,7 @@ public class Climber extends Subsystem {
     DoubleSolenoid deployer;
 
     public Climber() {
-        motor = null;  // TODO create with correct CAN ID in robot map
+        motor = new TalonSRX(RobotMap.climberID);  // TODO create with correct CAN ID in robot map
         deployer = null; // TODO create with correct solenoid values
 
         motor.configForwardLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen, 0);

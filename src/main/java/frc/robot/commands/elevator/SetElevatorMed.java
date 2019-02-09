@@ -19,7 +19,7 @@ public class SetElevatorMed extends Command {
     // Called just before this Command runs the first time
     @Override
     protected void initialize() {
-        Robot.elevator.goToMedium();
+        Robot.elevator.goToMid();
     }
 
     // Called repeatedly when this Command is scheduled to run

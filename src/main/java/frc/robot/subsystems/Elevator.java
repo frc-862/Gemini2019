@@ -15,11 +15,14 @@ import com.ctre.phoenix.motorcontrol.LimitSwitchSource;
 import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
-
+import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import frc.lightning.util.LightningMath;
 import frc.robot.Constants;
 import frc.robot.RobotMap;
+import frc.robot.commands.elevator.SetElevatorHigh;
+import frc.robot.commands.elevator.UpdateElevatorState;
 
 /**
  * Add your docs here.
@@ -30,10 +33,27 @@ public class Elevator extends Subsystem {
     // here. Call these from Commands.
 
     public TalonSRX motor1;
-    public DigitalInput pieceDetector = new DigitalInput(RobotMap.pieceDetector);
+    public VictorSPX motor2;
+    public VictorSPX motor3;
+    public VictorSPX motor4;
+
+    public AnalogInput pieceDetector;
+
+    public enum HeightState {
+        HIGH_ROCKET, MID_ROCKET, LOW_ROCKET, CARGO_COLLECT
+    }
+
+    private HeightState heightState = HeightState.CARGO_COLLECT;
+
 
     public Elevator() {
+
+        pieceDetector = new AnalogInput(0);
+        
+
         motor1 = new TalonSRX(RobotMap.elevatorCanId);
+        motor2 = new VictorSPX(RobotMap.elevator2CanId);
+        motor2.follow(motor1);
 
         motor1.configForwardLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen, 0);
         motor1.configReverseLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyClosed, 0);
@@ -84,7 +104,28 @@ public class Elevator extends Subsystem {
         // Set the default command for a subsystem here.
         // setDefaultCommand(new MySpecialCommand());
 
+        setDefaultCommand(new UpdateElevatorState());
 
+    }
+
+    public void selectHighState() {
+        heightState = HeightState.HIGH_ROCKET;
+    }
+
+    public void selectMidState() {
+        heightState = HeightState.MID_ROCKET;
+    }
+
+    public void selectLowState() {
+        heightState = HeightState.LOW_ROCKET;
+    }
+
+    public void selectCargoCollect() {
+        heightState = HeightState.CARGO_COLLECT;
+    }
+
+    public HeightState getHeightState() {
+        return heightState;
     }
 
     /** Watch limit switches at ends of travel
@@ -132,7 +173,7 @@ public class Elevator extends Subsystem {
         motor1.set(ControlMode.MotionMagic, Constants.elevatorBottomHeight, DemandType.ArbitraryFeedForward, gravityCompensation);
     }
 
-    public void goToMedium() {
+    public void goToMid() {
         int gravityCompensation = 0;
 
         if (hasHatchPanel())
@@ -159,12 +200,33 @@ public class Elevator extends Subsystem {
     }
 
     public boolean hasHatchPanel() {
-        return false; //TODO method stub
+        return LightningMath.isInRange(pieceDetector.getValue(), Constants.hatchPanelElevatorDistance, Constants.elevatorPieceTolerance); //TODO method stub
     }
 
     public boolean hasCargo() {
-        return false; //TODO method stub
+        return LightningMath.isInRange(pieceDetector.getValue(), Constants.cargoElevatorDistance,Constants.elevatorPieceTolerance); //TODO method stub
     }
+    public void ejectCargo() {
+        motor3.set(ControlMode.PercentOutput, Constants.ejectDemand*-1);
+    }
+
+    public void stopEject(){
+        motor3.set(ControlMode.PercentOutput, 0.0);
+    }
+
+    public void elevatorCargoHoldPower() {
+        motor3.set(ControlMode.PercentOutput, Constants.elevatorCollectorHoldPower);
+    }
+
+    public void collectCargo(){
+        motor3.set(ControlMode.PercentOutput, Constants.ejectDemand);
+    }
+    public void stopCollectCargo(){
+
+    }
+    
+
+
 
 }
 
