@@ -124,13 +124,13 @@ public class GeminiDrivetrain extends CANDrivetrain {
     }
 
     public void configureMotors() {
-        getLeftMaster().setInverted(false);
+        getLeftMaster().setInverted(true);
         leftFollow1.follow(getLeftMaster());
-        leftFollow1.setInverted(false);
+        leftFollow1.setInverted(true);
 
-        getRightMaster().setInverted(true);
+        getRightMaster().setInverted(false);
         rightFollow1.follow(getRightMaster());
-        rightFollow1.setInverted(true);
+        rightFollow1.setInverted(false);
 
         withEachMotor((m) -> m.setNeutralMode(NeutralMode.Brake));
 
