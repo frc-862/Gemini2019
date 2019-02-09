@@ -49,7 +49,10 @@ public class VisionDriveAndAdjust extends Command {
       else if (Math.abs(squint) > SQUINT_BOUND || Math.abs(target.rotation()) > ROTATION_BOUND) {
 
         double squintAdjustment = Math.signum(squint) * Math.pow(Math.abs(squint), 0.5) * 0.05; //power constant taken from the else if block directly below
-        double rotateAdjustment = Math.signum(rotation) * Math.pow(Math.abs(rotation), 0.5) * 0.05;
+       // double rotateAdjustment = Math.signum(rotation) * Math.pow(Math.abs(rotation), 0.5) * 0.05 / (Math.abs(squint) + 1);// / Math.abs(squint);
+        double rotateAdjustment = Math.signum(rotation) * .1;
+
+
         Robot.drivetrain.setPower(.3 + squintAdjustment - rotateAdjustment, .3 - squintAdjustment + rotateAdjustment);
 /*
           //double adjustment = target.squint() * 0.005 + Math.signum(target.rotation()) * Math.pow(Math.abs(target.rotation()), 1.3) * 0.0025;
