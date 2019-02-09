@@ -10,10 +10,11 @@ package frc.robot.commands.climber;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
-public class Up extends Command {
-  public Up() {
+public class Move extends Command {
+  public Move() {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
+    requires(Robot.climber);
   }
 
   // Called just before this Command runs the first time
@@ -24,7 +25,7 @@ public class Up extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    Robot.climber.setPwr(0.6);
+    Robot.climber.setPwr(Robot.oi.getRSlider());
   }
 
   // Make this return true when this Command no longer needs to run execute()

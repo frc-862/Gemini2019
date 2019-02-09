@@ -7,15 +7,15 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.commands.climber.Down;
-import frc.robot.commands.climber.Up;
 import frc.robot.commands.hatch.HatchCollectorStateChange;
-import frc.robot.commands.test.RunTests;
-import frc.robot.commands.test.TestMove;
+import frc.robot.commands.calibration.TestMove;
+import frc.robot.commands.climber.Climb;
+import frc.robot.commands.climber.UnClimb;;
 
 public class OI {
     //Drive Joysticks
@@ -23,11 +23,36 @@ public class OI {
     private Joystick driverLeft = new Joystick(0);
     private Joystick copilot = new Joystick(2);
 
-    //Buttons
-    private Button button1 = new JoystickButton(copilot, 4);
-    private Button button2 = new JoystickButton(copilot, 5);
+    //Mechanism Buttons
+//    private Button collectButton = new JoystickButton(driverLeft, Constants.collectButton);//1
+//    private Button ejectButton = new JoystickButton(driverLeft, Constants.ejectButton);//2
+//     private Button hatchToggle = new JoystickButton(driverRight, Constants.hatchToggle);//1
+//    private Button fourbarCollect = new JoystickButton(driverRight, 1);
+//    private Button fourbarEject = new JoystickButton(driverRight, 2);
+    private Button cargoCollectButton = new JoystickButton(copilot, 4); 
+    private Button setElevatorHigh = new JoystickButton(copilot, 3);
+    private Button setElevatorLow = new JoystickButton(copilot, 6);
+    private Button setElevatorMid = new JoystickButton(copilot, 8);
+    private Button setElevatorCargoCollect = new JoystickButton(copilot, 8);
+    private Button hatchToggle = new JoystickButton(driverRight, JoystickConstants.hatchToggle);
+    private Button climb = new JoystickButton(copilot, 5);
+    private Button un_climb = new JoystickButton(copilot, 4);
 
-    private Button hatchToggle = new JoystickButton(driverRight, JoystickConstants.hatchToggle); 
+    public boolean getElevatorHighPosSelect() {
+        return setElevatorHigh.get();
+    }
+
+    public boolean getElevatorMidPosSelect() {
+        return setElevatorMid.get();
+    }
+
+    public boolean getElevatorLowPosSelect() {
+        return setElevatorLow.get();
+    }
+
+    public boolean getElevatorCargoCollectPosSelect() {
+        return setElevatorCargoCollect.get();
+    }
 
     public double getLeftPower() {
         return (Math.abs(driverLeft.getRawAxis(JoystickConstants.leftThrottleAxis))>0.05) ? -driverLeft.getRawAxis(JoystickConstants.leftThrottleAxis) : 0.00;
@@ -38,16 +63,64 @@ public class OI {
     }
 
     public boolean getCargoCollectButton(){
-        return false;//cargoCollectButton.get();
+        return cargoCollectButton.get();
+    }
+
+    public Joystick getJoystick(int port, Joystick obj) {
+        if (obj != null) return obj;
+
+        DriverStation ds = DriverStation.getInstance();
+        if (ds != null && ds.getJoystickType(port) != 0) {
+            return new Joystick(port);
+        }
+
+        return null;
+    }
+
+    public Button getButton(Joystick js, int button, Button obj) {
+        if (obj != null) return obj;
+        if (js != null) return null;
+
+        DriverStation ds = DriverStation.getInstance();
+        if (ds.getStickButtonCount(js.getPort()) >= button) {
+            return new JoystickButton(js, button);
+        }
+        return null;
+    }
+
+    public void initalizeControllers() {
+        driverLeft = getJoystick(0, driverLeft);
+        driverRight = getJoystick(1, driverRight);
+        copilot = getJoystick(2, copilot);
+
+        cargoCollectButton = getButton(copilot, 4, cargoCollectButton);
+        if (hatchToggle == null) {
+            hatchToggle = getButton(driverRight, JoystickConstants.hatchToggle, hatchToggle);
+            if (hatchToggle != null) {
+                hatchToggle.whenPressed(new HatchCollectorStateChange());
+            }
+        }
+
+        climb.whenPressed(new Climb());
+
+    }
+
+    public double getRSlider(){
+        return ((driverRight.getRawAxis(JoystickConstants.rightSliderAxis)+1)/2);
+    }
+
+    public boolean fullyInitialized() {
+        return driverLeft != null &&
+            driverRight != null &&
+            copilot != null &&
+            cargoCollectButton != null &&
+            hatchToggle != null;
     }
 
     public OI() {
-        //Add Button Command Mapping (Dashboard & Joystick) Here
-        //Use whenPressed() and whileHeld()
-        //hatchToggle.whenPressed(new HatchCollectorStateChange());
+        //initalizeControllers();
         //SmartDashboard.putData("TestMove", new TestMove());
-        button1.whenPressed(new Up());
-        button2.whenPressed(new Down());
-        //SmartDashboard.putData("SYSTEM_TESTS", new RunTests());
+        //climb.whenPressed(new Climb());
+        //un_climb.whenPressed(new UnClimb());
     }
 }

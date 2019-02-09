@@ -10,8 +10,12 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import frc.robot.Constants;
 import frc.robot.RobotConstants;
+import frc.robot.RobotMap;
+import frc.robot.commands.climber.Move;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.LimitSwitchNormal;
@@ -21,55 +25,63 @@ import com.ctre.phoenix.motorcontrol.LimitSwitchSource;
  */
 public class Climber extends Subsystem {
    
-    TalonSRX motor;
-    TalonSRX motor2;
+    VictorSP motor;//TODO these were talons
+    VictorSP motor2;
     DoubleSolenoid deployer;
 
     public Climber() {
-        motor = new TalonSRX(0);  // TODO create with correct CAN ID in robot map
-        motor2 = new TalonSRX(1);
-        motor2.follow(motor);
+
+        motor = new VictorSP(RobotMap.climberID);  // TODO create with correct CAN ID in robot map
+        motor2 = new VictorSP(RobotMap.obotWinch2);
+        //motor2.follow(motor);
+
         deployer = null; // TODO create with correct solenoid values
 
-        motor.configForwardLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen, 0);
-        motor.configReverseLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyClosed, 0);
+        //motor.configForwardLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen, 0);
+        //motor.configReverseLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyClosed, 0);
     }
 
     /** Watch limit switches at ends of travel
      * and auto calibrate encoder position
      */
+    /*
     @Override
     public void periodic() {
         var sensors = motor.getSensorCollection();
         // Set the default command for a subsystem here.
         if (sensors.isFwdLimitSwitchClosed()) {
-            motor.setSelectedSensorPosition(RobotConstants.extendedPosition);
+            motor.setSelectedSensorPosition(Constants.extendedPosition);
         } else if (sensors.isRevLimitSwitchClosed()) {
-            motor.setSelectedSensorPosition(RobotConstants.retractedPosition);
+            motor.setSelectedSensorPosition(Constants.retractedPosition);
         }
     }
+    */
 
     public void setPwr(double pow) {
-        motor.set(ControlMode.PercentOutput, pow);
+        
+        motor.set(pow);
+        motor2.set(pow);
     }
 
     @Override
-    public void initDefaultCommand() { }
+    public void initDefaultCommand() {
+        setDefaultCommand(new Move());
+     }
 
     public double getJackPosition() {
-        return motor.getSelectedSensorPosition();
+        return 0.0;//motor.getSelectedSensorPosition();
     }
 
     public void extendJack() {
-        motor.set(ControlMode.MotionMagic, RobotConstants.extendedPosition);
+        //motor.set(ControlMode.MotionMagic, Constants.extendedPosition);
     }
 
     public void retractJack() {
-        motor.set(ControlMode.MotionMagic, RobotConstants.retractedPosition);
+        //motor.set(ControlMode.MotionMagic, Constants.retractedPosition);
     }
 
     public void stopJack() {
-        motor.set(ControlMode.PercentOutput, 0);
+        motor.set(0.0);//need to specifiy control mode
     }
 
     public void extendSkids() {

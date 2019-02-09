@@ -1,7 +1,6 @@
 package frc.lightning;
 
 import edu.wpi.first.cameraserver.CameraServer;
-import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
@@ -16,9 +15,7 @@ import frc.lightning.util.FaultMonitor;
 import frc.lightning.util.TimedFaultMonitor;
 import frc.lightning.util.FaultCode.Codes;
 import frc.robot.Constants;
-import frc.robot.Robot;
-import frc.robot.commands.driveTrain.MotionProfile;
-import frc.robot.commands.test.RunTests;
+import java.util.Map;
 
 /**
  * Base robot class, provides {@link frc.lightning.ConstantBase constants},
@@ -64,13 +61,21 @@ public class LightningRobot extends TimedRobot {
         // By this point all datalog fields should be registered
         DataLogger.preventNewDataElements();
 
-        LightningServer.start_server();
+        // LightningServer.start_server();
         FaultMonitor.register(new TimedFaultMonitor(Codes.SLOW_LOOPER, () -> getLoopTime() > getPeriod(),
                               0.08, "Loop is running slow: " + getLoopTime()));
 
         // TODO should this be in Robot.java and not LightningRobot?
         CameraServer.getInstance().startAutomaticCapture();
 
+        FaultCode.eachCode((code, state) -> {
+            var nte = Shuffleboard.getTab("Fault Codes")
+                    .add("FAULT_" + code.toString(), state)
+                    .withWidget("Boolean Box")
+                    .withProperties(Map.of("colorWhenTrue", "green", "colorWhenFalse", "maroon"))
+                    .getEntry();
+            FaultCode.setNetworkTableEntry(code, nte);
+        });
     }
 
     double getLoopTime() {
@@ -137,7 +142,7 @@ public class LightningRobot extends TimedRobot {
      * long running operation, consider creating a background
      * thread.
      */
-    private void robotBackgroundPeriodic() {
+    protected void robotBackgroundPeriodic() {
         DataLogger.flush();
     }
 
@@ -150,7 +155,7 @@ public class LightningRobot extends TimedRobot {
      * long running operation, consider creating a background
      * thread.
      */
-    private void robotLowPriorityPeriodic() {
+    protected void robotLowPriorityPeriodic() {
         DataLogger.getLogger().getLogWriter().drain();
     }
 
@@ -163,7 +168,7 @@ public class LightningRobot extends TimedRobot {
      * long running operation, consider creating a background
      * thread.
      */
-    private void robotMediumPriorityPeriodic() {
+    protected void robotMediumPriorityPeriodic() {
         FaultCode.update();
     }
 
@@ -225,35 +230,4 @@ public class LightningRobot extends TimedRobot {
     public void teleopPeriodic() {
         Scheduler.getInstance().run();
     }
-    @Override
-    public void testInit() {
-        NetworkTableEntry userInstructions = Shuffleboard.getTab("SystemTests")
-                                             .getLayout("List", "System test")
-                                             .add("UserTestMessage", "Follow instructions")
-                                             .getEntry();
-
-        userInstructions.setString("Press Button to begin");
-        NetworkTableEntry testButton = Shuffleboard.getTab("SystemTests")
-                                       .getLayout("List", "System test")
-                                       .add("TestButton", false)
-                                       .withWidget("Toggle Button")
-                                       .getEntry();
-        testButton.setBoolean(false);
-        FaultCode.eachCode((Codes code, Boolean state) -> {
-            Shuffleboard.getTab("SystemTests")
-            .getLayout("List", "System test")
-            .add(code.toString(), state)
-            .withWidget("Toggle Button")
-            .getEntry();
-        });
-
-        SmartDashboard.putData("SYSTEM_TESTS", new RunTests());
-
-    }
-    
-    @Override
-    public void testPeriodic(){
-        Scheduler.getInstance().run();
-    }
-    
 }

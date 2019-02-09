@@ -5,13 +5,14 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands.climber;
+package frc.robot.commands.elevator;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
-public class Up extends Command {
-  public Up() {
+public class UpdateElevatorState extends Command {
+  public UpdateElevatorState() {
+    requires(Robot.elevator);
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
   }
@@ -24,7 +25,14 @@ public class Up extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    Robot.climber.setPwr(0.6);
+    if(Robot.oi.getElevatorCargoCollectPosSelect())
+      Robot.elevator.selectCargoCollect();
+    else if(Robot.oi.getElevatorHighPosSelect())
+      Robot.elevator.selectHighState();
+    else if(Robot.oi.getElevatorMidPosSelect())
+      Robot.elevator.selectMidState();
+    else if(Robot.oi.getElevatorLowPosSelect())
+      Robot.elevator.selectLowState();
   }
 
   // Make this return true when this Command no longer needs to run execute()
@@ -36,7 +44,6 @@ public class Up extends Command {
   // Called once after isFinished returns true
   @Override
   protected void end() {
-    Robot.climber.stopJack();
   }
 
   // Called when another command which requires one or more of the same

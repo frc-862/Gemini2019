@@ -10,6 +10,7 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import frc.robot.Constants;
 import frc.robot.RobotConstants;
 import frc.robot.RobotMap;
@@ -27,14 +28,26 @@ public class CargoCollector extends Subsystem {
     public static CargoCollector create() {
         return new CargoCollector(
                    new WPI_VictorSPX(RobotMap.cargoMotor),
-                   new DoubleSolenoid(RobotMap.cargoSolenoidModule, RobotMap.cargoSolenoidFwdChan, RobotMap.cargoSolenoidRevChan)
+                   new DoubleSolenoid(RobotMap.compressorCANId, RobotMap.cargoSolenoidFwdChan, RobotMap.cargoSolenoidRevChan)
                );
     }
 
     public CargoCollector(WPI_VictorSPX collector, DoubleSolenoid deployer) {
-     
         this.collector = collector;
+        this.collector.setSubsystem(this.getClass().getSimpleName());
+        if (!collector.isAlive()) {
+            LiveWindow.disableTelemetry(collector);
+            System.out.println("collector disabled");
+        }
+
         this.deployer = deployer;
+        this.deployer.setSubsystem(this.getClass().getSimpleName());
+        if (deployer.isFwdSolenoidBlackListed()) {
+            LiveWindow.disableTelemetry(deployer);
+            System.out.println("deployer disabled");
+        }
+        System.out.println("CargoCollector Initialized");
+
         stop();
     }
 
@@ -49,7 +62,7 @@ public class CargoCollector extends Subsystem {
     }
 
     public boolean hasCargo() {
-        return cargoDistanceSensor() >= 0 && cargoDistanceSensor() <= RobotConstants.hasCargoDistance;
+        return cargoDistanceSensor() >= 0 && cargoDistanceSensor() <= Constants.hasCargoDistance;
     }
 
     @Override
@@ -59,12 +72,12 @@ public class CargoCollector extends Subsystem {
 
     public void collect() {
         System.out.println("collect it");
-        collector.set(ControlMode.PercentOutput, RobotConstants.collectPower);
+        collector.set(ControlMode.PercentOutput, Constants.collectPower);
     }
 
     public void eject() {
         System.out.println("eject it");
-        collector.set(ControlMode.PercentOutput, -RobotConstants.collectPower);
+        collector.set(ControlMode.PercentOutput, -Constants.collectPower);
     }
 
     public void stop() {

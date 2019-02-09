@@ -16,8 +16,9 @@ import frc.lightning.subsystems.LightningDrivetrain;
 import frc.lightning.util.FaultMonitor;
 import frc.lightning.util.FaultCode.Codes;
 import frc.robot.commands.driveTrain.MotionProfile;
-import frc.robot.commands.test.TestMove;
 import frc.robot.subsystems.*;
+import frc.robot.subsystems.old.drivetrains.GlitchDrivetrain;
+import frc.robot.subsystems.old.drivetrains.OBotDrivetrain;
 
 import java.io.File;
 
@@ -37,16 +38,14 @@ public class Robot extends LightningRobot {
     public Robot() {
         super();
         System.out.println("Initializing our robot");
-        climber = new Climber();
         //Create Things
         if(isOBot()){
             drivetrain = OBotDrivetrain.create();
             climber = new Climber();
-            hatchPanelCollector = new HatchCollector();
         }else if(isGlitch()){
             drivetrain = GlitchDrivetrain.create();
             hatchPanelCollector = new HatchCollector();
-        }else if (isGemini()){
+        }else if (isGemini() || isNebula()){
             drivetrain = GeminiDrivetrain.create();
             leds = new LEDs();
             hatchGroundCollector = new HatchGroundCollector();
@@ -72,8 +71,18 @@ public class Robot extends LightningRobot {
     public static boolean isGemini() {
         return (new File("/home/lvuser/gemini")).exists();//TODO make file on robot
     }
+    public static boolean isNebula() {
+        return (new File("/home/lvuser/nebula")).exists();//TODO make file on robot
+    }
     public static boolean isFlash() {
         return (new File("/home/lvuser/flash")).exists();
     }
 
+    @Override
+    protected void robotMediumPriorityPeriodic() {//TODO need o move back to LightningBase?
+        super.robotMediumPriorityPeriodic();
+        if (!oi.fullyInitialized()) {
+            oi.initalizeControllers();
+        }
+    }
 }

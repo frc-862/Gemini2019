@@ -24,8 +24,8 @@ public class HatchCollector extends Subsystem {
   DigitalInput hatchDetector;
 
   public HatchCollector(){
-    extender = new DoubleSolenoid(RobotMap.extenderModule, RobotMap.extenderFwdChan, RobotMap.extenderRevChan);// OBOT - 11, 4, 5 TODO change these
-    grabber = new DoubleSolenoid(RobotMap.grabberModule, RobotMap.grabberFwdChan, RobotMap.grabberRevChan);// TODO change these
+    extender = new DoubleSolenoid(RobotMap.compressorCANId, RobotMap.extenderFwdChan, RobotMap.extenderRevChan);// OBOT - 11, 4, 5 TODO change these
+    grabber = new DoubleSolenoid(RobotMap.compressorCANId, RobotMap.grabberFwdChan, RobotMap.grabberRevChan);// TODO change these
     // constructor - DoubleSolenoid(moduleNumber, forwardChannel, reverseChannel)
     hatchDetector = new DigitalInput(RobotMap.hatchDetector); // TODO check wiring
   }

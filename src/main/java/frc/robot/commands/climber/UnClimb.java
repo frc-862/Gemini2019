@@ -5,38 +5,45 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands.elevator;
+package frc.robot.commands.climber;
 
 import edu.wpi.first.wpilibj.command.Command;
-import frc.robot.Constants;
 import frc.robot.Robot;
 
-public class SetElevatorMed extends Command {
-    public SetElevatorMed() {
-        requires(Robot.elevator);
+public class UnClimb extends Command {
+    public UnClimb() {
+        // Use requires() here to declare subsystem dependencies
+        // eg. requires(chassis);
+        requires(Robot.climber);
     }
 
     // Called just before this Command runs the first time
     @Override
     protected void initialize() {
-        Robot.elevator.goToMedium();
+        Robot.climber.retractJack();;
     }
 
     // Called repeatedly when this Command is scheduled to run
     @Override
-    protected void execute() { }
+    protected void execute() {
+        
+    }
 
     // Make this return true when this Command no longer needs to run execute()
     @Override
     protected boolean isFinished() {
-        return epsilon(Robot.elevator.motor1.getSelectedSensorPosition(), Constants.elevatorMiddleHeight, 10);
+        return false;
     }
 
     // Called once after isFinished returns true
     @Override
-    protected void end() { }
+    protected void end() {
+      Robot.climber.stopJack();
+    }
 
-    private boolean epsilon(double value, double target, double tolerance) {
-        return Math.abs(value - target) <= tolerance;
+    // Called when another command which requires one or more of the same
+    // subsystems is scheduled to run
+    @Override
+    protected void interrupted() {
     }
 }
