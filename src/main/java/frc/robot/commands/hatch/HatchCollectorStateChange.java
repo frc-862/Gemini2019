@@ -28,8 +28,13 @@ public class HatchCollectorStateChange extends InstantCommand {
     // Called once when the command executes
     @Override
     protected void initialize() {
-        if(Robot.hatchPanelCollector.getPosition().equals(DoubleSolenoid.Value.kReverse)) Robot.hatchPanelCollector.collect();
-        else Robot.hatchPanelCollector.eject();
+        if(Robot.hatchPanelCollector.getPosition().equals(DoubleSolenoid.Value.kReverse)){
+          Robot.hatchPanelCollector.collect();
+          Robot.hatchPanelCollector.collect = true;
+        } else {
+            Robot.hatchPanelCollector.eject();
+            Robot.hatchPanelCollector.eject = true;
+        }
     }
 
 }

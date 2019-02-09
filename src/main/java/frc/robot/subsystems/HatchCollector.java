@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotMap;
 
 /**
@@ -22,6 +23,8 @@ public class HatchCollector extends Subsystem {
 
   DoubleSolenoid extender, grabber;
   DigitalInput hatchDetector;
+
+  public boolean collect = false, eject = false;
 
   public HatchCollector(){
     extender = new DoubleSolenoid(RobotMap.compressorCANId, RobotMap.extenderFwdChan, RobotMap.extenderRevChan);// OBOT - 11, 4, 5 TODO change these
@@ -52,5 +55,6 @@ public class HatchCollector extends Subsystem {
 
   public void retract(){
     extender.set(DoubleSolenoid.Value.kReverse);
+    System.out.println("retract");
   }
 }

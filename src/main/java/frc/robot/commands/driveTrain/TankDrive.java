@@ -27,7 +27,9 @@ public class TankDrive extends Command {
 
         SmartDashboard.putNumber("LeftVelocity", Robot.drivetrain.getLeftVelocity());
         SmartDashboard.putNumber("RightVelocity", Robot.drivetrain.getRightVelocity());
-
+        
+        SmartDashboard.putBoolean("Collect", Robot.hatchPanelCollector.collect);
+        SmartDashboard.putBoolean("Eject", Robot.hatchPanelCollector.eject);
     }
 
     @Override

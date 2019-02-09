@@ -34,7 +34,7 @@ public class OI {
     private Button setElevatorLow = new JoystickButton(copilot, 6);
     private Button setElevatorMid = new JoystickButton(copilot, 8);
     private Button setElevatorCargoCollect = new JoystickButton(copilot, 8);
-    private Button hatchToggle = new JoystickButton(driverRight, JoystickConstants.hatchToggle);
+    private Button hatchToggle = new JoystickButton(copilot, 2);
     private Button climb = new JoystickButton(copilot, 5);
     private Button un_climb = new JoystickButton(copilot, 4);
 
@@ -94,15 +94,6 @@ public class OI {
         copilot = getJoystick(2, copilot);
 
         cargoCollectButton = getButton(copilot, 4, cargoCollectButton);
-        if (hatchToggle == null) {
-            hatchToggle = getButton(driverRight, JoystickConstants.hatchToggle, hatchToggle);
-            if (hatchToggle != null) {
-                hatchToggle.whenPressed(new HatchCollectorStateChange());
-            }
-        }
-
-        climb.whenPressed(new Climb());
-
     }
 
     public double getRSlider(){
@@ -122,5 +113,6 @@ public class OI {
         //SmartDashboard.putData("TestMove", new TestMove());
         //climb.whenPressed(new Climb());
         //un_climb.whenPressed(new UnClimb());
+        hatchToggle.whenPressed(new HatchCollectorStateChange());
     }
 }
