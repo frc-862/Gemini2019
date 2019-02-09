@@ -24,13 +24,18 @@ public class Vision extends Subsystem {
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
 
-  private SerialPort serialIn;
+  private SerialPort serialInLeft, serialInRight;
   private double connected = 0;
   private long lastCameraUpdate = 0; //time the most recent frame was RECIEVED
   private long lastFrameTime = 0; //time the most recent frame was TAKEN
   private ArrayList<Target> targets;
   private ArrayList<Target> cameraData;
   private double latency = 0;
+
+  private final SerialPort.Port CAMERA_LEFT_PORT = SerialPort.Port.kUSB;
+  private final SerialPort.Port CAMERA_RIGHT_PORT = SerialPort.Port.kUSB1;
+
+  private boolean isStereo = false;
   
   @Override
   public void initDefaultCommand() {
@@ -41,8 +46,11 @@ public class Vision extends Subsystem {
   public Vision() {
     DataLogger.addDataElement("Camera connection status", () -> connected);
     try {
-			serialIn = new SerialPort(115200, SerialPort.Port.kUSB);
-      serialIn.writeString("streamon\n");
+      serialInLeft = new SerialPort(115200, CAMERA_LEFT_PORT);
+      if(isStereo) {
+        serialInRight = new SerialPort(115200, CAMERA_RIGHT_PORT);
+      }
+      serialInLeft.writeString("streamon\n");
       latency = testLatency();
       connected = 1;
 		} catch(RuntimeException e) {
@@ -57,14 +65,14 @@ public class Vision extends Subsystem {
   public void periodic() {
     if(connected == 0) {
       try {
-        serialIn = new SerialPort(115200, SerialPort.Port.kUSB);
-        serialIn.writeString("streamon\n");
+        serialInLeft = new SerialPort(115200, SerialPort.Port.kUSB);
+        serialInLeft.writeString("streamon\n");
         connected = 1;
       } catch(RuntimeException e) {
         
       }
     }
-    if (serialIn != null) {
+    if (serialInLeft != null) {
 			try {
         collectData();
 			} catch (Exception err) {
@@ -103,11 +111,11 @@ public class Vision extends Subsystem {
     boolean successfulTest = false;
     long sendTime = 0, readTime = 0;
     while(!successfulTest) {
-      serialIn.writeString("ping");
+      serialInLeft.writeString("ping");
       sendTime = System.currentTimeMillis();
       String response = "";
       do {
-        response = serialIn.readString();
+        response = serialInLeft.readString();
         readTime = System.currentTimeMillis();
         if(response.indexOf("ALIVE") != -1) successfulTest = true;
       } while(!successfulTest && readTime - sendTime <= 50);
@@ -119,7 +127,7 @@ public class Vision extends Subsystem {
   private void collectData() {
     //Reset data list and read from serial port
     //SmartDashboard.putString("vision step", "start");
-    String inData = serialIn.readString();
+    String inData = serialInLeft.readString();
     long currentTime = System.currentTimeMillis();
     //Check that basic frame information is intact
     if(inData.indexOf("=") != -1) {
