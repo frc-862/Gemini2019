@@ -35,4 +35,8 @@ public class Target {
     public long timestamp() {
         return timestamp;
     }
+    @Override
+    public String toString() {
+        return "[Standoff: " + standoff + ", Squint: " + squint + ", Rotation: " + rotation + "] (Seen at " + timestamp + ")";
+    }
 }
