@@ -34,7 +34,7 @@ public class OI {
     private Button setElevatorLow = new JoystickButton(copilot, 6);
     private Button setElevatorMid = new JoystickButton(copilot, 8);
     private Button setElevatorCargoCollect = new JoystickButton(copilot, 8);
-    private Button hatchToggle = new JoystickButton(copilot, 2);
+    private Button hatchToggle = new JoystickButton(driverRight, 1);
     private Button climb = new JoystickButton(copilot, 5);
     private Button un_climb = new JoystickButton(copilot, 4);
 

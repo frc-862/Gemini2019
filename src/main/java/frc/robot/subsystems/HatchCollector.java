@@ -33,7 +33,7 @@ public class HatchCollector extends Subsystem {
     hatchDetector = new DigitalInput(RobotMap.hatchDetector); // TODO check wiring
   }
 
-  public void extend(){
+  public void extend() {
     extender.set(DoubleSolenoid.Value.kForward);
   }
   public void collect() {
@@ -47,11 +47,11 @@ public class HatchCollector extends Subsystem {
     return grabber.get();
   }
 
-    @Override
-    public void initDefaultCommand() {
-        // Set the default command for a subsystem here.
-        // setDefaultCommand(new MySpecialCommand());
-    }
+  @Override
+  public void initDefaultCommand() {
+      // Set the default command for a subsystem here.
+      // setDefaultCommand(new MySpecialCommand());
+  }
 
   public void retract(){
     extender.set(DoubleSolenoid.Value.kReverse);
