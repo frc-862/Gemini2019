@@ -19,7 +19,7 @@ public class VisionDriveAndAdjust extends Command {
 
   private final double SQUINT_BOUND = 3;
   private final double ROTATION_BOUND = 7;
-
+  private final double SQUINT_POSITIVE_EDGE = 15;
 
   public VisionDriveAndAdjust() {
     // Use requires() here to declare subsystem dependencies
@@ -46,7 +46,7 @@ public class VisionDriveAndAdjust extends Command {
         Robot.drivetrain.setPower(.3 + squintAdjustment, .3 - squintAdjustment);
         SmartDashboard.putString("squint status", "only squint");
       }
-
+      /*
       else if (target.standoff() > 50 && Math.abs(target.rotation()) > 30 && target.rotation() > 0){
 
         squint = squint - 20 * Math.signum(target.rotation());
@@ -57,13 +57,33 @@ public class VisionDriveAndAdjust extends Command {
       }
 
       else if (target.standoff() > 50 && Math.abs(target.rotation()) > 30 && target.rotation() < 0){
-
         squint = squint + 20 * Math.signum(target.rotation());
         double squintAdjustment = Math.signum(squint) * Math.pow(Math.abs(squint), 0.5) * 0.05;
         double rotateAdjustment = Math.signum(rotation) * .1;
         Robot.drivetrain.setPower(.3 + squintAdjustment - rotateAdjustment, .3 - squintAdjustment + rotateAdjustment);
         SmartDashboard.putString("squint status", "left");
       }
+      */
+      //----Start of John's solution    -----------------------------------------------------------------------------
+
+      //When target rotation is positive
+      else if (target.rotation() > 10 && target.standoff() > 50){
+        squint = -SQUINT_POSITIVE_EDGE - squint;
+        double squintAdjustment = Math.signum(squint) * Math.pow(Math.abs(squint), 0.5) * 0.05;
+        Robot.drivetrain.setPower(.3 + squintAdjustment, .3 - squintAdjustment);
+        SmartDashboard.putString("squint status", "left");
+      }
+      //When target rotation is negative
+      else if (target.rotation() < -10 && target.standoff() > 50){
+        squint = SQUINT_POSITIVE_EDGE - squint;
+        double squintAdjustment = Math.signum(squint) * Math.pow(Math.abs(squint), 0.5) * 0.05;
+        Robot.drivetrain.setPower(.3 + squintAdjustment, .3 - squintAdjustment);
+        SmartDashboard.putString("squint status", "right");
+      }
+      
+
+       //-----End of John's solution-----------------------------------------------------------------------------
+
 
       else if (Math.abs(squint) > SQUINT_BOUND || Math.abs(target.rotation()) > ROTATION_BOUND) {
 
