@@ -41,6 +41,12 @@ abstract public class SystemTest implements Comparable<SystemTest> {
     }
 
     public Subsystem requires() { return null; }
+
+    public Subsystem[] requiresMultiple() {
+        Subsystem[] result = { requires() };
+        return result;
+    }
+
     public void setup() {/* Config - Talon Modes */}
     public void tearDown() {/* Set Powers to 0.0d */}
     abstract public boolean didPass();

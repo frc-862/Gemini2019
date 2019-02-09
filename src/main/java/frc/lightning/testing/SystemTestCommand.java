@@ -21,9 +21,10 @@ public class SystemTestCommand extends Command {
 
   public SystemTestCommand() {
     for (var test : tests) {
-      Subsystem ss = test.requires();
-      if (ss != null) {
-        requires(ss);
+      for (var ss : test.requiresMultiple()) {
+        if (ss != null) {
+          requires(ss);
+        }
       }
     }
   }

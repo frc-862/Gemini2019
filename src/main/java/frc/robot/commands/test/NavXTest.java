@@ -7,6 +7,7 @@
 
 package frc.robot.commands.test;
 
+import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.lightning.testing.SystemTest;
 import frc.lightning.util.FaultCode;
 import frc.robot.Robot;
@@ -36,4 +37,10 @@ public class NavXTest extends SystemTest {
     public boolean isFinished() {
         return didPass() || timeSinceInitialized() > timeout;
     }
+
+    @Override
+    public Subsystem requires() {
+        return Robot.core;
+    }
  }
+
