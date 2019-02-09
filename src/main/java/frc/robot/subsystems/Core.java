@@ -25,7 +25,7 @@ import frc.robot.RobotMap;
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.DigitalInput;
 import frc.robot.commands.test.NavXTest;
-
+import edu.wpi.first.hal.DIOJNI;
 /**
  * Add your docs here.
  */
@@ -46,14 +46,14 @@ public class Core extends Subsystem {
   
   private double lineWeights[] = { -7, -5, -3, -1, 1, 3, 5, 7};
   private DoubleSupplier sensorValues[] = {
-      () -> outerLeft.get() ? 1.0 : 0,
-      () -> midLeft.get() ? 1.0 : 0,
-      () -> innerLeft.getVoltage() / 5.0,
-      () -> centerLeft.getVoltage() / 5.0,
-      () -> centerRight.getVoltage() / 5.0,
-      () -> innerRight.getVoltage() / 5.0,
-      () -> midRight.get() ? 1.0 : 0,
-      () -> outerRight.get() ? 1.0 : 0,
+      () -> outerLeft.get() ? 0.0 : 1,
+      () -> midLeft.get() ? 0.0 : 1,
+      () -> innerLeft.getVoltage(),
+      () -> centerLeft.getVoltage(),
+      () -> centerRight.getVoltage(),
+      () -> innerRight.getVoltage(),
+      () -> midRight.get() ? 0 : 1,
+      () -> outerRight.get() ? 0.0 : 1,
   };
   // Put methods for controlling this subsystem
   // here. Call these from Commajnds.

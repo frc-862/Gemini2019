@@ -16,7 +16,7 @@ public class RobotMap {
     public static final int cargoSolenoidRevChan = 2;
 
     // Elevator
-    public static final int pieceDetector = 0;
+    public static final int pieceDetector = 4;
     public static final int elevatorCanId = 23;
 
     // Gemini Drive Train
@@ -30,5 +30,5 @@ public class RobotMap {
     public static final int extenderRevChan = 4;
     public static final int grabberFwdChan = 5;
     public static final int grabberRevChan = 6;
-    public static final int hatchDetector = 1;
+    public static final int hatchDetector = 5;
 }
