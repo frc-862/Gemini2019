@@ -7,6 +7,7 @@
 
 package frc.robot.subsystems;
 
+import java.util.Arrays;
 import java.util.function.DoubleSupplier;
 
 import com.kauailabs.navx.frc.AHRS;
@@ -44,14 +45,14 @@ public class Core extends Subsystem {
   
   private double lineWeights[] = { -7, -5, -3, -1, 1, 3, 5, 7};
   private DoubleSupplier sensorValues[] = {
-      () -> outerLeft.get() ? 1.0 : 0,
-      () -> midLeft.get() ? 1.0 : 0,
-      () -> innerLeft.getVoltage() / 5.0,
-      () -> centerLeft.getVoltage() / 5.0,
-      () -> centerRight.getVoltage() / 5.0,
-      () -> innerRight.getVoltage() / 5.0,
-      () -> midRight.get() ? 1.0 : 0,
-      () -> outerRight.get() ? 1.0 : 0,
+      () -> outerLeft.get() ? 0 : 1.0,
+      () -> midLeft.get() ? 0 : 1.0,
+      () -> innerLeft.getVoltage(),
+      () -> centerLeft.getVoltage(),
+      () -> centerRight.getVoltage(),
+      () -> innerRight.getVoltage(),
+      () -> midRight.get() ? 0 : 1.0,
+      () -> outerRight.get() ? 0 : 1.0,
   };
   // Put methods for controlling this subsystem
   // here. Call these from Commajnds.
@@ -88,6 +89,12 @@ public class Core extends Subsystem {
   public void periodic() {
     SmartDashboard.putNumber("Heading", navx.getFusedHeading());
     SmartDashboard.putNumber("Angle", navx.getAngle());
+
+    int pos = -7;
+    for (DoubleSupplier sensor : sensorValues) {
+      SmartDashboard.putNumber("Line " + pos, sensor.getAsDouble());
+      pos += 2;
+    }
   }
 
   public double getHeading() {
