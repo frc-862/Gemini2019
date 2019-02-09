@@ -37,22 +37,26 @@ public class VisionDriveAndAdjust extends Command {
   protected void execute() {
     try {
       Target target = Robot.vision.getBestTarget();
-      double squint = target.squint();
+      double squint = target.squint(), rotation = target.rotation();
 
-      if (target.standoff() > 50){
+      if (target.standoff() > 60){
 
-        double squintAdjustment = target.squint() * 0.005; //power constant taken from the else if block directly below
-        Robot.drivetrain.setPower(.3 - squintAdjustment, .3 + squintAdjustment);
+        double squintAdjustment = Math.signum(squint) * Math.pow(Math.abs(squint), 0.5) * 0.05; //power constant taken from the else if block directly below
+        Robot.drivetrain.setPower(.3 + squintAdjustment, .3 - squintAdjustment);
 
       }
 
       else if (Math.abs(squint) > SQUINT_BOUND || Math.abs(target.rotation()) > ROTATION_BOUND) {
 
+        double squintAdjustment = Math.signum(squint) * Math.pow(Math.abs(squint), 0.5) * 0.05; //power constant taken from the else if block directly below
+        double rotateAdjustment = Math.signum(rotation) * Math.pow(Math.abs(rotation), 0.5) * 0.05;
+        Robot.drivetrain.setPower(.3 + squintAdjustment - rotateAdjustment, .3 - squintAdjustment + rotateAdjustment);
+/*
           //double adjustment = target.squint() * 0.005 + Math.signum(target.rotation()) * Math.pow(Math.abs(target.rotation()), 1.3) * 0.0025;
           double adjustment = target.squint() * 0.005 * target.standoff() * 0.02 //0.02 is to account for standoff implementation
            + Math.signum(target.rotation()) * Math.pow(Math.abs(target.rotation()), 1.3) * 0.0025 * target.standoff() * 0.02; //0.02 is to account for standoff implentation
           Robot.drivetrain.setPower(.3 - adjustment, .3 + adjustment);
-          //Robot.drivetrain.setPower(0.4,0.4);
+          //Robot.drivetrain.setPower(0.4,0.4);*/
           SmartDashboard.putString("vision turn status", "turning");
         
       }

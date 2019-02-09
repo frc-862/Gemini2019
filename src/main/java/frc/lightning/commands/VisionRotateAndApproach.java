@@ -40,8 +40,8 @@ public class VisionRotateAndApproach extends Command {
 
       
       if (Math.abs(squint) > SQUINT_BOUND) {
-        double adjustment = Math.pow(squint, 0.5) * 0.05;
-        Robot.drivetrain.setPower(.3 + adjustment, .3 - adjustment);  
+        double adjustment = Math.signum(squint) * Math.pow(Math.abs(squint), 0.5) * 0.05;
+        Robot.drivetrain.setPower(.3 + adjustment, .3 - adjustment);
         
         //Robot.drivetrain.setPower(.2 * Math.signum(squint), -.2 * Math.signum(squint)); 
           //Robot.drivetrain.setPower(0.4,0.4);
