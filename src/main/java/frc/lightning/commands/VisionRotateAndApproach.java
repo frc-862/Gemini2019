@@ -1,3 +1,4 @@
+//Button X on controller
 /*----------------------------------------------------------------------------*/
 /* Copyright (c) 2018 FIRST. All Rights Reserved.                             */
 /* Open Source Software - may be modified and shared by FRC teams. The code   */
@@ -40,8 +41,8 @@ public class VisionRotateAndApproach extends Command {
 
       
       if (Math.abs(squint) > SQUINT_BOUND) {
-        double adjustment = Math.signum(squint) * Math.pow(Math.abs(squint), 0.5) * 0.01;
-        Robot.drivetrain.setPower(.3  + adjustment, .3  - adjustment);
+        double adjustment = Math.signum(squint) * Math.pow(Math.abs(squint), 0.5) * 0.05;
+        Robot.drivetrain.setPower(.3  + adjustment, .21  - adjustment);
         
         //Robot.drivetrain.setPower(.2 * Math.signum(squint), -.2 * Math.signum(squint)); 
           //Robot.drivetrain.setPower(0.4,0.4);
