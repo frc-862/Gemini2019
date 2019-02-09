@@ -1,3 +1,4 @@
+//Button Y on controller
 /*----------------------------------------------------------------------------*/
 /* Copyright (c) 2018 FIRST. All Rights Reserved.                             */
 /* Open Source Software - may be modified and shared by FRC teams. The code   */
@@ -26,7 +27,7 @@ public class WaypointThenTarget extends Command {
 
   private state currentState = state.SEEKING;
   //The distance from the waypoint to the target is this proportion of standoff.
-  private final double WAYPOINT_DISTANCE_SCALE = 0.2;
+  private final double WAYPOINT_DISTANCE_SCALE = 0.25;
 
   public WaypointThenTarget() {
     // Use requires() here to declare subsystem dependencies
@@ -58,45 +59,24 @@ public class WaypointThenTarget extends Command {
           waypointStandoff = Math.sqrt(
             Math.pow(target.standoff() * WAYPOINT_DISTANCE_SCALE, 2)
              + Math.pow(target.standoff(), 2) 
-             + 2 * target.standoff() * WAYPOINT_DISTANCE_SCALE * target.standoff() 
-             * Math.cos(Math.toRadians(90 - Math.abs(target.squint()) - (90 - Math.abs(target.rotation())))));
+             - 2 * target.standoff() * WAYPOINT_DISTANCE_SCALE * target.standoff() 
+             * Math.abs(Math.cos(Math.toRadians(target.rotation()))));
           
           //Using law of sines to calculate squint to waypoint
-          double targetToWaypointAngle = Math.toDegrees(Math.asin(
+          double targetToWaypointAngle = Math.toDegrees(Math.abs(Math.asin(
             Math.sin(
-              Math.toRadians(90 - Math.abs(target.squint()) - (90 - Math.abs(target.rotation()))))
-               / waypointStandoff * target.standoff() * WAYPOINT_DISTANCE_SCALE));
+              Math.toRadians(target.rotation()))
+               / waypointStandoff * target.standoff() * WAYPOINT_DISTANCE_SCALE)));
           
-          if((Math.signum(target.squint()) == Math.signum(target.rotation()) && Math.abs(target.squint()) > Math.abs(target.rotation())) || Math.signum(target.squint()) != Math.signum(target.rotation())) {
-            SmartDashboard.putNumber("squint case", 1);
-            waypointSquint = Math.abs(targetToWaypointAngle) + Math.abs(target.squint());
-            waypointSquint *= Math.signum(target.squint());
-          }
-          else if(Math.abs(target.squint()) > Math.abs(targetToWaypointAngle)) {
-            SmartDashboard.putNumber("squint case", 2);
-            waypointSquint = Math.abs(target.squint()) - Math.abs(targetToWaypointAngle);
-            waypointSquint *= Math.signum(target.squint()) * -1;
+          if(Math.signum(target.squint()) == Math.signum(target.rotation())) {
+            waypointSquint = target.squint() - (targetToWaypointAngle * Math.signum(target.squint()));
           }
           else {
-            SmartDashboard.putNumber("squint case", 3);
-            waypointSquint = Math.abs(targetToWaypointAngle) - Math.abs(target.squint());
-            waypointSquint *= Math.signum(target.squint()) * -1;
+            waypointSquint = target.squint() + (targetToWaypointAngle * Math.signum(target.squint()));
           }
           
-          waypointRotationToTarget =
-            (180 - 
-            (180 - 
-            targetToWaypointAngle - 
-            (90 - Math.abs(target.squint()) - (90 - Math.abs(target.rotation())))));
-            
-            //(180 - (90 - Math.abs(target.rotation())) - (90 - Math.abs(waypointSquint)));
-
-          if(Math.signum(waypointSquint) == Math.signum(target.squint()) && Math.abs(waypointSquint) > Math.abs(target.squint())) {
-            waypointRotationToTarget *= Math.signum(target.squint()) * -1;
-          }
-          else {
-            waypointRotationToTarget *= Math.signum(target.squint());
-          }
+          waypointRotationToTarget = Math.signum(target.rotation()) * (180 - (180 - Math.abs(target.rotation()) - targetToWaypointAngle));
+          
 
             SmartDashboard.putNumber("waypointStandoff", waypointStandoff);
             SmartDashboard.putNumber("waypoint squint", waypointSquint);

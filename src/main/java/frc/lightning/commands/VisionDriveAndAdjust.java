@@ -1,3 +1,4 @@
+//Button A on controller
 /*----------------------------------------------------------------------------*/
 /* Copyright (c) 2018 FIRST. All Rights Reserved.                             */
 /* Open Source Software - may be modified and shared by FRC teams. The code   */
@@ -37,28 +38,53 @@ public class VisionDriveAndAdjust extends Command {
   protected void execute() {
     try {
       Target target = Robot.vision.getBestTarget();
-      double squint = target.squint();
+      double squint = target.squint(), rotation = target.rotation();
 
-      if (target.standoff() > 50){
+      if (target.standoff() > 100){
 
-        double squintAdjustment = target.squint() * 0.005; //power constant taken from the else if block directly below
-        Robot.drivetrain.setPower(.3 - squintAdjustment, .3 + squintAdjustment);
+        double squintAdjustment = Math.signum(squint) * Math.pow(Math.abs(squint), 0.5) * 0.05; //power constant taken from the else if block directly below
+        Robot.drivetrain.setPower(.3 + squintAdjustment, .3 - squintAdjustment);
+        SmartDashboard.putString("squint status", "only squint");
+      }
 
+      else if (target.standoff() > 50 && Math.abs(target.rotation()) > 30 && target.rotation() > 0){
+
+        squint = squint - 20 * Math.signum(target.rotation());
+        double squintAdjustment = Math.signum(squint) * Math.pow(Math.abs(squint), 0.5) * 0.05;
+        double rotateAdjustment = Math.signum(rotation) * .1;
+        Robot.drivetrain.setPower(.3 + squintAdjustment - rotateAdjustment, .3 - squintAdjustment + rotateAdjustment);
+        SmartDashboard.putString("squint status", "right");
+      }
+
+      else if (target.standoff() > 50 && Math.abs(target.rotation()) > 30 && target.rotation() < 0){
+
+        squint = squint + 20 * Math.signum(target.rotation());
+        double squintAdjustment = Math.signum(squint) * Math.pow(Math.abs(squint), 0.5) * 0.05;
+        double rotateAdjustment = Math.signum(rotation) * .1;
+        Robot.drivetrain.setPower(.3 + squintAdjustment - rotateAdjustment, .3 - squintAdjustment + rotateAdjustment);
+        SmartDashboard.putString("squint status", "left");
       }
 
       else if (Math.abs(squint) > SQUINT_BOUND || Math.abs(target.rotation()) > ROTATION_BOUND) {
 
+        double squintAdjustment = Math.signum(squint) * Math.pow(Math.abs(squint), 0.5) * 0.05; //power constant taken from the else if block directly below
+       // double rotateAdjustment = Math.signum(rotation) * Math.pow(Math.abs(rotation), 0.5) * 0.05 / (Math.abs(squint) + 1);// / Math.abs(squint);
+        double rotateAdjustment = Math.signum(rotation) * .1;
+
+
+        Robot.drivetrain.setPower(.3 + squintAdjustment - rotateAdjustment, .3 - squintAdjustment + rotateAdjustment);
+/*
           //double adjustment = target.squint() * 0.005 + Math.signum(target.rotation()) * Math.pow(Math.abs(target.rotation()), 1.3) * 0.0025;
           double adjustment = target.squint() * 0.005 * target.standoff() * 0.02 //0.02 is to account for standoff implementation
            + Math.signum(target.rotation()) * Math.pow(Math.abs(target.rotation()), 1.3) * 0.0025 * target.standoff() * 0.02; //0.02 is to account for standoff implentation
           Robot.drivetrain.setPower(.3 - adjustment, .3 + adjustment);
-          //Robot.drivetrain.setPower(0.4,0.4);
-          SmartDashboard.putString("vision turn status", "turning");
+          //Robot.drivetrain.setPower(0.4,0.4);*/
+          SmartDashboard.putString("squint status", "squint correct");
         
       }
 
 
-      else if (target.standoff() > 30) {
+      else if (target.standoff() > 20) {
 
           //double power = 0.035 * target.standoff() + 0.075;
           Robot.drivetrain.setPower(0.25, 0.25);

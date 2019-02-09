@@ -1,3 +1,4 @@
+//Button X on controller
 /*----------------------------------------------------------------------------*/
 /* Copyright (c) 2018 FIRST. All Rights Reserved.                             */
 /* Open Source Software - may be modified and shared by FRC teams. The code   */
@@ -16,7 +17,7 @@ import frc.robot.Robot;
 public class VisionRotateAndApproach extends Command {
 
 
-  private final double SQUINT_BOUND = 3;
+  private final double SQUINT_BOUND = 5;
 
 
   public VisionRotateAndApproach() {
@@ -38,15 +39,19 @@ public class VisionRotateAndApproach extends Command {
       Target target = Robot.vision.getBestTarget();
       double squint = target.squint();
 
-      /*
+      
       if (Math.abs(squint) > SQUINT_BOUND) {
-   
-          Robot.drivetrain.setPower(-.2 * Math.signum(squint), .2 * Math.signum(squint)); //assuming squint reversed
+        double adjustment = Math.signum(squint) * Math.pow(Math.abs(squint), 0.5) * 0.05;
+        Robot.drivetrain.setPower(.3  + adjustment, .21  - adjustment);
+        
+        //Robot.drivetrain.setPower(.2 * Math.signum(squint), -.2 * Math.signum(squint)); 
           //Robot.drivetrain.setPower(0.4,0.4);
           SmartDashboard.putString("vision turn status", "turning");
       }
-      */
-
+      
+      
+ 
+     /*
       if (Math.abs(squint) > SQUINT_BOUND) {
    
         
@@ -57,10 +62,10 @@ public class VisionRotateAndApproach extends Command {
         SmartDashboard.putString("vision turn status", "turning");
         
       }
-    
+    */
       else if (target.standoff() > 30) {
 
-          double power = 0.035 * target.standoff() + 0.075;
+          double power = 0.015 * target.standoff() + 0.075;
           Robot.drivetrain.setPower(power, power);
           SmartDashboard.putString("vision turn status", "not turning");
           
