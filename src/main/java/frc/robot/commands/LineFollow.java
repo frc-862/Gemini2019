@@ -33,15 +33,15 @@ public class LineFollow extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    final double turnP = .35;
-        final double turningVelocity = 2.5;
-        final double straightVelocity = 7;
+    final double turnP = .1;
+        final double turningVelocity = 0;
+        final double straightVelocity = .1;
        
 
         // read & weight the sensors
         final double error = Robot.core.lineSensor();
         final double turn = error * turnP;
-        final double velocity = (error < 0.5) ? straightVelocity : turningVelocity;
+        final double velocity = (Math.abs(error) < 1) ? straightVelocity : turningVelocity;
 
         logger.set("error", error);
         logger.set("turn", turn);

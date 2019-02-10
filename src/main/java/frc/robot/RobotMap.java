@@ -31,7 +31,7 @@ public class RobotMap {
     public static final int extenderRevChan = 4;
     public static final int grabberFwdChan = 5;
     public static final int grabberRevChan = 6;
-    public static final int hatchDetector = 1;
+    public static final int hatchDetector = 9;
 	public static final int elevator2CanId = 0;
 	public static final int climberID = 0;
 }

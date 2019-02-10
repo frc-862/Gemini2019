@@ -31,26 +31,41 @@ import frc.robot.commands.test.NavXTest;
  * Add your docs here.
  */
 public class Core extends Subsystem {
-  private DigitalInput pressure1 = new DigitalInput(0);
+  //private DigitalInput pressure1 = new DigitalInput(0);
 
-  private DigitalInput outerLeft = new DigitalInput(1);
-  private DigitalInput midLeft = new DigitalInput(2);
-  private AnalogInput innerLeft = new AnalogInput(0);
-  private AnalogInput centerLeft = new AnalogInput(1);
+  private DigitalInput outerLeft = new DigitalInput(5);
+  private DigitalInput midLeft = new DigitalInput(4);
+  private AnalogInput innerLeft = new AnalogInput(3);
+  private AnalogInput centerLeft = new AnalogInput(2);
 
-  private AnalogInput centerRight = new AnalogInput(2);
-  private AnalogInput innerRight = new AnalogInput(3);
+  private AnalogInput centerRight = new AnalogInput(1);
+  private AnalogInput innerRight = new AnalogInput(0);
   private DigitalInput midRight = new DigitalInput(3);
-  private DigitalInput outerRight = new DigitalInput(4);
+  private DigitalInput outerRight = new DigitalInput(2);
   
+  private double biasAnalog(double v, double min, double max) {
+    final double midPoint = (max + min) / 2.0;
+    if (v > midPoint) 
+    {
+      return 0;
+    }else if (v < min) 
+      {
+        return 1;
+      }else{
+        final double range = (max - min) / 2;
+        return 1 - ((v - min) / range);
+    }
+  }
+
   private double lineWeights[] = { -7, -5, -3, -1, 1, 3, 5, 7};
+
   private DoubleSupplier sensorValues[] = {
       () -> outerLeft.get() ? 0 : 1.0,
       () -> midLeft.get() ? 0 : 1.0,
-      () -> innerLeft.getVoltage(),
-      () -> centerLeft.getVoltage(),
-      () -> centerRight.getVoltage(),
-      () -> innerRight.getVoltage(),
+      () -> biasAnalog(innerLeft.getVoltage() , 0.62 , 2.4),
+      () -> biasAnalog(centerLeft.getVoltage() , .47 , 1.5),
+      () -> biasAnalog(centerRight.getVoltage() , .49 , 2.0),
+      () -> biasAnalog(innerRight.getVoltage() , .66 , 2.2),
       () -> midRight.get() ? 0 : 1.0,
       () -> outerRight.get() ? 0 : 1.0,
   };
@@ -95,6 +110,8 @@ public class Core extends Subsystem {
       SmartDashboard.putNumber("Line " + pos, sensor.getAsDouble());
       pos += 2;
     }
+
+    SmartDashboard.putNumber("Distance from center", lineSensor());
   }
 
   public double getHeading() {
@@ -111,13 +128,11 @@ public class Core extends Subsystem {
   public boolean hasHatchCollector(){
     return false; //TODO make it return the sensor value
   }
-  public double lineSensor() {
-        
-        
 
+  public double lineSensor() {
     double weight = 0;
     double sensors = 0;
-    for(int loop=0;loop>7;loop++)
+    for(int loop=0; loop <= 7; loop++)
     {
         double value = sensorValues[loop].getAsDouble();
         weight += value * lineWeights[loop];
@@ -125,7 +140,5 @@ public class Core extends Subsystem {
     }
 
     return weight / sensors;
-
-        
-}
+  }
 }

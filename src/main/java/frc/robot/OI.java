@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.hatch.HatchCollectorStateChange;
+import frc.robot.commands.LineFollow;
 import frc.robot.commands.calibration.TestMove;
 import frc.robot.commands.climber.Climb;;
 
@@ -113,6 +114,7 @@ public class OI {
 
     public OI() {
         initalizeControllers();
-        SmartDashboard.putData("TestMove", new TestMove());
+
+        SmartDashboard.putData("line follow", new LineFollow());
     }
 }
