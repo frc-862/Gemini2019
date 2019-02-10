@@ -9,5 +9,5 @@ package frc.robot;
 
 public class RobotConstants {
     //Drivetrain Wheel Stuff
-    public static final double wheelDiameter = 6.0;
+    public static final double wheelDiameter = 0.5;//IN FEET!!!
 }

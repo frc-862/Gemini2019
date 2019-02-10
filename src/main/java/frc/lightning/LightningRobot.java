@@ -61,7 +61,7 @@ public class LightningRobot extends TimedRobot {
         // By this point all datalog fields should be registered
         DataLogger.preventNewDataElements();
 
-        // LightningServer.start_server();
+        //LightningServer.start_server();
         FaultMonitor.register(new TimedFaultMonitor(Codes.SLOW_LOOPER, () -> getLoopTime() > getPeriod(),
                               0.08, "Loop is running slow: " + getLoopTime()));
 
