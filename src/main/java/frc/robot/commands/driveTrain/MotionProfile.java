@@ -75,6 +75,15 @@ public class MotionProfile extends Command {
         Robot.drivetrain.getLeftMaster().startMotionProfile(bufferedStreamLeft, LinePath.Left.length, ControlMode.MotionProfile);
         Robot.drivetrain.getRightMaster().startMotionProfile(bufferedStreamRight, LinePath.Right.length, ControlMode.MotionProfile);
 
+        DataLogger.addDataElement("LeftPos", () -> LightningMath.ticks2feet(Robot.drivetrain.getLeftMaster ().getSelectedSensorPosition()));
+        DataLogger.addDataElement("RightPos", () -> LightningMath.ticks2feet(Robot.drivetrain.getRightMaster ().getSelectedSensorPosition()));
+        DataLogger.addDataElement("LeftExpected", () -> LightningMath.ticks2feet(Robot.drivetrain.getLeftMaster ().getActiveTrajectoryPosition()));
+        DataLogger.addDataElement("RightExpected", () -> LightningMath.ticks2feet(Robot.drivetrain.getRightMaster ().getActiveTrajectoryPosition()));
+        DataLogger.addDataElement("RightVelocity", () -> Robot.drivetrain.getRightVelocity());
+        DataLogger.addDataElement("LeftVelocity", () -> Robot.drivetrain.getLeftVelocity());
+        DataLogger.addDataElement("RightExpectedVelocity", () -> Robot.drivetrain.getRightMaster().getActiveTrajectoryVelocity());
+        DataLogger.addDataElement("LeftExpectedVelocity", () -> Robot.drivetrain.getLeftMaster().getActiveTrajectoryVelocity());
+
         System.out.println("started");
 
     }
@@ -85,14 +94,18 @@ public class MotionProfile extends Command {
 
         System.out.println("should be moving . . . ");
 
+       
+        SmartDashboard.putNumber("LeftPos", LightningMath.ticks2feet(Robot.drivetrain.getLeftMaster ().getSelectedSensorPosition()));
+        SmartDashboard.putNumber("RightPos", LightningMath.ticks2feet(Robot.drivetrain.getRightMaster ().getSelectedSensorPosition()));
+        SmartDashboard.putNumber("LeftExpected", LightningMath.ticks2feet(Robot.drivetrain.getLeftMaster ().getActiveTrajectoryPosition()));
+        SmartDashboard.putNumber("RightExpected", LightningMath.ticks2feet(Robot.drivetrain.getRightMaster ().getActiveTrajectoryPosition()));
+        SmartDashboard.putNumber("RightVelocity", Robot.drivetrain.getRightVelocity());
+        SmartDashboard.putNumber("LeftVelocity", Robot.drivetrain.getLeftVelocity());
+        SmartDashboard.putNumber("RightExpectedVelocity", Robot.drivetrain.getRightMaster().getActiveTrajectoryVelocity());
+        SmartDashboard.putNumber("LeftExpectedVelocity", Robot.drivetrain.getLeftMaster().getActiveTrajectoryVelocity());
+
         SmartDashboard.putNumber("LeftPoints", Robot.drivetrain.getLeftMaster().getMotionProfileTopLevelBufferCount());
         SmartDashboard.putNumber("RightPoints", Robot.drivetrain.getRightMaster().getMotionProfileTopLevelBufferCount());
-
-        SmartDashboard.putNumber("LeftEncoder",  LightningMath.ticks2feet(Robot.drivetrain.getLeftMaster ().getSelectedSensorPosition()));
-        SmartDashboard.putNumber("RightEncoder", LightningMath.ticks2feet(Robot.drivetrain.getRightMaster().getSelectedSensorPosition()));
-
-        SmartDashboard.putNumber("Left Output", Robot.drivetrain.getLeftMaster().getMotorOutputPercent());
-        SmartDashboard.putNumber("Right Output", Robot.drivetrain.getRightMaster().getMotorOutputPercent());
 
     }
 

@@ -31,17 +31,17 @@ import frc.robot.commands.test.NavXTest;
  * Add your docs here.
  */
 public class Core extends Subsystem {
-  private DigitalInput pressure1 = new DigitalInput(0);
+  //private DigitalInput pressure1 = new DigitalInput(0);
 
-  private DigitalInput outerLeft = new DigitalInput(1);
-  private DigitalInput midLeft = new DigitalInput(2);
+  private DigitalInput outerLeft = new DigitalInput(0);
+  private DigitalInput midLeft = new DigitalInput(1);
   private AnalogInput innerLeft = new AnalogInput(0);
   private AnalogInput centerLeft = new AnalogInput(1);
 
   private AnalogInput centerRight = new AnalogInput(2);
   private AnalogInput innerRight = new AnalogInput(3);
-  private DigitalInput midRight = new DigitalInput(3);
-  private DigitalInput outerRight = new DigitalInput(4);
+  private DigitalInput midRight = new DigitalInput(2);
+  private DigitalInput outerRight = new DigitalInput(3);
   
   private double lineWeights[] = { -7, -5, -3, -1, 1, 3, 5, 7};
   private DoubleSupplier sensorValues[] = {

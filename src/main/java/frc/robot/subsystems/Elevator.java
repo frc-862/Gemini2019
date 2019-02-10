@@ -48,7 +48,7 @@ public class Elevator extends Subsystem {
 
     public Elevator() {
 
-        pieceDetector = new AnalogInput(0);
+        pieceDetector = new AnalogInput(4);
         
 
         motor1 = new TalonSRX(RobotMap.elevatorCanId);

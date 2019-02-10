@@ -25,6 +25,7 @@ import frc.lightning.subsystems.CANDrivetrain;
 import frc.lightning.util.LightningMath;
 import frc.lightning.util.MotorConfig;
 import frc.robot.commands.driveTrain.TankDrive;
+import frc.robot.commands.driveTrain.VelocityTankDrive;
 import frc.robot.Robot;
 import frc.robot.RobotMap;
 import frc.robot.misc.Gains;
@@ -140,34 +141,40 @@ public class GeminiDrivetrain extends CANDrivetrain {
         });
 
         //withEachMotor(fn); // ????????
-        withEachMotor((m) -> {
-            //m.config_k(slotIdx, value)
-            m.config_kP(0, 0.5);
-            m.config_kI(0, 0.0);
-            m.config_kD(0, 0.0);
-            m.config_kF(0, 1.4614284);
-        });
+        //withEachMotor((m) -> {
+        //    //m.config_k(slotIdx, value)
+        //    m.config_kP(0, 0.5);
+        //    m.config_kI(0, 0.0);
+        //    m.config_kD(0, 0.0);
+        //    m.config_kF(0, 1.4614284);
+        //});
         enableLogging();
     }
 
     @Override
     public void setVelocity(double left, double right) {
         // convert from ft/s to talon units (enc ticks/ 100ms)
+        /*
         double lrpm = LightningMath.fps2rpm(left);
         double left_talon_units = lrpm * 60 * 10; // 60 changes rpm to rps (rev per sec) * 10 changes to per 100ms
         double rrpm = LightningMath.fps2rpm(right);
         double right_talon_units = rrpm * 60 * 10;
+        */
+        double right_talon_units = LightningMath.fps2talon(right);
+        double left_talon_units = LightningMath.fps2talon(left);
+        SmartDashboard.putNumber("talonunitLEFT", left_talon_units);
+        SmartDashboard.putNumber("talonunitRIGHT", right_talon_units);
         super.setVelocity(left_talon_units, right_talon_units);
     }
 
     @Override
     public double getRightVelocity() {
-        return ((super.getRightVelocity() / 10)/60);//return fps
+        return ((super.getRightVelocity()));// / 10)/60);//return fps
     }
 
     @Override
     public double getLeftVelocity() {
-        return ((super.getLeftVelocity() / 10)/60);//return fps
+        return ((super.getLeftVelocity()));// / 10)/60);//return fps
     }
 
     @Override
