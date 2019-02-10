@@ -15,6 +15,7 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.BaseMotorController;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.wpilibj.Sendable;
+import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.lightning.logging.DataLogger;
 import frc.lightning.util.LightningMath;
@@ -36,38 +37,57 @@ public abstract class CANDrivetrain extends LightningDrivetrain {
         }
     }
 
-    protected WPI_TalonSRX leftMaster;
-    protected WPI_TalonSRX rightMaster;
-    protected Vector<FollowMotor> leftFollowers = new Vector<>();
-    protected Vector<FollowMotor> rightFollowers = new Vector<>();
+    private WPI_TalonSRX leftMaster;
+    private WPI_TalonSRX rightMaster;
+    private Vector<FollowMotor> leftFollowers = new Vector<>();
+    private Vector<FollowMotor> rightFollowers = new Vector<>();
+    private boolean invertLeftMaster = false;
+    private boolean invertRightMaster = false;
 
     private boolean loggingEnabled = false;
 
-    protected CANDrivetrain(WPI_TalonSRX left, WPI_TalonSRX right) {
+    protected CANDrivetrain(WPI_TalonSRX left, boolean invertL, WPI_TalonSRX right, boolean invertR) {
         leftMaster = left;
+        invertLeftMaster = invertL;
         rightMaster = right;
+        invertRightMaster = invertR;
+
+        leftMaster.configFactoryDefault();
+        rightMaster.configFactoryDefault();
 
         leftMaster.setSubsystem(getClass().getSimpleName());
         rightMaster.setSubsystem(getClass().getSimpleName());
 
-        SmartDashboard.putData(leftMaster);
-        SmartDashboard.putData(rightMaster);
+        leftMaster.setName("Left Master");
+        SmartDashboard.putData("Left Master", leftMaster);
+        LiveWindow.add(leftMaster);
+
+        rightMaster.setName("Rigth Master");
+        SmartDashboard.putData("Right Master", rightMaster);
+        LiveWindow.add(rightMaster);
     }
 
-    private void addFollower(BaseMotorController m, WPI_TalonSRX master, boolean inverted) {
+    protected CANDrivetrain(WPI_TalonSRX left, WPI_TalonSRX right) {
+        this(left, false, right, false);
+    }
+
+    private void addFollower(BaseMotorController m, WPI_TalonSRX master, boolean inverted, String name) {
+        m.configFactoryDefault();
         m.setInverted(inverted);
         m.follow(master);
 
         if (m instanceof Sendable) {
             Sendable s = (Sendable) m;
             s.setSubsystem(getClass().getSimpleName());
-            SmartDashboard.putData(s);
+            s.setName(name);
+            SmartDashboard.putData(name, s);
         }
     }
 
     protected void addRightFollower(BaseMotorController m, boolean inverted) {
         rightFollowers.add(new FollowMotor(m, inverted));
-        addFollower(m, rightMaster, inverted);
+        addFollower(m, rightMaster, inverted, "Right " + (rightFollowers.size() + 1));
+        LiveWindow.addChild(rightMaster, m);
     }
 
     protected void addRightFollower(BaseMotorController m) {
@@ -76,7 +96,8 @@ public abstract class CANDrivetrain extends LightningDrivetrain {
 
     protected void addLeftFollower(BaseMotorController m, boolean inverted) {
         leftFollowers.add(new FollowMotor(m, inverted));
-        addFollower(m, leftMaster, inverted);
+        addFollower(m, leftMaster, inverted, "Left " + (leftFollowers.size() + 1));
+        LiveWindow.addChild(leftMaster, m);
     }
 
     protected void addLeftFollower(BaseMotorController m) {
@@ -84,11 +105,13 @@ public abstract class CANDrivetrain extends LightningDrivetrain {
     }
 
     public void configureMotors() {
+        leftMaster.setInverted(invertLeftMaster);
         leftFollowers.stream().forEach((m) -> {
             m.motor.setInverted(m.inverted);
             m.motor.follow(leftMaster);
         });
 
+        rightMaster.setInverted(invertRightMaster);
         rightFollowers.stream().forEach((m) -> {
             m.motor.setInverted(m.inverted);
             m.motor.follow(rightMaster);
