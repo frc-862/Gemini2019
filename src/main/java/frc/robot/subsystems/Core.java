@@ -31,114 +31,111 @@ import frc.robot.commands.test.NavXTest;
  * Add your docs here.
  */
 public class Core extends Subsystem {
-  //private DigitalInput pressure1 = new DigitalInput(0);
+    //private DigitalInput pressure1 = new DigitalInput(0);
 
-  private DigitalInput outerLeft = new DigitalInput(5);
-  private DigitalInput midLeft = new DigitalInput(4);
-  private AnalogInput innerLeft = new AnalogInput(3);
-  private AnalogInput centerLeft = new AnalogInput(2);
+    private DigitalInput outerLeft = new DigitalInput(5);
+    private DigitalInput midLeft = new DigitalInput(4);
+    private AnalogInput innerLeft = new AnalogInput(3);
+    private AnalogInput centerLeft = new AnalogInput(2);
 
-  private AnalogInput centerRight = new AnalogInput(1);
-  private AnalogInput innerRight = new AnalogInput(0);
-  private DigitalInput midRight = new DigitalInput(3);
-  private DigitalInput outerRight = new DigitalInput(2);
-  
-  private double biasAnalog(double v, double min, double max) {
-    final double midPoint = (max + min) / 2.0;
-    if (v > midPoint) 
-    {
-      return 0;
-    }else if (v < min) 
-      {
-        return 1;
-      }else{
-        final double range = (max - min) / 2;
-        return 1 - ((v - min) / range);
-    }
-  }
+    private AnalogInput centerRight = new AnalogInput(1);
+    private AnalogInput innerRight = new AnalogInput(0);
+    private DigitalInput midRight = new DigitalInput(3);
+    private DigitalInput outerRight = new DigitalInput(2);
 
-  private double lineWeights[] = { -7, -5, -3, -1, 1, 3, 5, 7};
-
-  private DoubleSupplier sensorValues[] = {
-      () -> outerLeft.get() ? 0 : 1.0,
-      () -> midLeft.get() ? 0 : 1.0,
-      () -> biasAnalog(innerLeft.getVoltage() , 0.62 , 2.4),
-      () -> biasAnalog(centerLeft.getVoltage() , .47 , 1.5),
-      () -> biasAnalog(centerRight.getVoltage() , .49 , 2.0),
-      () -> biasAnalog(innerRight.getVoltage() , .66 , 2.2),
-      () -> midRight.get() ? 0 : 1.0,
-      () -> outerRight.get() ? 0 : 1.0,
-  };
-  // Put methods for controlling this subsystem
-  // here. Call these from Commajnds.
-  private AHRS navx;
-  private Compressor compressor = new Compressor(RobotMap.compressorCANId);
-  // private PowerDistributionPanel pdp = new PowerDistributionPanel(RobotMap.pdpCANId);
-
-  public Core() {
-    compressor.setSubsystem("Core");
-    if (compressor.getCompressorNotConnectedFault()) {
-      LiveWindow.disableTelemetry(compressor);
+    private double biasAnalog(double v, double min, double max) {
+        final double midPoint = (max + min) / 2.0;
+        if (v > midPoint) {
+            return 0;
+        } else if (v < min) {
+            return 1;
+        } else {
+            final double range = (max - min) / 2;
+            return 1 - ((v - min) / range);
+        }
     }
 
-    navx = new AHRS(SPI.Port.kMXP);
-    navx.setSubsystem("Core");
+    private double lineWeights[] = { -7, -5, -3, -1, 1, 3, 5, 7};
 
-    DataLogger.addDataElement("heading", () -> getHeading());
+    private DoubleSupplier sensorValues[] = {
+        () -> outerLeft.get() ? 0 : 1.0,
+        () -> midLeft.get() ? 0 : 1.0,
+        () -> biasAnalog(innerLeft.getVoltage(), 0.62, 2.4),
+        () -> biasAnalog(centerLeft.getVoltage(), .47, 1.5),
+        () -> biasAnalog(centerRight.getVoltage(), .49, 2.0),
+        () -> biasAnalog(innerRight.getVoltage(), .66, 2.2),
+        () -> midRight.get() ? 0 : 1.0,
+        () -> outerRight.get() ? 0 : 1.0,
+    };
+    // Put methods for controlling this subsystem
+    // here. Call these from Commajnds.
+    private AHRS navx;
+    private Compressor compressor = new Compressor(RobotMap.compressorCANId);
+    // private PowerDistributionPanel pdp = new PowerDistributionPanel(RobotMap.pdpCANId);
 
-    // monitor if the heading is exactly the same, there is always 
-    // some jitter in the reading, so this will not be the case
-    // if we are getting valid values from the sensor for >= 3 seconds
-    
-    // FaultMonitor.register(new UnchangingFaultMonitor(Codes.NAVX_ERROR, () -> navx.getUpdateCount(), 
-    //     2.0, 0, "NavX unresponsive"));
+    public Core() {
+        compressor.setSubsystem("Core");
+        if (compressor.getCompressorNotConnectedFault()) {
+            LiveWindow.disableTelemetry(compressor);
+        }
 
-    // addChild("PDP", pdp);
-    // addChild("NavX", navx);
-    addChild("Compressor", compressor);
+        navx = new AHRS(SPI.Port.kMXP);
+        navx.setSubsystem("Core");
 
-    SystemTest.register(new NavXTest());
-  }
+        DataLogger.addDataElement("heading", () -> getHeading());
 
-  @Override
-  public void periodic() {
-    SmartDashboard.putNumber("Heading", navx.getFusedHeading());
-    SmartDashboard.putNumber("Angle", navx.getAngle());
+        // monitor if the heading is exactly the same, there is always
+        // some jitter in the reading, so this will not be the case
+        // if we are getting valid values from the sensor for >= 3 seconds
 
-    int pos = -7;
-    for (DoubleSupplier sensor : sensorValues) {
-      SmartDashboard.putNumber("Line " + pos, sensor.getAsDouble());
-      pos += 2;
+        // FaultMonitor.register(new UnchangingFaultMonitor(Codes.NAVX_ERROR, () -> navx.getUpdateCount(),
+        //     2.0, 0, "NavX unresponsive"));
+
+        // addChild("PDP", pdp);
+        // addChild("NavX", navx);
+        addChild("Compressor", compressor);
+
+        SystemTest.register(new NavXTest());
     }
 
-    SmartDashboard.putNumber("Distance from center", lineSensor());
-  }
+    @Override
+    public void periodic() {
+        SmartDashboard.putNumber("Heading", navx.getFusedHeading());
+        SmartDashboard.putNumber("Angle", navx.getAngle());
 
-  public double getHeading() {
-    return navx.getFusedHeading();
-    // return 0;
-  }
+        int pos = -7;
+        for (DoubleSupplier sensor : sensorValues) {
+            SmartDashboard.putNumber("Line " + pos, sensor.getAsDouble());
+            pos += 2;
+        }
 
-  @Override
-  public void initDefaultCommand() {
-    // Set the default command for a subsystem here.
-    // setDefaultCommand(new MySpecialCommand());
-
-  }
-  public boolean hasHatchCollector(){
-    return false; //TODO make it return the sensor value
-  }
-
-  public double lineSensor() {
-    double weight = 0;
-    double sensors = 0;
-    for(int loop=0; loop <= 7; loop++)
-    {
-        double value = sensorValues[loop].getAsDouble();
-        weight += value * lineWeights[loop];
-        sensors += value;
+        SmartDashboard.putNumber("Distance from center", lineSensor());
     }
 
-    return weight / sensors;
-  }
+    public double getHeading() {
+        return navx.getFusedHeading();
+        // return 0;
+    }
+
+    @Override
+    public void initDefaultCommand() {
+        // Set the default command for a subsystem here.
+        // setDefaultCommand(new MySpecialCommand());
+
+    }
+    public boolean hasHatchCollector() {
+        return false; //TODO make it return the sensor value
+    }
+
+    public double lineSensor() {
+        double weight = 0;
+        double sensors = 0;
+        for(int loop=0; loop <= 7; loop++) {
+            double value = sensorValues[loop].getAsDouble();
+            weight += value * lineWeights[loop];
+            sensors += value;
+        }
+
+        return weight / sensors;
+    }
 }

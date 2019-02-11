@@ -68,10 +68,10 @@ public class LightningRobot extends TimedRobot {
 
         FaultCode.eachCode((code, state) -> {
             var nte = Shuffleboard.getTab("Fault Codes")
-                    .add("FAULT_" + code.toString(), state)
-                    .withWidget("Boolean Box")
-                    .withProperties(Map.of("colorWhenTrue", "green", "colorWhenFalse", "maroon"))
-                    .getEntry();
+            .add("FAULT_" + code.toString(), state)
+            .withWidget("Boolean Box")
+            .withProperties(Map.of("colorWhenTrue", "green", "colorWhenFalse", "maroon"))
+            .getEntry();
             FaultCode.setNetworkTableEntry(code, nte);
         });
     }

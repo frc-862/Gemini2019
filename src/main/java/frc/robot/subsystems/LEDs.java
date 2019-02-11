@@ -42,11 +42,11 @@ public class LEDs extends Subsystem {
     public void set(State state) {
         // TODO set light color based on state
     }
-    
+
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
 
-    public void setYellow(){
+    public void setYellow() {
         //TODO: Make actually change color
 
     }
@@ -58,5 +58,5 @@ public class LEDs extends Subsystem {
     public void setPurple() {
         //TODO: Make actually changr colour
     }
-    
+
 }

@@ -49,7 +49,7 @@ public class Elevator extends Subsystem {
     public Elevator() {
 
         pieceDetector = new AnalogInput(7);
-        
+
 
         motor1 = new TalonSRX(RobotMap.elevatorCanId);
         motor2 = new VictorSPX(RobotMap.elevator2CanId);
@@ -58,45 +58,45 @@ public class Elevator extends Subsystem {
         motor1.configForwardLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen, 0);
         motor1.configReverseLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyClosed, 0);
 
-        		/* Factory default hardware to prevent unexpected behavior */
-		motor1.configFactoryDefault();
+        /* Factory default hardware to prevent unexpected behavior */
+        motor1.configFactoryDefault();
 
-		/* Configure Sensor Source for Pirmary PID */
-		motor1.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative,
-											Constants.kPIDLoopIdx, 
-											Constants.kTimeoutMs);
+        /* Configure Sensor Source for Pirmary PID */
+        motor1.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative,
+                                            Constants.kPIDLoopIdx,
+                                            Constants.kTimeoutMs);
 
-		/**
-		 * Configure Talon SRX Output and Sesnor direction accordingly
-		 * Invert Motor to have green LEDs when driving Talon Forward / Requesting Postiive Output
-		 * Phase sensor to have positive increment when driving Talon Forward (Green LED)
-		 */
-		motor1.setSensorPhase(true);
-		motor1.setInverted(false);
+        /**
+         * Configure Talon SRX Output and Sesnor direction accordingly
+         * Invert Motor to have green LEDs when driving Talon Forward / Requesting Postiive Output
+         * Phase sensor to have positive increment when driving Talon Forward (Green LED)
+         */
+        motor1.setSensorPhase(true);
+        motor1.setInverted(false);
 
-		/* Set relevant frame periods to be at least as fast as periodic rate */
-		motor1.setStatusFramePeriod(StatusFrameEnhanced.Status_13_Base_PIDF0, 10, Constants.kTimeoutMs);
-		motor1.setStatusFramePeriod(StatusFrameEnhanced.Status_10_MotionMagic, 10, Constants.kTimeoutMs);
+        /* Set relevant frame periods to be at least as fast as periodic rate */
+        motor1.setStatusFramePeriod(StatusFrameEnhanced.Status_13_Base_PIDF0, 10, Constants.kTimeoutMs);
+        motor1.setStatusFramePeriod(StatusFrameEnhanced.Status_10_MotionMagic, 10, Constants.kTimeoutMs);
 
-		/* Set the peak and nominal outputs */
-		motor1.configNominalOutputForward(0, Constants.kTimeoutMs);
-		motor1.configNominalOutputReverse(0, Constants.kTimeoutMs);
-		motor1.configPeakOutputForward(1, Constants.kTimeoutMs);
-		motor1.configPeakOutputReverse(-1, Constants.kTimeoutMs);
+        /* Set the peak and nominal outputs */
+        motor1.configNominalOutputForward(0, Constants.kTimeoutMs);
+        motor1.configNominalOutputReverse(0, Constants.kTimeoutMs);
+        motor1.configPeakOutputForward(1, Constants.kTimeoutMs);
+        motor1.configPeakOutputReverse(-1, Constants.kTimeoutMs);
 
-		/* Set Motion Magic gains in slot0 - see documentation */
-		motor1.selectProfileSlot(Constants.kSlotIdx, Constants.kPIDLoopIdx);
-		motor1.config_kF(Constants.kSlotIdx, Constants.elevatorPIDF.kF, Constants.kTimeoutMs);
-		motor1.config_kP(Constants.kSlotIdx, Constants.elevatorPIDF.kP, Constants.kTimeoutMs);
-		motor1.config_kI(Constants.kSlotIdx, Constants.elevatorPIDF.kI, Constants.kTimeoutMs);
-		motor1.config_kD(Constants.kSlotIdx, Constants.elevatorPIDF.kD, Constants.kTimeoutMs);
+        /* Set Motion Magic gains in slot0 - see documentation */
+        motor1.selectProfileSlot(Constants.kSlotIdx, Constants.kPIDLoopIdx);
+        motor1.config_kF(Constants.kSlotIdx, Constants.elevatorPIDF.kF, Constants.kTimeoutMs);
+        motor1.config_kP(Constants.kSlotIdx, Constants.elevatorPIDF.kP, Constants.kTimeoutMs);
+        motor1.config_kI(Constants.kSlotIdx, Constants.elevatorPIDF.kI, Constants.kTimeoutMs);
+        motor1.config_kD(Constants.kSlotIdx, Constants.elevatorPIDF.kD, Constants.kTimeoutMs);
 
-		/* Set acceleration and vcruise velocity - see documentation */
-		motor1.configMotionCruiseVelocity(15000, Constants.kTimeoutMs);
-		motor1.configMotionAcceleration(6000, Constants.kTimeoutMs);
+        /* Set acceleration and vcruise velocity - see documentation */
+        motor1.configMotionCruiseVelocity(15000, Constants.kTimeoutMs);
+        motor1.configMotionAcceleration(6000, Constants.kTimeoutMs);
 
-		/* Zero the sensor */
-		motor1.setSelectedSensorPosition(0, Constants.kPIDLoopIdx, Constants.kTimeoutMs);
+        /* Zero the sensor */
+        motor1.setSelectedSensorPosition(0, Constants.kPIDLoopIdx, Constants.kTimeoutMs);
     }
 
     @Override
@@ -210,7 +210,7 @@ public class Elevator extends Subsystem {
         motor3.set(ControlMode.PercentOutput, Constants.ejectDemand*-1);
     }
 
-    public void stopEject(){
+    public void stopEject() {
         motor3.set(ControlMode.PercentOutput, 0.0);
     }
 
@@ -218,13 +218,13 @@ public class Elevator extends Subsystem {
         motor3.set(ControlMode.PercentOutput, Constants.elevatorCollectorHoldPower);
     }
 
-    public void collectCargo(){
+    public void collectCargo() {
         motor3.set(ControlMode.PercentOutput, Constants.ejectDemand);
     }
-    public void stopCollectCargo(){
+    public void stopCollectCargo() {
 
     }
-    
+
 
 
 

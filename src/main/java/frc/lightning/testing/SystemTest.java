@@ -10,7 +10,7 @@ abstract public class SystemTest implements Comparable<SystemTest> {
         SystemTestCommand.register(test);
     }
 
-    static enum Priority{
+    static enum Priority {
         HIGH, MED, LOW, DONT_CARE
     };
 
@@ -40,7 +40,9 @@ abstract public class SystemTest implements Comparable<SystemTest> {
         return priority;
     }
 
-    public Subsystem requires() { return null; }
+    public Subsystem requires() {
+        return null;
+    }
 
     public Subsystem[] requiresMultiple() {
         Subsystem[] result = { requires() };
@@ -55,7 +57,9 @@ abstract public class SystemTest implements Comparable<SystemTest> {
     }
     public void periodic() {/* Actuation Here */}
 
-    public FaultCode.Codes getCode() { return code; }
+    public FaultCode.Codes getCode() {
+        return code;
+    }
 
     @Override
     public int compareTo(SystemTest other) {

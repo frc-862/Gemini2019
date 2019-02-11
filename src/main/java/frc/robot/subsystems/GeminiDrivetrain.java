@@ -43,7 +43,7 @@ public class GeminiDrivetrain extends CANDrivetrain {
         // MotorConfig drive = MotorConfig.get("drive.json");
         enableLogging();
     }
-    
+
     @Override
     public double getLeftDistance() {
         return LightningMath.ticks2feet(super.getLeftDistance());
@@ -55,7 +55,7 @@ public class GeminiDrivetrain extends CANDrivetrain {
     }
 
     @Override
-    public void periodic(){
+    public void periodic() {
         super.periodic();
         SmartDashboard.putNumber("R_Velocity", getRightVelocity());
         SmartDashboard.putNumber("L_Velocity", getLeftVelocity());

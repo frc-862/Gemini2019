@@ -15,7 +15,7 @@ public class LightningMath {
         // ticks /  100ms = talon
         double ticksps = talon * 10;  // ticks / sec
         double fps = ticks2feet(ticksps);
-        return fps; 
+        return fps;
     }
 
     public static double fps2talon(double fps) {//////////////////
@@ -91,8 +91,7 @@ public class LightningMath {
     }
 
     public static int scale(int input,
-                            int lowInput, int highInput, int lowOutput, int highOutput)
-    {
+                            int lowInput, int highInput, int lowOutput, int highOutput) {
         final int inputRange = highInput - lowInput;
         final int outputRange = highOutput - lowOutput;
 
@@ -100,16 +99,14 @@ public class LightningMath {
     }
 
     public static double scale(double input,
-                               double lowInput, double highInput, double lowOutput, double highOutput)
-    {
+                               double lowInput, double highInput, double lowOutput, double highOutput) {
         final double inputRange = highInput - lowInput;
         final double outputRange = highOutput - lowOutput;
 
         return  (input - lowInput) * outputRange / inputRange + lowOutput;
     }
 
-    public static double deadZone(double input, double deadband)
-    {
+    public static double deadZone(double input, double deadband) {
         return Math.abs(input) >= deadband ? input : 0;
     }
 

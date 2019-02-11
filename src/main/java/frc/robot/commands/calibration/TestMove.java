@@ -45,8 +45,8 @@ public class TestMove extends Command {
         logger.set("leftVelocity", Robot.drivetrain.getLeftVelocity());
         logger.set("rightVelocity", Robot.drivetrain.getRightVelocity());
         logger.set("leftDistance", Robot.drivetrain.getLeftDistance());
-        logger.set("rightDistance", Robot.drivetrain.getRightDistance());  
-        logger.write(); 
+        logger.set("rightDistance", Robot.drivetrain.getRightDistance());
+        logger.write();
     }
 
     // Make this return true when this Command no longer needs to run execute()

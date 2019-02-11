@@ -22,7 +22,7 @@ import com.ctre.phoenix.motorcontrol.LimitSwitchSource;
  * Add your docs here.
  */
 public class Climber extends Subsystem {
-   
+
     TalonSRX motor;
     DoubleSolenoid deployer;
 

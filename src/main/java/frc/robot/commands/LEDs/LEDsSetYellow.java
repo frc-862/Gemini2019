@@ -14,20 +14,20 @@ import frc.robot.Robot;
  * Add your docs here.
  */
 public class LEDsSetYellow extends InstantCommand {
-  /**
-   * Add your docs here.
-   */
-  public LEDsSetYellow() {
-    super();
-    // Use requires() here to declare subsystem dependencies
-    // eg. requires(chassis);
-    requires(Robot.leds);
-  }
+    /**
+     * Add your docs here.
+     */
+    public LEDsSetYellow() {
+        super();
+        // Use requires() here to declare subsystem dependencies
+        // eg. requires(chassis);
+        requires(Robot.leds);
+    }
 
-  // Called once when the command executes
-  @Override
-  protected void initialize() {
-    Robot.leds.setYellow();
-  }
+    // Called once when the command executes
+    @Override
+    protected void initialize() {
+        Robot.leds.setYellow();
+    }
 
 }

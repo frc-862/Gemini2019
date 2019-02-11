@@ -42,5 +42,5 @@ public class NavXTest extends SystemTest {
     public Subsystem requires() {
         return Robot.core;
     }
- }
+}
 

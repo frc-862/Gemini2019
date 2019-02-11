@@ -24,7 +24,7 @@ public class OI {
     private Joystick copilot = new Joystick(2);
 
     //Mechanism Buttons
-    private Button cargoCollectButton; 
+    private Button cargoCollectButton;
     private Button setElevatorHigh;
     private Button setElevatorLow;
     private Button setElevatorMid;
@@ -33,23 +33,23 @@ public class OI {
     private Button climb;
 
     public boolean getElevatorHighPosSelect() {
-        return setElevatorHigh != null && 
-            setElevatorHigh.get();
+        return setElevatorHigh != null &&
+               setElevatorHigh.get();
     }
 
     public boolean getElevatorMidPosSelect() {
-        return setElevatorMid != null && 
-            setElevatorMid.get();
+        return setElevatorMid != null &&
+               setElevatorMid.get();
     }
 
     public boolean getElevatorLowPosSelect() {
         return setElevatorLow != null &&
-            setElevatorLow.get();
+               setElevatorLow.get();
     }
 
     public boolean getElevatorCargoCollectPosSelect() {
         return setElevatorCargoCollect != null &&
-            setElevatorCargoCollect.get();
+               setElevatorCargoCollect.get();
     }
 
     public double getLeftPower() {
@@ -63,9 +63,9 @@ public class OI {
         return (Math.abs(driverRight.getRawAxis(JoystickConstants.rightThrottleAxis))>0.05) ? -driverRight.getRawAxis(JoystickConstants.rightThrottleAxis) : 0.00;
     }
 
-    public boolean getCargoCollectButton(){
+    public boolean getCargoCollectButton() {
         return cargoCollectButton != null &&
-            cargoCollectButton.get();
+               cargoCollectButton.get();
     }
 
     public Joystick getJoystick(int port, Joystick obj) {
@@ -95,35 +95,35 @@ public class OI {
         driverRight = getJoystick(1, driverRight);
         copilot = getJoystick(2, copilot);
 
-     }
+    }
 
     public boolean fullyInitialized() {
         return driverLeft != null &&
-            driverRight != null &&
-            copilot != null &&
-            cargoCollectButton != null &&
-            hatchToggle != null;
+               driverRight != null &&
+               copilot != null &&
+               cargoCollectButton != null &&
+               hatchToggle != null;
     }
 
     public void initializeButtons() {
-            setElevatorHigh = new JoystickButton(copilot, 3);
-            setElevatorLow = new JoystickButton(copilot, 6);
-            setElevatorMid = new JoystickButton(copilot, 8);
-            setElevatorCargoCollect = new JoystickButton(copilot, 8);
+        setElevatorHigh = new JoystickButton(copilot, 3);
+        setElevatorLow = new JoystickButton(copilot, 6);
+        setElevatorMid = new JoystickButton(copilot, 8);
+        setElevatorCargoCollect = new JoystickButton(copilot, 8);
 
-            climb = new JoystickButton(copilot, 5);
-            climb.whenPressed(new Climb());
+        climb = new JoystickButton(copilot, 5);
+        climb.whenPressed(new Climb());
 
-            cargoCollectButton = getButton(copilot, 4, cargoCollectButton);
+        cargoCollectButton = getButton(copilot, 4, cargoCollectButton);
 
-            hatchToggle = getButton(driverRight, JoystickConstants.hatchToggle, hatchToggle);
-            hatchToggle.whenPressed(new HatchCollectorStateChange());
+        hatchToggle = getButton(driverRight, JoystickConstants.hatchToggle, hatchToggle);
+        hatchToggle.whenPressed(new HatchCollectorStateChange());
     }
 
     public OI() {
         if (!Constants.bench_test) {
-           initalizeControllers();
-           initializeButtons();
+            initalizeControllers();
+            initializeButtons();
         }
 
         SmartDashboard.putData("line follow", new LineFollow());

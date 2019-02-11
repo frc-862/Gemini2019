@@ -17,32 +17,32 @@ import frc.robot.RobotMap;
  * Add your docs here.
  */
 public class HatchCollector extends Subsystem {
-  // Put methods for controlling this subsystem
-  // here. Call these from Commands.
+    // Put methods for controlling this subsystem
+    // here. Call these from Commands.
 
-  DoubleSolenoid extender, grabber;
-  DigitalInput hatchDetector;
+    DoubleSolenoid extender, grabber;
+    DigitalInput hatchDetector;
 
-  public HatchCollector(){
-    extender = new DoubleSolenoid(RobotMap.compressorCANId, RobotMap.extenderFwdChan, RobotMap.extenderRevChan);// OBOT - 11, 4, 5 TODO change these
-    grabber = new DoubleSolenoid(RobotMap.compressorCANId, RobotMap.grabberFwdChan, RobotMap.grabberRevChan);// TODO change these
-    // constructor - DoubleSolenoid(moduleNumber, forwardChannel, reverseChannel)
-    hatchDetector = new DigitalInput(RobotMap.hatchDetector); // TODO check wiring
-  }
+    public HatchCollector() {
+        extender = new DoubleSolenoid(RobotMap.compressorCANId, RobotMap.extenderFwdChan, RobotMap.extenderRevChan);// OBOT - 11, 4, 5 TODO change these
+        grabber = new DoubleSolenoid(RobotMap.compressorCANId, RobotMap.grabberFwdChan, RobotMap.grabberRevChan);// TODO change these
+        // constructor - DoubleSolenoid(moduleNumber, forwardChannel, reverseChannel)
+        hatchDetector = new DigitalInput(RobotMap.hatchDetector); // TODO check wiring
+    }
 
-  public void extend(){
-    extender.set(DoubleSolenoid.Value.kForward);
-  }
-  public void collect() {
-    grabber.set(DoubleSolenoid.Value.kForward);
-  }
-  public void eject() {
-    grabber.set(DoubleSolenoid.Value.kReverse);
-  }
+    public void extend() {
+        extender.set(DoubleSolenoid.Value.kForward);
+    }
+    public void collect() {
+        grabber.set(DoubleSolenoid.Value.kForward);
+    }
+    public void eject() {
+        grabber.set(DoubleSolenoid.Value.kReverse);
+    }
 
-  public DoubleSolenoid.Value getPosition() {
-    return grabber.get();
-  }
+    public DoubleSolenoid.Value getPosition() {
+        return grabber.get();
+    }
 
     @Override
     public void initDefaultCommand() {
@@ -50,7 +50,7 @@ public class HatchCollector extends Subsystem {
         // setDefaultCommand(new MySpecialCommand());
     }
 
-  public void retract(){
-    extender.set(DoubleSolenoid.Value.kReverse);
-  }
+    public void retract() {
+        extender.set(DoubleSolenoid.Value.kReverse);
+    }
 }

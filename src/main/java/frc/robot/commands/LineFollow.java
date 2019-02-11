@@ -17,20 +17,20 @@ import frc.robot.Robot;
 
 
 public class LineFollow extends Command {
-  CommandLogger logger = new CommandLogger(getClass().getCanonicalName());
-  double turnP = .075;
-  double turningVelocity = 0;
-  double straightVelocity = 0.3;
-  double cutOff=2;
-  double turnDown = .2; 
-  double prevError = 0;
-  double errorAcc = 0;
-  double turnI = 0.0001;
+    CommandLogger logger = new CommandLogger(getClass().getCanonicalName());
+    double turnP = .075;
+    double turningVelocity = 0;
+    double straightVelocity = 0.3;
+    double cutOff=2;
+    double turnDown = .2;
+    double prevError = 0;
+    double errorAcc = 0;
+    double turnI = 0.0001;
 
-public LineFollow() {
-    // Use requires() here to declare subsystem dependencies
-    // eg. requires(chassis);
-    logger.addDataElement("error");
+    public LineFollow() {
+        // Use requires() here to declare subsystem dependencies
+        // eg. requires(chassis);
+        logger.addDataElement("error");
         logger.addDataElement("turn");
         logger.addDataElement("velocity");
         SmartDashboard.putNumber("Turn Power", turnP);
@@ -38,70 +38,69 @@ public LineFollow() {
         SmartDashboard.putNumber("Turning Vel", turningVelocity);
         SmartDashboard.putNumber("turn down turning", turnDown);
         SmartDashboard.putNumber("turn down cut off", cutOff);
-      }
+    }
 
-  // Called just before this Command runs the first time
-  @Override
-  protected void initialize() {
-    logger.reset();
-  }
+    // Called just before this Command runs the first time
+    @Override
+    protected void initialize() {
+        logger.reset();
+    }
 
-  // Called repeatedly when this Command is scheduled to run
-  @Override
-  protected void execute() {
+    // Called repeatedly when this Command is scheduled to run
+    @Override
+    protected void execute() {
         // read & weight the sensors
         final double error = Robot.core.lineSensor();
-        if(error==Double.NaN)
-        {
-          Robot.drivetrain.setVelocity(
-            (Robot.oi.getLeftPower()*Constants.velocityMultiplier),
-            (Robot.oi.getRightPower()*Constants.velocityMultiplier));
+        if(error==Double.NaN) {
+            Robot.drivetrain.setVelocity(
+                (Robot.oi.getLeftPower()*Constants.velocityMultiplier),
+                (Robot.oi.getRightPower()*Constants.velocityMultiplier));
             prevError = 0;
             errorAcc = 0;
         } else {
-        turnP = SmartDashboard.getNumber("Turn Power", turnP);
-        //straightVelocity = SmartDashboard.getNumber("Straight Vel", straightVelocity);
-        //turningVelocity = SmartDashboard.getNumber("Turning Vel", turningVelocity);
-        //turningVelocity = SmartDashboard.getNumber("turn down turning", turnDown);
-        //turningVelocity = SmartDashboard.getNumber("turn down cut off", cutOff);
+            turnP = SmartDashboard.getNumber("Turn Power", turnP);
+            //straightVelocity = SmartDashboard.getNumber("Straight Vel", straightVelocity);
+            //turningVelocity = SmartDashboard.getNumber("Turning Vel", turningVelocity);
+            //turningVelocity = SmartDashboard.getNumber("turn down turning", turnDown);
+            //turningVelocity = SmartDashboard.getNumber("turn down cut off", cutOff);
 
-        
 
-        if (error == Double.NaN && Math.abs(error) <= 1) {
-          errorAcc = 0;
-        } else {
-          errorAcc += error;
+
+            if (error == Double.NaN && Math.abs(error) <= 1) {
+                errorAcc = 0;
+            } else {
+                errorAcc += error;
+            }
+
+
+            final double turn = (error * turnP) + (errorAcc * turnI);
+            final double velocity = straightVelocity;//(Math.abs(error) < 1) ? straightVelocity : turningVelocity;
+
+            logger.set("error", error);
+            logger.set("turn", turn);
+            logger.set("velocity", velocity);
+            logger.writeValues();
+
+            // drive
+            Robot.drivetrain.setVelocity(velocity - turn, velocity + turn);
+            prevError = error;
         }
-        
-        
-        final double turn = (error * turnP) + (errorAcc * turnI);
-        final double velocity = straightVelocity;//(Math.abs(error) < 1) ? straightVelocity : turningVelocity;
+    }
 
-        logger.set("error", error);
-        logger.set("turn", turn);
-        logger.set("velocity", velocity);
-        logger.writeValues();
+    // Make this return true when this Command no longer needs to run execute()
+    @Override
+    protected boolean isFinished() {
+        return false;
+    }
 
-        // drive
-        Robot.drivetrain.setVelocity(velocity - turn, velocity + turn);
-        prevError = error;
-      }
-  }
+    // Called once after isFinished returns true
+    @Override
+    protected void end() {
+    }
 
-  // Make this return true when this Command no longer needs to run execute()
-  @Override
-  protected boolean isFinished() {
-    return false;
-  }
-
-  // Called once after isFinished returns true
-  @Override
-  protected void end() {
-  }
-
-  // Called when another command which requires one or more of the same
-  // subsystems is scheduled to run
-  @Override
-  protected void interrupted() {
-  }
+    // Called when another command which requires one or more of the same
+    // subsystems is scheduled to run
+    @Override
+    protected void interrupted() {
+    }
 }

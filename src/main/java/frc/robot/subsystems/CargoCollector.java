@@ -98,7 +98,7 @@ public class CargoCollector extends Subsystem {
         deployer.set(DoubleSolenoid.Value.kReverse);
     }
 
-  
-    
+
+
 
 }

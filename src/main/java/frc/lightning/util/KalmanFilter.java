@@ -7,15 +7,13 @@ public class KalmanFilter implements ValueFilter {
     private double prevEstimate;
     private boolean first_time;
 
-    public KalmanFilter(double kQ, double kR)
-    {
+    public KalmanFilter(double kQ, double kR) {
         this.kQ = kQ;
         this.kR = kR;
         reset();
     }
 
-    public KalmanFilter()
-    {
+    public KalmanFilter() {
         this(0.024, 0.6158);
     }
 
@@ -27,10 +25,8 @@ public class KalmanFilter implements ValueFilter {
     }
 
     @Override
-    public double filter(double value)
-    {
-        if (first_time)
-        {
+    public double filter(double value) {
+        if (first_time) {
             prevEstimate = value;
             first_time = false;
         }

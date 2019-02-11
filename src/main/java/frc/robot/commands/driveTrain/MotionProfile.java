@@ -94,7 +94,7 @@ public class MotionProfile extends Command {
 
         System.out.println("should be moving . . . ");
 
-       
+
         SmartDashboard.putNumber("LeftPos", LightningMath.ticks2feet(Robot.drivetrain.getLeftMaster ().getSelectedSensorPosition()));
         SmartDashboard.putNumber("RightPos", LightningMath.ticks2feet(Robot.drivetrain.getRightMaster ().getSelectedSensorPosition()));
         SmartDashboard.putNumber("LeftExpected", LightningMath.ticks2feet(Robot.drivetrain.getLeftMaster ().getActiveTrajectoryPosition()));
