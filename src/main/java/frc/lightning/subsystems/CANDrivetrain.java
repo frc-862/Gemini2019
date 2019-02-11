@@ -20,6 +20,7 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.lightning.logging.DataLogger;
 import frc.lightning.util.LightningMath;
+import frc.robot.Constants;
 import frc.robot.misc.Gains;
 
 /**
@@ -231,5 +232,12 @@ public abstract class CANDrivetrain extends LightningDrivetrain {
     @Override
     public void resetDistance() {
         withEachMaster((m) -> m.setSelectedSensorPosition(0));
+    }
+
+    public boolean isStalled() {
+        return leftMaster.getOutputCurrent() > Constants.movingCurrent &&
+               leftMaster.getSelectedSensorVelocity() < Constants.movingVelocity &&
+               rightMaster.getOutputCurrent() > Constants.movingCurrent &&
+               rightMaster.getSelectedSensorVelocity() < Constants.movingVelocity;
     }
 }

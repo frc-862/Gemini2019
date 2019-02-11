@@ -9,7 +9,6 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.lightning.http.LightningServer;
 import frc.lightning.logging.DataLogger;
 import frc.lightning.util.FaultCode;
 import frc.lightning.util.FaultMonitor;
@@ -55,14 +54,12 @@ public class LightningRobot extends TimedRobot {
         System.out.println("Starting time:" + Timer.getFPGATimestamp());
         constants = new Constants();
         constants.readFromFile();
-        LightningServer.constants = constants;
 
         SmartDashboard.putData("Auto mode", chooser);
 
         // By this point all datalog fields should be registered
         DataLogger.preventNewDataElements();
 
-        //LightningServer.start_server();
         FaultMonitor.register(new TimedFaultMonitor(Codes.SLOW_LOOPER, () -> getLoopTime() > getPeriod(),
                               0.08, "Loop is running slow: " + getLoopTime()));
 

@@ -19,18 +19,19 @@ import frc.robot.commands.climber.Climb;;
 
 public class OI {
     //Drive Joysticks
-    private Joystick driverRight = new Joystick(1);
     private Joystick driverLeft = new Joystick(0);
+    private Joystick driverRight = new Joystick(1);
     private Joystick copilot = new Joystick(2);
 
     //Mechanism Buttons
-    private Button cargoCollectButton;
-    private Button setElevatorHigh;
-    private Button setElevatorLow;
-    private Button setElevatorMid;
-    private Button setElevatorCargoCollect;
-    private Button hatchToggle;
-    private Button climb;
+    private Button cargoCollectButton = new JoystickButton(copilot, 4);
+    private Button setElevatorHigh = new JoystickButton(copilot, 3);
+    private Button setElevatorLow = new JoystickButton(copilot, 6);
+    private Button setElevatorMid = new JoystickButton(copilot, 8);
+    // TODO - duplicated button number
+    private Button setElevatorCargoCollect = new JoystickButton(copilot, 8);
+    private Button hatchToggle = new JoystickButton(driverRight, JoystickConstants.hatchToggle);
+    private Button climb = new JoystickButton(copilot, 5);
 
     public boolean getElevatorHighPosSelect() {
         return setElevatorHigh != null &&
@@ -68,63 +69,13 @@ public class OI {
                cargoCollectButton.get();
     }
 
-    public Joystick getJoystick(int port, Joystick obj) {
-        if (obj != null) return obj;
-
-        DriverStation ds = DriverStation.getInstance();
-        if (ds != null && ds.getJoystickType(port) != 0) {
-            return new Joystick(port);
-        }
-
-        return null;
-    }
-
-    public Button getButton(Joystick js, int button, Button obj) {
-        if (obj != null) return obj;
-        if (js != null) return null;
-
-        DriverStation ds = DriverStation.getInstance();
-        if (ds.getStickButtonCount(js.getPort()) >= button) {
-            return new JoystickButton(js, button);
-        }
-        return null;
-    }
-
-    public void initalizeControllers() {
-        driverLeft = getJoystick(0, driverLeft);
-        driverRight = getJoystick(1, driverRight);
-        copilot = getJoystick(2, copilot);
-
-    }
-
-    public boolean fullyInitialized() {
-        return driverLeft != null &&
-               driverRight != null &&
-               copilot != null &&
-               cargoCollectButton != null &&
-               hatchToggle != null;
-    }
-
-    public void initializeButtons() {
-        setElevatorHigh = new JoystickButton(copilot, 3);
-        setElevatorLow = new JoystickButton(copilot, 6);
-        setElevatorMid = new JoystickButton(copilot, 8);
-        setElevatorCargoCollect = new JoystickButton(copilot, 8);
-
-        climb = new JoystickButton(copilot, 5);
+    public void initializeCommands() {
         climb.whenPressed(new Climb());
-
-        cargoCollectButton = getButton(copilot, 4, cargoCollectButton);
-
-        hatchToggle = getButton(driverRight, JoystickConstants.hatchToggle, hatchToggle);
         hatchToggle.whenPressed(new HatchCollectorStateChange());
     }
 
     public OI() {
-        if (!Constants.bench_test) {
-            initalizeControllers();
-            initializeButtons();
-        }
+        initializeCommands();
 
         SmartDashboard.putData("line follow", new LineFollow());
         SmartDashboard.putData("test move", new TestMove());

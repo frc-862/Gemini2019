@@ -7,7 +7,7 @@ public class Constants extends ConstantBase {
     // !!!!!!!!!!!!!!!!
     // NEVER CHECKIN WITH BENCH TEST SET TO TRUE
     // !!!!!!!!!!!!!!!!
-    public static final boolean bench_test = true;
+    public static final boolean bench_test = false;
 
     public static final double TICS_PER_ROTATION = 4 * 360;
 
@@ -59,4 +59,7 @@ public class Constants extends ConstantBase {
     public final static double velocityMultiplier = 1.0;// 15
 
     public final static Gains drivePIDF = new Gains(862, 0, 0, 8.62, 0);
+
+    public final static double movingCurrent = 2;
+    public final static double movingVelocity = 1;
 }

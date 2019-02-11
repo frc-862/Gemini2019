@@ -8,10 +8,12 @@
 package frc.robot;
 
 import frc.lightning.LightningRobot;
+import frc.lightning.http.JsonReader;
 import frc.robot.commands.driveTrain.MotionProfile;
 import frc.robot.subsystems.*;
 
 import java.io.File;
+import java.io.IOException;
 
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.cameraserver.CameraServer;
@@ -55,18 +57,18 @@ public class Robot extends LightningRobot {
     public void robotInit() {
         super.robotInit();
 
-        UsbCamera camera = new UsbCamera("Camera 1", 0);
-        if (camera.isConnected()) {
-            CameraServer.getInstance().addCamera(camera);
+        try {
+            var devices = JsonReader.readJsonFromUrl("http://127.0.0.1:1250/?action=getdevices");
+            System.out.println(devices);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+
     }
 
     @Override
     protected void robotMediumPriorityPeriodic() {
         super.robotMediumPriorityPeriodic();
-        if (!oi.fullyInitialized()) {
-            oi.initalizeControllers();
-        }
     }
 
     public static boolean isGemini() {

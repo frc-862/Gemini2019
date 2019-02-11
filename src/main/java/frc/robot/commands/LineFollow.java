@@ -17,7 +17,7 @@ import frc.robot.Robot;
 
 
 public class LineFollow extends Command {
-    CommandLogger logger = new CommandLogger(getClass().getCanonicalName());
+    CommandLogger logger = new CommandLogger(getClass().getSimpleName());
     double turnP = .075;
     double turningVelocity = 0;
     double straightVelocity = 0.3;
@@ -90,7 +90,7 @@ public class LineFollow extends Command {
     // Make this return true when this Command no longer needs to run execute()
     @Override
     protected boolean isFinished() {
-        return false;
+        return Robot.drivetrain.isStalled();
     }
 
     // Called once after isFinished returns true

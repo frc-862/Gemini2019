@@ -27,7 +27,6 @@ public class CommandLogger {
 
     public CommandLogger(String prefix) {
         this.prefix = prefix;
-        reset();
     }
 
     public void reset() {
