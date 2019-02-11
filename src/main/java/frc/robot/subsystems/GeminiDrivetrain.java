@@ -7,28 +7,15 @@
 
 package frc.robot.subsystems;
 
-import java.util.function.Consumer;
-
-import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.ctre.phoenix.motorcontrol.can.BaseMotorController;
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
-
-import edu.wpi.first.wpilibj.Sendable;
-import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.lightning.logging.DataLogger;
 import frc.lightning.subsystems.CANDrivetrain;
 import frc.lightning.util.LightningMath;
-import frc.lightning.util.MotorConfig;
 import frc.robot.commands.driveTrain.TankDrive;
-import frc.robot.commands.driveTrain.VelocityTankDrive;
-import frc.robot.Robot;
+import frc.robot.Constants;
 import frc.robot.RobotMap;
-import frc.robot.misc.Gains;
 
 /**
  * Add your docs here.
@@ -84,6 +71,9 @@ public class GeminiDrivetrain extends CANDrivetrain {
             m.configOpenloopRamp(0.2);
             // m.configClosedloopRamp(0.2);
         });
+
+        System.out.println("CONFIG");
+        configurePID(Constants.kGains_MotProf);
     }
 
     @Override
@@ -97,6 +87,9 @@ public class GeminiDrivetrain extends CANDrivetrain {
         */
         double right_talon_units = LightningMath.fps2talon(right);
         double left_talon_units = LightningMath.fps2talon(left);
+        System.out.println("left: " + left + " / " + left_talon_units);
+        System.out.println("right: " + right + " / " + right_talon_units);
+
         SmartDashboard.putNumber("talonunitLEFT", left_talon_units);
         SmartDashboard.putNumber("talonunitRIGHT", right_talon_units);
         super.setVelocity(left_talon_units, right_talon_units);

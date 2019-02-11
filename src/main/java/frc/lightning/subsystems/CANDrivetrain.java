@@ -13,6 +13,7 @@ import java.util.function.Consumer;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.BaseMotorController;
+import com.ctre.phoenix.motorcontrol.can.SlotConfiguration;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.wpilibj.Sendable;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
@@ -194,13 +195,27 @@ public abstract class CANDrivetrain extends LightningDrivetrain {
         return rightMaster.getSelectedSensorPosition();
     }
 
-    public void configurePID(Gains g) {
+    public void configurePID(SlotConfiguration g, int slot) {
         withEachMaster((m) -> {
-            m.config_kP(0, g.kP);
-            m.config_kI(0, g.kI);
-            m.config_kD(0, g.kD);
-            m.config_kF(0, g.kF);
+            if (slot == 0) {
+                m.configureSlot(g);
+            } else {
+                m.config_kP(slot, g.kP);
+                m.config_kI(slot, g.kI);
+                m.config_kD(slot, g.kD);
+                m.config_kF(slot, g.kF);
+                m.config_IntegralZone(slot, g.integralZone);
+                m.configAllowableClosedloopError(slot, g.allowableClosedloopError);
+                m.configMaxIntegralAccumulator(slot, g.maxIntegralAccumulator);
+                m.configClosedLoopPeakOutput(slot, g.closedLoopPeakOutput);
+                m.configClosedLoopPeriod(slot, g.closedLoopPeriod);
+            }
+            m.selectProfileSlot(slot, 0);
         });
+    }
+
+    public void configurePID(SlotConfiguration g) {
+        configurePID(g, 0);
     }
 
     @Override

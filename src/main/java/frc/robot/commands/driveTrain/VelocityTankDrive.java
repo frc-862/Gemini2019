@@ -7,14 +7,11 @@
 
 package frc.robot.commands.driveTrain;
 
-import edu.wpi.first.wpilibj.Sendable;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.lightning.logging.DataLogger;
 import frc.lightning.util.LightningMath;
 import frc.robot.Constants;
 import frc.robot.Robot;
-import frc.robot.misc.Gains;
 
 public class VelocityTankDrive extends Command {
   public VelocityTankDrive() {
@@ -26,8 +23,6 @@ public class VelocityTankDrive extends Command {
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    Robot.drivetrain.configureMotors();
-    Robot.drivetrain.configurePID(Constants.kGains_MotProf);
   }
 
   // Called repeatedly when this Command is scheduled to run
@@ -44,10 +39,6 @@ public class VelocityTankDrive extends Command {
 
     SmartDashboard.putNumber("FPS_LeftVelocity", LightningMath.talon2fps(Robot.drivetrain.getLeftVelocity()));
     SmartDashboard.putNumber("FPS_RightVelocity", LightningMath.talon2fps(Robot.drivetrain.getRightVelocity()));
-
-    DataLogger.addDataElement("FPS_LeftVelocity", () -> LightningMath.talon2fps(Robot.drivetrain.getLeftVelocity()));
-    DataLogger.addDataElement("FPS_RightVelocity", () -> LightningMath.talon2fps(Robot.drivetrain.getRightVelocity()));
-
   }
 
   // Make this return true when this Command no longer needs to run execute()

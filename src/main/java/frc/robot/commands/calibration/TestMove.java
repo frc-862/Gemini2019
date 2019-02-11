@@ -10,7 +10,6 @@ package frc.robot.commands.calibration;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.lightning.logging.CommandLogger;
-import frc.lightning.logging.DataLogger;
 import frc.robot.Robot;
 
 public class TestMove extends Command {
@@ -41,8 +40,7 @@ public class TestMove extends Command {
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-        Robot.drivetrain.setPower(run_power, run_power);
-
+        Robot.drivetrain.setVelocity(run_power, run_power);
         logger.set("runPower", run_power);
         logger.set("leftVelocity", Robot.drivetrain.getLeftVelocity());
         logger.set("rightVelocity", Robot.drivetrain.getRightVelocity());
@@ -54,7 +52,7 @@ public class TestMove extends Command {
     // Make this return true when this Command no longer needs to run execute()
     @Override
     protected boolean isFinished() {
-        return (this.timeSinceInitialized() > run_duration);
+        return (timeSinceInitialized() > run_duration);
     }
 
     @Override

@@ -8,21 +8,36 @@
 package frc.robot.commands;
 
 
-
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.lightning.logging.CommandLogger;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
 
+
 public class LineFollow extends Command {
   CommandLogger logger = new CommandLogger(getClass().getCanonicalName());
-  public LineFollow() {
+  double turnP = .075;
+  double turningVelocity = 0;
+  double straightVelocity = 0.3;
+  double cutOff=2;
+  double turnDown = .2; 
+  double prevError = 0;
+  double errorAcc = 0;
+  double turnI = 0.0001;
+
+public LineFollow() {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
     logger.addDataElement("error");
         logger.addDataElement("turn");
         logger.addDataElement("velocity");
-  }
+        SmartDashboard.putNumber("Turn Power", turnP);
+        SmartDashboard.putNumber("Straight Vel", straightVelocity);
+        SmartDashboard.putNumber("Turning Vel", turningVelocity);
+        SmartDashboard.putNumber("turn down turning", turnDown);
+        SmartDashboard.putNumber("turn down cut off", cutOff);
+      }
 
   // Called just before this Command runs the first time
   @Override
@@ -33,15 +48,24 @@ public class LineFollow extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    final double turnP = .1;
-        final double turningVelocity = 0;
-        final double straightVelocity = .1;
-       
+        turnP = SmartDashboard.getNumber("Turn Power", turnP);
+        //straightVelocity = SmartDashboard.getNumber("Straight Vel", straightVelocity);
+        //turningVelocity = SmartDashboard.getNumber("Turning Vel", turningVelocity);
+        //turningVelocity = SmartDashboard.getNumber("turn down turning", turnDown);
+        //turningVelocity = SmartDashboard.getNumber("turn down cut off", cutOff);
 
         // read & weight the sensors
         final double error = Robot.core.lineSensor();
-        final double turn = error * turnP;
-        final double velocity = (Math.abs(error) < 1) ? straightVelocity : turningVelocity;
+
+        if (error == Double.NaN && Math.abs(error) <= 1) {
+          errorAcc = 0;
+        } else {
+          errorAcc += error;
+        }
+        
+        
+        final double turn = (error * turnP) + (errorAcc * turnI);
+        final double velocity = straightVelocity;//(Math.abs(error) < 1) ? straightVelocity : turningVelocity;
 
         logger.set("error", error);
         logger.set("turn", turn);
@@ -50,7 +74,7 @@ public class LineFollow extends Command {
 
         // drive
         Robot.drivetrain.setVelocity(velocity - turn, velocity + turn);
-
+        prevError = error;
   }
 
   // Make this return true when this Command no longer needs to run execute()

@@ -1,5 +1,6 @@
 package frc.lightning;
 
+import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Timer;
@@ -64,9 +65,6 @@ public class LightningRobot extends TimedRobot {
         //LightningServer.start_server();
         FaultMonitor.register(new TimedFaultMonitor(Codes.SLOW_LOOPER, () -> getLoopTime() > getPeriod(),
                               0.08, "Loop is running slow: " + getLoopTime()));
-
-        // TODO should this be in Robot.java and not LightningRobot?
-        CameraServer.getInstance().startAutomaticCapture();
 
         FaultCode.eachCode((code, state) -> {
             var nte = Shuffleboard.getTab("Fault Codes")

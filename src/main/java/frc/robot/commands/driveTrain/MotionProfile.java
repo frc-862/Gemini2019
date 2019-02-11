@@ -61,8 +61,8 @@ public class MotionProfile extends Command {
 
         config.primaryPID.selectedFeedbackSensor = FeedbackDevice.QuadEncoder;
         config.neutralDeadband = Constants.kNeutralDeadband; // 0.1 % super small for best low-speed control
-        config.slot0.integralZone = (int) Constants.kGains_MotProf.kIzone;
-        config.slot0.closedLoopPeakOutput = Constants.kGains_MotProf.kPeakOutput;
+        config.slot0.integralZone = Constants.kGains_MotProf.integralZone;
+        config.slot0.closedLoopPeakOutput = Constants.kGains_MotProf.closedLoopPeakOutput;
         //config.slot0.allowableClosedloopError; // left default for this example
         //config.slot0.closedLoopPeriod; // left default for this example
         //config.slot0.maxIntegralAccumulator; // left default for this example

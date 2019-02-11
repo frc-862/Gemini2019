@@ -9,7 +9,6 @@ package frc.robot.commands.driveTrain;
 
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.lightning.logging.DataLogger;
 import frc.lightning.util.LightningMath;
 import frc.robot.Robot;
 
@@ -32,10 +31,6 @@ public class TankDrive extends Command {
 
         SmartDashboard.putNumber("FPS_LeftVelocity", LightningMath.talon2fps(Robot.drivetrain.getLeftVelocity()));
         SmartDashboard.putNumber("FPS_RightVelocity", LightningMath.talon2fps(Robot.drivetrain.getRightVelocity()));
-
-        DataLogger.addDataElement("FPS_LeftVelocity", () -> LightningMath.talon2fps(Robot.drivetrain.getLeftVelocity()));
-        DataLogger.addDataElement("FPS_RightVelocity", () -> LightningMath.talon2fps(Robot.drivetrain.getRightVelocity()));
-
     }
 
     @Override

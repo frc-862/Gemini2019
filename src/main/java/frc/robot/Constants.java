@@ -4,6 +4,11 @@ import frc.lightning.ConstantBase;
 import frc.robot.misc.Gains;
 
 public class Constants extends ConstantBase {
+	// !!!!!!!!!!!!!!!!
+	// NEVER CHECKIN WITH BENCH TEST SET TO TRUE
+	// !!!!!!!!!!!!!!!!
+	public static final boolean bench_test = true;
+
 	public static final double TICS_PER_ROTATION = 4 * 360;
 
 	// Cargo Collector
@@ -16,8 +21,9 @@ public class Constants extends ConstantBase {
 
 	public final static int kSensorUnitsPerRotation = 4 * 360;
 	public final static double kNeutralDeadband = 0.001;
-	/* 	                                    			  kP   kI    kD    kF   Iz    PeakOut */
-	public final static Gains kGains_MotProf = new Gains( 0.001, 0.0,  0.0, 10,  400,  1.00 ); //1023.0/1300.0 is max raw velocity
+	/* 	                                    			  kP   kI    kD    kF   Iz  */
+	public final static Gains kGains_MotProf2 = new Gains( 0.001, 0.0,  0.0, 10,  400); //1023.0/1300.0 is max raw velocity
+	public final static Gains kGains_MotProf = new Gains( 0, 0.0,  0.0, 8,  400); //1023.0/1300.0 is max raw velocity
 																										//WALK DOWN
 	public final static int kPrimaryPIDSlot = 0;
 	// public final static Gains drivePIDF = new Gains(862, 0, 0, 8.62, 0, 0); - use kGains_MotProf
@@ -51,7 +57,6 @@ public class Constants extends ConstantBase {
 
 	// for DriveTrain
 	public final static double velocityMultiplier = 1.0;// 15
-	public final static Gains drivePIDF = new Gains(862, 0, 0, 8.62, 0, 0);
-	
 
+	public final static Gains drivePIDF = new Gains(862, 0, 0, 8.62, 0);
 }

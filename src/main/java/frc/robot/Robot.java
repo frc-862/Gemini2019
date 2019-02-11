@@ -13,6 +13,9 @@ import frc.robot.subsystems.*;
 
 import java.io.File;
 
+import edu.wpi.cscore.UsbCamera;
+import edu.wpi.first.cameraserver.CameraServer;
+
 public class Robot extends LightningRobot {
 
     //Subsystems
@@ -46,6 +49,16 @@ public class Robot extends LightningRobot {
         gemini = ((new File("/home/lvuser/gemini")).exists());
 
         this.registerAutonomousCommmand("T_MotionProfile", new MotionProfile());
+    }
+
+    @Override
+    public void robotInit() {
+        super.robotInit();
+
+        UsbCamera camera = new UsbCamera("Camera 1", 0);
+        if (camera.isConnected()) {
+            CameraServer.getInstance().addCamera(camera);
+        }
     }
 
     @Override
