@@ -11,6 +11,7 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.lightning.logging.CommandLogger;
 import edu.wpi.first.wpilibj.command.Command;
+import frc.robot.Constants;
 import frc.robot.Robot;
 
 
@@ -48,14 +49,23 @@ public LineFollow() {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
+        // read & weight the sensors
+        final double error = Robot.core.lineSensor();
+        if(error==Double.NaN)
+        {
+          Robot.drivetrain.setVelocity(
+            (Robot.oi.getLeftPower()*Constants.velocityMultiplier),
+            (Robot.oi.getRightPower()*Constants.velocityMultiplier));
+            prevError = 0;
+            errorAcc = 0;
+        } else {
         turnP = SmartDashboard.getNumber("Turn Power", turnP);
         //straightVelocity = SmartDashboard.getNumber("Straight Vel", straightVelocity);
         //turningVelocity = SmartDashboard.getNumber("Turning Vel", turningVelocity);
         //turningVelocity = SmartDashboard.getNumber("turn down turning", turnDown);
         //turningVelocity = SmartDashboard.getNumber("turn down cut off", cutOff);
 
-        // read & weight the sensors
-        final double error = Robot.core.lineSensor();
+        
 
         if (error == Double.NaN && Math.abs(error) <= 1) {
           errorAcc = 0;
@@ -75,6 +85,7 @@ public LineFollow() {
         // drive
         Robot.drivetrain.setVelocity(velocity - turn, velocity + turn);
         prevError = error;
+      }
   }
 
   // Make this return true when this Command no longer needs to run execute()
