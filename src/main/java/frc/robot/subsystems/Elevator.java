@@ -16,12 +16,10 @@ import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import edu.wpi.first.wpilibj.AnalogInput;
-import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.lightning.util.LightningMath;
 import frc.robot.Constants;
 import frc.robot.RobotMap;
-import frc.robot.commands.elevator.SetElevatorHigh;
 import frc.robot.commands.elevator.UpdateElevatorState;
 
 /**
@@ -32,10 +30,9 @@ public class Elevator extends Subsystem {
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
 
-    public TalonSRX motor1;
-    public VictorSPX motor2;
-    public VictorSPX motor3;
-    public VictorSPX motor4;
+    public TalonSRX elevatorMotor;
+    public VictorSPX collectLeft;
+    public VictorSPX collectRight;
 
     public AnalogInput pieceDetector;
 
@@ -48,21 +45,22 @@ public class Elevator extends Subsystem {
 
     public Elevator() {
 
+        collectLeft = new VictorSPX(RobotMap.leftCollectCanId);
+        collectRight = new VictorSPX(RobotMap.rightCollectCanId);
+
         pieceDetector = new AnalogInput(7);
 
 
-        motor1 = new TalonSRX(RobotMap.elevatorCanId);
-        motor2 = new VictorSPX(RobotMap.elevator2CanId);
-        motor2.follow(motor1);
+        elevatorMotor = new TalonSRX(RobotMap.elevatorCanId);
 
-        motor1.configForwardLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen, 0);
-        motor1.configReverseLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyClosed, 0);
+        elevatorMotor.configForwardLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen, 0);
+        elevatorMotor.configReverseLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyClosed, 0);
 
         /* Factory default hardware to prevent unexpected behavior */
-        motor1.configFactoryDefault();
+        elevatorMotor.configFactoryDefault();
 
         /* Configure Sensor Source for Pirmary PID */
-        motor1.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative,
+        elevatorMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative,
                                             Constants.kPIDLoopIdx,
                                             Constants.kTimeoutMs);
 
@@ -71,32 +69,32 @@ public class Elevator extends Subsystem {
          * Invert Motor to have green LEDs when driving Talon Forward / Requesting Postiive Output
          * Phase sensor to have positive increment when driving Talon Forward (Green LED)
          */
-        motor1.setSensorPhase(true);
-        motor1.setInverted(false);
+        elevatorMotor.setSensorPhase(true);
+        elevatorMotor.setInverted(false);
 
         /* Set relevant frame periods to be at least as fast as periodic rate */
-        motor1.setStatusFramePeriod(StatusFrameEnhanced.Status_13_Base_PIDF0, 10, Constants.kTimeoutMs);
-        motor1.setStatusFramePeriod(StatusFrameEnhanced.Status_10_MotionMagic, 10, Constants.kTimeoutMs);
+        elevatorMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_13_Base_PIDF0, 10, Constants.kTimeoutMs);
+        elevatorMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_10_MotionMagic, 10, Constants.kTimeoutMs);
 
         /* Set the peak and nominal outputs */
-        motor1.configNominalOutputForward(0, Constants.kTimeoutMs);
-        motor1.configNominalOutputReverse(0, Constants.kTimeoutMs);
-        motor1.configPeakOutputForward(1, Constants.kTimeoutMs);
-        motor1.configPeakOutputReverse(-1, Constants.kTimeoutMs);
+        elevatorMotor.configNominalOutputForward(0, Constants.kTimeoutMs);
+        elevatorMotor.configNominalOutputReverse(0, Constants.kTimeoutMs);
+        elevatorMotor.configPeakOutputForward(1, Constants.kTimeoutMs);
+        elevatorMotor.configPeakOutputReverse(-1, Constants.kTimeoutMs);
 
         /* Set Motion Magic gains in slot0 - see documentation */
-        motor1.selectProfileSlot(Constants.kSlotIdx, Constants.kPIDLoopIdx);
-        motor1.config_kF(Constants.kSlotIdx, Constants.elevatorPIDF.kF, Constants.kTimeoutMs);
-        motor1.config_kP(Constants.kSlotIdx, Constants.elevatorPIDF.kP, Constants.kTimeoutMs);
-        motor1.config_kI(Constants.kSlotIdx, Constants.elevatorPIDF.kI, Constants.kTimeoutMs);
-        motor1.config_kD(Constants.kSlotIdx, Constants.elevatorPIDF.kD, Constants.kTimeoutMs);
+        elevatorMotor.selectProfileSlot(Constants.kSlotIdx, Constants.kPIDLoopIdx);
+        elevatorMotor.config_kF(Constants.kSlotIdx, Constants.elevatorPIDF.kF, Constants.kTimeoutMs);
+        elevatorMotor.config_kP(Constants.kSlotIdx, Constants.elevatorPIDF.kP, Constants.kTimeoutMs);
+        elevatorMotor.config_kI(Constants.kSlotIdx, Constants.elevatorPIDF.kI, Constants.kTimeoutMs);
+        elevatorMotor.config_kD(Constants.kSlotIdx, Constants.elevatorPIDF.kD, Constants.kTimeoutMs);
 
         /* Set acceleration and vcruise velocity - see documentation */
-        motor1.configMotionCruiseVelocity(15000, Constants.kTimeoutMs);
-        motor1.configMotionAcceleration(6000, Constants.kTimeoutMs);
+        elevatorMotor.configMotionCruiseVelocity(15000, Constants.kTimeoutMs);
+        elevatorMotor.configMotionAcceleration(6000, Constants.kTimeoutMs);
 
         /* Zero the sensor */
-        motor1.setSelectedSensorPosition(0, Constants.kPIDLoopIdx, Constants.kTimeoutMs);
+        elevatorMotor.setSelectedSensorPosition(0, Constants.kPIDLoopIdx, Constants.kTimeoutMs);
     }
 
     @Override
@@ -133,17 +131,17 @@ public class Elevator extends Subsystem {
      */
     @Override
     public void periodic() {
-        var sensors = motor1.getSensorCollection();
+        var sensors = elevatorMotor.getSensorCollection();
 
         if (sensors.isFwdLimitSwitchClosed()) {
-            motor1.setSelectedSensorPosition(Constants.elevatorTopHeight);
+            elevatorMotor.setSelectedSensorPosition(Constants.elevatorTopHeight);
         } else if (sensors.isRevLimitSwitchClosed()) {
-            motor1.setSelectedSensorPosition(Constants.elevatorBottomHeight);
+            elevatorMotor.setSelectedSensorPosition(Constants.elevatorBottomHeight);
         }
     }
 
     public void stop() {
-        motor1.set(ControlMode.PercentOutput, 0.0);
+        elevatorMotor.set(ControlMode.PercentOutput, 0.0);
     }
 
     public void goToCollect() {
@@ -156,7 +154,7 @@ public class Elevator extends Subsystem {
         else
             gravityCompensation = Constants.elevatorEmptyF;
 
-        motor1.set(ControlMode.MotionMagic, Constants.elevatorCollectHeight, DemandType.ArbitraryFeedForward, gravityCompensation);
+        elevatorMotor.set(ControlMode.MotionMagic, Constants.elevatorCollectHeight, DemandType.ArbitraryFeedForward, gravityCompensation);
 
     }
 
@@ -170,7 +168,7 @@ public class Elevator extends Subsystem {
         else
             gravityCompensation = Constants.elevatorEmptyF;
 
-        motor1.set(ControlMode.MotionMagic, Constants.elevatorBottomHeight, DemandType.ArbitraryFeedForward, gravityCompensation);
+        elevatorMotor.set(ControlMode.MotionMagic, Constants.elevatorBottomHeight, DemandType.ArbitraryFeedForward, gravityCompensation);
     }
 
     public void goToMid() {
@@ -183,7 +181,7 @@ public class Elevator extends Subsystem {
         else
             gravityCompensation = Constants.elevatorEmptyF;
 
-        motor1.set(ControlMode.MotionMagic, Constants.elevatorMiddleHeight, DemandType.ArbitraryFeedForward, gravityCompensation);
+        elevatorMotor.set(ControlMode.MotionMagic, Constants.elevatorMiddleHeight, DemandType.ArbitraryFeedForward, gravityCompensation);
     }
 
     public void goToHigh() {
@@ -196,7 +194,7 @@ public class Elevator extends Subsystem {
         else
             gravityCompensation = Constants.elevatorEmptyF;
 
-        motor1.set(ControlMode.MotionMagic, Constants.elevatorTopHeight, DemandType.ArbitraryFeedForward, gravityCompensation);
+        elevatorMotor.set(ControlMode.MotionMagic, Constants.elevatorTopHeight, DemandType.ArbitraryFeedForward, gravityCompensation);
     }
 
     public boolean hasHatchPanel() {
@@ -206,21 +204,27 @@ public class Elevator extends Subsystem {
     public boolean hasCargo() {
         return LightningMath.isInRange(pieceDetector.getValue(), Constants.cargoElevatorDistance,Constants.elevatorPieceTolerance); //TODO method stub
     }
+
     public void ejectCargo() {
-        motor3.set(ControlMode.PercentOutput, Constants.ejectDemand*-1);
+        collectLeft.set(ControlMode.PercentOutput, Constants.ejectDemand*-1);
+        collectRight.set(ControlMode.PercentOutput, Constants.ejectDemand*-1);
     }
 
     public void stopEject() {
-        motor3.set(ControlMode.PercentOutput, 0.0);
+        collectLeft.set(ControlMode.PercentOutput, 0.0);
+        collectRight.set(ControlMode.PercentOutput, 0.0);
     }
 
     public void elevatorCargoHoldPower() {
-        motor3.set(ControlMode.PercentOutput, Constants.elevatorCollectorHoldPower);
+        collectLeft.set(ControlMode.PercentOutput, Constants.elevatorCollectorHoldPower);
+        collectRight.set(ControlMode.PercentOutput, Constants.elevatorCollectorHoldPower);
     }
 
     public void collectCargo() {
-        motor3.set(ControlMode.PercentOutput, Constants.ejectDemand);
+        collectLeft.set(ControlMode.PercentOutput, Constants.ejectDemand);
+        collectRight.set(ControlMode.PercentOutput, Constants.ejectDemand);
     }
+
     public void stopCollectCargo() {
 
     }

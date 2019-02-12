@@ -26,7 +26,7 @@ public class GeminiDrivetrain extends CANDrivetrain {
                    new WPI_TalonSRX(RobotMap.geminiLeftMaster),//1
                    new WPI_VictorSPX(RobotMap.geminiLeftSlave),//2
                    new WPI_TalonSRX(RobotMap.geminiRightMaster),//4
-                   new WPI_VictorSPX(RobotMap.geminiRIghtSlave));//5
+                   new WPI_VictorSPX(RobotMap.geminiRightSlave));//5
     }
 
     public GeminiDrivetrain(WPI_TalonSRX left, WPI_VictorSPX left2, WPI_TalonSRX right, WPI_VictorSPX right2) {

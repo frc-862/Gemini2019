@@ -32,6 +32,7 @@ public class TestMove extends Command {
 
     @Override
     protected void initialize() {
+        logger.reset();
         run_duration = SmartDashboard.getNumber("runDuration", 1.0);
         run_power = SmartDashboard.getNumber("runPower", 0.2);
         Robot.drivetrain.resetDistance();

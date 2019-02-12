@@ -9,7 +9,6 @@ import org.json.simple.JSONArray;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
-import frc.lightning.http.DataLoggingWebSocket;
 import frc.lightning.util.Loop;
 
 public class DataLogger implements Loop {
@@ -85,7 +84,6 @@ public class DataLogger implements Loop {
 
         // System.out.println(valueList);
         writer.logRawString(valueList);
-        DataLoggingWebSocket.broadcast("[" + valueList + "]");
     }
 
     private DataLogger() {

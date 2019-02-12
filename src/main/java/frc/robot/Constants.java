@@ -7,7 +7,7 @@ public class Constants extends ConstantBase {
     // !!!!!!!!!!!!!!!!
     // NEVER CHECKIN WITH BENCH TEST SET TO TRUE
     // !!!!!!!!!!!!!!!!
-    public static final boolean bench_test = true;
+    public static final boolean bench_test = false;
 
     public static final double TICS_PER_ROTATION = 4 * 360;
 
@@ -84,4 +84,7 @@ public class Constants extends ConstantBase {
     public static final double geminiMinLeftInside = 1.6;
     public static final double geminiMinRightInside = 2.25;
     public static final double geminiMinRightOutside = 1.51;
+
+	public static final double movingCurrent = 20;
+	public static final double movingVelocity = 0.1;
 }

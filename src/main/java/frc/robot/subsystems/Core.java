@@ -10,6 +10,8 @@ package frc.robot.subsystems;
 import java.util.Arrays;
 import java.util.function.DoubleSupplier;
 
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
@@ -34,6 +36,9 @@ import frc.robot.commands.test.NavXTest;
  */
 public class Core extends Subsystem {
     //private DigitalInput pressure1 = new DigitalInput(0);
+
+    private VictorSPX extra1 = new VictorSPX(RobotMap.extra1CanId);
+    private VictorSPX extra2 = new VictorSPX(RobotMap.extra2CanId);
 
     private DigitalInput outerLeft = new DigitalInput(5);
     private DigitalInput midLeft = new DigitalInput(4);
@@ -88,7 +93,7 @@ public class Core extends Subsystem {
     // here. Call these from Commajnds.
     private AHRS navx;
     private Compressor compressor = new Compressor(RobotMap.compressorCANId);
-    // private PowerDistributionPanel pdp = new PowerDistributionPanel(RobotMap.pdpCANId);
+    private PowerDistributionPanel pdp = new PowerDistributionPanel(RobotMap.pdpCANId);
 
     public Core() {
         compressor.setSubsystem("Core");
@@ -108,9 +113,11 @@ public class Core extends Subsystem {
         // FaultMonitor.register(new UnchangingFaultMonitor(Codes.NAVX_ERROR, () -> navx.getUpdateCount(),
         //     2.0, 0, "NavX unresponsive"));
 
-        // addChild("PDP", pdp);
-        // addChild("NavX", navx);
+        addChild("PDP", pdp);
+        addChild("NavX", navx);
         addChild("Compressor", compressor);
+
+        LiveWindow.disableTelemetry(pdp);
 
         SystemTest.register(new NavXTest());
     }
