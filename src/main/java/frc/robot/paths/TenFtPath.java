@@ -11,7 +11,16 @@ package frc.robot.paths;
  * Add your docs here.
  */
 public class TenFtPath extends Path {
-    public static double[][] Left = new double[][] {
+    @Override
+    public double[][] getLeftPath() {
+        return this.Left;
+    }
+
+    @Override
+    public double[][] getRightPath() {
+        return this.Right;
+    }
+    public double[][] Left = new double[][] {
         {0,0,0,0},
         {0.0008,0.042,2.0908,0},
         {0.0033,0.1206,3.9037,0},
@@ -173,7 +182,7 @@ public class TenFtPath extends Path {
         {9.9999,0.0436,-3.8557,0}
     };
 
-    public static double[][] Right = new double[][] {
+    public double[][] Right = new double[][] {
         {0,0,0,0},
         {0.0008,0.042,2.0908,0},
         {0.0033,0.1206,3.9037,0},

@@ -61,8 +61,8 @@ public class Elevator extends Subsystem {
 
         /* Configure Sensor Source for Pirmary PID */
         elevatorMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative,
-                                            Constants.kPIDLoopIdx,
-                                            Constants.kTimeoutMs);
+                Constants.kPIDLoopIdx,
+                Constants.kTimeoutMs);
 
         /**
          * Configure Talon SRX Output and Sesnor direction accordingly

@@ -8,6 +8,15 @@
 package frc.robot.paths;
 
 public class CirclePath extends Path {
+    @Override
+    public double[][] getLeftPath() {
+        return this.Left;
+    }
+
+    @Override
+    public double[][] getRightPath() {
+        return this.Right;
+    }
     //p, v, a, h
     public double[][] Left = new double[][] {
         {0,0,0,89.9997},

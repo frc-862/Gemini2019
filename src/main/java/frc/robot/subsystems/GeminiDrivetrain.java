@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.lightning.subsystems.CANDrivetrain;
 import frc.lightning.util.LightningMath;
 import frc.robot.commands.driveTrain.TankDrive;
+import frc.robot.commands.driveTrain.VelocityTankDrive;
 import frc.robot.Constants;
 import frc.robot.RobotMap;
 
@@ -23,10 +24,11 @@ import frc.robot.RobotMap;
 public class GeminiDrivetrain extends CANDrivetrain {
     public static GeminiDrivetrain create() {
         return new GeminiDrivetrain(
-                   new WPI_TalonSRX(RobotMap.geminiLeftMaster),//1
-                   new WPI_VictorSPX(RobotMap.geminiLeftSlave),//2
-                   new WPI_TalonSRX(RobotMap.geminiRightMaster),//4
-                   new WPI_VictorSPX(RobotMap.geminiRightSlave));//5
+                   //TODO fix in tuner of phoneix
+                   new WPI_TalonSRX(RobotMap.geminiLeftMaster),//CAN ID 1
+                   new WPI_VictorSPX(RobotMap.geminiLeftSlave),//CAN ID 2
+                   new WPI_TalonSRX(RobotMap.geminiRightMaster),//CAN ID 4
+                   new WPI_VictorSPX(RobotMap.geminiRightSlave));//CAN ID 5
     }
 
     public GeminiDrivetrain(WPI_TalonSRX left, WPI_VictorSPX left2, WPI_TalonSRX right, WPI_VictorSPX right2) {
@@ -46,12 +48,12 @@ public class GeminiDrivetrain extends CANDrivetrain {
 
     @Override
     public double getLeftDistance() {
-        return LightningMath.ticks2feet(super.getLeftDistance());
+        return LightningMath.ticks2feet(super.getLeftDistance());//convert encoder ticks to feet
     }
 
     @Override
     public double getRightDistance() {
-        return LightningMath.ticks2feet(super.getRightDistance());
+        return LightningMath.ticks2feet(super.getRightDistance());//convert encoder ticks to feet
     }
 
     @Override
@@ -73,7 +75,7 @@ public class GeminiDrivetrain extends CANDrivetrain {
         });
 
         System.out.println("CONFIG");
-        configurePID(Constants.kGains_MotProf);
+        configurePID(Constants.drivePIDs);
     }
 
     @Override
@@ -108,7 +110,7 @@ public class GeminiDrivetrain extends CANDrivetrain {
     @Override
     public void initDefaultCommand() {
         // Set the default command for a subsystem here.
-        setDefaultCommand(new TankDrive());
+        setDefaultCommand(new VelocityTankDrive());
     }
 
 }

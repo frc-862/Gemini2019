@@ -17,21 +17,21 @@ import frc.robot.Robot;
 
 
 public class LineFollow extends Command {
-  CommandLogger logger = new CommandLogger(getClass().getCanonicalName());
-  double turnP = .075;
-  double turningVelocity = .4;
-  double straightVelocity = 0.3;
-  double cutOff=2;
-  double turnDown = .2; 
-  double prevError = 0;
-  double errorAcc = 0;
-  double turnI = 0.001;
-  double turnD = .05;
+    CommandLogger logger = new CommandLogger(getClass().getCanonicalName());
+    double turnP = .075;
+    double turningVelocity = .4;
+    double straightVelocity = 0.3;
+    double cutOff=2;
+    double turnDown = .2;
+    double prevError = 0;
+    double errorAcc = 0;
+    double turnI = 0.001;
+    double turnD = .05;
 
-public LineFollow() {
-    // Use requires() here to declare subsystem dependencies
-    // eg. requires(chassis);
-    logger.addDataElement("error");
+    public LineFollow() {
+        // Use requires() here to declare subsystem dependencies
+        // eg. requires(chassis);
+        logger.addDataElement("error");
         logger.addDataElement("turn");
         logger.addDataElement("velocity");
         SmartDashboard.putNumber("Turn Power", turnP);
@@ -39,7 +39,7 @@ public LineFollow() {
         SmartDashboard.putNumber("Turning Vel", turningVelocity);
         SmartDashboard.putNumber("turnI", turnI);
         SmartDashboard.putNumber("turnD", turnD);
-        }
+    }
 
     // Called just before this Command runs the first time
     @Override
@@ -67,11 +67,11 @@ public LineFollow() {
         turnI = SmartDashboard.getNumber("turnI", turnI);
         turnD = SmartDashboard.getNumber("turnD", turnD);
 
-            if (error == Double.NaN && Math.abs(error) <= 1) {
-                errorAcc = 0;
-            } else {
-                errorAcc += error;
-            }
+        if (error == Double.NaN && Math.abs(error) <= 1) {
+            errorAcc = 0;
+        } else {
+            errorAcc += error;
+        }
 
         final double turn = (error * turnP) + (errorAcc * turnI)-(prevError-error)*turnD;
         final double velocity = (Math.abs(error) < 1) ? straightVelocity : turningVelocity;
@@ -84,23 +84,23 @@ public LineFollow() {
         // drive
         Robot.drivetrain.setVelocity(velocity - turn, velocity + turn);
         prevError = error;
-      }
-  
+    }
 
-  // Make this return true when this Command no longer needs to run execute()
-  @Override
-  protected boolean isFinished() {
-    return false;
-  }
 
-  // Called once after isFinished returns true
-  @Override
-  protected void end() {
-  }
+    // Make this return true when this Command no longer needs to run execute()
+    @Override
+    protected boolean isFinished() {
+        return false;
+    }
 
-  // Called when another command which requires one or more of the same
-  // subsystems is scheduled to run
-  @Override
-  protected void interrupted() {
-  }
+    // Called once after isFinished returns true
+    @Override
+    protected void end() {
+    }
+
+    // Called when another command which requires one or more of the same
+    // subsystems is scheduled to run
+    @Override
+    protected void interrupted() {
+    }
 }

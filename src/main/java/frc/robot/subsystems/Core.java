@@ -67,29 +67,29 @@ public class Core extends Subsystem {
     private DoubleSupplier nebulaSensorValues[] = {
         () -> outerLeft.get() ? 0 : 1.0,
         () -> midLeft.get() ? 0 : 1.0,
-        () -> biasAnalog(innerLeft.getVoltage() , Constants.nebulaMinLeftOutside , Constants.nebulaMaxLeftOutside),
-        () -> biasAnalog(centerLeft.getVoltage() , Constants.nebulaMinLeftInside , Constants.nebulaMaxLeftInside),
-        () -> biasAnalog(centerRight.getVoltage() , Constants.nebulaMinRightInside , Constants.nebulaMaxRightInside),
-        () -> biasAnalog(innerRight.getVoltage() , Constants.nebulaMinRightOutside , Constants.nebulaMaxRightOutside),
+        () -> biasAnalog(innerLeft.getVoltage(), Constants.nebulaMinLeftOutside, Constants.nebulaMaxLeftOutside),
+        () -> biasAnalog(centerLeft.getVoltage(), Constants.nebulaMinLeftInside, Constants.nebulaMaxLeftInside),
+        () -> biasAnalog(centerRight.getVoltage(), Constants.nebulaMinRightInside, Constants.nebulaMaxRightInside),
+        () -> biasAnalog(innerRight.getVoltage(), Constants.nebulaMinRightOutside, Constants.nebulaMaxRightOutside),
         () -> midRight.get() ? 0 : 1.0,
         () -> outerRight.get() ? 0 : 1.0,
     };
-  
+
     private DoubleSupplier geminiSensorValues[] = {
-    
-      () -> outerLeft.get() ? 0 : 1.0,
-      () -> midLeft.get() ? 0 : 1.0,
-      () -> biasAnalog(innerLeft.getVoltage() , Constants.geminiMinLeftOutside , Constants.geminiMaxLeftOutside),
-      () -> biasAnalog(centerLeft.getVoltage() , Constants.geminiMinLeftInside , Constants.geminiMaxLeftInside),
-      () -> biasAnalog(centerRight.getVoltage() , Constants.geminiMinRightInside , Constants.geminiMaxRightInside),
-      () -> biasAnalog(innerRight.getVoltage() , Constants.geminiMinRightOutside , Constants.geminiMaxRightOutside),
-      () -> midRight.get() ? 0 : 1.0,
-      () -> outerRight.get() ? 0 : 1.0,
+
+        () -> outerLeft.get() ? 0 : 1.0,
+        () -> midLeft.get() ? 0 : 1.0,
+        () -> biasAnalog(innerLeft.getVoltage(), Constants.geminiMinLeftOutside, Constants.geminiMaxLeftOutside),
+        () -> biasAnalog(centerLeft.getVoltage(), Constants.geminiMinLeftInside, Constants.geminiMaxLeftInside),
+        () -> biasAnalog(centerRight.getVoltage(), Constants.geminiMinRightInside, Constants.geminiMaxRightInside),
+        () -> biasAnalog(innerRight.getVoltage(), Constants.geminiMinRightOutside, Constants.geminiMaxRightOutside),
+        () -> midRight.get() ? 0 : 1.0,
+        () -> outerRight.get() ? 0 : 1.0,
     };
-  
+
     private DoubleSupplier sensorValues[] = Robot.isGemini() ? geminiSensorValues : nebulaSensorValues;
 
-      // Put methods for controlling this subsystem
+    // Put methods for controlling this subsystem
     // here. Call these from Commajnds.
     private AHRS navx;
     private Compressor compressor = new Compressor(RobotMap.compressorCANId);
@@ -117,7 +117,7 @@ public class Core extends Subsystem {
         addChild("NavX", navx);
         addChild("Compressor", compressor);
 
-        LiveWindow.disableTelemetry(pdp);
+        LiveWindow.disableTelemetry(pdp);//Stops pdp from whining about things we don't care about. EX - CAN Frame timeout, etc.
 
         SystemTest.register(new NavXTest());
     }

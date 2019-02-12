@@ -10,8 +10,6 @@ package frc.robot.commands.driveTrain;
 import com.ctre.phoenix.motion.BufferedTrajectoryPointStream;
 import com.ctre.phoenix.motion.TrajectoryPoint;
 import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.FeedbackDevice;
-import com.ctre.phoenix.motorcontrol.can.TalonSRXConfiguration;
 
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -19,61 +17,33 @@ import frc.lightning.logging.DataLogger;
 import frc.lightning.util.LightningMath;
 import frc.robot.Constants;
 import frc.robot.Robot;
-import frc.robot.paths.CirclePath;
-import frc.robot.paths.LinePath;
 import frc.robot.paths.Path;
-import frc.robot.paths.TenFtPath;
 
 public class MotionProfile extends Command {
 
-    BufferedTrajectoryPointStream bufferedStreamLeft = new BufferedTrajectoryPointStream();
-    BufferedTrajectoryPointStream bufferedStreamRight = new BufferedTrajectoryPointStream();
+    private BufferedTrajectoryPointStream bufferedStreamLeft = new BufferedTrajectoryPointStream();
+    private BufferedTrajectoryPointStream bufferedStreamRight = new BufferedTrajectoryPointStream();
 
-    /** very simple state machine to prevent calling set() while firing MP. */
-    // int state = 0;
-    // Path path = new LinePath();
-    // Path path = new CirclePath();
+    Path path;
 
-    TalonSRXConfiguration config;
-    static double expectedLeft;
-    static double expectedRight;
+    public MotionProfile(Path path) {
 
-    public MotionProfile() {
-        // Use requires() here to declare subsystem dependencies
-        // eg. requires(chassis);
+        this.path = path;
+
+        System.out.println("left.initBuffer");
+        initBuffer(path.getLeftPath(), path.getLeftPath().length, bufferedStreamLeft);
+        System.out.println("right.initBuffer");
+        initBuffer(path.getRightPath(), path.getRightPath().length, bufferedStreamRight);
+
         requires(Robot.drivetrain);
     }
 
-    // Called just before this Command runs the first time
     @Override
     protected void initialize() {
+        Robot.drivetrain.configurePID(Constants.motionPathPIDs);
 
-        System.out.println("Hello There \n we is initializing");
-
-        config = new TalonSRXConfiguration();
-
-        System.out.println("left.initBuffer");
-        initBuffer(LinePath.Left, LinePath.Left.length, bufferedStreamLeft);
-        System.out.println("right.initBuffer");
-        initBuffer(LinePath.Right, LinePath.Right.length, bufferedStreamRight);
-
-        System.out.println("Paths initialized");
-
-        config.primaryPID.selectedFeedbackSensor = FeedbackDevice.QuadEncoder;
-        config.neutralDeadband = Constants.kNeutralDeadband; // 0.1 % super small for best low-speed control
-        config.slot0.integralZone = Constants.kGains_MotProf.integralZone;
-        config.slot0.closedLoopPeakOutput = Constants.kGains_MotProf.closedLoopPeakOutput;
-        //config.slot0.allowableClosedloopError; // left default for this example
-        //config.slot0.closedLoopPeriod; // left default for this example
-        //config.slot0.maxIntegralAccumulator; // left default for this example
-
-        //config motors
-        Robot.drivetrain.configurePID(Constants.kGains_MotProf);
-
-        System.out.println("things configured");
-
-        Robot.drivetrain.getLeftMaster().startMotionProfile(bufferedStreamLeft, LinePath.Left.length, ControlMode.MotionProfile);
-        Robot.drivetrain.getRightMaster().startMotionProfile(bufferedStreamRight, LinePath.Right.length, ControlMode.MotionProfile);
+        Robot.drivetrain.getLeftMaster().startMotionProfile(bufferedStreamLeft, path.getLeftPath().length, ControlMode.MotionProfile);
+        Robot.drivetrain.getRightMaster().startMotionProfile(bufferedStreamRight, path.getRightPath().length, ControlMode.MotionProfile);
 
         DataLogger.addDataElement("LeftPos", () -> LightningMath.ticks2feet(Robot.drivetrain.getLeftMaster ().getSelectedSensorPosition()));
         DataLogger.addDataElement("RightPos", () -> LightningMath.ticks2feet(Robot.drivetrain.getRightMaster ().getSelectedSensorPosition()));
@@ -88,12 +58,8 @@ public class MotionProfile extends Command {
 
     }
 
-    // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-
-        System.out.println("should be moving . . . ");
-
 
         SmartDashboard.putNumber("LeftPos", LightningMath.ticks2feet(Robot.drivetrain.getLeftMaster ().getSelectedSensorPosition()));
         SmartDashboard.putNumber("RightPos", LightningMath.ticks2feet(Robot.drivetrain.getRightMaster ().getSelectedSensorPosition()));
@@ -103,28 +69,22 @@ public class MotionProfile extends Command {
         SmartDashboard.putNumber("LeftVelocity", Robot.drivetrain.getLeftVelocity());
         SmartDashboard.putNumber("RightExpectedVelocity", Robot.drivetrain.getRightMaster().getActiveTrajectoryVelocity());
         SmartDashboard.putNumber("LeftExpectedVelocity", Robot.drivetrain.getLeftMaster().getActiveTrajectoryVelocity());
-
         SmartDashboard.putNumber("LeftPoints", Robot.drivetrain.getLeftMaster().getMotionProfileTopLevelBufferCount());
         SmartDashboard.putNumber("RightPoints", Robot.drivetrain.getRightMaster().getMotionProfileTopLevelBufferCount());
 
     }
 
-    // Make this return true when this Command no longer needs to run execute()
     @Override
     protected boolean isFinished() {
         return Robot.drivetrain.getLeftMaster().isMotionProfileFinished() && Robot.drivetrain.getRightMaster().isMotionProfileFinished();
     }
 
-    // Called once after isFinished returns true
     @Override
     protected void end() {
-
         Robot.drivetrain.stop();
         System.out.println("we have stopped.");
     }
 
-    // Called when another command which requires one or more of the same
-    // subsystems is scheduled to run
     @Override
     protected void interrupted() {
         end();

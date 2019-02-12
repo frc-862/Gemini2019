@@ -4,9 +4,9 @@ import frc.lightning.ConstantBase;
 import frc.robot.misc.Gains;
 
 public class Constants extends ConstantBase {
-    // !!!!!!!!!!!!!!!!
+    // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     // NEVER CHECKIN WITH BENCH TEST SET TO TRUE
-    // !!!!!!!!!!!!!!!!
+    // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     public static final boolean bench_test = false;
 
     public static final double TICS_PER_ROTATION = 4 * 360;
@@ -18,19 +18,29 @@ public class Constants extends ConstantBase {
     // Climber
     public static final int retractedPosition = 0;
     public static final int extendedPosition = 42; // TODO calibrate this value
-
+    // PIDs
     public final static int kSensorUnitsPerRotation = 4 * 360;
     public final static double kNeutralDeadband = 0.001;
-    /* 	                                    			  kP   kI    kD    kF   Iz  */
-    public final static Gains kGains_MotProf2 = new Gains( 0.001, 0.0,  0.0, 10,  400); //1023.0/1300.0 is max raw velocity
-    public final static Gains kGains_MotProf = new Gains( 0, 0.0,  0.0, 8,  400); //1023.0/1300.0 is max raw velocity
-    //WALK DOWN
-    public final static int kPrimaryPIDSlot = 0;
-    // public final static Gains drivePIDF = new Gains(862, 0, 0, 8.62, 0, 0); - use kGains_MotProf
 
-    /**
-     * Elevator Constants
-     */
+    public static Gains motionPathPIDs;
+    public static Gains drivePIDs;
+
+    static {
+        if(Robot.isGemini()) {
+            //_____GEMINI_____\\
+            motionPathPIDs = new Gains(0.00000008, 0.0,  0.0,   0.34,  0);
+            drivePIDs = new Gains( 0.001, 0.0,  0.0, 10,  400);
+        } else {
+            //_____NEBULA_____\\
+            motionPathPIDs = new Gains(0.00000005, 0.0,  0.0,   0.37,  0);
+            drivePIDs = new Gains( 0.001, 0.0,  0.0, 10,  400);
+        }
+    }
+
+    public final static int kPrimaryPIDSlot = 0;
+
+
+    // Elevator
     public final static int elevatorTopHeight = 5000;
     public final static int elevatorMiddleHeight = 2500;
     public static final int elevatorCollectHeight = 1000;
@@ -51,16 +61,16 @@ public class Constants extends ConstantBase {
     public static final double hatchPanelElevatorDistance=70;
     public static final double elevatorPieceTolerance = 5;
 
-    // for Hatch Panel Collect
-
+    // Hatch Panel Collect
     public final static double driveBackwardVelocity = 1;
 
-    // for DriveTrain
-    public final static double velocityMultiplier = 1.0;// 15
+    // DriveTrain
+    public final static double velocityMultiplier = 15.0;// TODO changed from 1
+    public final static int drivePowerCurve = 3;
 
-	public final static Gains drivePIDF = new Gains(862, 0, 0, 8.62, 0);
-	
-	// Line Follow
+    //public final static Gains drivePIDF = new Gains(862, 0, 0, 8.62, 0);
+
+    // Line Follow
     //Nebula
     //max
     public static final double nebulaMaxLeftOutside = 2.4;
@@ -85,6 +95,6 @@ public class Constants extends ConstantBase {
     public static final double geminiMinRightInside = 2.25;
     public static final double geminiMinRightOutside = 1.51;
 
-	public static final double movingCurrent = 20;
-	public static final double movingVelocity = 0.1;
+    public static final double movingCurrent = 20;
+    public static final double movingVelocity = 0.1;
 }
