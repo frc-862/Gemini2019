@@ -10,13 +10,11 @@ package frc.robot;
 import frc.lightning.LightningRobot;
 import frc.lightning.http.JsonReader;
 import frc.robot.commands.driveTrain.MotionProfile;
+import frc.robot.paths.ArcSimple;
+import frc.robot.paths.LinePath;
 import frc.robot.subsystems.*;
-
 import java.io.File;
 import java.io.IOException;
-
-import edu.wpi.cscore.UsbCamera;
-import edu.wpi.first.cameraserver.CameraServer;
 
 public class Robot extends LightningRobot {
 
@@ -36,6 +34,7 @@ public class Robot extends LightningRobot {
     public Robot() {
         super();
         System.out.println("Initializing our robot");
+
         drivetrain = GeminiDrivetrain.create();
         leds = new LEDs();
         hatchGroundCollector = new HatchGroundCollector();
@@ -43,14 +42,14 @@ public class Robot extends LightningRobot {
         cargoCollector = CargoCollector.create();
         elevator = new Elevator();
         climber = new Climber();
-
         core = new Core();
         oi = new OI();
 
         // set a flag, it is either gemini or nebula
         gemini = ((new File("/home/lvuser/gemini")).exists());
 
-        this.registerAutonomousCommmand("T_MotionProfile", new MotionProfile());
+        this.registerAutonomousCommmand("Profile Line", new MotionProfile(new LinePath()));
+        this.registerAutonomousCommmand("Profile Arc", new MotionProfile(new ArcSimple()));
     }
 
     @Override

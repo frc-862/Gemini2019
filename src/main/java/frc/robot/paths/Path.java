@@ -10,7 +10,7 @@ package frc.robot.paths;
 /**
  * Add your docs here.
  */
-public class Path {
-    public double[][] Left;
-    public double[][] Right;
+public abstract class Path {
+    public abstract double[][] getLeftPath();
+    public abstract double[][] getRightPath();
 }

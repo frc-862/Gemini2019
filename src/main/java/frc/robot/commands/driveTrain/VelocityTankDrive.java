@@ -34,8 +34,8 @@ public class VelocityTankDrive extends Command {
         SmartDashboard.putNumber("Left_Joy_Raw", Robot.oi.getLeftPower());
 
         //TODO - Test Code
-        Robot.drivetrain.setVelocity(Math.pow((Robot.oi.getLeftPower()), 3)*Constants.velocityMultiplier,
-             Math.pow((Robot.oi.getRightPower()), 3)*Constants.velocityMultiplier);
+        Robot.drivetrain.setVelocity(Math.pow((Robot.oi.getLeftPower()),  Constants.drivePowerCurve) * Constants.velocityMultiplier,
+                                     Math.pow((Robot.oi.getRightPower()), Constants.drivePowerCurve) * Constants.velocityMultiplier);
         
         SmartDashboard.putNumber("RAW_LeftVelocity", Robot.drivetrain.getLeftVelocity());
         SmartDashboard.putNumber("RAW_RightVelocity", Robot.drivetrain.getRightVelocity());

@@ -10,9 +10,20 @@ package frc.robot.paths;
 /**
  * Add your docs here.
  */
-public class LinePath {
+public class LinePath extends Path{
+    
+    @Override
+    public double[][] getLeftPath() {
+        return this.Left;
+    }
+
+    @Override
+    public double[][] getRightPath() {
+        return this.Right;
+    }
+    
     //p, v, a, h
-    public static double[][] Left = new double[][] {
+    public double[][] Left = new double[][] {
         {0,0,0,0},
         {0.002,0.1022,5.0909,0},
         {0.0081,0.3006,9.9296,0},
@@ -86,7 +97,7 @@ public class LinePath {
         {4.9989,0.2396,-9.8994,0}
     };
 
-    public static double[][] Right = new double[][] {
+    public double[][] Right = new double[][] {
         {0,0,0,0},
         {0.002,0.1022,5.0909,0},
         {0.0081,0.3006,9.9296,0},
