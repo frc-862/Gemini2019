@@ -58,5 +58,30 @@ public class Constants extends ConstantBase {
     // for DriveTrain
     public final static double velocityMultiplier = 1.0;// 15
 
-    public final static Gains drivePIDF = new Gains(862, 0, 0, 8.62, 0);
+	public final static Gains drivePIDF = new Gains(862, 0, 0, 8.62, 0);
+	
+	// Line Follow
+    //Nebula
+    //max
+    public static final double nebulaMaxLeftOutside = 2.4;
+    public static final double nebulaMaxLeftInside = 1.5;
+    public static final double nebulaMaxRightInside = 2.0;
+    public static final double nebulaMaxRightOutside = 2.2;
+    //min
+    public static final double nebulaMinLeftOutside =0.62;
+    public static final double nebulaMinLeftInside = .47;
+    public static final double nebulaMinRightInside = .49;
+    public static final double nebulaMinRightOutside = .66;
+
+    //Gemini
+    //max
+    public static final double geminiMaxLeftOutside = 4.39;
+    public static final double geminiMaxLeftInside = 3.95;
+    public static final double geminiMaxRightInside = 4.55;
+    public static final double geminiMaxRightOutside = 4.18;
+    //min
+    public static final double geminiMinLeftOutside = 2.31;
+    public static final double geminiMinLeftInside = 1.6;
+    public static final double geminiMinRightInside = 2.25;
+    public static final double geminiMinRightOutside = 1.51;
 }

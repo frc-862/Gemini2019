@@ -22,6 +22,8 @@ import frc.lightning.testing.SystemTest;
 import frc.lightning.util.FaultMonitor;
 import frc.lightning.util.UnchangingFaultMonitor;
 import frc.lightning.util.FaultCode.Codes;
+import frc.robot.Constants;
+import frc.robot.Robot;
 import frc.robot.RobotMap;
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -57,17 +59,32 @@ public class Core extends Subsystem {
 
     private double lineWeights[] = { -7, -5, -3, -1, 1, 3, 5, 7};
 
-    private DoubleSupplier sensorValues[] = {
+    private DoubleSupplier nebulaSensorValues[] = {
         () -> outerLeft.get() ? 0 : 1.0,
         () -> midLeft.get() ? 0 : 1.0,
-        () -> biasAnalog(innerLeft.getVoltage(), 0.62, 2.4),
-        () -> biasAnalog(centerLeft.getVoltage(), .47, 1.5),
-        () -> biasAnalog(centerRight.getVoltage(), .49, 2.0),
-        () -> biasAnalog(innerRight.getVoltage(), .66, 2.2),
+        () -> biasAnalog(innerLeft.getVoltage() , Constants.nebulaMinLeftOutside , Constants.nebulaMaxLeftOutside),
+        () -> biasAnalog(centerLeft.getVoltage() , Constants.nebulaMinLeftInside , Constants.nebulaMaxLeftInside),
+        () -> biasAnalog(centerRight.getVoltage() , Constants.nebulaMinRightInside , Constants.nebulaMaxRightInside),
+        () -> biasAnalog(innerRight.getVoltage() , Constants.nebulaMinRightOutside , Constants.nebulaMaxRightOutside),
         () -> midRight.get() ? 0 : 1.0,
         () -> outerRight.get() ? 0 : 1.0,
     };
-    // Put methods for controlling this subsystem
+  
+    private DoubleSupplier geminiSensorValues[] = {
+    
+      () -> outerLeft.get() ? 0 : 1.0,
+      () -> midLeft.get() ? 0 : 1.0,
+      () -> biasAnalog(innerLeft.getVoltage() , Constants.geminiMinLeftOutside , Constants.geminiMaxLeftOutside),
+      () -> biasAnalog(centerLeft.getVoltage() , Constants.geminiMinLeftInside , Constants.geminiMaxLeftInside),
+      () -> biasAnalog(centerRight.getVoltage() , Constants.geminiMinRightInside , Constants.geminiMaxRightInside),
+      () -> biasAnalog(innerRight.getVoltage() , Constants.geminiMinRightOutside , Constants.geminiMaxRightOutside),
+      () -> midRight.get() ? 0 : 1.0,
+      () -> outerRight.get() ? 0 : 1.0,
+    };
+  
+    private DoubleSupplier sensorValues[] = Robot.isGemini() ? geminiSensorValues : nebulaSensorValues;
+
+      // Put methods for controlling this subsystem
     // here. Call these from Commajnds.
     private AHRS navx;
     private Compressor compressor = new Compressor(RobotMap.compressorCANId);
