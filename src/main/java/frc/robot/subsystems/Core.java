@@ -87,6 +87,13 @@ public class Core extends Subsystem {
         () -> outerRight.get() ? 0 : 1.0,
     };
 
+    private DoubleSupplier rawSensorValues []={
+        () -> innerLeft.getVoltage(),
+        () -> centerLeft.getVoltage(),
+        () -> centerRight.getVoltage(),
+        () -> innerRight.getVoltage(), 
+        
+    };
     private DoubleSupplier sensorValues[] = Robot.isGemini() ? geminiSensorValues : nebulaSensorValues;
 
     // Put methods for controlling this subsystem
@@ -132,7 +139,11 @@ public class Core extends Subsystem {
             SmartDashboard.putNumber("Line " + pos, sensor.getAsDouble());
             pos += 2;
         }
-
+        pos = -3;
+        for (DoubleSupplier sensor : rawSensorValues) {
+            SmartDashboard.putNumber("Raw Line " + pos, sensor.getAsDouble());
+            pos += 2;
+        }
         SmartDashboard.putNumber("Distance from center", lineSensor());
     }
 
