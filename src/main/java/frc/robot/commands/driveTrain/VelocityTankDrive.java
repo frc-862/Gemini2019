@@ -23,6 +23,7 @@ public class VelocityTankDrive extends Command {
     // Called just before this Command runs the first time
     @Override
     protected void initialize() {
+        Robot.drivetrain.configurePID(Constants.drivePIDs);
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -32,8 +33,10 @@ public class VelocityTankDrive extends Command {
         SmartDashboard.putNumber("Right_Joy_Raw", Robot.oi.getRightPower());
         SmartDashboard.putNumber("Left_Joy_Raw", Robot.oi.getLeftPower());
 
-        Robot.drivetrain.setVelocity((Robot.oi.getLeftPower()*Constants.velocityMultiplier),(Robot.oi.getRightPower()*Constants.velocityMultiplier));// pow??
-
+        //TODO - Test Code
+        Robot.drivetrain.setVelocity(Math.pow((Robot.oi.getLeftPower()), 3)*Constants.velocityMultiplier,
+             Math.pow((Robot.oi.getRightPower()), 3)*Constants.velocityMultiplier);
+        
         SmartDashboard.putNumber("RAW_LeftVelocity", Robot.drivetrain.getLeftVelocity());
         SmartDashboard.putNumber("RAW_RightVelocity", Robot.drivetrain.getRightVelocity());
 

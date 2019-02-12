@@ -198,7 +198,7 @@ public abstract class CANDrivetrain extends LightningDrivetrain {
 
     public void configurePID(SlotConfiguration g, int slot) {
         withEachMaster((m) -> {
-            if (slot == 0) {
+            if (slot == -1) {
                 m.configureSlot(g);
             } else {
                 m.config_kP(slot, g.kP);

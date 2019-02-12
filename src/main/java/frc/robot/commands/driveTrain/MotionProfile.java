@@ -34,13 +34,12 @@ public class MotionProfile extends Command {
     // Path path = new LinePath();
     // Path path = new CirclePath();
 
-    TalonSRXConfiguration config;
+    //TalonSRXConfiguration config;
     static double expectedLeft;
     static double expectedRight;
 
     public MotionProfile() {
-        // Use requires() here to declare subsystem dependencies
-        // eg. requires(chassis);
+        //INIT BUFFER HERE!!!!!!!!
         requires(Robot.drivetrain);
     }
 
@@ -50,7 +49,7 @@ public class MotionProfile extends Command {
 
         System.out.println("Hello There \n we is initializing");
 
-        config = new TalonSRXConfiguration();
+        //config = new TalonSRXConfiguration();
 
         System.out.println("left.initBuffer");
         initBuffer(LinePath.Left, LinePath.Left.length, bufferedStreamLeft);
@@ -59,16 +58,7 @@ public class MotionProfile extends Command {
 
         System.out.println("Paths initialized");
 
-        config.primaryPID.selectedFeedbackSensor = FeedbackDevice.QuadEncoder;
-        config.neutralDeadband = Constants.kNeutralDeadband; // 0.1 % super small for best low-speed control
-        config.slot0.integralZone = Constants.kGains_MotProf.integralZone;
-        config.slot0.closedLoopPeakOutput = Constants.kGains_MotProf.closedLoopPeakOutput;
-        //config.slot0.allowableClosedloopError; // left default for this example
-        //config.slot0.closedLoopPeriod; // left default for this example
-        //config.slot0.maxIntegralAccumulator; // left default for this example
-
-        //config motors
-        Robot.drivetrain.configurePID(Constants.kGains_MotProf);
+        Robot.drivetrain.configurePID(Constants.motionPathPIDs);
 
         System.out.println("things configured");
 
@@ -118,7 +108,6 @@ public class MotionProfile extends Command {
     // Called once after isFinished returns true
     @Override
     protected void end() {
-
         Robot.drivetrain.stop();
         System.out.println("we have stopped.");
     }

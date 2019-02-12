@@ -65,10 +65,10 @@ public class Core extends Subsystem {
     private DoubleSupplier sensorValues[] = {
         () -> outerLeft.get() ? 0 : 1.0,
         () -> midLeft.get() ? 0 : 1.0,
-        () -> biasAnalog(innerLeft.getVoltage(), 0.62, 2.4),
-        () -> biasAnalog(centerLeft.getVoltage(), .47, 1.5),
-        () -> biasAnalog(centerRight.getVoltage(), .49, 2.0),
-        () -> biasAnalog(innerRight.getVoltage(), .66, 2.2),
+        () -> biasAnalog(innerLeft.getVoltage(), 0.62, 2.4),//BAD SHANE - USE CONSTANTS FOR EASINESS
+        () -> biasAnalog(centerLeft.getVoltage(), .47, 1.5),//BAD SHANE - USE CONSTANTS FOR EASINESS
+        () -> biasAnalog(centerRight.getVoltage(), .49, 2.0),//BAD SHANE - USE CONSTANTS FOR EASINESS
+        () -> biasAnalog(innerRight.getVoltage(), .66, 2.2),//BAD SHANE - USE CONSTANTS FOR EASINESS
         () -> midRight.get() ? 0 : 1.0,
         () -> outerRight.get() ? 0 : 1.0,
     };
@@ -100,7 +100,7 @@ public class Core extends Subsystem {
         addChild("NavX", navx);
         addChild("Compressor", compressor);
 
-        LiveWindow.disableTelemetry(pdp);
+        LiveWindow.disableTelemetry(pdp);//Stops pdp from whining about things we don't care about. EX - CAN Frame timeout, etc.
 
         SystemTest.register(new NavXTest());
     }

@@ -4,9 +4,9 @@ import frc.lightning.ConstantBase;
 import frc.robot.misc.Gains;
 
 public class Constants extends ConstantBase {
-    // !!!!!!!!!!!!!!!!
+    // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     // NEVER CHECKIN WITH BENCH TEST SET TO TRUE
-    // !!!!!!!!!!!!!!!!
+    // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     public static final boolean bench_test = false;
 
     public static final double TICS_PER_ROTATION = 4 * 360;
@@ -21,8 +21,43 @@ public class Constants extends ConstantBase {
 
     public final static int kSensorUnitsPerRotation = 4 * 360;
     public final static double kNeutralDeadband = 0.001;
-    /* 	                                    			  kP   kI    kD    kF   Iz  */
-    public final static Gains kGains_MotProf2 = new Gains( 0.001, 0.0,  0.0, 10,  400); //1023.0/1300.0 is max raw velocity
+
+
+
+
+
+
+
+
+
+
+
+
+    /* 	                                    	     kP     kI    kD    kF   Iz  */
+    public final static Gains motionPathPIDs = new Gains( 0.00000005, 0.0,  0.0,   0.37 ,  0);//OLD VALS:( 0.001, 0.0,  0.0, 10,  400); //1023.0/1300.0 is max raw velocity
+    public final static Gains drivePIDs = new Gains( 0.001, 0.0,  0.0, 10,  400);
+
+
+
+
+
+
+
+    public final static Gains motionPathPIDsNebula = new Gains( 0.00000005, 0.0,  0.0,   0.37 ,  0);//OLD VALS:( 0.001, 0.0,  0.0, 10,  400); //1023.0/1300.0 is max raw velocity
+    public final static Gains drivePIDsNebula = new Gains( 0.001, 0.0,  0.0, 10,  400);//TODO - Make swichable
+
+
+
+
+
+
+
+
+
+
+
+
+
     public final static Gains kGains_MotProf = new Gains( 0, 0.0,  0.0, 8,  400); //1023.0/1300.0 is max raw velocity
     //WALK DOWN
     public final static int kPrimaryPIDSlot = 0;
@@ -56,7 +91,7 @@ public class Constants extends ConstantBase {
     public final static double driveBackwardVelocity = 1;
 
     // for DriveTrain
-    public final static double velocityMultiplier = 1.0;// 15
+    public final static double velocityMultiplier = 15.0;// TODO changed from 1
 
     public final static Gains drivePIDF = new Gains(862, 0, 0, 8.62, 0);
 
