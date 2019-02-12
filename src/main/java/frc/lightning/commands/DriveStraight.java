@@ -26,7 +26,7 @@ public class DriveStraight extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    Robot.drivetrain.setPower(.2,.2);
+    Robot.drivetrain.setPower(1,1);
   }
 
   // Make this return true when this Command no longer needs to run execute()

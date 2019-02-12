@@ -27,7 +27,7 @@ public class WaypointThenTarget extends Command {
 
   private state currentState = state.SEEKING;
   //The distance from the waypoint to the target is this proportion of standoff.
-  private final double WAYPOINT_DISTANCE_SCALE = 0.25;
+  private final double WAYPOINT_DISTANCE_SCALE = 0.4;
 
   public WaypointThenTarget() {
     // Use requires() here to declare subsystem dependencies
@@ -51,39 +51,45 @@ public class WaypointThenTarget extends Command {
         try {
           Target target = Robot.vision.getBestTarget();
           SmartDashboard.putString("waypoint data frame", "standoff: " + target.standoff() + ", squint: " + target.squint() + ", rotation: " + target.rotation());
-          if(Math.abs(target.rotation()) < 5) {
+          if(Math.abs(target.rotation()) < 5 || target.standoff() < 40) {
             currentState = state.APPROACH_TARGET;
             break;
           }
+          double standoff = target.standoff();
+          double squint = Math.toRadians(target.squint());
+          double rotation = Math.toRadians(target.rotation());
+          double targetToWaypoint = standoff * WAYPOINT_DISTANCE_SCALE;
           //Using law of cosines to calculate the distance from the waypoint (waypointStandoff)
           waypointStandoff = Math.sqrt(
-            Math.pow(target.standoff() * WAYPOINT_DISTANCE_SCALE, 2)
-             + Math.pow(target.standoff(), 2) 
-             - 2 * target.standoff() * WAYPOINT_DISTANCE_SCALE * target.standoff() 
-             * Math.abs(Math.cos(Math.toRadians(target.rotation()))));
+            Math.pow(targetToWaypoint, 2)
+             + Math.pow(standoff, 2) 
+             - 2 * standoff * targetToWaypoint * Math.abs(Math.cos(rotation)));
           
           //Using law of sines to calculate squint to waypoint
-          double targetToWaypointAngle = Math.toDegrees(Math.abs(Math.asin(
-            Math.sin(
-              Math.toRadians(target.rotation()))
-               / waypointStandoff * target.standoff() * WAYPOINT_DISTANCE_SCALE)));
+          double targetToWaypointAngle = Math.abs(Math.asin(
+            Math.sin(rotation) / waypointStandoff * targetToWaypoint));
           
-          if(Math.signum(target.squint()) == Math.signum(target.rotation())) {
-            waypointSquint = target.squint() - (targetToWaypointAngle * Math.signum(target.squint()));
+          if(Math.signum(squint) != Math.signum(rotation)) {
+            waypointSquint = squint - (targetToWaypointAngle * Math.signum(squint));
           }
           else {
-            waypointSquint = target.squint() + (targetToWaypointAngle * Math.signum(target.squint()));
+            waypointSquint = squint + (targetToWaypointAngle * Math.signum(squint));
           }
           
-          waypointRotationToTarget = Math.signum(target.rotation()) * (180 - (180 - Math.abs(target.rotation()) - targetToWaypointAngle));
+          waypointRotationToTarget = Math.signum(rotation) * -1 * (Math.PI - (Math.PI - Math.abs(rotation) - targetToWaypointAngle));
           
+          squint = Math.toDegrees(squint);
+          waypointSquint = Math.toDegrees(waypointSquint);
+          waypointRotationToTarget = Math.toDegrees(waypointRotationToTarget);
+          targetToWaypointAngle = Math.toDegrees(targetToWaypointAngle);
+          rotation = Math.toDegrees(rotation);
 
             SmartDashboard.putNumber("waypointStandoff", waypointStandoff);
             SmartDashboard.putNumber("waypoint squint", waypointSquint);
             SmartDashboard.putNumber("target to waypoint", targetToWaypointAngle);
             SmartDashboard.putNumber("waypoint rotation to target", waypointRotationToTarget);
 
-          startRotation = Robot.core.getFlippedContinuousHeading();
+          startRotation = Robot.core.getContinuousHeading();
           currentState = state.ROTATE_TO_WAYPOINT;
         } catch(NoTargetException e) {
           Robot.drivetrain.setPower(0, 0);
@@ -92,9 +98,9 @@ public class WaypointThenTarget extends Command {
       case ROTATE_TO_WAYPOINT:
         SmartDashboard.putNumber("waypoint squint", waypointSquint);
         SmartDashboard.putNumber("start rotation", startRotation);
-        SmartDashboard.putNumber("degrees turned", Robot.core.getFlippedContinuousHeading() - startRotation);
-        if(Math.abs(waypointSquint - (Robot.core.getFlippedContinuousHeading() - startRotation)) > 3) {
-          Robot.drivetrain.setPower(0.3 * -Math.signum(waypointSquint - (Robot.core.getFlippedContinuousHeading() - startRotation)), 0.3 * Math.signum(waypointSquint - (Robot.core.getFlippedContinuousHeading() - startRotation)));
+        SmartDashboard.putNumber("degrees turned", Robot.core.getContinuousHeading() - startRotation);
+        if(Math.abs(waypointSquint - (Robot.core.getContinuousHeading() - startRotation)) > 3) {
+          Robot.drivetrain.setPower(0.3 * Math.signum(waypointSquint - (Robot.core.getContinuousHeading() - startRotation)), 0.3 * -Math.signum(waypointSquint - (Robot.core.getContinuousHeading() - startRotation)));
         }
         else {
           Robot.drivetrain.setPower(0, 0);
@@ -112,35 +118,36 @@ public class WaypointThenTarget extends Command {
         }
         else {
           Robot.drivetrain.setPower(0, 0);
-          startRotation = Robot.core.getFlippedContinuousHeading();
+          startRotation = Robot.core.getContinuousHeading();
           currentState = state.ROTATE_TO_TARGET;
         }
         break;
       case ROTATE_TO_TARGET:
         SmartDashboard.putNumber("rotation to target", waypointRotationToTarget);
         SmartDashboard.putNumber("start rotation", startRotation);
-        SmartDashboard.putNumber("degrees turned", Robot.core.getFlippedContinuousHeading() - startRotation);
-        if(Math.abs(waypointRotationToTarget - (Robot.core.getFlippedContinuousHeading() - startRotation)) > 3) {
-          Robot.drivetrain.setPower(0.4 * -Math.signum(waypointRotationToTarget - (Robot.core.getFlippedContinuousHeading() - startRotation)), 0.4 * Math.signum(waypointRotationToTarget - (Robot.core.getFlippedContinuousHeading() - startRotation)));
+        SmartDashboard.putNumber("degrees turned", Robot.core.getContinuousHeading() - startRotation);
+        if(Math.abs(waypointRotationToTarget - (Robot.core.getContinuousHeading() - startRotation)) > 3) {
+          //Darren reversed all the signs
+          Robot.drivetrain.setPower(0.3 * Math.signum(waypointRotationToTarget - (Robot.core.getContinuousHeading() - startRotation)), 0.3 * -Math.signum(waypointRotationToTarget - (Robot.core.getContinuousHeading() - startRotation)));
         }
         else {
           Robot.drivetrain.setPower(0, 0);
           startLeftEncoderDist = Robot.drivetrain.getLeftDistance();
-          startRightEncoderDist = Robot.drivetrain.getRightDistance();          
+          startRightEncoderDist = Robot.drivetrain.getRightDistance();    
           currentState = state.APPROACH_TARGET;
         }
         break;
       case APPROACH_TARGET:
         try {
           Target target = Robot.vision.getBestTarget();
-          if(Math.abs(target.rotation()) > 10) {
+          if(Math.abs(target.rotation()) > 10 && target.standoff() >= 40) {
             Robot.drivetrain.setPower(0, 0);
             currentState = state.SEEKING;
             break;
           }
           else {
             if (Math.abs(target.squint()) > 3) {
-              Robot.drivetrain.setPower(0.25 * Math.signum(target.squint()), 0.25 * -Math.signum(target.squint()));
+              Robot.drivetrain.setPower(0.2 * Math.signum(target.squint()), 0.2 * -Math.signum(target.squint()));
             }
             else {
               //double power = 0.035 * target.standoff() + 0.075;
