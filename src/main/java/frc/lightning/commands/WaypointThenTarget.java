@@ -27,7 +27,7 @@ public class WaypointThenTarget extends Command {
 
   private state currentState = state.SEEKING;
   //The distance from the waypoint to the target is this proportion of standoff.
-  private final double WAYPOINT_DISTANCE_SCALE = 0.25;
+  private final double WAYPOINT_DISTANCE_SCALE = 0.4;
 
   public WaypointThenTarget() {
     // Use requires() here to declare subsystem dependencies
@@ -51,7 +51,7 @@ public class WaypointThenTarget extends Command {
         try {
           Target target = Robot.vision.getBestTarget();
           SmartDashboard.putString("waypoint data frame", "standoff: " + target.standoff() + ", squint: " + target.squint() + ", rotation: " + target.rotation());
-          if(Math.abs(target.rotation()) < 5) {
+          if(Math.abs(target.rotation()) < 5 || target.standoff() < 40) {
             currentState = state.APPROACH_TARGET;
             break;
           }
@@ -118,36 +118,36 @@ public class WaypointThenTarget extends Command {
         }
         else {
           Robot.drivetrain.setPower(0, 0);
-          startRotation = Robot.core.getFlippedContinuousHeading();
+          startRotation = Robot.core.getContinuousHeading();
           currentState = state.ROTATE_TO_TARGET;
         }
         break;
       case ROTATE_TO_TARGET:
         SmartDashboard.putNumber("rotation to target", waypointRotationToTarget);
         SmartDashboard.putNumber("start rotation", startRotation);
-        SmartDashboard.putNumber("degrees turned", Robot.core.getFlippedContinuousHeading() - startRotation);
-        if(Math.abs(waypointRotationToTarget - (Robot.core.getFlippedContinuousHeading() - startRotation)) > 3) {
+        SmartDashboard.putNumber("degrees turned", Robot.core.getContinuousHeading() - startRotation);
+        if(Math.abs(waypointRotationToTarget - (Robot.core.getContinuousHeading() - startRotation)) > 3) {
           //Darren reversed all the signs
-          Robot.drivetrain.setPower(0.4 * -Math.signum(waypointRotationToTarget - (Robot.core.getFlippedContinuousHeading() - startRotation)), 0.4 * Math.signum(waypointRotationToTarget - (Robot.core.getFlippedContinuousHeading() - startRotation)));
+          Robot.drivetrain.setPower(0.3 * Math.signum(waypointRotationToTarget - (Robot.core.getContinuousHeading() - startRotation)), 0.3 * -Math.signum(waypointRotationToTarget - (Robot.core.getContinuousHeading() - startRotation)));
         }
         else {
           Robot.drivetrain.setPower(0, 0);
           startLeftEncoderDist = Robot.drivetrain.getLeftDistance();
-          startRightEncoderDist = Robot.drivetrain.getRightDistance();          
+          startRightEncoderDist = Robot.drivetrain.getRightDistance();    
           currentState = state.APPROACH_TARGET;
         }
         break;
       case APPROACH_TARGET:
         try {
           Target target = Robot.vision.getBestTarget();
-          if(Math.abs(target.rotation()) > 10) {
+          if(Math.abs(target.rotation()) > 10 && target.standoff() >= 40) {
             Robot.drivetrain.setPower(0, 0);
             currentState = state.SEEKING;
             break;
           }
           else {
             if (Math.abs(target.squint()) > 3) {
-              Robot.drivetrain.setPower(0.25 * Math.signum(target.squint()), 0.25 * -Math.signum(target.squint()));
+              Robot.drivetrain.setPower(0.2 * Math.signum(target.squint()), 0.2 * -Math.signum(target.squint()));
             }
             else {
               //double power = 0.035 * target.standoff() + 0.075;

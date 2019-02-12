@@ -64,42 +64,33 @@ public class VisionDriveAndAdjust extends Command {
         SmartDashboard.putString("squint status", "left");
       }
       */
-      //----Start of John's solution    -----------------------------------------------------------------------------
-
+      //----Start of John's simple solution    ----------------------------------------------------------------------
       //When target rotation is positive
-      else if (target.rotation() > 10 && target.standoff() > 50){
+      else if (Math.abs(target.rotation()) > SQUINT_BOUND && target.standoff() > 50){
         squint = -SQUINT_POSITIVE_EDGE - squint;
         double squintAdjustment = Math.signum(squint) * Math.pow(Math.abs(squint), 0.2) * 0.08;
         Robot.drivetrain.setPower(.3 + squintAdjustment, .3 - squintAdjustment);
         SmartDashboard.putString("squint status", "right");
       }
       //When target rotation is negative
-      else if (target.rotation() < -10 && target.standoff() > 50){
+      else if (Math.abs(target.rotation()) < SQUINT_BOUND && target.standoff() > 50){
         squint = SQUINT_POSITIVE_EDGE - squint;
         double squintAdjustment = Math.signum(squint) * Math.pow(Math.abs(squint), 0.2) * 0.08;
         Robot.drivetrain.setPower(.3 + squintAdjustment, .3 - squintAdjustment);
         SmartDashboard.putString("squint status", "left");
       }
-      
+       //-----End of John's simple solution-----------------------------------------------------------------------------
 
-       //-----End of John's solution-----------------------------------------------------------------------------
+       //Start of John's complex solution------------------------------------------------------------------------------
 
 
       else if (Math.abs(squint) > SQUINT_BOUND || Math.abs(target.rotation()) > ROTATION_BOUND) {
 
         double squintAdjustment = Math.signum(squint) * Math.pow(Math.abs(squint), 0.5) * 0.05; //power constant taken from the else if block directly below
        // double rotateAdjustment = Math.signum(rotation) * Math.pow(Math.abs(rotation), 0.5) * 0.05 / (Math.abs(squint) + 1);// / Math.abs(squint);
-        double rotateAdjustment = Math.signum(rotation) * .05;
-
-
+        double rotateAdjustment = Math.signum(rotation) * .1;
         Robot.drivetrain.setPower(.3 + squintAdjustment - rotateAdjustment, .3 - squintAdjustment + rotateAdjustment);
-/*
-          //double adjustment = target.squint() * 0.005 + Math.signum(target.rotation()) * Math.pow(Math.abs(target.rotation()), 1.3) * 0.0025;
-          double adjustment = target.squint() * 0.005 * target.standoff() * 0.02 //0.02 is to account for standoff implementation
-           + Math.signum(target.rotation()) * Math.pow(Math.abs(target.rotation()), 1.3) * 0.0025 * target.standoff() * 0.02; //0.02 is to account for standoff implentation
-          Robot.drivetrain.setPower(.3 - adjustment, .3 + adjustment);
-          //Robot.drivetrain.setPower(0.4,0.4);*/
-          SmartDashboard.putString("squint status", "squint correct");
+        SmartDashboard.putString("squint status", "squint correct");
         
       }
 
