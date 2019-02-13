@@ -33,12 +33,12 @@ public class GeminiDrivetrain extends CANDrivetrain {
 
     public GeminiDrivetrain(WPI_TalonSRX left, WPI_VictorSPX left2, WPI_TalonSRX right, WPI_VictorSPX right2) {
         // inverts the left, not the right (the true/false)
-        super(left, true, right, false);//1, 4
+        super(left, false, right, true);//1, 4
 
         // Invert the left follower
-        addLeftFollower(left2, true);
+        addLeftFollower(left2, false);
         // Don't invert the right (could add a false, but that is the default)
-        addRightFollower(right2);
+        addRightFollower(right2, true);
 
         configureMotors();
 
