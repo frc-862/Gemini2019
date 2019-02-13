@@ -21,9 +21,13 @@ public class WaypointThenTarget extends Command {
   private double waypointSquint = -1, waypointStandoff = -1, waypointRotationToTarget = -1;
   private double startRotation = 0, startLeftEncoderDist = 0, startRightEncoderDist = 0;
   
+  
   private enum state {
     SEEKING, ROTATE_TO_WAYPOINT, APPROACH_WAYPOINT, ROTATE_TO_TARGET, APPROACH_TARGET, COMPLETED;
   }
+  
+
+ 
 
   private state currentState = state.SEEKING;
   //The distance from the waypoint to the target is this proportion of standoff.
@@ -109,11 +113,14 @@ public class WaypointThenTarget extends Command {
           currentState = state.APPROACH_WAYPOINT;
         }
         break;
+
+        
       case APPROACH_WAYPOINT:
         double distanceTraveled = (Robot.drivetrain.getLeftDistance() - startLeftEncoderDist + Robot.drivetrain.getRightDistance() - startRightEncoderDist) / 2.0;
         SmartDashboard.putNumber("waypoint standoff", waypointStandoff);
        
-        if(Math.abs(waypointStandoff - distanceTraveled) > 12) {
+        //12 changed to 50
+        if(Math.abs(waypointStandoff - distanceTraveled) > 50) {
           Robot.drivetrain.setPower(0.25, 0.25);
         }
         else {
@@ -122,13 +129,16 @@ public class WaypointThenTarget extends Command {
           currentState = state.ROTATE_TO_TARGET;
         }
         break;
+        /*
       case ROTATE_TO_TARGET:
         SmartDashboard.putNumber("rotation to target", waypointRotationToTarget);
         SmartDashboard.putNumber("start rotation", startRotation);
         SmartDashboard.putNumber("degrees turned", Robot.core.getContinuousHeading() - startRotation);
+
         if(Math.abs(waypointRotationToTarget - (Robot.core.getContinuousHeading() - startRotation)) > 3) {
           //Darren reversed all the signs
-          Robot.drivetrain.setPower(0.3 * Math.signum(waypointRotationToTarget - (Robot.core.getContinuousHeading() - startRotation)), 0.3 * -Math.signum(waypointRotationToTarget - (Robot.core.getContinuousHeading() - startRotation)));
+          Robot.drivetrain.setPower(0.3 * Math.signum(waypointRotationToTarget - (Robot.core.getContinuousHeading() - startRotation)),
+           0.3 * -Math.signum(waypointRotationToTarget - (Robot.core.getContinuousHeading() - startRotation)));
         }
         else {
           Robot.drivetrain.setPower(0, 0);
@@ -137,6 +147,44 @@ public class WaypointThenTarget extends Command {
           currentState = state.APPROACH_TARGET;
         }
         break;
+        */
+
+        //--------------
+        case ROTATE_TO_TARGET:
+        //Not sure why but distanceTraveled was duplicated somewhere
+        double distanceTraveledTwo = (Robot.drivetrain.getLeftDistance() - startLeftEncoderDist + Robot.drivetrain.getRightDistance() - startRightEncoderDist) / 2.0;
+
+        SmartDashboard.putNumber("waypoint standoff", waypointStandoff);
+        SmartDashboard.putNumber("rotation to target", waypointRotationToTarget);
+        SmartDashboard.putNumber("start rotation", startRotation);
+        SmartDashboard.putNumber("degrees turned", Robot.core.getContinuousHeading() - startRotation);
+
+        if(Math.abs(waypointStandoff - distanceTraveledTwo) < 50 && Math.abs(waypointStandoff - distanceTraveledTwo) > 12 && Math.abs(waypointRotationToTarget - (Robot.core.getContinuousHeading() - startRotation)) > 3 ){
+          double adjustment = (waypointRotationToTarget - (Robot.core.getContinuousHeading() - startRotation)) / distanceTraveledTwo * 0.25;
+          Robot.drivetrain.setPower(0.3 + adjustment, 0.3 - adjustment);
+        }
+
+        else if (Math.abs(waypointRotationToTarget - (Robot.core.getContinuousHeading() - startRotation)) > 3 != Math.abs(waypointStandoff - distanceTraveledTwo) > 12) {
+          //Darren reversed all the signs
+          Robot.drivetrain.setPower(0.3 * Math.signum(waypointRotationToTarget - (Robot.core.getContinuousHeading() - startRotation)),
+           0.3 * -Math.signum(waypointRotationToTarget - (Robot.core.getContinuousHeading() - startRotation)));
+        }
+
+        else if (Math.abs(waypointStandoff - distanceTraveledTwo) > 12 !=  Math.abs(waypointRotationToTarget - (Robot.core.getContinuousHeading() - startRotation)) > 3){
+          //Darren reversed all the signs
+          Robot.drivetrain.setPower(0.25, 0.25);
+        }
+
+        else {
+          Robot.drivetrain.setPower(0, 0);
+          startLeftEncoderDist = Robot.drivetrain.getLeftDistance();
+          startRightEncoderDist = Robot.drivetrain.getRightDistance();    
+          currentState = state.APPROACH_TARGET;
+        }
+        break;
+
+
+        //----------------
       case APPROACH_TARGET:
         try {
           Target target = Robot.vision.getBestTarget();
