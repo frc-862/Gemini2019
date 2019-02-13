@@ -120,7 +120,7 @@ public class Core extends Subsystem {
         // FaultMonitor.register(new UnchangingFaultMonitor(Codes.NAVX_ERROR, () -> navx.getUpdateCount(),
         //     2.0, 0, "NavX unresponsive"));
 
-        addChild("PDP", pdp);
+//        addChild("PDP", pdp);
         addChild("NavX", navx);
         addChild("Compressor", compressor);
 
@@ -139,11 +139,13 @@ public class Core extends Subsystem {
             SmartDashboard.putNumber("Line " + pos, sensor.getAsDouble());
             pos += 2;
         }
+
         pos = -3;
         for (DoubleSupplier sensor : rawSensorValues) {
             SmartDashboard.putNumber("Raw Line " + pos, sensor.getAsDouble());
             pos += 2;
         }
+
         SmartDashboard.putNumber("Distance from center", lineSensor());
     }
 

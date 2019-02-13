@@ -7,6 +7,7 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
@@ -72,6 +73,11 @@ public class GeminiDrivetrain extends CANDrivetrain {
         withEachMaster((m) -> {
             m.configOpenloopRamp(0.2);
             // m.configClosedloopRamp(0.2);
+
+            m.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, Constants.driveSlot, 0);
+            m.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, Constants.motionSlot, 0);
+
+            m.setSensorPhase(true);
         });
 
         System.out.println("CONFIG");
@@ -89,8 +95,8 @@ public class GeminiDrivetrain extends CANDrivetrain {
         */
         double right_talon_units = LightningMath.fps2talon(right);
         double left_talon_units = LightningMath.fps2talon(left);
-        System.out.println("left: " + left + " / " + left_talon_units);
-        System.out.println("right: " + right + " / " + right_talon_units);
+//        System.out.println("left: " + left + " / " + left_talon_units);
+//        System.out.println("right: " + right + " / " + right_talon_units);
 
         SmartDashboard.putNumber("talonunitLEFT", left_talon_units);
         SmartDashboard.putNumber("talonunitRIGHT", right_talon_units);

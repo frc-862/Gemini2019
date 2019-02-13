@@ -33,15 +33,17 @@ public class CargoCollector extends Subsystem {
     }
 
     public CargoCollector(WPI_VictorSPX collector, DoubleSolenoid deployer) {
+        String name = getClass().getSimpleName();
+        setName(name);
         this.collector = collector;
-        this.collector.setSubsystem(this.getClass().getSimpleName());
+        this.collector.setSubsystem(name);
         if (!collector.isAlive()) {
             LiveWindow.disableTelemetry(collector);
             System.out.println("collector disabled");
         }
 
         this.deployer = deployer;
-        this.deployer.setSubsystem(this.getClass().getSimpleName());
+        this.deployer.setSubsystem(name);
         if (deployer.isFwdSolenoidBlackListed()) {
             LiveWindow.disableTelemetry(deployer);
             System.out.println("deployer disabled");

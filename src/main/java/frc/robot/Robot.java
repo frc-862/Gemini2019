@@ -9,6 +9,7 @@ package frc.robot;
 
 import frc.lightning.LightningRobot;
 import frc.lightning.http.JsonReader;
+import frc.lightning.testing.FakeOI;
 import frc.robot.commands.driveTrain.MotionProfile;
 import frc.robot.paths.ArcSimple;
 import frc.robot.paths.LinePath;
@@ -56,12 +57,12 @@ public class Robot extends LightningRobot {
     public void robotInit() {
         super.robotInit();
 
-        try {
-            var devices = JsonReader.readJsonFromUrl("http://127.0.0.1:1250/?action=getdevices");
-            System.out.println(devices);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            var devices = JsonReader.readJsonFromUrl("http://127.0.0.1:1250/?action=getdevices");
+//            System.out.println(devices);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
 
     }
 

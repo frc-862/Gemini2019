@@ -23,7 +23,9 @@ public class Constants extends ConstantBase {
     public final static double kNeutralDeadband = 0.001;
 
     public static Gains motionPathPIDs;
+    public static final int motionSlot = 1;
     public static Gains drivePIDs;
+    public static final int driveSlot = 0;
 
     static {
         if(Robot.isGemini()) {
@@ -35,6 +37,8 @@ public class Constants extends ConstantBase {
             motionPathPIDs = new Gains(0.00000005, 0.0,  0.0,   0.37,  0);
             drivePIDs = new Gains( 0.001, 0.0,  0.0, 10,  400);
         }
+        motionPathPIDs = new Gains(8.62, 0.0,  0.0,   0.74,  0);
+        drivePIDs = new Gains( 0.001, 0.0,  0.0, 0.74,  0);
     }
 
     public final static int kPrimaryPIDSlot = 0;
