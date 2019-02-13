@@ -12,6 +12,7 @@ import java.util.function.DoubleSupplier;
 
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
+import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
@@ -37,8 +38,8 @@ import frc.robot.commands.test.NavXTest;
 public class Core extends Subsystem {
     //private DigitalInput pressure1 = new DigitalInput(0);
 
-    private VictorSPX extra1 = new VictorSPX(RobotMap.extra1CanId);
-    private VictorSPX extra2 = new VictorSPX(RobotMap.extra2CanId);
+    private WPI_VictorSPX extra1 = new WPI_VictorSPX(RobotMap.extra1CanId);
+    private WPI_VictorSPX extra2 = new WPI_VictorSPX(RobotMap.extra2CanId);
 
     private DigitalInput outerLeft = new DigitalInput(5);
     private DigitalInput midLeft = new DigitalInput(4);
@@ -103,14 +104,12 @@ public class Core extends Subsystem {
     private PowerDistributionPanel pdp = new PowerDistributionPanel(RobotMap.pdpCANId);
 
     public Core() {
-        compressor.setSubsystem("Core");
-        if (compressor.getCompressorNotConnectedFault()) {
-            LiveWindow.disableTelemetry(compressor);
-        }
+        setName("Core");
+
+        addChild("Compressor", compressor);
 
         navx = new AHRS(SPI.Port.kMXP);
-        navx.setSubsystem("Core");
-
+        addChild("NavX", navx);
         DataLogger.addDataElement("heading", () -> getHeading());
 
         // monitor if the heading is exactly the same, there is always
@@ -120,11 +119,22 @@ public class Core extends Subsystem {
         // FaultMonitor.register(new UnchangingFaultMonitor(Codes.NAVX_ERROR, () -> navx.getUpdateCount(),
         //     2.0, 0, "NavX unresponsive"));
 
-//        addChild("PDP", pdp);
-        addChild("NavX", navx);
-        addChild("Compressor", compressor);
+        addChild("PDP", pdp);
+        // Stops pdp from whining about things we don't care about.
+        // EX - CAN Frame timeout, etc.
+        LiveWindow.disableTelemetry(pdp);
 
-        LiveWindow.disableTelemetry(pdp);//Stops pdp from whining about things we don't care about. EX - CAN Frame timeout, etc.
+        addChild("outerLeft", outerLeft);
+        addChild("midLeft", midLeft);
+        addChild("innerLeft", innerLeft);
+        addChild("centerLeft", centerLeft);
+        addChild("centerRight", centerRight);
+        addChild("innerRight", innerRight);
+        addChild("midRight", midRight);
+        addChild("outerRight", outerRight);
+
+        addChild("extra motor 1", extra1);
+        addChild("extra motor 2", extra2);
 
         SystemTest.register(new NavXTest());
     }

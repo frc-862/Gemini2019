@@ -9,6 +9,7 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.Constants;
@@ -23,11 +24,13 @@ import com.ctre.phoenix.motorcontrol.LimitSwitchSource;
  */
 public class Climber extends Subsystem {
 
-    TalonSRX motor;
+    WPI_TalonSRX motor;
     DoubleSolenoid deployer;
 
     public Climber() {
-        motor = new TalonSRX(RobotMap.climberID);  // TODO create with correct CAN ID in robot map
+        motor = new WPI_TalonSRX(RobotMap.climberID);  // TODO create with correct CAN ID in robot map
+        addChild("Motor", motor);
+
         deployer = null; // TODO create with correct solenoid values
 
         motor.configForwardLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen, 0);

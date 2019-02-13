@@ -15,6 +15,8 @@ import com.ctre.phoenix.motorcontrol.LimitSwitchSource;
 import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.lightning.util.LightningMath;
@@ -30,9 +32,9 @@ public class Elevator extends Subsystem {
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
 
-    public TalonSRX elevatorMotor;
-    public VictorSPX collectLeft;
-    public VictorSPX collectRight;
+    public WPI_TalonSRX elevatorMotor;
+    public WPI_VictorSPX collectLeft;
+    public WPI_VictorSPX collectRight;
 
     public AnalogInput pieceDetector;
 
@@ -45,19 +47,23 @@ public class Elevator extends Subsystem {
 
     public Elevator() {
 
-        collectLeft = new VictorSPX(RobotMap.leftCollectCanId);
-        collectRight = new VictorSPX(RobotMap.rightCollectCanId);
+        collectLeft = new WPI_VictorSPX(RobotMap.leftCollectCanId);
+        addChild("Left Collect", collectLeft);
+
+        collectRight = new WPI_VictorSPX(RobotMap.rightCollectCanId);
+        addChild("Right Collect", collectRight);
 
         pieceDetector = new AnalogInput(7);
+        addChild("Cargo Detector", pieceDetector);
 
-
-        elevatorMotor = new TalonSRX(RobotMap.elevatorCanId);
-
-        elevatorMotor.configForwardLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen, 0);
-        elevatorMotor.configReverseLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyClosed, 0);
+        elevatorMotor = new WPI_TalonSRX(RobotMap.elevatorCanId);
+        addChild("Elevator Motor", elevatorMotor);
 
         /* Factory default hardware to prevent unexpected behavior */
         elevatorMotor.configFactoryDefault();
+
+        elevatorMotor.configForwardLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen, 0);
+        elevatorMotor.configReverseLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyClosed, 0);
 
         /* Configure Sensor Source for Pirmary PID */
         elevatorMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative,
@@ -73,8 +79,8 @@ public class Elevator extends Subsystem {
         elevatorMotor.setInverted(false);
 
         /* Set relevant frame periods to be at least as fast as periodic rate */
-        elevatorMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_13_Base_PIDF0, 10, Constants.kTimeoutMs);
-        elevatorMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_10_MotionMagic, 10, Constants.kTimeoutMs);
+        elevatorMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_13_Base_PIDF0, 20, Constants.kTimeoutMs);
+        elevatorMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_10_MotionMagic, 20, Constants.kTimeoutMs);
 
         /* Set the peak and nominal outputs */
         elevatorMotor.configNominalOutputForward(0, Constants.kTimeoutMs);
