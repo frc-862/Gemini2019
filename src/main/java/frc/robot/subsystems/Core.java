@@ -88,12 +88,12 @@ public class Core extends Subsystem {
         () -> outerRight.get() ? 0 : 1.0,
     };
 
-    private DoubleSupplier rawSensorValues []={
+    private DoubleSupplier rawSensorValues []= {
         () -> innerLeft.getVoltage(),
         () -> centerLeft.getVoltage(),
         () -> centerRight.getVoltage(),
-        () -> innerRight.getVoltage(), 
-        
+        () -> innerRight.getVoltage(),
+
     };
     private DoubleSupplier sensorValues[] = Robot.isGemini() ? geminiSensorValues : nebulaSensorValues;
 
