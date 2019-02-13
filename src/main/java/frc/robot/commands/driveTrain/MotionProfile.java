@@ -13,6 +13,7 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.lightning.logging.CommandLogger;
 import frc.lightning.logging.DataLogger;
 import frc.lightning.util.LightningMath;
 import frc.robot.Constants;
@@ -20,6 +21,7 @@ import frc.robot.Robot;
 import frc.robot.paths.Path;
 
 public class MotionProfile extends Command {
+    CommandLogger logger = new CommandLogger(getClass().getSimpleName());
 
     private BufferedTrajectoryPointStream bufferedStreamLeft = new BufferedTrajectoryPointStream();
     private BufferedTrajectoryPointStream bufferedStreamRight = new BufferedTrajectoryPointStream();
@@ -36,6 +38,15 @@ public class MotionProfile extends Command {
         initBuffer(path.getRightPath(), path.getRightPath().length, bufferedStreamRight);
 
         requires(Robot.drivetrain);
+
+        logger.addDataElement("LeftPos");
+        logger.addDataElement("RightPos");
+        logger.addDataElement("LeftExpected");
+        logger.addDataElement("RightExpected");
+        logger.addDataElement("RightVelocity");
+        logger.addDataElement("LeftVelocity");
+        logger.addDataElement("RightExpectedVelocity");
+        logger.addDataElement("LeftExpectedVelocity");
     }
 
     @Override
@@ -44,34 +55,21 @@ public class MotionProfile extends Command {
 
         Robot.drivetrain.getLeftMaster().startMotionProfile(bufferedStreamLeft, path.getLeftPath().length, ControlMode.MotionProfile);
         Robot.drivetrain.getRightMaster().startMotionProfile(bufferedStreamRight, path.getRightPath().length, ControlMode.MotionProfile);
-
-        DataLogger.addDataElement("LeftPos", () -> LightningMath.ticks2feet(Robot.drivetrain.getLeftMaster ().getSelectedSensorPosition()));
-        DataLogger.addDataElement("RightPos", () -> LightningMath.ticks2feet(Robot.drivetrain.getRightMaster ().getSelectedSensorPosition()));
-        DataLogger.addDataElement("LeftExpected", () -> LightningMath.ticks2feet(Robot.drivetrain.getLeftMaster ().getActiveTrajectoryPosition()));
-        DataLogger.addDataElement("RightExpected", () -> LightningMath.ticks2feet(Robot.drivetrain.getRightMaster ().getActiveTrajectoryPosition()));
-        DataLogger.addDataElement("RightVelocity", () -> Robot.drivetrain.getRightVelocity());
-        DataLogger.addDataElement("LeftVelocity", () -> Robot.drivetrain.getLeftVelocity());
-        DataLogger.addDataElement("RightExpectedVelocity", () -> Robot.drivetrain.getRightMaster().getActiveTrajectoryVelocity());
-        DataLogger.addDataElement("LeftExpectedVelocity", () -> Robot.drivetrain.getLeftMaster().getActiveTrajectoryVelocity());
-
-        System.out.println("started");
-
+        logger.reset();
     }
 
     @Override
     protected void execute() {
+        logger.set("LeftPos", LightningMath.ticks2feet(Robot.drivetrain.getLeftMaster().getSelectedSensorPosition()));
+        logger.set("RightPos", LightningMath.ticks2feet(Robot.drivetrain.getRightMaster().getSelectedSensorPosition()));
+        logger.set("LeftExpected", LightningMath.ticks2feet(Robot.drivetrain.getLeftMaster().getActiveTrajectoryPosition()));
+        logger.set("RightExpected", LightningMath.ticks2feet(Robot.drivetrain.getRightMaster().getActiveTrajectoryPosition()));
+        logger.set("RightVelocity", LightningMath.talon2fps(Robot.drivetrain.getRightVelocity()));
+        logger.set("LeftVelocity", LightningMath.talon2fps(Robot.drivetrain.getLeftVelocity()));
+        logger.set("RightExpectedVelocity", LightningMath.talon2fps(Robot.drivetrain.getRightMaster().getActiveTrajectoryVelocity()));
+        logger.set("LeftExpectedVelocity", LightningMath.talon2fps(Robot.drivetrain.getLeftMaster().getActiveTrajectoryVelocity()));
 
-        SmartDashboard.putNumber("LeftPos", LightningMath.ticks2feet(Robot.drivetrain.getLeftMaster ().getSelectedSensorPosition()));
-        SmartDashboard.putNumber("RightPos", LightningMath.ticks2feet(Robot.drivetrain.getRightMaster ().getSelectedSensorPosition()));
-        SmartDashboard.putNumber("LeftExpected", LightningMath.ticks2feet(Robot.drivetrain.getLeftMaster ().getActiveTrajectoryPosition()));
-        SmartDashboard.putNumber("RightExpected", LightningMath.ticks2feet(Robot.drivetrain.getRightMaster ().getActiveTrajectoryPosition()));
-        SmartDashboard.putNumber("RightVelocity", Robot.drivetrain.getRightVelocity());
-        SmartDashboard.putNumber("LeftVelocity", Robot.drivetrain.getLeftVelocity());
-        SmartDashboard.putNumber("RightExpectedVelocity", Robot.drivetrain.getRightMaster().getActiveTrajectoryVelocity());
-        SmartDashboard.putNumber("LeftExpectedVelocity", Robot.drivetrain.getLeftMaster().getActiveTrajectoryVelocity());
-        SmartDashboard.putNumber("LeftPoints", Robot.drivetrain.getLeftMaster().getMotionProfileTopLevelBufferCount());
-        SmartDashboard.putNumber("RightPoints", Robot.drivetrain.getRightMaster().getMotionProfileTopLevelBufferCount());
-
+        logger.write();
     }
 
     @Override
@@ -81,6 +79,8 @@ public class MotionProfile extends Command {
 
     @Override
     protected void end() {
+        logger.drain();
+        logger.flush();
         Robot.drivetrain.stop();
         System.out.println("we have stopped.");
     }
@@ -111,9 +111,9 @@ public class MotionProfile extends Command {
 
             /* for each point, fill our structure and pass it to API */
             point.timeDur = durationMilliseconds;
-            point.position = direction * positionRot * Constants.kSensorUnitsPerRotation; // Convert Revolutions to
+            point.position = direction * positionRot;
             // Units
-            point.velocity = direction * velocityRPM * Constants.kSensorUnitsPerRotation / 600.0; // Convert RPM to
+            point.velocity = direction * velocityRPM;
             // Units/100ms
 
             point.auxiliaryPos = 0;
@@ -126,7 +126,7 @@ public class MotionProfile extends Command {
 
             bufferedStream.Write(point);
 
-            System.out.println("Position = " + point.position + " ticks");
+            // System.out.println("Position = " + point.position + " ticks");
         }
     }
 

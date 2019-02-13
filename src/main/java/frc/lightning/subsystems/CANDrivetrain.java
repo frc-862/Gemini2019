@@ -57,16 +57,18 @@ public abstract class CANDrivetrain extends LightningDrivetrain {
         leftMaster.configFactoryDefault();
         rightMaster.configFactoryDefault();
 
-        leftMaster.setSubsystem(getClass().getSimpleName());
-        rightMaster.setSubsystem(getClass().getSimpleName());
+        String name = getClass().getSimpleName();
+        setName(name);
+        leftMaster.setSubsystem(name);
+        rightMaster.setSubsystem(name);
+        addChild(leftMaster);
+        addChild(rightMaster);
 
         leftMaster.setName("Left Master");
         SmartDashboard.putData("Left Master", leftMaster);
-        LiveWindow.add(leftMaster);
 
         rightMaster.setName("Rigth Master");
         SmartDashboard.putData("Right Master", rightMaster);
-        LiveWindow.add(rightMaster);
     }
 
     protected CANDrivetrain(WPI_TalonSRX left, WPI_TalonSRX right) {
@@ -125,6 +127,7 @@ public abstract class CANDrivetrain extends LightningDrivetrain {
             withEachMaster((label, talon) -> {
                 DataLogger.addDelayedDataElement(label + "Position", () -> LightningMath.ticks2feet(talon.getSelectedSensorPosition()));
                 DataLogger.addDelayedDataElement(label + "Velocity", () -> LightningMath.talon2fps(talon.getSelectedSensorVelocity()));
+                DataLogger.addDelayedDataElement("Raw" + label + "Velocity", () -> talon.getSelectedSensorVelocity());
                 DataLogger.addDelayedDataElement(label + "MasterCurrent", () -> talon.getOutputCurrent());
                 DataLogger.addDelayedDataElement(label + "MasterOutputPercent", () -> talon.getMotorOutputPercent());
             });

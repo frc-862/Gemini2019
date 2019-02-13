@@ -1,7 +1,5 @@
 package frc.lightning;
 
-import edu.wpi.cscore.UsbCamera;
-import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
@@ -71,6 +69,8 @@ public class LightningRobot extends TimedRobot {
             .getEntry();
             FaultCode.setNetworkTableEntry(code, nte);
         });
+
+        Scheduler.getInstance().setSubsystem("Core");
     }
 
     double getLoopTime() {

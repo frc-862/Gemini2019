@@ -96,6 +96,8 @@ public class LineFollow extends Command {
     // Called once after isFinished returns true
     @Override
     protected void end() {
+        logger.drain();
+        logger.flush();
     }
 
     // Called when another command which requires one or more of the same
