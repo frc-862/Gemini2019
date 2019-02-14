@@ -34,8 +34,8 @@ public class Vision extends Subsystem {
   private ArrayList<Target> rightData;
   private double latency = 0;
 
-  private final SerialPort.Port CAMERA_LEFT_PORT = SerialPort.Port.kUSB1;
-  private final SerialPort.Port CAMERA_RIGHT_PORT = SerialPort.Port.kUSB2;
+  private final SerialPort.Port CAMERA_LEFT_PORT = SerialPort.Port.kUSB;
+  private final SerialPort.Port CAMERA_RIGHT_PORT = SerialPort.Port.kUSB1;
 
   private enum Camera {
     LEFT, RIGHT;
@@ -127,6 +127,9 @@ public class Vision extends Subsystem {
         case LEFT:
           try {
             inData = serialInLeft.readString();
+            if(!inData.equals("")) {
+              SmartDashboard.putString("Left data", inData);
+            }
             if(!activeCams.contains(Camera.LEFT)) {
               activeCams.add(Camera.LEFT);
             }
@@ -139,6 +142,9 @@ public class Vision extends Subsystem {
         case RIGHT:
           try {
             inData = serialInRight.readString();
+            if(!inData.equals("")) {
+              SmartDashboard.putString("Right data", inData);
+            }
             if(!activeCams.contains(Camera.RIGHT)) {
               activeCams.add(Camera.RIGHT);
             }
@@ -210,6 +216,9 @@ public class Vision extends Subsystem {
         mergedData = rightData;
       }
       return;
+    }
+    for(Camera side : Camera.values()) {
+
     }
     transformData(Camera.LEFT);
     transformData(Camera.RIGHT);
