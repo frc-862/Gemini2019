@@ -38,7 +38,7 @@ public class Constants extends ConstantBase {
             drivePIDs = new Gains( 0.001, 0.0,  0.0, 10,  400);
         }
         motionPathPIDs = new Gains(8.62, 0.0,  0.0,   0.74,  0);
-        drivePIDs = new Gains( 0.001, 0.0,  0.0, 0.74,  0);
+        drivePIDs = new Gains(0.0, 0.0,  0.0, 0.74,  0);// P = 4.65
     }
 
     public final static int kPrimaryPIDSlot = 0;

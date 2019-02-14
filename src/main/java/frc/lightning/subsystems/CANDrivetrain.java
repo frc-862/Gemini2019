@@ -109,6 +109,7 @@ public abstract class CANDrivetrain extends LightningDrivetrain {
     }
 
     public void configureMotors() {
+
         leftMaster.setInverted(invertLeftMaster);
         leftFollowers.stream().forEach((m) -> {
             m.motor.setInverted(m.inverted);
@@ -120,6 +121,7 @@ public abstract class CANDrivetrain extends LightningDrivetrain {
             m.motor.setInverted(m.inverted);
             m.motor.follow(rightMaster);
         });
+
     }
 
     protected void enableLogging() {

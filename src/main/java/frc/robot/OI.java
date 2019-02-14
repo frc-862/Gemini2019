@@ -76,7 +76,6 @@ public class OI {
 
     public OI() {
         initializeCommands();
-
         SmartDashboard.putData("line follow", new LineFollow());
         SmartDashboard.putData("test move", new TestMove());
     }
