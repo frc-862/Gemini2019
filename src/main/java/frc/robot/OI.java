@@ -15,7 +15,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.hatch.HatchCollectorStateChange;
 import frc.robot.commands.LineFollow;
 import frc.robot.commands.calibration.TestMove;
-import frc.robot.commands.climber.Climb;;
+import frc.robot.commands.climber.Climb;
+import frc.robot.commands.driveTrain.ConfigMotors;;
 
 public class OI {
     //Drive Joysticks
@@ -76,6 +77,7 @@ public class OI {
 
     public OI() {
         initializeCommands();
+        SmartDashboard.putData("CONGG_MOTORS", new ConfigMotors());
         SmartDashboard.putData("line follow", new LineFollow());
         SmartDashboard.putData("test move", new TestMove());
     }
