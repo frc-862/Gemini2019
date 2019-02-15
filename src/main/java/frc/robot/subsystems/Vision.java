@@ -91,7 +91,7 @@ public class Vision extends Subsystem {
 */
   public Target getBestTarget() throws NoTargetException {
     if(cameraData.size() == 0) throw new NoTargetException();
-    Target best = new Target(0, 0, 999, 0); //Creating a first target and making squint 999
+    Target best = new Target(Target.type.COMPLETE, 0, 0, 999, 0); //Creating a first target and making squint 999
     for(Target t : cameraData) {
       if(Math.abs(t.squint()) < Math.abs(best.squint())) best = t;
     }
@@ -151,6 +151,18 @@ public class Vision extends Subsystem {
           SmartDashboard.putString("vision step", "grab target data");
           currentTarget = lastFrame.substring(lastFrame.indexOf("Target:" + i + "["));
           SmartDashboard.putString("vision step", "begin parse");
+          String type;
+          type = currentTarget.substring(currentTarget.indexOf("type:") + 5, currentTarget.indexOf(",", currentTarget.indexOf("type:")));
+          Target.type targetType;
+          if(type.equals("left")) {
+            targetType = Target.type.LEFT;
+          }
+          else if(type.equals("right")) {
+            targetType = Target.type.RIGHT;
+          }
+          else {
+            targetType = Target.type.COMPLETE;
+          }
           double standoff, rotation, squint;
           standoff = Double.parseDouble(currentTarget.substring(currentTarget.indexOf("standoff:") + 9, currentTarget.indexOf(",", currentTarget.indexOf("standoff:"))));
           SmartDashboard.putString("vision step", "parsed standoff");
@@ -159,7 +171,7 @@ public class Vision extends Subsystem {
           squint = Double.parseDouble(currentTarget.substring(currentTarget.indexOf("squint:") + 7, currentTarget.indexOf("]", currentTarget.indexOf("squint:"))));
           SmartDashboard.putString("vision step", "parsed squint");
           SmartDashboard.putString("vision step", "end parse");
-          cameraData.add(new Target(standoff, rotation, squint, Math.round(currentTime - latency)));
+          cameraData.add(new Target(targetType, standoff, rotation, squint, Math.round(currentTime - latency)));
         }
         lastCameraUpdate = currentTime;
         lastFrameTime = Math.round(currentTime - latency);

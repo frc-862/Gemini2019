@@ -40,9 +40,11 @@ public class VisionDriveAndAdjust extends Command {
       Target target = Robot.vision.getBestTarget();
       double squint = target.squint(), rotation = target.rotation();
 
-      if (target.standoff() > 100){
+      //Invert squint adjustment if we start to lose the target (to bring it back into view)
+      int squintInverter = target.type() != Target.type.COMPLETE ? -1 : 1;
+      if (target.standoff() > 130){
 
-        double squintAdjustment = Math.signum(squint) * Math.pow(Math.abs(squint), 0.5) * 0.05; //power constant taken from the else if block directly below
+        double squintAdjustment = squintInverter * Math.signum(squint) * Math.pow(Math.abs(squint), 0.5) * 0.08; //power constant taken from the else if block directly below
         Robot.drivetrain.setPower(.3 + squintAdjustment, .3 - squintAdjustment);
         SmartDashboard.putString("squint status", "only squint");
       }
@@ -68,14 +70,14 @@ public class VisionDriveAndAdjust extends Command {
       //When target rotation is positive
       else if (Math.abs(target.rotation()) > SQUINT_BOUND && target.standoff() > 50){
         squint = -SQUINT_POSITIVE_EDGE - squint;
-        double squintAdjustment = Math.signum(squint) * Math.pow(Math.abs(squint), 0.2) * 0.08;
+        double squintAdjustment = squintInverter * Math.signum(squint) * Math.pow(Math.abs(squint), 0.2) * 0.05;
         Robot.drivetrain.setPower(.3 + squintAdjustment, .3 - squintAdjustment);
         SmartDashboard.putString("squint status", "right");
       }
       //When target rotation is negative
       else if (Math.abs(target.rotation()) < SQUINT_BOUND && target.standoff() > 50){
         squint = SQUINT_POSITIVE_EDGE - squint;
-        double squintAdjustment = Math.signum(squint) * Math.pow(Math.abs(squint), 0.2) * 0.08;
+        double squintAdjustment = squintInverter * Math.signum(squint) * Math.pow(Math.abs(squint), 0.2) * 0.05;
         Robot.drivetrain.setPower(.3 + squintAdjustment, .3 - squintAdjustment);
         SmartDashboard.putString("squint status", "left");
       }
@@ -86,9 +88,9 @@ public class VisionDriveAndAdjust extends Command {
 
       else if (Math.abs(squint) > SQUINT_BOUND || Math.abs(target.rotation()) > ROTATION_BOUND) {
 
-        double squintAdjustment = Math.signum(squint) * Math.pow(Math.abs(squint), 0.5) * 0.05; //power constant taken from the else if block directly below
+        double squintAdjustment = Math.signum(squint) * Math.pow(Math.abs(squint), 0.3) * 0.04; //power constant taken from the else if block directly below
        // double rotateAdjustment = Math.signum(rotation) * Math.pow(Math.abs(rotation), 0.5) * 0.05 / (Math.abs(squint) + 1);// / Math.abs(squint);
-        double rotateAdjustment = Math.signum(rotation) * .1;
+        double rotateAdjustment = Math.signum(rotation) * .05;
         Robot.drivetrain.setPower(.3 + squintAdjustment - rotateAdjustment, .3 - squintAdjustment + rotateAdjustment);
         SmartDashboard.putString("squint status", "squint correct");
         

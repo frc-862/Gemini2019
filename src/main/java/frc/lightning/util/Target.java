@@ -15,11 +15,16 @@ public class Target {
     private double rotation;
     private double squint;
     private long timestamp;
-    public Target(double standoff, double rotation, double squint, long timestamp) {
+    public enum type {
+        COMPLETE, LEFT, RIGHT;
+    }
+    private type targetType;
+    public Target(type targetType, double standoff, double rotation, double squint, long timestamp) {
         this.standoff = standoff;
         this.rotation = rotation;
         this.squint = squint;
         this.timestamp = timestamp;
+        this.targetType = targetType;
 
     }
 
@@ -34,5 +39,8 @@ public class Target {
     }
     public long timestamp() {
         return timestamp;
+    }
+    public type type() {
+        return targetType;
     }
 }
