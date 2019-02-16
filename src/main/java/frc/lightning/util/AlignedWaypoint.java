@@ -10,17 +10,20 @@ package frc.lightning.util;
 /**
  * Add your docs here.
  */
-public class VisionWaypoint {
+public class AlignedWaypoint {
     private double standoff;
     private double squint;
     private double rotateToTarget;
 
-    private final double WAYPOINT_DISTANCE_SCALE = 0.4;
-    public VisionWaypoint(Target target) {
+    private static final double WAYPOINT_DISTANCE_SCALE = 0.4;
+    public AlignedWaypoint(Target target) {
+        this(target, WAYPOINT_DISTANCE_SCALE);
+    }
+    public AlignedWaypoint(Target target, double distanceToTarget) {
         standoff = target.standoff();
         squint = Math.toRadians(target.squint());
         double rotation = Math.toRadians(target.rotation());
-        double targetToWaypoint = standoff * WAYPOINT_DISTANCE_SCALE;
+        double targetToWaypoint = standoff * distanceToTarget;
 
         //Using law of cosines to calculate the distance from the waypoint
         standoff = Math.sqrt(

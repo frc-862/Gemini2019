@@ -66,52 +66,45 @@ public class VisionDriveAndAdjust extends Command {
         SmartDashboard.putString("squint status", "left");
       }
       */
-      //----Start of John's simple solution    ----------------------------------------------------------------------
-      //When target rotation is positive
-      /*
-      else if (Math.abs(target.rotation()) > SQUINT_BOUND && target.standoff() > 50){
-        squint = -SQUINT_POSITIVE_EDGE - squint;
-        double squintAdjustment = squintInverter * Math.signum(squint) * Math.pow(Math.abs(squint), 0.2) * 0.05;
-        Robot.drivetrain.setPower(.3 + squintAdjustment, .3 - squintAdjustment);
-        SmartDashboard.putString("squint status", "right");
-      }
-      //When target rotation is negative
-      else if (Math.abs(target.rotation()) < SQUINT_BOUND && target.standoff() > 50){
-        squint = SQUINT_POSITIVE_EDGE - squint;
-        double squintAdjustment = squintInverter * Math.signum(squint) * Math.pow(Math.abs(squint), 0.2) * 0.05;
-        Robot.drivetrain.setPower(.3 + squintAdjustment, .3 - squintAdjustment);
-        SmartDashboard.putString("squint status", "left");
-      }
-      */
+      //----Start of John's solution    ----------------------------------------------------------------------
     
-      //Redo
+      /*
        //If target rotation is positive
       else if (target.rotation() > ROTATION_BOUND && target.standoff() > 30){
-        squint = SQUINT_POSITIVE_EDGE + squint;
-        double squintAdjustment = squintInverter * Math.signum(squint) * Math.pow(Math.abs(squint), 0.2) * 0.05;
+        //squint = SQUINT_POSITIVE_EDGE + squint;
+        //double squintAdjustment = squintInverter * Math.signum(squint) * Math.pow(Math.abs(squint), 0.2) * 0.05;
+        double squintAdjustment = squintInverter * target.standoff() * target.rotation();
         Robot.drivetrain.setPower(.3 + squintAdjustment, .3 - squintAdjustment);
         SmartDashboard.putString("squint status", "right");
       }
+      */
       //If target rotation is negative
-      else if (target.rotation() < -ROTATION_BOUND && target.standoff() > 30){
-        squint = -SQUINT_POSITIVE_EDGE + squint;
-        double squintAdjustment = squintInverter * Math.signum(squint) * Math.pow(Math.abs(squint), 0.2) * 0.05;
+      else if (Math.abs(target.rotation()) > ROTATION_BOUND && target.standoff() > 30){
+        //squint = -SQUINT_POSITIVE_EDGE + squint;
+        //double squintAdjustment = squintInverter * Math.signum(squint) * Math.pow(Math.abs(squint), 0.2) * 0.05;
+        double squintAdjustment = squintInverter * target.standoff() * target.rotation() * 0.0001;
         Robot.drivetrain.setPower(.3 + squintAdjustment, .3 - squintAdjustment);
         SmartDashboard.putString("squint status", "left");
       }
       
-       //-----End of John's simple solution-----------------------------------------------------------------------------
+      
+       //-----End of John's solution-----------------------------------------------------------------------------
 
-       
-
+     
 
       else if (Math.abs(squint) > SQUINT_BOUND || Math.abs(target.rotation()) > ROTATION_BOUND) {
 
-        double squintAdjustment = Math.signum(squint) * Math.pow(Math.abs(squint), 0.3) * 0.06; //power constant taken from the else if block directly below
+        //double squintAdjustment = Math.signum(squint) * Math.pow(Math.abs(squint), 0.3) * 0.06; //power constant taken from the else if block directly below
+        double squintAdjustment = Math.signum(squint) * Math.pow(Math.abs(squint), 0.3) * target.standoff() * .002; //power constant taken from the else if block directly below
+
        // double rotateAdjustment = Math.signum(rotation) * Math.pow(Math.abs(rotation), 0.5) * 0.05 / (Math.abs(squint) + 1);// / Math.abs(squint);
-        double rotateAdjustment = Math.signum(rotation) * .03;
+        //double rotateAdjustment = Math.signum(rotation) * .03;
+        double rotateAdjustment = Math.signum(rotation) / target.standoff();
+
         Robot.drivetrain.setPower(.3 + squintAdjustment - rotateAdjustment, .3 - squintAdjustment + rotateAdjustment);
         SmartDashboard.putString("squint status", "squint correct");
+
+
         
       }
 
