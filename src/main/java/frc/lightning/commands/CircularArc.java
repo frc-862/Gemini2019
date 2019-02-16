@@ -34,7 +34,7 @@ public class CircularArc extends Command {
   protected void initialize() {
     try {
       target = Robot.vision.getBestTarget();
-      waypoint = new VisionWaypoint(target);
+      waypoint = new AlignedWaypoint(target);
       SmartDashboard.putNumber("waypoint standoff", waypoint.standoff());
       SmartDashboard.putNumber("waypoint squint", waypoint.squint());
       arc = new Arc(waypoint);

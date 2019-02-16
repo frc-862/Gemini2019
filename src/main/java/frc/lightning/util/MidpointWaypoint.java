@@ -11,5 +11,8 @@ package frc.lightning.util;
  * Add your docs here.
  */
 public class MidpointWaypoint extends VisionWaypoint {
-    
+    public MidpointWaypoint(Target target) {
+        setStandoff(target.standoff() / 2);
+        setSquint(target.squint());
+    }
 }
