@@ -83,7 +83,7 @@ public class VisionDriveAndAdjust extends Command {
       }
        //-----End of John's simple solution-----------------------------------------------------------------------------
 
-       //Start of John's complex solution------------------------------------------------------------------------------
+       
 
 
       else if (Math.abs(squint) > SQUINT_BOUND || Math.abs(target.rotation()) > ROTATION_BOUND) {
