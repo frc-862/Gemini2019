@@ -28,7 +28,7 @@ public class TwoCircularArc extends Command {
     NO_TARGET, FIRST_ARC, SECOND_ARC, COMPLETE;
   }
 
-  private static state currentState = state.NO_TARGET;
+  private state currentState = state.NO_TARGET;
 
   public TwoCircularArc() {
 
@@ -43,15 +43,20 @@ public class TwoCircularArc extends Command {
   protected void initialize() {
     try {
       target = Robot.vision.getBestTarget();
-      if(currentState == state.NO_TARGET) {
-        currentState = state.FIRST_ARC;
-      }
       switch(currentState) {
-        case FIRST_ARC:
+        case NO_TARGET:
+          currentState = state.FIRST_ARC;
           waypoint = new MidpointWaypoint(target);
           break;
-        case SECOND_ARC:
+        case FIRST_ARC:
+          currentState = state.SECOND_ARC;
           waypoint = new AlignedWaypoint(target, 10);
+          break;
+        case SECOND_ARC:
+          currentState = state.COMPLETE;
+          return;
+          break;
+        case COMPLETE:
           break;
       }
       SmartDashboard.putNumber("waypoint standoff", waypoint.standoff());
@@ -90,7 +95,7 @@ public class TwoCircularArc extends Command {
       }
       else {
         Robot.drivetrain.setPower(0,0);
-
+        initialize();
       }
     }
   }
