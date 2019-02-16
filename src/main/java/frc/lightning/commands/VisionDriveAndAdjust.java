@@ -86,14 +86,14 @@ public class VisionDriveAndAdjust extends Command {
     
       //Redo
        //If target rotation is positive
-      else if (Math.abs(target.rotation()) > ROTATION_BOUND && target.standoff() > 50){
+      else if (target.rotation() > ROTATION_BOUND && target.standoff() > 30){
         squint = SQUINT_POSITIVE_EDGE + squint;
         double squintAdjustment = squintInverter * Math.signum(squint) * Math.pow(Math.abs(squint), 0.2) * 0.05;
         Robot.drivetrain.setPower(.3 + squintAdjustment, .3 - squintAdjustment);
         SmartDashboard.putString("squint status", "right");
       }
       //If target rotation is negative
-      else if (Math.abs(target.rotation()) < -ROTATION_BOUND && target.standoff() > 50){
+      else if (target.rotation() < -ROTATION_BOUND && target.standoff() > 30){
         squint = -SQUINT_POSITIVE_EDGE + squint;
         double squintAdjustment = squintInverter * Math.signum(squint) * Math.pow(Math.abs(squint), 0.2) * 0.05;
         Robot.drivetrain.setPower(.3 + squintAdjustment, .3 - squintAdjustment);

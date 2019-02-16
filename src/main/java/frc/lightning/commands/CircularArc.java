@@ -8,6 +8,7 @@
 package frc.lightning.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
 import frc.lightning.util.*;
 
@@ -21,7 +22,7 @@ public class CircularArc extends Command {
   private Arc arc;
   private boolean hasTarget;
   private double startPos;
-  private final double BASE_POWER = 0.3;
+  private final double BASE_POWER = 0.2;
 
   public CircularArc() {
     //TODO Re-Config PIDF Gains?
@@ -34,11 +35,17 @@ public class CircularArc extends Command {
     try {
       target = Robot.vision.getBestTarget();
       waypoint = new VisionWaypoint(target);
+      SmartDashboard.putNumber("waypoint standoff", waypoint.standoff());
+      SmartDashboard.putNumber("waypoint squint", waypoint.squint());
       arc = new Arc(waypoint);
       startPos = (Robot.drivetrain.getLeftDistance() + Robot.drivetrain.getRightDistance()) / 2;
+      SmartDashboard.putNumber("arc length", arc.length());
+      SmartDashboard.putNumber("arc angle", arc.angle());
+      SmartDashboard.putNumber("vel ratio", arc.velocityRatio());
       hasTarget = true;
     } catch(NoTargetException e) {
       hasTarget = false;
+      SmartDashboard.putString("arc error", e.toString());
     }
   }
 
@@ -57,7 +64,7 @@ public class CircularArc extends Command {
         leftPower *= arc.velocityRatio();
       }
       else {
-        rightPower *=  arc.velocityRatio();
+        rightPower *=  1 / arc.velocityRatio();
       }
       Robot.drivetrain.setPower(leftPower, rightPower);
       //Robot.drivetrain.setVelocity(leftVel, rightVel);//Can scale up ratio - 16:4 will drive same circle as 4:1, just faster
