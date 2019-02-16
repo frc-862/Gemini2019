@@ -55,9 +55,8 @@ public class TwoCircularArc extends Command {
         case SECOND_ARC:
           currentState = state.COMPLETE;
           return;
-          break;
         case COMPLETE:
-          break;
+          return;
       }
       SmartDashboard.putNumber("waypoint standoff", waypoint.standoff());
       SmartDashboard.putNumber("waypoint squint", waypoint.squint());
@@ -98,12 +97,15 @@ public class TwoCircularArc extends Command {
         initialize();
       }
     }
+    else if(currentState == state.NO_TARGET) {
+      initialize();
+    }
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return currentState == state.COMPLETE || currentState == state.NO_TARGET;
+    return currentState == state.COMPLETE;
   }
 
   // Called once after isFinished returns true
