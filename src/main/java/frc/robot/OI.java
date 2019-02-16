@@ -10,6 +10,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import frc.lightning.commands.CircularArc;
 import frc.lightning.commands.DriveStraight;
 import frc.lightning.commands.VisionDriveAndAdjust;
 import frc.lightning.commands.VisionRotateAndApproach;
@@ -63,6 +64,6 @@ public class OI {
         visionTestButtonA.whileHeld(new VisionDriveAndAdjust());
         visionTestButtonX.whileHeld(new VisionRotateAndApproach());
         visionTestButtonY.whileHeld(new WaypointThenTarget());
-        visionTestButtonB.whileHeld(new DriveStraight());
+        visionTestButtonB.whileHeld(new CircularArc());
     }
 }

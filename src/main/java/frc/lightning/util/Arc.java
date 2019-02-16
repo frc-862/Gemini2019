@@ -19,7 +19,7 @@ public class Arc {
     public Arc(VisionWaypoint destination) {
         x = Math.signum(destination.squint()) * destination.standoff() * Math.cos(Math.abs(destination.squint()));
         y = destination.standoff() * Math.sin(Math.abs(destination.squint()));
-        radius = destination.standoff() / (2 * x);
+        radius = Math.pow(destination.standoff(), 2) / (2 * Math.abs(x));
         angle =  Math.PI - 2 * (Math.PI / 2 - Math.abs(destination.squint()));
         centerLength = radius * angle;
         leftLength = (radius + Math.signum(destination.squint()) * TRACK_WIDTH / 2) * angle;

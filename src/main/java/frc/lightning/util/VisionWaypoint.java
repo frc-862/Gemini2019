@@ -16,10 +16,9 @@ public class VisionWaypoint {
     private double rotateToTarget;
 
     private final double WAYPOINT_DISTANCE_SCALE = 0.4;
-
     public VisionWaypoint(Target target) {
-        double standoff = target.standoff();
-        double squint = Math.toRadians(target.squint());
+        standoff = target.standoff();
+        squint = Math.toRadians(target.squint());
         double rotation = Math.toRadians(target.rotation());
         double targetToWaypoint = standoff * WAYPOINT_DISTANCE_SCALE;
 
