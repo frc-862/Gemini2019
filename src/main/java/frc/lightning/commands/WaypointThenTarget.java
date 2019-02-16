@@ -129,7 +129,7 @@ public class WaypointThenTarget extends Command {
           currentState = state.ROTATE_TO_TARGET;
         }
         break;
-        /*
+        
       case ROTATE_TO_TARGET:
         SmartDashboard.putNumber("rotation to target", waypointRotationToTarget);
         SmartDashboard.putNumber("start rotation", startRotation);
@@ -147,11 +147,14 @@ public class WaypointThenTarget extends Command {
           currentState = state.APPROACH_TARGET;
         }
         break;
-        */
+        
 
         //--------------
+        /*
         case ROTATE_TO_TARGET:
         //Not sure why but distanceTraveled was duplicated somewhere
+
+        
         double distanceTraveledTwo = (Robot.drivetrain.getLeftDistance() - startLeftEncoderDist + Robot.drivetrain.getRightDistance() - startRightEncoderDist) / 2.0;
 
         SmartDashboard.putNumber("waypoint standoff", waypointStandoff);
@@ -183,7 +186,7 @@ public class WaypointThenTarget extends Command {
         }
         break;
 
-
+        */
         //----------------
       case APPROACH_TARGET:
         try {
