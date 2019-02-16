@@ -15,6 +15,7 @@ import frc.lightning.commands.DriveStraight;
 import frc.lightning.commands.VisionDriveAndAdjust;
 import frc.lightning.commands.VisionRotateAndApproach;
 import frc.lightning.commands.WaypointThenTarget;
+import frc.lightning.commands.CircleToWaypoint;;
 
 /**
  * This class is the glue that binds the controls on the physical operator
