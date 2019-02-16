@@ -185,8 +185,8 @@ public class WaypointThenTarget extends Command {
           currentState = state.APPROACH_TARGET;
         }
         break;
+`     ` */
 
-        */
         //----------------
       case APPROACH_TARGET:
         try {

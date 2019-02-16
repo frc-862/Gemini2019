@@ -113,7 +113,7 @@ public class VisionDriveAndAdjust extends Command {
 
           //double power = 0.035 * target.standoff() + 0.075;
           Robot.drivetrain.setPower(0.25, 0.25);
-          SmartDashboard.putString("vision turn status", "drive straight");
+          SmartDashboard.putString("vision turn status", " driving straight");
           
       }
 

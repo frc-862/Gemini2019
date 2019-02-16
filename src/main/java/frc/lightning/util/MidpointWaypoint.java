@@ -10,11 +10,15 @@ package frc.lightning.util;
 /**
  * Add your docs here.
  */
+<<<<<<< HEAD:src/main/java/frc/lightning/util/MidpointWaypoint.java
 public class MidpointWaypoint {
+=======
+public abstract class VisionWaypoint {
+>>>>>>> 9a41061cef88373a0cb763e570007b8abef71b04:src/main/java/frc/lightning/util/VisionWaypoint.java
     private double standoff;
     private double squint;
-    private double rotateToTarget;
 
+<<<<<<< HEAD:src/main/java/frc/lightning/util/MidpointWaypoint.java
     private final double WAYPOINT_DISTANCE_SCALE = 0.4;
     public MidpointWaypoint(Target target) {
         standoff = target.standoff();
@@ -40,8 +44,14 @@ public class MidpointWaypoint {
           }
           
           rotateToTarget = Math.signum(rotation) * -1 * (Math.PI - (Math.PI - Math.abs(rotation) - targetToWaypointAngle));
+=======
+    public void setStandoff(double standoff) {
+        this.standoff = standoff;
     }
-
+    public void setSquint(double squint) {
+        this.squint = squint;
+>>>>>>> 9a41061cef88373a0cb763e570007b8abef71b04:src/main/java/frc/lightning/util/VisionWaypoint.java
+    }
     public double standoff() {
         return standoff;
     }
@@ -50,11 +60,5 @@ public class MidpointWaypoint {
     }
     public double squintDeg() {
         return Math.toDegrees(squint);
-    }
-    public double angleToTaret() {
-        return rotateToTarget;
-    }
-    public double angleToTargetDeg() {
-        return Math.toDegrees(rotateToTarget);
     }
 }
