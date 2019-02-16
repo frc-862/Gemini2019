@@ -12,15 +12,16 @@ package frc.lightning.util;
  */
 public class Arc {
     private final double TRACK_WIDTH = 22.0;
-    private double x, y, radius, angle;
+    private double x, y, radius, angle, completeRadiusDistance;
     private double centerLength, leftLength, rightLength;
     private double velocityRatio;
 
     public Arc(VisionWaypoint destination) {
         x = Math.signum(destination.squint()) * destination.standoff() * Math.cos(Math.abs(destination.squint()));
         y = destination.standoff() * Math.sin(Math.abs(destination.squint()));
-        radius = destination.standoff() / (2 * x);
-        angle =  Math.PI - 2 * (Math.PI / 2 - Math.abs(destination.squint()));
+        radius = Math.pow(destination.standoff(), 2) / (2 * x);
+        completeRadiusDistance = radius - x;
+        angle =  Math.PI - 2 * (Math.PI / 2 - Math.abs(destination.squint())) - Math.asin(completeRadiusDistance / radius);
         centerLength = radius * angle;
         leftLength = (radius + Math.signum(destination.squint()) * TRACK_WIDTH / 2) * angle;
         rightLength = (radius - Math.signum(destination.squint()) * TRACK_WIDTH / 2) * angle;
