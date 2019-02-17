@@ -10,6 +10,7 @@ package frc.robot.subsystems;
 import java.util.function.Consumer;
 
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.can.SlotConfiguration;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.TalonSRXConfiguration;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
@@ -18,6 +19,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.lightning.subsystems.CANDrivetrain;
 import frc.lightning.util.MotorConfig;
 import frc.robot.commands.TankDrive;
+import frc.robot.misc.Gains;
 
 /**
  * Add your docs here.
@@ -30,8 +32,8 @@ public class OBotDrivetrain extends CANDrivetrain {
                    new WPI_TalonSRX(1),
                    new WPI_TalonSRX(2),//1 2 5 6
                    /*new WPI_TalonSRX(4),*/
-                   new WPI_TalonSRX(5),
-                   new WPI_TalonSRX(6)
+                   new WPI_TalonSRX(4),
+                   new WPI_TalonSRX(5)
                );
     }
 
@@ -47,6 +49,7 @@ public class OBotDrivetrain extends CANDrivetrain {
 
         MotorConfig drive = MotorConfig.get("drive.json");
         withEachMotor((m) -> drive.registerMotor(m));
+
     }
 
 
@@ -66,7 +69,14 @@ public class OBotDrivetrain extends CANDrivetrain {
             m.configClosedloopRamp(0.2);
         });
 
+        configurePID(new Gains(1, 0, 0, 10, 0, 1));
+
         enableLogging();
+    }
+
+    private void configurePID(SlotConfiguration g) {
+        rightMaster.configureSlot(g);
+        leftMaster.configureSlot(g);
     }
 
     @Override

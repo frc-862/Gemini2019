@@ -20,32 +20,32 @@ public class AlignedWaypoint extends VisionWaypoint{
         this(target, WAYPOINT_DISTANCE_SCALE);
     }
     public AlignedWaypoint(Target target, double distanceToTarget) {
-        standoff = target.standoff();
-        squint = Math.toRadians(target.squint());
-        double rotation = Math.toRadians(target.rotation());
-        double targetToWaypoint = standoff * distanceToTarget;
+        double targetStandoff = target.standoff();
+        double targetSquint = Math.toRadians(target.squint());
+        double targetRotation = Math.toRadians(target.rotation());
+        double targetToWaypoint = distanceToTarget;
 
         //Using law of cosines to calculate the distance from the waypoint
         standoff = Math.sqrt(
             Math.pow(targetToWaypoint, 2)
-             + Math.pow(standoff, 2) 
-             - 2 * standoff * targetToWaypoint * Math.abs(Math.cos(rotation)));
+             + Math.pow(targetStandoff, 2) 
+             - 2 * targetStandoff * targetToWaypoint * Math.abs(Math.cos(targetRotation)));
           
           //Using law of sines to calculate squint to waypoint
           double targetToWaypointAngle = Math.abs(Math.asin(
-            Math.sin(rotation) / standoff * targetToWaypoint));
+            Math.sin(targetRotation) / standoff * targetToWaypoint));
           
-          if(Math.signum(squint) != Math.signum(rotation)) {
-            squint = squint - (targetToWaypointAngle * Math.signum(squint));
+          if(Math.signum(targetSquint) != Math.signum(targetRotation)) {
+            squint = targetSquint - (targetToWaypointAngle * Math.signum(targetSquint));
           }
           else {
-            squint = squint + (targetToWaypointAngle * Math.signum(squint));
+            squint = targetSquint + (targetToWaypointAngle * Math.signum(targetSquint));
           }
 
           setStandoff(standoff);
           setSquint(squint);
           
-          rotateToTarget = Math.signum(rotation) * -1 * (Math.PI - (Math.PI - Math.abs(rotation) - targetToWaypointAngle));
+          rotateToTarget = Math.signum(targetRotation) * -1 * (Math.PI - (Math.PI - Math.abs(targetRotation) - targetToWaypointAngle));
     }
 
     public double angleToTaret() {

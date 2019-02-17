@@ -42,7 +42,7 @@ public class VisionDriveAndAdjust extends Command {
 
       //Invert squint adjustment if we start to lose the target (to bring it back into view)
       int squintInverter = target.type() != Target.type.COMPLETE ? -1 : 1;
-      if (target.standoff() > 130){
+      if (target.standoff() > 70){
 
         double squintAdjustment = squintInverter * Math.signum(squint) * Math.pow(Math.abs(squint), 0.5) * 0.08; //power constant taken from the else if block directly below
         Robot.drivetrain.setPower(.3 + squintAdjustment, .3 - squintAdjustment);
@@ -82,7 +82,7 @@ public class VisionDriveAndAdjust extends Command {
       else if (Math.abs(target.rotation()) > ROTATION_BOUND && target.standoff() > 30){
         //squint = -SQUINT_POSITIVE_EDGE + squint;
         //double squintAdjustment = squintInverter * Math.signum(squint) * Math.pow(Math.abs(squint), 0.2) * 0.05;
-        double squintAdjustment = squintInverter * target.standoff() * target.rotation() * 0.0001;
+        double squintAdjustment = squintInverter * target.standoff() * target.rotation() * 0.00001;
         Robot.drivetrain.setPower(.3 + squintAdjustment, .3 - squintAdjustment);
         SmartDashboard.putString("squint status", "left");
       }

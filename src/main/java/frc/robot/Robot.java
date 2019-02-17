@@ -14,7 +14,6 @@ import frc.lightning.LightningRobot;
 import frc.robot.subsystems.Vision;
 import frc.lightning.util.FaultMonitor;
 import frc.lightning.util.FaultCode.Codes;
-import frc.robot.commands.MotionProfile;
 import frc.robot.commands.test.TestMove;
 import frc.robot.subsystems.*;
 
@@ -58,7 +57,6 @@ public class Robot extends LightningRobot {
         //    
         //}
         //this.registerAutonomousCommmand(name, command);
-        this.registerAutonomousCommmand("T_MotionProfile", new MotionProfile());
         this.registerAutonomousCommmand("T_DriveVelocity", new TestMove());
 
     }

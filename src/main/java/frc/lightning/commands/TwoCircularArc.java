@@ -7,6 +7,7 @@
 
 package frc.lightning.commands;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
@@ -15,14 +16,13 @@ import frc.lightning.util.*;
 
 public class TwoCircularArc extends Command {
 
-  private int leftVel, rightVel;
-  private int l = 1, d = 1, r = 1;
-  private double squint = 0.0;
+  private double leftVel, rightVel;
   private Target target;
   private VisionWaypoint waypoint;
   private Arc arc;
   private double startPos;
-  private final double BASE_POWER = 0.2;
+  private final double BASE_POWER = 0.3;
+  private final double BASE_VELOCITY = 50;
 
   private enum state {
     NO_TARGET, FIRST_ARC, SECOND_ARC, COMPLETE;
@@ -46,11 +46,11 @@ public class TwoCircularArc extends Command {
       switch(currentState) {
         case NO_TARGET:
           currentState = state.FIRST_ARC;
-          waypoint = new MidpointWaypoint(target);
+          waypoint = new MidpointWaypoint(new AlignedWaypoint(target, 10));
           break;
         case FIRST_ARC:
           currentState = state.SECOND_ARC;
-          waypoint = new AlignedWaypoint(target, 10);
+          waypoint = new AlignedWaypoint(target, 0);
           break;
         case SECOND_ARC:
           currentState = state.COMPLETE;
@@ -58,15 +58,19 @@ public class TwoCircularArc extends Command {
         case COMPLETE:
           return;
       }
+
       SmartDashboard.putNumber("waypoint standoff", waypoint.standoff());
       SmartDashboard.putNumber("waypoint squint", waypoint.squint());
       arc = new Arc(waypoint);
-      //create second arc with second waypoint
       startPos = (Robot.drivetrain.getLeftDistance() + Robot.drivetrain.getRightDistance()) / 2;
       SmartDashboard.putNumber("arc length", arc.length());
       SmartDashboard.putNumber("arc angle", arc.angle());
       SmartDashboard.putNumber("vel ratio", arc.velocityRatio());
-    } catch(NoTargetException e) {
+      if(currentState == state.SECOND_ARC) {
+        Timer.delay(1.0);
+      }
+    }
+    catch(NoTargetException e) {
       SmartDashboard.putString("arc error", e.toString());
       currentState = state.NO_TARGET;
     }
@@ -75,20 +79,28 @@ public class TwoCircularArc extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    SmartDashboard.putString("circle state", currentState.toString());
-    if(currentState == state.FIRST_ARC || currentState == state.SECOND_ARC) {
+    SmartDashboard.putString("2 arc state", currentState.toString());
+    if((currentState == state.FIRST_ARC) || (currentState == state.SECOND_ARC)) {
       double currentPos = (Robot.drivetrain.getLeftDistance() + Robot.drivetrain.getRightDistance()) / 2;
-      if(currentPos - startPos < arc.length()) {
+      SmartDashboard.putNumber("start pos", startPos);
+      SmartDashboard.putNumber("current pos", startPos);
+      SmartDashboard.putNumber("distance traveled", (currentPos - startPos));
+      if((currentPos - startPos) < arc.length()) {
         /*
         There is a velocity ratio between each motor to get them to drive in an arc. We can put control loop to make sure this ratio is working.
         */
+        leftVel = BASE_VELOCITY;
+        rightVel = BASE_VELOCITY;
         double leftPower = BASE_POWER, rightPower = BASE_POWER;
         if(arc.velocityRatio() > 1) {
+          leftVel *= arc.velocityRatio();
           leftPower *= arc.velocityRatio();
         }
         else {
-          rightPower *=  1 / arc.velocityRatio();
+          rightVel /= arc.velocityRatio();
+          rightPower /= arc.velocityRatio();
         }
+        //Robot.drivetrain.setVelocity(leftVel, rightVel);
         Robot.drivetrain.setPower(leftPower, rightPower);
         //Robot.drivetrain.setVelocity(leftVel, rightVel);//Can scale up ratio - 16:4 will drive same circle as 4:1, just faster
       }
@@ -105,12 +117,14 @@ public class TwoCircularArc extends Command {
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return currentState == state.COMPLETE;
+    //return currentState == state.COMPLETE;
+    return false;
   }
 
   // Called once after isFinished returns true
   @Override
   protected void end() {
+    currentState = state.NO_TARGET;
     Robot.drivetrain.setPower(0, 0);
   }
 

@@ -160,8 +160,15 @@ public class Vision extends Subsystem {
           else if(type.equals("right")) {
             targetType = Target.type.RIGHT;
           }
-          else {
+          else if(type.equals("complete")) {
             targetType = Target.type.COMPLETE;
+          }
+          else {
+            targetType = Target.type.COMPLETE; //To avoid null
+            continue;
+          }
+          if(targetType != Target.type.COMPLETE) {
+            continue;
           }
           double standoff, rotation, squint;
           standoff = Double.parseDouble(currentTarget.substring(currentTarget.indexOf("standoff:") + 9, currentTarget.indexOf(",", currentTarget.indexOf("standoff:"))));

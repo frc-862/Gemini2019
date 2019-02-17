@@ -147,6 +147,8 @@ public abstract class CANDrivetrain extends LightningDrivetrain {
 
     @Override
     public void setVelocity(double left, double right) {
+        left = LightningMath.inches2ticks(left);
+        right = LightningMath.inches2ticks(right);
         leftMaster.set(ControlMode.Velocity, left);
         rightMaster.set(ControlMode.Velocity, right);
     }
