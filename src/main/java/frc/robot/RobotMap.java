@@ -25,8 +25,8 @@ public class RobotMap {
     public static final int rightCollectCanId = 25;
 
     // Gemini Drive Train
-    public static final int geminiLeftMaster = 1;
-    public static final int geminiLeftSlave = 2;
+    public static final int geminiLeftMaster = 25;
+    public static final int geminiLeftSlave = 26;
     public static final int geminiRightMaster = 4;
     public static final int geminiRightSlave = 5;
 

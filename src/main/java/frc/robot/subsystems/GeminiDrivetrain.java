@@ -67,6 +67,9 @@ public class GeminiDrivetrain extends CANDrivetrain {
     }
 
     public void configureMotors() {
+        //withEachMotor((m) -> m.setNeutralMode(NeutralMode.Brake));
+        
+        //configurePID(Constants.drivePIDs);
         super.configureMotors();
 
         withEachMotor((m) -> m.setNeutralMode(NeutralMode.Brake));
