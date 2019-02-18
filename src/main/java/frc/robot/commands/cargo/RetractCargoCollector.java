@@ -7,10 +7,11 @@
 
 package frc.robot.commands.cargo;
 
-import edu.wpi.first.wpilibj.command.Command;
+
+import edu.wpi.first.wpilibj.command.InstantCommand;
 import frc.robot.Robot;
 
-public class RetractCargoCollector extends Command {
+public class RetractCargoCollector extends InstantCommand {
     public RetractCargoCollector() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);

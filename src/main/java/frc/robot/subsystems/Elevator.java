@@ -7,6 +7,8 @@
 
 package frc.robot.subsystems;
 
+import java.io.DataInput;
+
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
@@ -18,11 +20,14 @@ import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import edu.wpi.first.wpilibj.AnalogInput;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.lightning.util.LightningMath;
 import frc.robot.Constants;
 import frc.robot.RobotMap;
+import frc.robot.commands.elevator.ManualElevator;
 import frc.robot.commands.elevator.UpdateElevatorState;
+import frc.robot.subsystems.Core;
 
 /**
  * Add your docs here.
@@ -33,11 +38,8 @@ public class Elevator extends Subsystem {
     // here. Call these from Commands.
 
     public WPI_TalonSRX elevatorMotor;
-    public WPI_VictorSPX collectLeft;
-    public WPI_VictorSPX collectRight;
-
     public AnalogInput pieceDetector;
-
+   
     public enum HeightState {
         HIGH_ROCKET, MID_ROCKET, LOW_ROCKET, CARGO_COLLECT
     }
@@ -46,19 +48,14 @@ public class Elevator extends Subsystem {
 
 
     public Elevator() {
-
-        collectLeft = new WPI_VictorSPX(RobotMap.leftCollectCanId);
-        addChild("Left Collect", collectLeft);
-
-        collectRight = new WPI_VictorSPX(RobotMap.rightCollectCanId);
-        addChild("Right Collect", collectRight);
-
+     
         pieceDetector = new AnalogInput(7);
         addChild("Cargo Detector", pieceDetector);
 
         elevatorMotor = new WPI_TalonSRX(RobotMap.elevatorCanId);
         addChild("Elevator Motor", elevatorMotor);
-
+        
+        
         /* Factory default hardware to prevent unexpected behavior */
         elevatorMotor.configFactoryDefault();
 
@@ -108,7 +105,7 @@ public class Elevator extends Subsystem {
         // Set the default command for a subsystem here.
         // setDefaultCommand(new MySpecialCommand());
 
-        setDefaultCommand(new UpdateElevatorState());
+        setDefaultCommand(new ManualElevator());
 
     }
 
@@ -211,29 +208,6 @@ public class Elevator extends Subsystem {
         return LightningMath.isInRange(pieceDetector.getValue(), Constants.cargoElevatorDistance,Constants.elevatorPieceTolerance); //TODO method stub
     }
 
-    public void ejectCargo() {
-        collectLeft.set(ControlMode.PercentOutput, Constants.ejectDemand*-1);
-        collectRight.set(ControlMode.PercentOutput, Constants.ejectDemand*-1);
-    }
-
-    public void stopEject() {
-        collectLeft.set(ControlMode.PercentOutput, 0.0);
-        collectRight.set(ControlMode.PercentOutput, 0.0);
-    }
-
-    public void elevatorCargoHoldPower() {
-        collectLeft.set(ControlMode.PercentOutput, Constants.elevatorCollectorHoldPower);
-        collectRight.set(ControlMode.PercentOutput, Constants.elevatorCollectorHoldPower);
-    }
-
-    public void collectCargo() {
-        collectLeft.set(ControlMode.PercentOutput, Constants.ejectDemand);
-        collectRight.set(ControlMode.PercentOutput, Constants.ejectDemand);
-    }
-
-    public void stopCollectCargo() {
-
-    }
 
 
 
