@@ -11,26 +11,25 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.lightning.logging.CommandLogger;
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.Constants;
 import frc.robot.Robot;
+import frc.robot.subsystems.GeminiDrivetrain;
 
 
 
 public class LineFollow extends Command {
     CommandLogger logger = new CommandLogger(getClass().getCanonicalName());
-    double turnP = .075;
-    double turningVelocity = .4;
-    double straightVelocity = 0.3;
-    double cutOff=2;
-    double turnDown = .2;
+    double turnP = .45;
+    double turningVelocity = 4;//might need to go to 5-6 because sometimes does not line up
+    double straightVelocity = 1;
+    double turnI = 0.001;
+    double turnD = .4;
     double prevError = 0;
     double errorAcc = 0;
-    double turnI = 0.001;
-    double turnD = .05;
-
     public LineFollow() {
         // Use requires() here to declare subsystem dependencies
-        // eg. requires(chassis);
+        requires(Robot.drivetrain);
         logger.addDataElement("error");
         logger.addDataElement("turn");
         logger.addDataElement("velocity");
@@ -67,22 +66,23 @@ public class LineFollow extends Command {
         turnI = SmartDashboard.getNumber("turnI", turnI);
         turnD = SmartDashboard.getNumber("turnD", turnD);
 
-        if (error == Double.NaN && Math.abs(error) <= 1) {
+        if (error == Double.NaN || Math.abs(error) <= 1) {
             errorAcc = 0;
         } else {
             errorAcc += error;
         }
 
         final double turn = (error * turnP) + (errorAcc * turnI)-(prevError-error)*turnD;
+        
         final double velocity = (Math.abs(error) < 1) ? straightVelocity : turningVelocity;
 
         logger.set("error", error);
         logger.set("turn", turn);
         logger.set("velocity", velocity);
-        logger.writeValues();
-
+        logger.write();
+        System.out.println("line follow error = "+error+"/ turn = "+turn+"/ velocity ="+velocity);
         // drive
-        Robot.drivetrain.setVelocity(velocity - turn, velocity + turn);
+        Robot.drivetrain.setVelocity(velocity + turn, velocity - turn);
         prevError = error;
     }
 

@@ -11,11 +11,18 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.hatch.HatchCollectorStateChange;
+import frc.robot.subsystems.CargoCollector;
 import frc.robot.commands.LineFollow;
 import frc.robot.commands.calibration.TestMove;
-import frc.robot.commands.climber.Climb;;
+import frc.robot.commands.cargo.CargoCollect;
+import frc.robot.commands.cargo.DeployCargoCollector;
+import frc.robot.commands.cargo.RetractCargoCollector;
+import frc.robot.commands.climber.Climb;
+import frc.robot.commands.cargo.DeployCargoCollector;;
 
 public class OI {
     //Drive Joysticks
@@ -23,21 +30,28 @@ public class OI {
     private Joystick driverRight = new Joystick(1);
     private Joystick copilot = new Joystick(2);
 
+
     //Mechanism Buttons
-    private Button cargoCollectButton = new JoystickButton(copilot, 4);
+    private Button cargoCollectButton = new JoystickButton(copilot, 6);
     private Button setElevatorHigh = new JoystickButton(copilot, 3);
-    private Button setElevatorLow = new JoystickButton(copilot, 6);
+    private Button setElevatorLow = new JoystickButton(copilot, 11);
     private Button setElevatorMid = new JoystickButton(copilot, 8);
     // TODO - duplicated button number
     private Button setElevatorCargoCollect = new JoystickButton(copilot, 8);
     private Button hatchToggle = new JoystickButton(driverRight, JoystickConstants.hatchToggle);
-    private Button climb = new JoystickButton(copilot, 5);
-
+    private Button climb = new JoystickButton(copilot, 10);
+    private Button cargoCollectIn= new JoystickButton(copilot,5);//needs changed prob
+    private Button cargoCollectOut= new JoystickButton(copilot,4);//needs changed prob
     public boolean getElevatorHighPosSelect() {
         return setElevatorHigh != null &&
                setElevatorHigh.get();
     }
-
+    public void cargoCollectOut (){
+        cargoCollectOut.whenPressed(new DeployCargoCollector());
+    }
+    public void cargoCollectIn  (){
+        cargoCollectOut.whenPressed(new RetractCargoCollector());
+    }
     public boolean getElevatorMidPosSelect() {
         return setElevatorMid != null &&
                setElevatorMid.get();
@@ -47,7 +61,12 @@ public class OI {
         return setElevatorLow != null &&
                setElevatorLow.get();
     }
-
+    public double manualElevatorPwr() {
+        return (driverRight.getRawAxis(3) - 1) / -2;
+    }
+    public double manualElevatorDownPwr() {
+        return (driverLeft.getRawAxis(3) - 1) / 2;
+    }
     public boolean getElevatorCargoCollectPosSelect() {
         return setElevatorCargoCollect != null &&
                setElevatorCargoCollect.get();
@@ -73,7 +92,10 @@ public class OI {
         climb.whenPressed(new Climb());
         hatchToggle.whenPressed(new HatchCollectorStateChange());
     }
-
+    public double getCargoCollectPower (){
+        return copilot.getRawAxis(2)-copilot.getRawAxis(3);
+    }
+    
     public OI() {
         initializeCommands();
 

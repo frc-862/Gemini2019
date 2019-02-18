@@ -9,11 +9,14 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
+
+import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import frc.robot.Constants;
 import frc.robot.RobotConstants;
 import frc.robot.RobotMap;
+import frc.robot.commands.cargo.CargoCollect;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 
 /**
@@ -24,6 +27,10 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
 public class CargoCollector extends Subsystem {
     private final WPI_VictorSPX collector;
     private final DoubleSolenoid deployer;
+    public WPI_VictorSPX collectLeft;
+    public WPI_VictorSPX collectRight;
+
+
 
     public static CargoCollector create() {
         return new CargoCollector(
@@ -31,17 +38,26 @@ public class CargoCollector extends Subsystem {
                    new DoubleSolenoid(RobotMap.compressorCANId, RobotMap.cargoSolenoidFwdChan, RobotMap.cargoSolenoidRevChan)
                );
     }
+    
 
     public CargoCollector(WPI_VictorSPX collector, DoubleSolenoid deployer) {
         String name = getClass().getSimpleName();
         setName(name);
 
+        collectLeft = new WPI_VictorSPX(RobotMap.leftCollectCanId);
+        addChild("Left Collect", collectLeft);
+        collectLeft.setInverted(true);
+        collectRight = new WPI_VictorSPX(RobotMap.rightCollectCanId);
+
+        addChild("Right Collect", collectRight);
+        
         this.collector = collector;
         addChild("Intake Motor", collector);
 
         this.deployer = deployer;
         addChild("Deployer", deployer);
 
+        
         stop();
     }
 
@@ -61,7 +77,7 @@ public class CargoCollector extends Subsystem {
 
     @Override
     public void initDefaultCommand() {
-        //setDefaultCommand(new HABClimb());
+        setDefaultCommand(new CargoCollect());
     }
 
     public void collect() {
@@ -79,10 +95,14 @@ public class CargoCollector extends Subsystem {
     }
 
 
-    private void setPower(double pwr) {
+    public void setGroundCollectPower(double pwr) {
         collector.set(ControlMode.PercentOutput, pwr);
     }
 
+    public void setElevatorCollectPower(double pwr) {
+        collectRight.set(ControlMode.PercentOutput, pwr);
+        collectLeft.set(ControlMode.PercentOutput, pwr);
+    }
 
     public void deploy() {
         deployer.set(DoubleSolenoid.Value.kForward);
@@ -93,6 +113,29 @@ public class CargoCollector extends Subsystem {
     }
 
 
+    public void ejectCargo() {
+        collectLeft.set(ControlMode.PercentOutput, Constants.ejectDemand*-1);
+        collectRight.set(ControlMode.PercentOutput, Constants.ejectDemand*-1);
+    }
+
+    public void stopEject() {
+        collectLeft.set(ControlMode.PercentOutput, 0.0);
+        collectRight.set(ControlMode.PercentOutput, 0.0);
+    }
+
+    public void elevatorCargoHoldPower() {
+        collectLeft.set(ControlMode.PercentOutput, Constants.elevatorCollectorHoldPower);
+        collectRight.set(ControlMode.PercentOutput, Constants.elevatorCollectorHoldPower);
+    }
+
+    public void collectCargo() {
+        collectLeft.set(ControlMode.PercentOutput, Constants.ejectDemand);
+        collectRight.set(ControlMode.PercentOutput, Constants.ejectDemand);
+    }
+
+    public void stopCollectCargo() {
+
+    }
 
 
 }

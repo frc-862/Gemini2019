@@ -34,12 +34,12 @@ public class GeminiDrivetrain extends CANDrivetrain {
 
     public GeminiDrivetrain(WPI_TalonSRX left, WPI_VictorSPX left2, WPI_TalonSRX right, WPI_VictorSPX right2) {
         // inverts the left, not the right (the true/false)
-        super(left, false, right, true);//1, 4
+        super(left, true, right, false);//1, 4
 
         // Invert the left follower
-        addLeftFollower(left2, false);
+        addLeftFollower(left2, true  );
         // Don't invert the right (could add a false, but that is the default)
-        addRightFollower(right2,true);
+        addRightFollower(right2,false);
 
         configureMotors();
 
@@ -116,7 +116,7 @@ public class GeminiDrivetrain extends CANDrivetrain {
     @Override
     public void initDefaultCommand() {
         // Set the default command for a subsystem here.
-        setDefaultCommand(new VelocityTankDrive());
+        setDefaultCommand(new TankDrive());
     }
 
 }

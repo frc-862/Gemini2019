@@ -51,6 +51,7 @@ public class Core extends Subsystem {
     private DigitalInput midRight = new DigitalInput(3);
     private DigitalInput outerRight = new DigitalInput(2);
 
+    
     private double biasAnalog(double v, double min, double max) {
         final double midPoint = (max + min) / 2.0;
         if (v > midPoint) {
@@ -65,6 +66,7 @@ public class Core extends Subsystem {
 
     private double lineWeights[] = { -7, -5, -3, -1, 1, 3, 5, 7};
 
+   
     private DoubleSupplier nebulaSensorValues[] = {
         () -> outerLeft.get() ? 0 : 1.0,
         () -> midLeft.get() ? 0 : 1.0,
