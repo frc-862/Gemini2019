@@ -8,19 +8,12 @@
 package frc.robot;
 
 import frc.lightning.LightningRobot;
-import frc.lightning.http.JsonReader;
-import frc.lightning.testing.FakeOI;
+import frc.lightning.commands.VelocityMotionProfile;
 import frc.robot.commands.driveTrain.MotionProfile;
-import frc.robot.commands.driveTrain.VelocityMotionProfile;
-import frc.robot.paths.ArcSimple;
 import frc.robot.paths.LeftArc90;
 import frc.robot.paths.LinePath;
-import frc.robot.paths.RightArc90;
-import frc.robot.paths.RightFarRocket;
-import frc.robot.paths.TenFtPath;
 import frc.robot.subsystems.*;
 import java.io.File;
-import java.io.IOException;
 
 public class Robot extends LightningRobot {
 

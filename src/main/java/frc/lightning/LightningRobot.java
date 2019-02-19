@@ -139,6 +139,7 @@ public class LightningRobot extends TimedRobot {
      */
     protected void robotBackgroundPeriodic() {
         DataLogger.flush();
+        DataLogger.checkBaseFileName();
     }
 
     /**

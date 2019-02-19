@@ -12,6 +12,7 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.lightning.commands.VelocityMotionProfile;
 import frc.lightning.subsystems.CANDrivetrain;
 import frc.lightning.testing.SystemTest;
 import frc.lightning.util.LightningMath;
@@ -48,6 +49,8 @@ public class GeminiDrivetrain extends CANDrivetrain {
 
         SystemTest.register(new LeftEncoderTest());
         SystemTest.register(new RightEncoderTest());
+
+        VelocityMotionProfile.setKp(1);
     }
 
     @Override

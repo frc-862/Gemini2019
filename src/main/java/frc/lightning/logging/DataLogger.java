@@ -100,14 +100,18 @@ public class DataLogger implements Loop {
         writer = new LogWriter(file.getAbsolutePath());
     }
 
-    public void checkBaseFileName() {
+    private static boolean foundDS = false;
+    public static void checkBaseFileName() {
+        if (foundDS) return;
+
         var ds = DriverStation.getInstance();
-        String newName = String.format("%s-%s-%d.log",
+        String newName = String.format("%s-%s-%d",
                                        ds.getEventName(), ds.getMatchType().toString(), ds.getMatchNumber()
                                       );
 
         if (!Objects.equals(newName, baseFName)) {
             setBaseFileName(newName);
+            foundDS = true;
         }
     }
 
