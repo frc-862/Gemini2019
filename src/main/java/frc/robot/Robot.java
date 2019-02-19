@@ -11,8 +11,13 @@ import frc.lightning.LightningRobot;
 import frc.lightning.http.JsonReader;
 import frc.lightning.testing.FakeOI;
 import frc.robot.commands.driveTrain.MotionProfile;
+import frc.robot.commands.driveTrain.VelocityMotionProfile;
 import frc.robot.paths.ArcSimple;
+import frc.robot.paths.LeftArc90;
 import frc.robot.paths.LinePath;
+import frc.robot.paths.RightArc90;
+import frc.robot.paths.RightFarRocket;
+import frc.robot.paths.TenFtPath;
 import frc.robot.subsystems.*;
 import java.io.File;
 import java.io.IOException;
@@ -49,8 +54,15 @@ public class Robot extends LightningRobot {
         // set a flag, it is either gemini or nebula
         gemini = ((new File("/home/lvuser/gemini")).exists());
 
+        this.registerAutonomousCommmand("TEST ME NOW", new VelocityMotionProfile(new LinePath()));
+        this.registerAutonomousCommmand("oth3r", new VelocityMotionProfile(new LeftArc90()));
+        //this.registerAutonomousCommmand("Profile Arc", new MotionProfile(new ArcSimple()));
+        //this.registerAutonomousCommmand("Profile 10FT", new MotionProfile(new TenFtPath()));
+        //this.registerAutonomousCommmand("BackRight", new MotionProfile(new RightFarRocket()));
+        //this.registerAutonomousCommmand("ArcRight90", new MotionProfile(new RightArc90()));
+        this.registerAutonomousCommmand("ArcLeft90", new MotionProfile(new LeftArc90()));
         this.registerAutonomousCommmand("Profile Line", new MotionProfile(new LinePath()));
-        this.registerAutonomousCommmand("Profile Arc", new MotionProfile(new ArcSimple()));
+        
     }
 
     @Override

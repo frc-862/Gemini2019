@@ -28,18 +28,21 @@ public class Constants extends ConstantBase {
     public static final int driveSlot = 0;
 
     static {
-        if(Robot.isGemini()) {
-            //_____GEMINI_____\\
-            motionPathPIDs = new Gains(0.00000008, 0.0,  0.0,   0.34,  0);
-            drivePIDs = new Gains( 0.001, 0.0,  0.0, 10,  400);
-        } else {
-            //_____NEBULA_____\\
-            motionPathPIDs = new Gains(0.00000005, 0.0,  0.0,   0.37,  0);
-            drivePIDs = new Gains( 0.001, 0.0,  0.0, 10,  400);
-        }
-        motionPathPIDs = new Gains(8.62, 0.0,  0.0,   0.74,  0);
+        //if(Robot.isGemini()) {
+        //    //_____GEMINI_____\\
+        //    motionPathPIDs = new Gains(4.65, 0.0,  0.0,   0.74,  0);
+        //    drivePIDs = new Gains(4.65, 0.0,  0.0,   0.74,  0);
+        //} else {
+        //    //_____NEBULA_____\\
+        //    motionPathPIDs = new Gains(0.0, 0.0,  0.0, 0.0,  0);
+        //    drivePIDs = new Gains( 0.0, 0.0, 0.0, 0.0,  0);
+        //}
 
-        drivePIDs = new Gains( 4.65, 0.0,  0.0, 0.74,  0);
+        Gains universalGAINS = new Gains/*(0.1, 0.0, 0.0, 0.1, 0);*/(4.65, 0.0,  0.0,   0.74,  0);//gemini
+
+        motionPathPIDs = universalGAINS;// new Gains(4.65, 0.0,  0.0,   0.74,  0);// 9!!!
+
+        drivePIDs = universalGAINS;// new Gains( 4.65, 0.0,  0.0, 0.74,  0);
         //drivePIDs = new Gains( 4.65, 0.0,  0.0, 0.74,  0);
     }
 
@@ -71,7 +74,7 @@ public class Constants extends ConstantBase {
     public final static double driveBackwardVelocity = 1;
 
     // DriveTrain
-    public final static double velocityMultiplier = 15.0;// TODO changed from 1
+    public final static double velocityMultiplier = 15.0;
     public final static int drivePowerCurve = 3;
 
     //public final static Gains drivePIDF = new Gains(862, 0, 0, 8.62, 0);

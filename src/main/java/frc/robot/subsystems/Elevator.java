@@ -22,11 +22,14 @@ import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import frc.lightning.testing.SystemTest;
 import frc.lightning.util.LightningMath;
 import frc.robot.Constants;
 import frc.robot.RobotMap;
 import frc.robot.commands.elevator.ManualElevator;
 import frc.robot.commands.elevator.UpdateElevatorState;
+import frc.robot.commands.test.ElevatorTest;
+import frc.robot.commands.test.ElevatorTest.Position;
 import frc.robot.subsystems.Core;
 
 /**
@@ -98,6 +101,14 @@ public class Elevator extends Subsystem {
 
         /* Zero the sensor */
         elevatorMotor.setSelectedSensorPosition(0, Constants.kPIDLoopIdx, Constants.kTimeoutMs);
+
+
+        SystemTest.register(new ElevatorTest(Position.HIGH));
+        SystemTest.register(new ElevatorTest(Position.LOW));
+        SystemTest.register(new ElevatorTest(Position.MED));
+        SystemTest.register(new ElevatorTest(Position.COLLECT));
+
+
     }
 
     @Override
@@ -105,7 +116,7 @@ public class Elevator extends Subsystem {
         // Set the default command for a subsystem here.
         // setDefaultCommand(new MySpecialCommand());
 
-        setDefaultCommand(new ManualElevator());
+        //setDefaultCommand(new ManualElevator());
 
     }
 

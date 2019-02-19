@@ -55,6 +55,7 @@ public class MotionProfile extends Command {
 
         Robot.drivetrain.getLeftMaster().startMotionProfile(bufferedStreamLeft, path.getLeftPath().length, ControlMode.MotionProfile);
         Robot.drivetrain.getRightMaster().startMotionProfile(bufferedStreamRight, path.getRightPath().length, ControlMode.MotionProfile);
+
         logger.reset();
     }
 
@@ -111,6 +112,7 @@ public class MotionProfile extends Command {
 
             /* for each point, fill our structure and pass it to API */
             point.timeDur = durationMilliseconds;
+            
             point.position = direction * positionRot;
             // Units
             point.velocity = direction * velocityRPM;
