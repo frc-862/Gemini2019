@@ -170,13 +170,16 @@ public class Vision extends Subsystem {
           if(targetType != Target.type.COMPLETE) {
             continue;
           }
-          double standoff, rotation, squint;
+          double standoff, rotation, squint, pixelX;
           standoff = Double.parseDouble(currentTarget.substring(currentTarget.indexOf("standoff:") + 9, currentTarget.indexOf(",", currentTarget.indexOf("standoff:"))));
           SmartDashboard.putString("vision step", "parsed standoff");
           rotation = Double.parseDouble(currentTarget.substring(currentTarget.indexOf("rotation:") + 9, currentTarget.indexOf(",", currentTarget.indexOf("rotation:"))));
           SmartDashboard.putString("vision step", "parsed rotation");
           squint = Double.parseDouble(currentTarget.substring(currentTarget.indexOf("squint:") + 7, currentTarget.indexOf("]", currentTarget.indexOf("squint:"))));
           SmartDashboard.putString("vision step", "parsed squint");
+          //why is this stuff adding 7 and 9?
+          pixelX = Double.parseDouble(currentTarget.substring(currentTarget.indexOf("pixelX:") + 7, currentTarget.indexOf("]", currentTarget.indexOf("pixelX:"))));
+          SmartDashboard.putString("vision step", "parsed pixelX");
           SmartDashboard.putString("vision step", "end parse");
           cameraData.add(new Target(targetType, standoff, rotation, squint, Math.round(currentTime - latency)));
         }

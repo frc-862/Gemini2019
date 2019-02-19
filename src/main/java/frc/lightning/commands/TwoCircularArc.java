@@ -68,6 +68,7 @@ public class TwoCircularArc extends Command {
       SmartDashboard.putNumber("vel ratio", arc.velocityRatio());
       if(currentState == state.SECOND_ARC) {
         Timer.delay(1.0);
+      
       }
     }
     catch(NoTargetException e) {
@@ -80,7 +81,7 @@ public class TwoCircularArc extends Command {
   @Override
   protected void execute() {
     SmartDashboard.putString("2 arc state", currentState.toString());
-    if((currentState == state.FIRST_ARC) || (currentState == state.SECOND_ARC)) {
+    if(currentState == state.FIRST_ARC || currentState == state.SECOND_ARC) {
       double currentPos = (Robot.drivetrain.getLeftDistance() + Robot.drivetrain.getRightDistance()) / 2;
       SmartDashboard.putNumber("start pos", startPos);
       SmartDashboard.putNumber("current pos", startPos);
@@ -108,7 +109,10 @@ public class TwoCircularArc extends Command {
         Robot.drivetrain.setPower(0,0);
         initialize();
       }
+
     }
+
+    
     else if(currentState == state.NO_TARGET) {
       initialize();
     }

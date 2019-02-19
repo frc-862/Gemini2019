@@ -71,23 +71,81 @@ public class VisionDriveAndAdjust extends Command {
       /*
        //If target rotation is positive
       else if (target.rotation() > ROTATION_BOUND && target.standoff() > 30){
-        //squint = SQUINT_POSITIVE_EDGE + squint;
-        //double squintAdjustment = squintInverter * Math.signum(squint) * Math.pow(Math.abs(squint), 0.2) * 0.05;
-        double squintAdjustment = squintInverter * target.standoff() * target.rotation();
+        squint = SQUINT_POSITIVE_EDGE + squint;
+        double squintAdjustment = squintInverter * Math.signum(squint) * Math.pow(Math.abs(squint), 0.2) * 0.05;
+       // double squintAdjustment = squintInverter * target.standoff() * target.rotation();
         Robot.drivetrain.setPower(.3 + squintAdjustment, .3 - squintAdjustment);
         SmartDashboard.putString("squint status", "right");
       }
       */
+      
       //If target rotation is negative
+      /
       else if (Math.abs(target.rotation()) > ROTATION_BOUND && target.standoff() > 30){
-        //squint = -SQUINT_POSITIVE_EDGE + squint;
-        //double squintAdjustment = squintInverter * Math.signum(squint) * Math.pow(Math.abs(squint), 0.2) * 0.05;
-        double squintAdjustment = squintInverter * target.standoff() * target.rotation() * 0.00001;
+      //  squint = -SQUINT_POSITIVE_EDGE + squint;
+       // double squintAdjustment = squintInverter * Math.signum(squint) * Math.pow(Math.abs(squint), 0.2) * 0.05;
+       STANDOFF_AND_ROTATION_TO_BOUNDARY = 0.00001;
+        double squintAdjustment = squintInverter / target.standoff() * target.rotation() * STANDOFF_AND_ROTATION_TO_BOUNDARY;
         Robot.drivetrain.setPower(.3 + squintAdjustment, .3 - squintAdjustment);
-        SmartDashboard.putString("squint status", "left");
+        SmartDashboard.putString("squint status", "weighted turning");
       }
+      */
+
+      int OUTER_PIXEL_BOUNDARY = 264;
+      int innerPixelBoundary = target.standoff() * pixelX;
+
+      //If target rotation is positive
+      else if (target.rotation() > ROTATION_BOUND && target.standoff() > 30){
+        if (pixelX < OUTER_PIXEL_BOUNDARY){
+          if (pixelX < innerPixelBoundary){
+            //run John's algorithm correctly
+            double rotateAdjustment = Math.signum(rotation) * .1;
+            Robot.drivetrain.setPower(.3 + squintAdjustment, .3 - squintAdjustment);
+            SmartDashboard.putString("squint status", "right");
+          }
+          else {
+            //run John's algorithm in reverse
+            double rotateAdjustment = Math.signum(rotation) * -.1;
+            Robot.drivetrain.setPower(.3 + squintAdjustment, .3 - squintAdjustment);
+            SmartDashboard.putString("squint status", "correcting");
+          } 
+        }
+
+        else {
+          //run John's algorithm in reverse
+          double rotateAdjustment = Math.signum(rotation) * -.1;
+          Robot.drivetrain.setPower(.3 + squintAdjustment, .3 - squintAdjustment);
+          SmartDashboard.putString("squint status", "correcting");
+        }
+        }
+
       
-      
+      //If target rotation is negative
+      else if (target.rotation() < -ROTATION_BOUND && target.standoff() > 30){
+        
+        if (pixelX > -OUTER_PIXEL_BOUNDARY){
+          if (pixelX > -innerPixelBoundary){
+            //John reverse
+            double rotateAdjustment = Math.signum(rotation) * -.1;
+            Robot.drivetrain.setPower(.3 + squintAdjustment, .3 - squintAdjustment);
+            SmartDashboard.putString("squint status", "left");
+          }
+          else {
+            //John correct
+            double rotateAdjustment = Math.signum(rotation) * .1;
+            Robot.drivetrain.setPower(.3 + squintAdjustment, .3 - squintAdjustment);
+            SmartDashboard.putString("squint status", "correcting");
+          } 
+        }
+
+        else {
+          //John correct
+          double rotateAdjustment = Math.signum(rotation) * .1;
+          Robot.drivetrain.setPower(.3 + squintAdjustment, .3 - squintAdjustment);
+          SmartDashboard.putString("squint status", "correcting");
+        }
+
+      }
        //-----End of John's solution-----------------------------------------------------------------------------
 
      
@@ -128,8 +186,8 @@ public class VisionDriveAndAdjust extends Command {
       Robot.drivetrain.setPower(0, 0);
       SmartDashboard.putString("vision turn status", "not turning");
       
-
   }
+  
   }
 
   // Make this return true when this Command no longer needs to run execute()
