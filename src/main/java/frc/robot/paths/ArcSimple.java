@@ -10,12 +10,12 @@ package frc.robot.paths;
 public class ArcSimple extends Path {
     @Override
     public double[][] getLeftPath() {
-        return this.Left;
+        return Left;
     }
 
     @Override
     public double[][] getRightPath() {
-        return this.Right;
+        return Right;
     }
 
     public static double[][] Left = new double[][] {

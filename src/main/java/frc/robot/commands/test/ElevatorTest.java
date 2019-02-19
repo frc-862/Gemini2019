@@ -16,20 +16,24 @@ import frc.robot.Robot;
  * Add your docs here.
  */
 public class ElevatorTest extends SystemTest {
-    private final int timeout = 10;
+    private final static int timeout = 10;
+    private final static int allowedError = 300;
+
     private int initEncoderPos;
-    private int allowedError = 300;
     private Position desiredPos;
+
     public enum Position {
         LOW,
         MED,
         HIGH,
         COLLECT
     }
+
     public ElevatorTest(Position desiredPos) {
         super(FaultCode.Codes.ELEVATOR_ERROR);
         this.desiredPos = desiredPos;
     }
+
     @Override
     public void setup() {
         initEncoderPos = Robot.elevator.elevatorMotor.getSelectedSensorPosition();
@@ -45,14 +49,17 @@ public class ElevatorTest extends SystemTest {
 
         }
     }
+
     @Override
     public boolean didPass() {
         return Math.abs(Robot.elevator.elevatorMotor.getSelectedSensorPosition() - initEncoderPos) < allowedError;
     }
+
     @Override
     public boolean isFinished() {
         return didPass() || timeSinceInitialized() > timeout;
     }
+
     @Override
     public Subsystem requires() {
         return Robot.elevator;

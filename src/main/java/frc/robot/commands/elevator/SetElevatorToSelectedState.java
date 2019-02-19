@@ -12,13 +12,13 @@ import frc.robot.Robot;
 import frc.robot.subsystems.Elevator;
 
 public class SetElevatorToSelectedState extends Command {
+    private Elevator.HeightState heightState;
+
     public SetElevatorToSelectedState() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
         requires(Robot.elevator);
     }
-
-    private Elevator.HeightState heightState;
 
     // Called just before this Command runs the first time
     @Override

@@ -4,6 +4,7 @@ import java.io.BufferedWriter;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.nio.charset.StandardCharsets;
 import java.util.Vector;
 import java.util.concurrent.ArrayBlockingQueue;
 import edu.wpi.first.wpilibj.Timer;
@@ -34,7 +35,7 @@ public class LogWriter implements Loop {
                 buffer.clear();
             }
 
-            writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file), "utf-8"));
+            writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file), StandardCharsets.UTF_8));
         } catch (IOException e) {
             e.printStackTrace();
         }

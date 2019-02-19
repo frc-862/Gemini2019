@@ -66,7 +66,7 @@ public class LineFollow extends Command {
         turnI = SmartDashboard.getNumber("turnI", turnI);
         turnD = SmartDashboard.getNumber("turnD", turnD);
 
-        if (error == Double.NaN || Math.abs(error) <= 1) {
+        if (Double.isNaN(error) || Math.abs(error) <= 1) {
             errorAcc = 0;
         } else {
             errorAcc += error;

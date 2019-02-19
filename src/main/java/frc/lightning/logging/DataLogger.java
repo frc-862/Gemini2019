@@ -2,6 +2,7 @@ package frc.lightning.logging;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.function.DoubleSupplier;
 import java.util.stream.Collectors;
 
@@ -105,7 +106,7 @@ public class DataLogger implements Loop {
                                        ds.getEventName(), ds.getMatchType().toString(), ds.getMatchNumber()
                                       );
 
-        if (newName != baseFName) {
+        if (!Objects.equals(newName, baseFName)) {
             setBaseFileName(newName);
         }
     }

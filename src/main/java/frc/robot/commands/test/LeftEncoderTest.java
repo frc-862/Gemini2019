@@ -18,34 +18,43 @@ import frc.robot.Robot;
  * Add your docs here.
  */
 public class LeftEncoderTest extends SystemTest {
-    private final int timeout = 2;
-    private final double speed = 0.2;
+    private final static int timeout = 2;
+    private final static double speed = 0.2;
+
     private int initPos;
+
     public LeftEncoderTest() {
         super(FaultCode.Codes.LEFT_ENCODER_NOT_FOUND);
     }
+
     @Override
     public void setup() {
         initPos = Robot.drivetrain.getLeftMaster().getSelectedSensorPosition();
     }
+
     @Override
     public void periodic() {
         Robot.drivetrain.getLeftMaster().set(ControlMode.PercentOutput, speed);
     }
+
     @Override
     public boolean didPass() {
         return (Robot.drivetrain.getLeftMaster().getSelectedSensorPosition() != initPos);
     }
+
     @Override
     public boolean isFinished() {
         return didPass() || timeSinceInitialized() > timeout;
     }
+
     @Override
     public void tearDown() {
         Robot.drivetrain.stop();
     }
+
     @Override
     public Subsystem requires() {
         return Robot.drivetrain;
     }
+
 }

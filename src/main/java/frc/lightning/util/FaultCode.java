@@ -47,7 +47,7 @@ public class FaultCode {
             System.err.println("Unable to append to fault log file: " + getFaultPath() + ": " + e);
             e.printStackTrace();
         }
-    };
+    }
 
     private static Path getFaultPath() {
         return Paths.get("/home/lvuser/faults.log");

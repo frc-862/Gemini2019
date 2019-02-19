@@ -10,9 +10,9 @@ abstract public class SystemTest implements Comparable<SystemTest> {
         SystemTestCommand.register(test);
     }
 
-    static enum Priority {
+    enum Priority {
         HIGH, MED, LOW, DONT_CARE
-    };
+    }
 
     private FaultCode.Codes code;
     private Priority priority;
@@ -45,8 +45,7 @@ abstract public class SystemTest implements Comparable<SystemTest> {
     }
 
     public Subsystem[] requiresMultiple() {
-        Subsystem[] result = { requires() };
-        return result;
+        return new Subsystem[]{ requires() };
     }
 
     public void setup() {/* Config - Talon Modes */}

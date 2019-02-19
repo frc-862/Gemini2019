@@ -99,8 +99,7 @@ public class ConstantBase {
                 }
                 return list;
             } else {
-                Object value = f.get(this);
-                return value;
+                return f.get(this);
             }
         } catch (IllegalArgumentException | IllegalAccessException e) {
             System.err.println("Unexpected error accessing constant: " + e);

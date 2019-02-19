@@ -14,15 +14,13 @@ public class LightningMath {
     public static double talon2fps(double talon) {///////////////////
         // ticks /  100ms = talon
         double ticksps = talon * 10;  // ticks / sec
-        double fps = ticks2feet(ticksps);
-        return fps;
+        return ticks2feet(ticksps);
     }
 
     public static double fps2talon(double fps) {//////////////////
         //double ips = fps * 12;
         double ticksps = fps / wheelCircumference * Constants.TICS_PER_ROTATION;
-        double ticks_per_100ms = ticksps / 10;
-        return ticks_per_100ms;                //ips2talon(fps*12);//fps*12 = ips
+        return ticksps / 10;                //ips2talon(fps*12);//fps*12 = ips
     }
 
     public static double ips2talon(double ips) {

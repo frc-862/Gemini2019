@@ -108,7 +108,7 @@ public class MotionProfile extends Command {
             double direction = forward ? +1 : -1;
             double positionRot = LightningMath.feet2ticks(profile[i][0]);
             double velocityRPM = LightningMath.fps2talon(profile[i][1]);
-            int durationMilliseconds = 20;
+            final int durationMilliseconds = 20;
 
             /* for each point, fill our structure and pass it to API */
             point.timeDur = durationMilliseconds;

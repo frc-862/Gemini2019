@@ -6,7 +6,6 @@ import edu.wpi.first.wpilibj.Notifier;
 
 public class DataLoggerOutOfBand implements DoubleSupplier {
     private double lastValue;
-    private Notifier notifier;
 
     public DataLoggerOutOfBand(DoubleSupplier fn) {
         this(fn, 0.02);
@@ -15,7 +14,7 @@ public class DataLoggerOutOfBand implements DoubleSupplier {
     public DataLoggerOutOfBand(DoubleSupplier fn, double period) {
         DataLoggerOutOfBand me = this;
 
-        notifier = new Notifier(new Runnable() {
+        var notifier = new Notifier(new Runnable() {
             @Override
             public void run() {
                 double newValue = fn.getAsDouble();

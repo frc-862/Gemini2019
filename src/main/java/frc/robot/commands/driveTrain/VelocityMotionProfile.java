@@ -12,10 +12,10 @@ public class VelocityMotionProfile extends Command {
     protected double[][] rightPath;
     private int index = 0;
 
-    private final int POS = 0;
-    private final int VEL = 1;
-    private final int ACC = 2;
-    private final int HDG = 3;
+    private final static int POS = 0;
+    private final static int VEL = 1;
+    private final static int ACC = 2;
+    private final static int HDG = 3;
 
     public VelocityMotionProfile(Path path) {
         requires(Robot.drivetrain);
