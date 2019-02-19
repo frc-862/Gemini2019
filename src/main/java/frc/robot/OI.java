@@ -10,6 +10,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import edu.wpi.first.wpilibj.command.InstantCommand;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.lightning.commands.VelocityMotionProfile;
 import frc.lightning.util.JoystickFilter;
@@ -108,5 +109,14 @@ public class OI {
         SmartDashboard.putData("line follow", new LineFollow());
         SmartDashboard.putData("test move", new TestMove());
         SmartDashboard.putData("Left Near Rocket", new VelocityMotionProfile("src/main/deploy/paths/LeftNearRocket"));
+
+        SmartDashboard.putData("Elevator to collect",
+                new InstantCommand(Robot.elevator, () -> Robot.elevator.goToCollect()));
+        SmartDashboard.putData("Elevator to low",
+                new InstantCommand(Robot.elevator, () -> Robot.elevator.goToLow()));
+        SmartDashboard.putData("Elevator to mid",
+                new InstantCommand(Robot.elevator, () -> Robot.elevator.goToMid()));
+        SmartDashboard.putData("Elevator to high",
+                new InstantCommand(Robot.elevator, () -> Robot.elevator.goToHigh()));
     }
 }

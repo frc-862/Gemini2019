@@ -49,7 +49,6 @@ public class Elevator extends Subsystem {
 
     private HeightState heightState = HeightState.CARGO_COLLECT;
 
-
     public Elevator() {
 
         pieceDetector = new AnalogInput(7);
@@ -58,14 +57,13 @@ public class Elevator extends Subsystem {
         elevatorMotor = new WPI_TalonSRX(RobotMap.elevatorCanId);
         addChild("Elevator Motor", elevatorMotor);
 
-
         /* Factory default hardware to prevent unexpected behavior */
         elevatorMotor.configFactoryDefault();
 
         elevatorMotor.configForwardLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen, 0);
-        elevatorMotor.configReverseLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyClosed, 0);
+        elevatorMotor.configReverseLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen, 0);
 
-        /* Configure Sensor Source for Pirmary PID */
+        /* Configure Sensor Source for Primary PID */
         elevatorMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative,
                 Constants.kPIDLoopIdx,
                 Constants.kTimeoutMs);
@@ -76,7 +74,7 @@ public class Elevator extends Subsystem {
          * Phase sensor to have positive increment when driving Talon Forward (Green LED)
          */
         elevatorMotor.setSensorPhase(true);
-        elevatorMotor.setInverted(false);
+        elevatorMotor.setInverted(true);
 
         /* Set relevant frame periods to be at least as fast as periodic rate */
         elevatorMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_13_Base_PIDF0, 20, Constants.kTimeoutMs);
@@ -87,6 +85,7 @@ public class Elevator extends Subsystem {
         elevatorMotor.configNominalOutputReverse(0, Constants.kTimeoutMs);
         elevatorMotor.configPeakOutputForward(1, Constants.kTimeoutMs);
         elevatorMotor.configPeakOutputReverse(-1, Constants.kTimeoutMs);
+        elevatorMotor.configContinuousCurrentLimit(75);
 
         /* Set Motion Magic gains in slot0 - see documentation */
         elevatorMotor.selectProfileSlot(Constants.kSlotIdx, Constants.kPIDLoopIdx);
@@ -102,13 +101,10 @@ public class Elevator extends Subsystem {
         /* Zero the sensor */
         elevatorMotor.setSelectedSensorPosition(0, Constants.kPIDLoopIdx, Constants.kTimeoutMs);
 
-
         SystemTest.register(new ElevatorTest(Position.HIGH));
         SystemTest.register(new ElevatorTest(Position.LOW));
         SystemTest.register(new ElevatorTest(Position.MED));
         SystemTest.register(new ElevatorTest(Position.COLLECT));
-
-
     }
 
     @Override
@@ -117,7 +113,6 @@ public class Elevator extends Subsystem {
         // setDefaultCommand(new MySpecialCommand());
 
         //setDefaultCommand(new ManualElevator());
-
     }
 
     public void selectHighState() {
@@ -212,11 +207,13 @@ public class Elevator extends Subsystem {
     }
 
     public boolean hasHatchPanel() {
-        return LightningMath.isInRange(pieceDetector.getValue(), Constants.hatchPanelElevatorDistance, Constants.elevatorPieceTolerance); //TODO method stub
+//        return LightningMath.isInRange(pieceDetector.getValue(), Constants.hatchPanelElevatorDistance, Constants.elevatorPieceTolerance); //TODO method stub
+        return false;
     }
 
     public boolean hasCargo() {
-        return LightningMath.isInRange(pieceDetector.getValue(), Constants.cargoElevatorDistance,Constants.elevatorPieceTolerance); //TODO method stub
+//        return LightningMath.isInRange(pieceDetector.getValue(), Constants.cargoElevatorDistance,Constants.elevatorPieceTolerance); //TODO method stub
+        return false;
     }
 
 
