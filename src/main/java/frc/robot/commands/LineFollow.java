@@ -73,7 +73,7 @@ public class LineFollow extends Command {
         }
 
         final double turn = (error * turnP) + (errorAcc * turnI)-(prevError-error)*turnD;
-        
+
         final double velocity = (Math.abs(error) < 1) ? straightVelocity : turningVelocity;
 
         logger.set("error", error);

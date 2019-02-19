@@ -76,7 +76,7 @@ public class GeminiDrivetrain extends CANDrivetrain {
 
     public void configureMotors() {
         //withEachMotor((m) -> m.setNeutralMode(NeutralMode.Brake));
-        
+
         //configurePID(Constants.drivePIDs);
         super.configureMotors();
 
@@ -88,7 +88,7 @@ public class GeminiDrivetrain extends CANDrivetrain {
             m.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, Constants.driveSlot, 0);
             m.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, Constants.motionSlot, 0);
 
-            m.setSensorPhase(true);// TODO TRUE !!! TRUE !!! TRUE !!! TRUE !!! TRUE !!! TRUE !!! TRUE !!! TRUE !!! TRUE !!! TRUE !!! TRUE !!! TRUE !!! TRUE !!! TRUE !!! TRUE !!! TRUE !!! TRUE !!! TRUE !!! TRUE !!! TRUE !!! TRUE !!! TRUE !!! TRUE !!! TRUE !!! TRUE !!! TRUE !!! TRUE !!! TRUE !!! TRUE !!! TRUE !!! TRUE !!! TRUE !!! TRUE !!! TRUE !!! TRUE !!! TRUE !!! TRUE !!! TRUE !!! 
+            m.setSensorPhase(true);// TODO TRUE !!! TRUE !!! TRUE !!! TRUE !!! TRUE !!! TRUE !!! TRUE !!! TRUE !!! TRUE !!! TRUE !!! TRUE !!! TRUE !!! TRUE !!! TRUE !!! TRUE !!! TRUE !!! TRUE !!! TRUE !!! TRUE !!! TRUE !!! TRUE !!! TRUE !!! TRUE !!! TRUE !!! TRUE !!! TRUE !!! TRUE !!! TRUE !!! TRUE !!! TRUE !!! TRUE !!! TRUE !!! TRUE !!! TRUE !!! TRUE !!! TRUE !!! TRUE !!! TRUE !!!
         });
 
         System.out.println("CONFIG");

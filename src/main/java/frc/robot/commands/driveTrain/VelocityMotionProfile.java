@@ -19,10 +19,10 @@ public class VelocityMotionProfile extends Command {
 
     public VelocityMotionProfile(Path path) {
         requires(Robot.drivetrain);
-        
+
         leftPath = path.getLeftPath();
         rightPath = path.getRightPath();//in P V A H
-                                        //   0 1 2 3
+        //   0 1 2 3
 
         logger.addDataElement("expectedLeft");
         logger.addDataElement("expectedRight");
@@ -66,7 +66,7 @@ public class VelocityMotionProfile extends Command {
         Return target Velocity + scaled error + scaled acceleration
         this should be a good velocity to get to where we are going in future
         */
-        return velocity +   (error * kP)                  + (acceleration * kA); 
+        return velocity +   (error * kP)                  + (acceleration * kA);
         //     targetVEL    positionalErrorCompensation   accelerationLookAhead
     }
 

@@ -10,7 +10,7 @@ package frc.robot.paths;
 /**
  * Add your docs here.
  */
-public class RightFarRocket extends Path{
+public class RightFarRocket extends Path {
 
     @Override
     public double[][] getLeftPath() {

@@ -10,7 +10,7 @@ package frc.robot.paths;
 /**
  * Add your docs here.
  */
-public class LeftArc90 extends Path{
+public class LeftArc90 extends Path {
 
     @Override
     public double[][] getLeftPath() {

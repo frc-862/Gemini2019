@@ -42,7 +42,7 @@ public class Elevator extends Subsystem {
 
     public WPI_TalonSRX elevatorMotor;
     public AnalogInput pieceDetector;
-   
+
     public enum HeightState {
         HIGH_ROCKET, MID_ROCKET, LOW_ROCKET, CARGO_COLLECT
     }
@@ -51,14 +51,14 @@ public class Elevator extends Subsystem {
 
 
     public Elevator() {
-     
+
         pieceDetector = new AnalogInput(7);
         addChild("Cargo Detector", pieceDetector);
 
         elevatorMotor = new WPI_TalonSRX(RobotMap.elevatorCanId);
         addChild("Elevator Motor", elevatorMotor);
-        
-        
+
+
         /* Factory default hardware to prevent unexpected behavior */
         elevatorMotor.configFactoryDefault();
 

@@ -15,7 +15,7 @@ import frc.robot.Robot;
 /**
  * Add your docs here.
  */
-public class ElevatorTest extends SystemTest{
+public class ElevatorTest extends SystemTest {
     private final int timeout = 10;
     private int initEncoderPos;
     private int allowedError = 300;
@@ -33,15 +33,15 @@ public class ElevatorTest extends SystemTest{
     @Override
     public void setup() {
         initEncoderPos = Robot.elevator.elevatorMotor.getSelectedSensorPosition();
-        if(desiredPos.equals(Position.LOW)){
+        if(desiredPos.equals(Position.LOW)) {
             Robot.elevator.goToLow();
-        }else if(desiredPos.equals(Position.MED)){
+        } else if(desiredPos.equals(Position.MED)) {
             Robot.elevator.goToMid();
-        }else if(desiredPos.equals(Position.HIGH)){
+        } else if(desiredPos.equals(Position.HIGH)) {
             Robot.elevator.goToHigh();
-        }else if(desiredPos.equals(Position.COLLECT)){
+        } else if(desiredPos.equals(Position.COLLECT)) {
             Robot.elevator.goToCollect();
-        }else{
+        } else {
 
         }
     }

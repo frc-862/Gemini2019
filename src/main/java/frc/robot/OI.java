@@ -48,10 +48,10 @@ public class OI {
         return setElevatorHigh != null &&
                setElevatorHigh.get();
     }
-    public void cargoCollectOut (){
+    public void cargoCollectOut () {
         cargoCollectOut.whenPressed(new DeployCargoCollector());
     }
-    public void cargoCollectIn  (){
+    public void cargoCollectIn  () {
         cargoCollectOut.whenPressed(new RetractCargoCollector());
     }
     public boolean getElevatorMidPosSelect() {
@@ -94,10 +94,10 @@ public class OI {
         climb.whenPressed(new Climb());
         hatchToggle.whenPressed(new HatchCollectorStateChange());
     }
-    public double getCargoCollectPower (){
+    public double getCargoCollectPower () {
         return copilot.getRawAxis(2)-copilot.getRawAxis(3);
     }
-    
+
     public OI() {
         initializeCommands();
         SmartDashboard.putData("CONGG_MOTORS", new ConfigMotors());

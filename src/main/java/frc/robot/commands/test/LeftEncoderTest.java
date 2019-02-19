@@ -17,7 +17,7 @@ import frc.robot.Robot;
 /**
  * Add your docs here.
  */
-public class LeftEncoderTest extends SystemTest{
+public class LeftEncoderTest extends SystemTest {
     private final int timeout = 2;
     private final double speed = 0.2;
     private int initPos;

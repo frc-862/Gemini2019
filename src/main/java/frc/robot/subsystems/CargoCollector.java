@@ -38,7 +38,7 @@ public class CargoCollector extends Subsystem {
                    new DoubleSolenoid(RobotMap.compressorCANId, RobotMap.cargoSolenoidFwdChan, RobotMap.cargoSolenoidRevChan)
                );
     }
-    
+
 
     public CargoCollector(WPI_VictorSPX collector, DoubleSolenoid deployer) {
         String name = getClass().getSimpleName();
@@ -50,14 +50,14 @@ public class CargoCollector extends Subsystem {
         collectRight = new WPI_VictorSPX(RobotMap.rightCollectCanId);
 
         addChild("Right Collect", collectRight);
-        
+
         this.collector = collector;
         addChild("Intake Motor", collector);
 
         this.deployer = deployer;
         addChild("Deployer", deployer);
 
-        
+
         stop();
     }
 

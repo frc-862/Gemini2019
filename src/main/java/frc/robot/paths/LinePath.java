@@ -171,7 +171,7 @@ public class LinePath extends Path {
         {4.9989,0.2396,-9.8994,0}
     };
     /*
-    
+
 
     public double[][] Left = new double[][] {
         {0,0,0,0},

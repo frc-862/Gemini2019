@@ -14,20 +14,20 @@ import frc.robot.Robot;
  * Add your docs here.
  */
 public class ConfigMotors extends InstantCommand {
-  /**
-   * Add your docs here.
-   */
-  public ConfigMotors() {
-    super();
-    // Use requires() here to declare subsystem dependencies
-    // eg. requires(chassis);
-    requires(Robot.drivetrain);
-  }
+    /**
+     * Add your docs here.
+     */
+    public ConfigMotors() {
+        super();
+        // Use requires() here to declare subsystem dependencies
+        // eg. requires(chassis);
+        requires(Robot.drivetrain);
+    }
 
-  // Called once when the command executes
-  @Override
-  protected void initialize() {
-    Robot.drivetrain.configureMotors();
-  }
+    // Called once when the command executes
+    @Override
+    protected void initialize() {
+        Robot.drivetrain.configureMotors();
+    }
 
 }

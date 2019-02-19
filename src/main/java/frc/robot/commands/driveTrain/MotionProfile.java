@@ -112,7 +112,7 @@ public class MotionProfile extends Command {
 
             /* for each point, fill our structure and pass it to API */
             point.timeDur = durationMilliseconds;
-            
+
             point.position = direction * positionRot;
             // Units
             point.velocity = direction * velocityRPM;

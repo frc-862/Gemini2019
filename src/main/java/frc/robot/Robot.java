@@ -62,7 +62,7 @@ public class Robot extends LightningRobot {
         //this.registerAutonomousCommmand("ArcRight90", new MotionProfile(new RightArc90()));
         this.registerAutonomousCommmand("ArcLeft90", new MotionProfile(new LeftArc90()));
         this.registerAutonomousCommmand("Profile Line", new MotionProfile(new LinePath()));
-        
+
     }
 
     @Override
