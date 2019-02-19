@@ -107,6 +107,6 @@ public class OI {
         SmartDashboard.putData("config motors", new ConfigMotors());
         SmartDashboard.putData("line follow", new LineFollow());
         SmartDashboard.putData("test move", new TestMove());
-        SmartDashboard.putData("Left Near Rocket", new VelocityMotionProfile("src/main/deploy/paths/LeftNearRocket"));0
+        SmartDashboard.putData("Left Near Rocket", new VelocityMotionProfile("src/main/deploy/paths/LeftNearRocket"));
     }
 }
