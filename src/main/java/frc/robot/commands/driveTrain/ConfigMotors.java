@@ -5,22 +5,29 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands.cargo;
+package frc.robot.commands.driveTrain;
 
 import edu.wpi.first.wpilibj.command.InstantCommand;
 import frc.robot.Robot;
 
-public class DeployCargoCollector extends InstantCommand {
-    public DeployCargoCollector() {
-        // Use requires() here to declare subsystem dependencies
-        // eg. requires(chassis);
-        requires(Robot.cargoCollector);
-    }
+/**
+ * Add your docs here.
+ */
+public class ConfigMotors extends InstantCommand {
+  /**
+   * Add your docs here.
+   */
+  public ConfigMotors() {
+    super();
+    // Use requires() here to declare subsystem dependencies
+    // eg. requires(chassis);
+    requires(Robot.drivetrain);
+  }
 
-    // Called just before this Command runs the first time
-    @Override
-    protected void initialize() {
-        Robot.cargoCollector.deploy();
-    }
+  // Called once when the command executes
+  @Override
+  protected void initialize() {
+    Robot.drivetrain.configureMotors();
+  }
 
 }

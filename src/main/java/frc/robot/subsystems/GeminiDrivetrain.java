@@ -13,9 +13,12 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.lightning.subsystems.CANDrivetrain;
+import frc.lightning.testing.SystemTest;
 import frc.lightning.util.LightningMath;
 import frc.robot.commands.driveTrain.TankDrive;
 import frc.robot.commands.driveTrain.VelocityTankDrive;
+import frc.robot.commands.test.LeftEncoderTest;
+import frc.robot.commands.test.RightEncoderTest;
 import frc.robot.Constants;
 import frc.robot.RobotMap;
 
@@ -34,17 +37,22 @@ public class GeminiDrivetrain extends CANDrivetrain {
 
     public GeminiDrivetrain(WPI_TalonSRX left, WPI_VictorSPX left2, WPI_TalonSRX right, WPI_VictorSPX right2) {
         // inverts the left, not the right (the true/false)
-        super(left, true, right, false);//1, 4
+        super(left, false, right, true);//1, 4
 
-        // dont Invert the left follower
-        addLeftFollower(left2, true);
-        //invert the right (could add a false, but that is the default)
-        addRightFollower(right2, false);
+        // Invert the left follower
+        addLeftFollower(left2, false  );
+        // Don't invert the right (could add a false, but that is the default)
+        addRightFollower(right2,true);
 
         configureMotors();
 
         // MotorConfig drive = MotorConfig.get("drive.json");
         enableLogging();
+
+
+        SystemTest.register(new LeftEncoderTest());
+        SystemTest.register(new RightEncoderTest());
+
     }
 
     @Override
@@ -69,7 +77,7 @@ public class GeminiDrivetrain extends CANDrivetrain {
     public void configureMotors() {
         //withEachMotor((m) -> m.setNeutralMode(NeutralMode.Brake));
         
-        configurePID(Constants.drivePIDs);
+        //configurePID(Constants.drivePIDs);
         super.configureMotors();
 
         withEachMotor((m) -> m.setNeutralMode(NeutralMode.Brake));
@@ -80,11 +88,11 @@ public class GeminiDrivetrain extends CANDrivetrain {
             m.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, Constants.driveSlot, 0);
             m.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, Constants.motionSlot, 0);
 
-            m.setSensorPhase(true);
+            m.setSensorPhase(true);// TODO TRUE !!! TRUE !!! TRUE !!! TRUE !!! TRUE !!! TRUE !!! TRUE !!! TRUE !!! TRUE !!! TRUE !!! TRUE !!! TRUE !!! TRUE !!! TRUE !!! TRUE !!! TRUE !!! TRUE !!! TRUE !!! TRUE !!! TRUE !!! TRUE !!! TRUE !!! TRUE !!! TRUE !!! TRUE !!! TRUE !!! TRUE !!! TRUE !!! TRUE !!! TRUE !!! TRUE !!! TRUE !!! TRUE !!! TRUE !!! TRUE !!! TRUE !!! TRUE !!! TRUE !!! 
         });
 
         System.out.println("CONFIG");
-//        configurePID(Constants.drivePIDs);
+        configurePID(Constants.drivePIDs);
     }
 
     @Override
