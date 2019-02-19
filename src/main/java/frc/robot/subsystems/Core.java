@@ -68,33 +68,33 @@ public class Core extends Subsystem {
 
 
     private DoubleSupplier[] nebulaSensorValues = {
-            () -> outerLeft.get() ? 0 : 1.0,
-            () -> midLeft.get() ? 0 : 1.0,
-            () -> biasAnalog(innerLeft.getVoltage(), Constants.nebulaMinLeftOutside, Constants.nebulaMaxLeftOutside),
-            () -> biasAnalog(centerLeft.getVoltage(), Constants.nebulaMinLeftInside, Constants.nebulaMaxLeftInside),
-            () -> biasAnalog(centerRight.getVoltage(), Constants.nebulaMinRightInside, Constants.nebulaMaxRightInside),
-            () -> biasAnalog(innerRight.getVoltage(), Constants.nebulaMinRightOutside, Constants.nebulaMaxRightOutside),
-            () -> midRight.get() ? 0 : 1.0,
-            () -> outerRight.get() ? 0 : 1.0,
+        () -> outerLeft.get() ? 0 : 1.0,
+        () -> midLeft.get() ? 0 : 1.0,
+        () -> biasAnalog(innerLeft.getVoltage(), Constants.nebulaMinLeftOutside, Constants.nebulaMaxLeftOutside),
+        () -> biasAnalog(centerLeft.getVoltage(), Constants.nebulaMinLeftInside, Constants.nebulaMaxLeftInside),
+        () -> biasAnalog(centerRight.getVoltage(), Constants.nebulaMinRightInside, Constants.nebulaMaxRightInside),
+        () -> biasAnalog(innerRight.getVoltage(), Constants.nebulaMinRightOutside, Constants.nebulaMaxRightOutside),
+        () -> midRight.get() ? 0 : 1.0,
+        () -> outerRight.get() ? 0 : 1.0,
     };
 
     private DoubleSupplier[] geminiSensorValues = {
 
-            () -> outerLeft.get() ? 0 : 1.0,
-            () -> midLeft.get() ? 0 : 1.0,
-            () -> biasAnalog(innerLeft.getVoltage(), Constants.geminiMinLeftOutside, Constants.geminiMaxLeftOutside),
-            () -> biasAnalog(centerLeft.getVoltage(), Constants.geminiMinLeftInside, Constants.geminiMaxLeftInside),
-            () -> biasAnalog(centerRight.getVoltage(), Constants.geminiMinRightInside, Constants.geminiMaxRightInside),
-            () -> biasAnalog(innerRight.getVoltage(), Constants.geminiMinRightOutside, Constants.geminiMaxRightOutside),
-            () -> midRight.get() ? 0 : 1.0,
-            () -> outerRight.get() ? 0 : 1.0,
+        () -> outerLeft.get() ? 0 : 1.0,
+        () -> midLeft.get() ? 0 : 1.0,
+        () -> biasAnalog(innerLeft.getVoltage(), Constants.geminiMinLeftOutside, Constants.geminiMaxLeftOutside),
+        () -> biasAnalog(centerLeft.getVoltage(), Constants.geminiMinLeftInside, Constants.geminiMaxLeftInside),
+        () -> biasAnalog(centerRight.getVoltage(), Constants.geminiMinRightInside, Constants.geminiMaxRightInside),
+        () -> biasAnalog(innerRight.getVoltage(), Constants.geminiMinRightOutside, Constants.geminiMaxRightOutside),
+        () -> midRight.get() ? 0 : 1.0,
+        () -> outerRight.get() ? 0 : 1.0,
     };
 
     private DoubleSupplier[] rawSensorValues = {
-            () -> innerLeft.getVoltage(),
-            () -> centerLeft.getVoltage(),
-            () -> centerRight.getVoltage(),
-            () -> innerRight.getVoltage(),
+        () -> innerLeft.getVoltage(),
+        () -> centerLeft.getVoltage(),
+        () -> centerRight.getVoltage(),
+        () -> innerRight.getVoltage(),
 
     };
     private DoubleSupplier[] sensorValues = Robot.isGemini() ? geminiSensorValues : nebulaSensorValues;

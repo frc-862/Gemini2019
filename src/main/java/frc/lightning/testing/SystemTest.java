@@ -45,7 +45,7 @@ abstract public class SystemTest implements Comparable<SystemTest> {
     }
 
     public Subsystem[] requiresMultiple() {
-        return new Subsystem[]{ requires() };
+        return new Subsystem[] { requires() };
     }
 
     public void setup() {/* Config - Talon Modes */}
