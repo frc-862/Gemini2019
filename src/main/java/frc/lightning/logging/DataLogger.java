@@ -12,14 +12,17 @@ import edu.wpi.first.wpilibj.Timer;
 import frc.lightning.util.Loop;
 
 public class DataLogger implements Loop {
+    private static final int max_lines = 15000;
     private static DataLogger logger;
-    private static String baseFName = "data";
+    private static String baseFName = "gemini";
 
     private LogWriter writer;
     private ArrayList<String> fieldNames = new ArrayList<>();
     private ArrayList<DoubleSupplier> fieldValues = new ArrayList<>();
     private boolean first_time = true;
     private boolean preventNewElements = false;
+
+    private int line_count = 0;
 
     public static DataLogger getLogger() {
         if (logger == null) {
@@ -78,6 +81,11 @@ public class DataLogger implements Loop {
     }
 
     private void writeValues() {
+        line_count += 1;
+        if (line_count >= max_lines) {
+            reset_file();
+        }
+
         String valueList = fieldValues.parallelStream()
                            .map(fn -> Double.toString(fn.getAsDouble()))
                            .collect(Collectors.joining(","));
@@ -151,9 +159,12 @@ public class DataLogger implements Loop {
         flush();
         writer.setFileName(logFileName().getAbsolutePath());
         writeHeader();
+        line_count = 0;
     }
 
     public static void flush() {
+        System.out.println("Datalogger flush");
+        getLogger().writer.drain();
         getLogger().writer.flush();
     }
 
