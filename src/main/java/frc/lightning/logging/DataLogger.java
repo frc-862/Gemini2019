@@ -105,13 +105,18 @@ public class DataLogger implements Loop {
         if (foundDS) return;
 
         var ds = DriverStation.getInstance();
-        String newName = String.format("%s-%s-%d",
-                                       ds.getEventName(), ds.getMatchType().toString(), ds.getMatchNumber()
-                                      );
+        if (ds != null) {
+            var matchType = ds.getMatchType();
+            if (matchType != DriverStation.MatchType.None) {
+                String newName = String.format("%s-%s-%d",
+                        ds.getEventName(), matchType.toString(), ds.getMatchNumber()
+                );
 
-        if (!Objects.equals(newName, baseFName)) {
-            setBaseFileName(newName);
-            foundDS = true;
+                if (!Objects.equals(newName, baseFName)) {
+                    setBaseFileName(newName);
+                    foundDS = true;
+                }
+            }
         }
     }
 
