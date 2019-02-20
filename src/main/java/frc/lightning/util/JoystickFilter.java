@@ -64,8 +64,7 @@ public class JoystickFilter {
         double output = 0;
 
         input = Math.abs(input);
-        if (input < deadband)
-            input = 0;
+        if (input < deadband) return 0;
 
         switch (mode) {
         case LINEAR:
@@ -86,6 +85,7 @@ public class JoystickFilter {
 
         output = LightningMath.constrain(output, lastOutput - rampDelta, lastOutput + rampDelta);
         lastOutput = output;
+
         return output;
     }
 }
