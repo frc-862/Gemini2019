@@ -13,7 +13,7 @@ import frc.lightning.logging.CommandLogger;
 import frc.robot.Robot;
 
 public class TestMove extends Command {
-    private CommandLogger logger = new CommandLogger(this.getClass().getSimpleName());
+    private CommandLogger logger = new CommandLogger(getClass().getSimpleName());
     private double run_duration = 1.0;
     private double run_power    = 0.2;
 

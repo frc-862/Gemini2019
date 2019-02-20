@@ -14,7 +14,7 @@ import frc.robot.Robot;
 //import frc.robot.subsystems.CargoCollector;
 
 public class CargoCollect extends Command {
-    CommandLogger logger = new CommandLogger(getClass().getCanonicalName());
+    CommandLogger logger = new CommandLogger(getClass().getSimpleName());
     //double groundcollectpwr =.6;
     double elevatordeploypwr =.5;
     public CargoCollect() {

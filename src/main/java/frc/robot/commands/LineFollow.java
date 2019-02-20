@@ -19,7 +19,7 @@ import frc.robot.subsystems.GeminiDrivetrain;
 
 
 public class LineFollow extends Command {
-    CommandLogger logger = new CommandLogger(getClass().getCanonicalName());
+    CommandLogger logger = new CommandLogger(getClass().getSimpleName());
     double turnP = .45;
     double turningVelocity = 4;//might need to go to 5-6 because sometimes does not line up
     double straightVelocity = 1;

@@ -11,7 +11,7 @@ import java.io.FileNotFoundException;
 import java.util.*;
 
 public class VelocityMotionProfile extends Command {
-    CommandLogger logger = new CommandLogger(getClass().getCanonicalName());
+    CommandLogger logger = new CommandLogger(getClass().getSimpleName());
 
     protected double[][] leftPath;
     protected double[][] rightPath;
@@ -64,6 +64,7 @@ public class VelocityMotionProfile extends Command {
         File right = new File(deploy, fname +"_right.csv");
 
         if (left.canRead() && right.canRead()) {
+            logger = new CommandLogger("VMP-" + fname);
             configProfile(
                     readCSVPath(left),
                     readCSVPath(right)
@@ -73,6 +74,7 @@ public class VelocityMotionProfile extends Command {
             right = new File(fname +"_right.csv");
 
             if (left.canRead() && right.canRead()) {
+                logger = new CommandLogger("VMP-" + fname);
                 configProfile(
                         readCSVPath(left),
                         readCSVPath(right)

@@ -13,7 +13,7 @@ public class TalonMotionProfile extends Command {
     protected double[][] leftPath;
     protected double[][] rightPath;
 
-    CommandLogger logger = new CommandLogger(getClass().getCanonicalName());
+    CommandLogger logger = new CommandLogger(getClass().getSimpleName());
     BufferedTrajectoryPointStream leftPS = new BufferedTrajectoryPointStream();
     BufferedTrajectoryPointStream rightPS = new BufferedTrajectoryPointStream();
 
