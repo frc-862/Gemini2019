@@ -8,11 +8,16 @@
 package frc.robot;
 
 public class JoystickConstants {
-    public static int leftThrottleAxis = 1;
-    public static int rightThrottleAxis = 1;
-    public static int driverRightJoy = 0;
-    public static int driverLeftJoy = 1;
-    public static int collectButton = 1;
-    public static int ejectButton = 2;
-    public static int hatchToggle = 1;
+    public static final int leftThrottleAxis = 1;
+    public static final int rightThrottleAxis = 1;
+    public static final int driverRightJoy = 0;
+    public static final int driverLeftJoy = 1;
+    public static final int collectButton = 1;
+    public static final int ejectButton = 2;
+    public static final int hatchToggle = 1;
+	public static final int midButton = 2;
+	public static final int highButton = 4;
+	public static final int elevatorCollectButton = 3;
+	public static final int lowButton = 1;
+	public static final int bottomButton = 7;
 }

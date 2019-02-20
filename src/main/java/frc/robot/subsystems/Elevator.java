@@ -22,6 +22,7 @@ import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.lightning.testing.SystemTest;
 import frc.lightning.util.LightningMath;
 import frc.robot.Constants;
@@ -39,6 +40,8 @@ public class Elevator extends Subsystem {
 
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
+
+    private boolean resetEncoderPos = true;
 
     public WPI_TalonSRX elevatorMotor;
     public AnalogInput pieceDetector;
@@ -80,12 +83,12 @@ public class Elevator extends Subsystem {
         elevatorMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_13_Base_PIDF0, 20, Constants.kTimeoutMs);
         elevatorMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_10_MotionMagic, 20, Constants.kTimeoutMs);
 
-        /* Set the peak and nominal outputs */
-        elevatorMotor.configNominalOutputForward(0, Constants.kTimeoutMs);
-        elevatorMotor.configNominalOutputReverse(0, Constants.kTimeoutMs);
-        elevatorMotor.configPeakOutputForward(1, Constants.kTimeoutMs);
-        elevatorMotor.configPeakOutputReverse(-1, Constants.kTimeoutMs);
-        elevatorMotor.configContinuousCurrentLimit(75);
+        ///* Set the peak and nominal outputs */
+        //elevatorMotor.configNominalOutputForward(0, Constants.kTimeoutMs);
+        //elevatorMotor.configNominalOutputReverse(0, Constants.kTimeoutMs);
+        //elevatorMotor.configPeakOutputForward(1, Constants.kTimeoutMs);
+        //elevatorMotor.configPeakOutputReverse(-1, Constants.kTimeoutMs);
+        ////elevatorMotor.configContinuousCurrentLimit(75);
 
         /* Set Motion Magic gains in slot0 - see documentation */
         elevatorMotor.selectProfileSlot(Constants.kSlotIdx, Constants.kPIDLoopIdx);
@@ -95,8 +98,8 @@ public class Elevator extends Subsystem {
         elevatorMotor.config_kD(Constants.kSlotIdx, Constants.elevatorPIDF.kD, Constants.kTimeoutMs);
 
         /* Set acceleration and vcruise velocity - see documentation */
-        elevatorMotor.configMotionCruiseVelocity(15000, Constants.kTimeoutMs);
-        elevatorMotor.configMotionAcceleration(6000, Constants.kTimeoutMs);
+        elevatorMotor.configMotionCruiseVelocity(640, Constants.kTimeoutMs);
+        elevatorMotor.configMotionAcceleration(150, Constants.kTimeoutMs);
 
         /* Zero the sensor */
         elevatorMotor.setSelectedSensorPosition(0, Constants.kPIDLoopIdx, Constants.kTimeoutMs);
@@ -142,11 +145,23 @@ public class Elevator extends Subsystem {
     public void periodic() {
         var sensors = elevatorMotor.getSensorCollection();
 
-        if (sensors.isFwdLimitSwitchClosed()) {
-            elevatorMotor.setSelectedSensorPosition(Constants.elevatorTopHeight);
-        } else if (sensors.isRevLimitSwitchClosed()) {
-            elevatorMotor.setSelectedSensorPosition(Constants.elevatorBottomHeight);
+        SmartDashboard.putNumber("ElevatorEncoder", elevatorMotor.getSelectedSensorPosition());
+
+        if(resetEncoderPos){
+            if (sensors.isFwdLimitSwitchClosed()) {
+                elevatorMotor.setSelectedSensorPosition(Constants.elevatorTopHeight);
+            } else if (sensors.isRevLimitSwitchClosed()) {
+                elevatorMotor.setSelectedSensorPosition(0);//Constants.elevatorBottomHeight);
+            }
+            resetEncoderPos = false;
         }
+
+
+        int pos = elevatorMotor.getSelectedSensorPosition();
+        if((!resetEncoderPos) && ((pos < Constants.elevatorTopHeight) && (Constants.elevatorBottomHeight < pos))){
+            resetEncoderPos = true;
+        }
+
     }
 
     public void stop() {
@@ -154,56 +169,36 @@ public class Elevator extends Subsystem {
     }
 
     public void goToCollect() {
-        int gravityCompensation = 0;
+        // int gravityCompensation = 0;
 
-        if (hasHatchPanel())
-            gravityCompensation = Constants.elevatorHatchPanelF;
-        else if (hasCargo())
-            gravityCompensation = Constants.elevatorCargoF;
-        else
-            gravityCompensation = Constants.elevatorEmptyF;
+        // if (hasHatchPanel())
+        //     gravityCompensation = Constants.elevatorHatchPanelF;
+        // else if (hasCargo())
+        //     gravityCompensation = Constants.elevatorCargoF;
+        // else
+        //     gravityCompensation = Constants.elevatorEmptyF;
 
-        elevatorMotor.set(ControlMode.MotionMagic, Constants.elevatorCollectHeight, DemandType.ArbitraryFeedForward, gravityCompensation);
+        elevatorMotor.set(ControlMode.MotionMagic, Constants.elevatorCollectHeight);
 
+    }
+
+    public void goToBottom() {
+        elevatorMotor.set(ControlMode.MotionMagic, 0.0);
     }
 
     public void goToLow() {
-        int gravityCompensation = 0;
 
-        if (hasHatchPanel())
-            gravityCompensation = Constants.elevatorHatchPanelF;
-        else if (hasCargo())
-            gravityCompensation = Constants.elevatorCargoF;
-        else
-            gravityCompensation = Constants.elevatorEmptyF;
-
-        elevatorMotor.set(ControlMode.MotionMagic, Constants.elevatorBottomHeight, DemandType.ArbitraryFeedForward, gravityCompensation);
+        elevatorMotor.set(ControlMode.MotionMagic, Constants.elevatorBottomHeight);
     }
 
     public void goToMid() {
-        int gravityCompensation = 0;
 
-        if (hasHatchPanel())
-            gravityCompensation = Constants.elevatorHatchPanelF;
-        else if (hasCargo())
-            gravityCompensation = Constants.elevatorCargoF;
-        else
-            gravityCompensation = Constants.elevatorEmptyF;
-
-        elevatorMotor.set(ControlMode.MotionMagic, Constants.elevatorMiddleHeight, DemandType.ArbitraryFeedForward, gravityCompensation);
+        elevatorMotor.set(ControlMode.MotionMagic, Constants.elevatorMiddleHeight);
     }
 
     public void goToHigh() {
-        int gravityCompensation = 0;
 
-        if (hasHatchPanel())
-            gravityCompensation = Constants.elevatorHatchPanelF;
-        else if (hasCargo())
-            gravityCompensation = Constants.elevatorCargoF;
-        else
-            gravityCompensation = Constants.elevatorEmptyF;
-
-        elevatorMotor.set(ControlMode.MotionMagic, Constants.elevatorTopHeight, DemandType.ArbitraryFeedForward, gravityCompensation);
+        elevatorMotor.set(ControlMode.MotionMagic, Constants.elevatorTopHeight);//, DemandType.ArbitraryFeedForward, gravityCompensation);
     }
 
     public boolean hasHatchPanel() {

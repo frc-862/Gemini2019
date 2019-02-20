@@ -50,17 +50,17 @@ public class Constants extends ConstantBase {
 
 
     // Elevator
-    public final static int elevatorTopHeight = 5000;
-    public final static int elevatorMiddleHeight = 2500;
-    public static final int elevatorCollectHeight = 1000;
-    public final static int elevatorBottomHeight = 750;
+    public final static int elevatorTopHeight = 6535;
+    public final static int elevatorMiddleHeight = 3666;
+    public static final int elevatorCollectHeight = 2160;//loading station cargo collect 2160
+    public final static int elevatorBottomHeight = 815;
     public final static double elevatorDownPower=-0.2;
     public final static double elevatorUpPower=0.4;
     public final static double elevatorCollectorHoldPower=0.07;
     public static final int elevatorHatchPanelF = 0;
     public static final int elevatorCargoF = 0;
     public static final int elevatorEmptyF = 0;
-    public final static Gains elevatorPIDF = new Gains(0, 0, 0, 0, 0, 0);
+    public final static Gains elevatorPIDF = new Gains(4.65, 0, 50.0, 0.0, 0, 0);
     public static final int kPIDLoopIdx = 0;
     public static final int kTimeoutMs = 0;
     public static final int kSlotIdx = 0;

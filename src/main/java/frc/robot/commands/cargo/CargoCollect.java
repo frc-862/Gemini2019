@@ -15,13 +15,13 @@ import frc.robot.Robot;
 
 public class CargoCollect extends Command {
     CommandLogger logger = new CommandLogger(getClass().getCanonicalName());
-    double groundcollectpwr =.6;
+    //double groundcollectpwr =.6;
     double elevatordeploypwr =.5;
     public CargoCollect() {
         // Use requires() here to declare subsystem dependencies
         requires(Robot.cargoCollector);
         SmartDashboard.putNumber("elevator deploy power", elevatordeploypwr);
-        SmartDashboard.putNumber("groundcollectpwr",groundcollectpwr);
+        //SmartDashboard.putNumber("groundcollectpwr",groundcollectpwr);
     }
 
     // Called just before this Command runs the first time
@@ -35,8 +35,8 @@ public class CargoCollect extends Command {
     protected void execute() {
         double pwr=Robot.oi.getCargoCollectPower();
         Robot.cargoCollector.setGroundCollectPower(pwr*elevatordeploypwr);
-        Robot.cargoCollector.setElevatorCollectPower(pwr*groundcollectpwr);
-        groundcollectpwr = SmartDashboard.getNumber("groundcollectpwr",groundcollectpwr);
+        //Robot.cargoCollector.setElevatorCollectPower(pwr*groundcollectpwr);
+        //groundcollectpwr = SmartDashboard.getNumber("groundcollectpwr",groundcollectpwr);
         elevatordeploypwr = SmartDashboard.getNumber("elevator deploy power", elevatordeploypwr);
     }
 

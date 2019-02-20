@@ -15,8 +15,8 @@ public class RobotMap {
 
     // Cargo Collector
     public static final int cargoMotor = 21;
-    public static final int cargoSolenoidFwdChan = 1;
-    public static final int cargoSolenoidRevChan = 2;
+    public static final int cargoSolenoidFwdChan = 2;//1
+    public static final int cargoSolenoidRevChan = 5;//2
 
     // Elevator
     public static final int pieceDetector = 0;
@@ -31,9 +31,9 @@ public class RobotMap {
     public static final int geminiRightSlave = 5;
 
     // Hatch Collector
-    public static final int extenderFwdChan = 3;
-    public static final int extenderRevChan = 4;
-    public static final int grabberFwdChan = 5;
+    public static final int extenderFwdChan = 0;
+    public static final int extenderRevChan = 7;
+    public static final int grabberFwdChan = 1;//5
     public static final int grabberRevChan = 6;
     public static final int hatchDetector = 9;
 

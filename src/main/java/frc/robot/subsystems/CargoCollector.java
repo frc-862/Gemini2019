@@ -17,6 +17,7 @@ import frc.robot.Constants;
 import frc.robot.RobotConstants;
 import frc.robot.RobotMap;
 import frc.robot.commands.cargo.CargoCollect;
+import frc.robot.commands.cargo.SetCargoPower;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 
 /**
@@ -77,7 +78,7 @@ public class CargoCollector extends Subsystem {
 
     @Override
     public void initDefaultCommand() {
-        setDefaultCommand(new CargoCollect());
+        setDefaultCommand(new SetCargoPower());
     }
 
     public void collect() {

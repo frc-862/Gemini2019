@@ -15,6 +15,8 @@ import frc.robot.paths.LinePath;
 import frc.robot.subsystems.*;
 import java.io.File;
 
+import edu.wpi.first.wpilibj.CameraServer;
+
 public class Robot extends LightningRobot {
 
     //Subsystems
@@ -47,14 +49,21 @@ public class Robot extends LightningRobot {
         // set a flag, it is either gemini or nebula
         gemini = ((new File("/home/lvuser/gemini")).exists());
 
-        this.registerAutonomousCommmand("TEST ME NOW", new VelocityMotionProfile(new LinePath()));
-        this.registerAutonomousCommmand("oth3r", new VelocityMotionProfile(new LeftArc90()));
+        //String s = FileUtilities.getFilePath("");
+
+        this.registerAutonomousCommmand("Straight", new VelocityMotionProfile(""));
+        this.registerAutonomousCommmand("LeftSideNear", new VelocityMotionProfile(""));
+        this.registerAutonomousCommmand("RightSideNear", new VelocityMotionProfile(""));
+        //this.registerAutonomousCommmand("TEST ME NOW", new VelocityMotionProfile(new LinePath()));
+        //this.registerAutonomousCommmand("oth3r", new VelocityMotionProfile(new LeftArc90()));
         //this.registerAutonomousCommmand("Profile Arc", new MotionProfile(new ArcSimple()));
         //this.registerAutonomousCommmand("Profile 10FT", new MotionProfile(new TenFtPath()));
         //this.registerAutonomousCommmand("BackRight", new MotionProfile(new RightFarRocket()));
         //this.registerAutonomousCommmand("ArcRight90", new MotionProfile(new RightArc90()));
-        this.registerAutonomousCommmand("ArcLeft90", new MotionProfile(new LeftArc90()));
-        this.registerAutonomousCommmand("Profile Line", new MotionProfile(new LinePath()));
+        //this.registerAutonomousCommmand("ArcLeft90", new MotionProfile(new LeftArc90()));
+        //this.registerAutonomousCommmand("Profile Line", new MotionProfile(new LinePath()));
+
+        CameraServer.getInstance().startAutomaticCapture();
 
     }
 
