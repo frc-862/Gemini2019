@@ -36,6 +36,7 @@ private final double SQUINT_BOUND = 3;
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
+    
     try {
         double squint = Robot.vision.getBestTarget().squint();
 
