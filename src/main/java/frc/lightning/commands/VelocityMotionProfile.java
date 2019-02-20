@@ -1,5 +1,6 @@
 package frc.lightning.commands;
 
+import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.lightning.logging.CommandLogger;
 import frc.robot.Robot;
@@ -58,15 +59,28 @@ public class VelocityMotionProfile extends Command {
 
     private static double[][] emptyPath = new double[2][4];
     public VelocityMotionProfile(String fname) {
-        File left = new File(fname +"_left.csv");
-        File right = new File(fname +"_right.csv");
-        if (left.exists() && right.exists()) {
-            configProfile(emptyPath, emptyPath);
-        } else {
+        File deploy = new File(Filesystem.getDeployDirectory(), "paths)");
+        File left = new File(deploy, fname + "_left.csv");
+        File right = new File(deploy, fname +"_right.csv");
+
+        if (left.canRead() && right.canRead()) {
             configProfile(
                     readCSVPath(left),
                     readCSVPath(right)
             );
+        } else {
+            left = new File(fname +"_left.csv");
+            right = new File(fname +"_right.csv");
+
+            if (left.canRead() && right.canRead()) {
+                configProfile(
+                        readCSVPath(left),
+                        readCSVPath(right)
+                );
+            } else {
+                System.err.println("Unable to load path: " + fname);
+                configProfile(emptyPath, emptyPath);
+            }
         }
     }
 

@@ -9,9 +9,6 @@ package frc.robot;
 
 import frc.lightning.LightningRobot;
 import frc.lightning.commands.VelocityMotionProfile;
-import frc.robot.commands.driveTrain.MotionProfile;
-import frc.robot.paths.LeftArc90;
-import frc.robot.paths.LinePath;
 import frc.robot.subsystems.*;
 import java.io.File;
 
@@ -51,9 +48,13 @@ public class Robot extends LightningRobot {
 
         //String s = FileUtilities.getFilePath("");
 
-        this.registerAutonomousCommmand("Straight", new VelocityMotionProfile(""));
-        this.registerAutonomousCommmand("LeftSideNear", new VelocityMotionProfile(""));
-        this.registerAutonomousCommmand("RightSideNear", new VelocityMotionProfile(""));
+        registerAutonomousCommmand("Straight", new VelocityMotionProfile("straight"));
+        registerAutonomousCommmand("LeftSideNear", new VelocityMotionProfile("left_side_near"));
+        registerAutonomousCommmand("RightSideNear", new VelocityMotionProfile("right_side_near"));
+
+        registerAutonomousCommmand("Test Left Turn", new VelocityMotionProfile("test_left_turn"));
+        registerAutonomousCommmand("Test Right Turn", new VelocityMotionProfile("test_right_turn"));
+
         //this.registerAutonomousCommmand("TEST ME NOW", new VelocityMotionProfile(new LinePath()));
         //this.registerAutonomousCommmand("oth3r", new VelocityMotionProfile(new LeftArc90()));
         //this.registerAutonomousCommmand("Profile Arc", new MotionProfile(new ArcSimple()));
