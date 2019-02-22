@@ -44,6 +44,7 @@ public class Vision extends Subsystem {
   ArrayList<Camera> activeCams = new ArrayList<Camera>();
 
   private boolean isStereo = false;
+  private final double TRACK_WIDTH = 22.0;
   
   @Override
   public void initDefaultCommand() {
@@ -217,21 +218,76 @@ public class Vision extends Subsystem {
       }
       return;
     }
-    for(Camera side : Camera.values()) {
-
-    }
     transformData(Camera.LEFT);
     transformData(Camera.RIGHT);
   }
 
   private void transformData(Camera side) {
-    ArrayList<Target> data;
-    switch(side) {
-      case LEFT:
-        break;
-      case RIGHT:
-        break;
+    if(!activeCams.contains(side)) {
+      return;
     }
+    ArrayList<Target> data = new ArrayList<Target>();
+    for(int i = 0; i < data.size(); i++) {
+      int offsetMultiplier = 1; //Add or subtract camera offset based on which side we are on
+      int squintMultiplier = 1;
+      int squintRelationship = -1; //-1 if center squint < camera squint, 1 otherwise
+      switch(side) {
+        case LEFT:
+          data = leftData;
+          offsetMultiplier = -1;
+          squintMultiplier = -1;
+          break;
+        case RIGHT:
+          data = rightData;
+          break;
+      }
+      Target t = data.get(i);
+      double xComponent = Math.cos(Math.abs(t.squintRad())) * t.standoff();
+      double yComponent = Math.sin(Math.abs(t.squintRad())) * t.standoff();
+      double centerX = 0;
+      if(Math.signum(t.squint()) == offsetMultiplier) {
+        centerX = xComponent + TRACK_WIDTH / 2;
+        squintRelationship *= -1;
+      }
+      else if(xComponent > TRACK_WIDTH / 2) {
+        centerX = xComponent - TRACK_WIDTH / 2;
+        squintMultiplier *= -1;
+      }
+      else {
+        centerX = TRACK_WIDTH / 2 - xComponent;
+      }
+      double centerStandoff = Math.sqrt(Math.pow(centerX, 2) + Math.pow(yComponent, 2));
+      double centerSquint = Math.atan(centerX / yComponent) * squintMultiplier;
+      //If center squint is larger, subtract camera squint from it (center - cam)
+      //If camera squint is larger, sebtract center squint from it (-center + cam)
+      double cameraStandoff2centerStandoff = Math.abs(centerSquint) * squintRelationship - Math.abs(t.squintRad()) * squintRelationship;
+      double centerRotation = t.rotation() + cameraStandoff2centerStandoff;
+
+      data.set(i, new Target(centerStandoff, Math.toDegrees(centerRotation), Math.toDegrees(centerSquint), t.timestamp()));
+    }
+
+    
+  }
+
+  public ArrayList<ArrayList<Target>> dataTransformationUnitTest() {
+    leftData = new ArrayList<Target>();
+    rightData = new ArrayList<Target>();
+    leftData.add(new Target(1, rotation, -45, 0));
+    leftData.add(new Target(1, rotation, 45, 0));
+    leftData.add(new Target(100, rotation, 45, 0));
+    
+    rightData.add(new Target(standoff, rotation, squint, 0));
+    rightData.add(new Target(standoff, rotation, squint, 0));
+    rightData.add(new Target(standoff, rotation, squint, 0));
+
+    transformData(Camera.LEFT);
+    transformData(Camera.RIGHT);
+
+    ArrayList<ArrayList<Target>> transformedData = new ArrayList<ArrayList<Target>>();
+    transformedData.add(leftData);
+    transformedData.add(rightData);
+
+    return transformedData;
   }
 
 }

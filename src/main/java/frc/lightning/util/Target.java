@@ -29,8 +29,14 @@ public class Target {
     public double rotation() {
         return rotation;
     }
+    public double rotRad() {
+        return Math.toRadians(rotation);
+    }
     public double squint() {
         return squint;
+    }
+    public double squintRad() {
+        return Math.toRadians(squint);
     }
     public long timestamp() {
         return timestamp;
