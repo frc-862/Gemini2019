@@ -63,12 +63,15 @@ public class VelocityMotionProfile extends Command {
         File left = new File(deploy, fname + "_left.csv");
         File right = new File(deploy, fname +"_right.csv");
 
+        System.out.println("VMP from " + left);
+        System.out.println("VMP from " + right);
         if (left.canRead() && right.canRead()) {
             logger = new CommandLogger("VMP-" + fname);
             configProfile(
                     readCSVPath(left),
                     readCSVPath(right)
             );
+            System.out.println("VMP " + fname + " built.");
         } else {
             left = new File(fname +"_left.csv");
             right = new File(fname +"_right.csv");
