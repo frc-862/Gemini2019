@@ -23,6 +23,7 @@ import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.lightning.logging.DataLogger;
 import frc.lightning.testing.SystemTest;
 import frc.lightning.util.LightningMath;
 import frc.robot.Constants;
@@ -32,6 +33,8 @@ import frc.robot.commands.elevator.UpdateElevatorState;
 import frc.robot.commands.test.ElevatorTest;
 import frc.robot.commands.test.ElevatorTest.Position;
 import frc.robot.subsystems.Core;
+
+import javax.xml.crypto.Data;
 
 /**
  * Add your docs here.
@@ -67,7 +70,7 @@ public class Elevator extends Subsystem {
         elevatorMotor.configReverseLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen, 0);
 
         /* Configure Sensor Source for Primary PID */
-        elevatorMotor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative,
+        elevatorMotor.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder,
                 Constants.kPIDLoopIdx,
                 Constants.kTimeoutMs);
 
@@ -108,6 +111,9 @@ public class Elevator extends Subsystem {
         SystemTest.register(new ElevatorTest(Position.LOW));
         SystemTest.register(new ElevatorTest(Position.MED));
         SystemTest.register(new ElevatorTest(Position.COLLECT));
+
+        DataLogger.addDataElement("Elevator Position", () -> elevatorMotor.getSelectedSensorPosition());
+        DataLogger.addDataElement("Elevator Setpoint", () -> elevatorMotor.getActiveTrajectoryPosition());
     }
 
     @Override
