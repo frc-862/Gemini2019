@@ -112,8 +112,9 @@ public class Elevator extends Subsystem {
         SystemTest.register(new ElevatorTest(Position.MED));
         SystemTest.register(new ElevatorTest(Position.COLLECT));
 
-        DataLogger.addDataElement("Elevator Position", () -> elevatorMotor.getSelectedSensorPosition());
-        DataLogger.addDataElement("Elevator Setpoint", () -> elevatorMotor.getActiveTrajectoryPosition());
+        DataLogger.addDataElement("ElevatorPosition", () -> elevatorMotor.getSelectedSensorPosition());
+        DataLogger.addDataElement("ElevatorSetpoint", () -> elevatorMotor.getActiveTrajectoryPosition());
+        DataLogger.addDataElement("ElevatorCurrent", () -> elevatorMotor.getOutputCurrent());
     }
 
     @Override

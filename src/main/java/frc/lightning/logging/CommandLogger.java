@@ -79,7 +79,7 @@ public class CommandLogger {
         overflow |= !buffer.offer(s);
     }
 
-    public void writeValues() {
+    protected void writeValues() {
         StringBuilder line = new StringBuilder(Double.toString(Timer.getFPGATimestamp()));
         for (String fld : fieldNames) {
             line.append(",").append(values.get(fld));

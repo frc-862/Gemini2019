@@ -83,7 +83,7 @@ public class TalonMotionProfile extends Command {
         logger.set("leftActual", ls.getQuadraturePosition());
         logger.set("rightActual", rs.getQuadraturePosition());
 
-        logger.writeValues();
+        logger.write();
     }
 
 

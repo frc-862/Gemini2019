@@ -132,7 +132,6 @@ public abstract class CANDrivetrain extends LightningDrivetrain {
             withEachMaster((label, talon) -> {
                 DataLogger.addDataElement(label + "Position", () -> LightningMath.ticks2feet(talon.getSelectedSensorPosition()));
                 DataLogger.addDataElement(label + "Velocity", () -> LightningMath.talon2fps(talon.getSelectedSensorVelocity()));
-                DataLogger.addDataElement("Raw" + label + "Velocity", () -> talon.getSelectedSensorVelocity());
                 DataLogger.addDataElement(label + "MasterCurrent", () -> talon.getOutputCurrent());
                 DataLogger.addDataElement(label + "MasterOutputPercent", () -> talon.getMotorOutputPercent());
             });

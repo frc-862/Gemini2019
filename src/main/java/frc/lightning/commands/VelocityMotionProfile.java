@@ -179,11 +179,11 @@ public class VelocityMotionProfile extends Command {
             final double turn = thetaError * kTheta;
 
             logger.set("expectedTheta", leftPath[index][HDG]);
-            logger.set("expectedTheta", Robot.core.getHeading());
+            logger.set("actualTheta", Robot.core.getHeading());
 
             Robot.drivetrain.setVelocity(leftVel - turn, rightVel + turn);
 
-            logger.writeValues();
+            logger.write();
             index += 1;
         }
     }
