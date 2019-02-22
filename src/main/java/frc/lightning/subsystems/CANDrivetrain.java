@@ -27,6 +27,9 @@ import frc.robot.misc.Gains;
  * Add your docs here.
  */
 public abstract class CANDrivetrain extends LightningDrivetrain {
+    private double leftRequestedVelocity = 0;
+    private double rightRequestedVelocity = 0;
+
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
     class FollowMotor {
@@ -127,12 +130,14 @@ public abstract class CANDrivetrain extends LightningDrivetrain {
     protected void enableLogging() {
         if (!loggingEnabled) {
             withEachMaster((label, talon) -> {
-                DataLogger.addDelayedDataElement(label + "Position", () -> LightningMath.ticks2feet(talon.getSelectedSensorPosition()));
-                DataLogger.addDelayedDataElement(label + "Velocity", () -> LightningMath.talon2fps(talon.getSelectedSensorVelocity()));
-                DataLogger.addDelayedDataElement("Raw" + label + "Velocity", () -> talon.getSelectedSensorVelocity());
-                DataLogger.addDelayedDataElement(label + "MasterCurrent", () -> talon.getOutputCurrent());
-                DataLogger.addDelayedDataElement(label + "MasterOutputPercent", () -> talon.getMotorOutputPercent());
+                DataLogger.addDataElement(label + "Position", () -> LightningMath.ticks2feet(talon.getSelectedSensorPosition()));
+                DataLogger.addDataElement(label + "Velocity", () -> LightningMath.talon2fps(talon.getSelectedSensorVelocity()));
+                DataLogger.addDataElement("Raw" + label + "Velocity", () -> talon.getSelectedSensorVelocity());
+                DataLogger.addDataElement(label + "MasterCurrent", () -> talon.getOutputCurrent());
+                DataLogger.addDataElement(label + "MasterOutputPercent", () -> talon.getMotorOutputPercent());
             });
+            DataLogger.addDataElement("leftRequestedVelocity", () -> LightningMath.talon2fps(leftRequestedVelocity));
+            DataLogger.addDataElement("rightRequestedVelocity", () -> LightningMath.talon2fps(rightRequestedVelocity));
             loggingEnabled = true;
         }
     }
@@ -177,6 +182,8 @@ public abstract class CANDrivetrain extends LightningDrivetrain {
 
     @Override
     public void setVelocity(double left, double right) {
+        leftRequestedVelocity = left;
+        rightRequestedVelocity = right;
         leftMaster.set(ControlMode.Velocity, left);
         rightMaster.set(ControlMode.Velocity, right);
     }
