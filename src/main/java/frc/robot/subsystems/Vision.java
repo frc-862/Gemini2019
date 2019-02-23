@@ -43,8 +43,8 @@ public class Vision extends Subsystem {
 
   ArrayList<Camera> activeCams = new ArrayList<Camera>();
 
-  private boolean isStereo = false;
-  private final double TRACK_WIDTH = 22.0;
+  private boolean isStereo = true;
+  private final double TRACK_WIDTH = 19.0;
   
   @Override
   public void initDefaultCommand() {
@@ -68,6 +68,8 @@ public class Vision extends Subsystem {
      
     targets = new ArrayList<Target>(); //running list
     mergedData = new ArrayList<Target>(); //direct from camera
+    leftData = new ArrayList<Target>(); //direct from camera
+    rightData = new ArrayList<Target>(); //direct from camera
 
   }
 
@@ -75,6 +77,14 @@ public class Vision extends Subsystem {
     collectRawData();
     processData();
     //SmartDashboard.putString("mergedData", mergedData.toString());
+    Target bestTarget = new Target(0,0,0,0);
+    SmartDashboard.putString("leftData", leftData.toString());
+    SmartDashboard.putString("rightData", rightData.toString());
+    try {
+      bestTarget = getBestTarget();
+    }
+    catch(NoTargetException e) {}
+    SmartDashboard.putString("best target", bestTarget.toString());
   }
 /*
   public void startDataStream() {
@@ -220,6 +230,8 @@ public class Vision extends Subsystem {
     }
     transformData(Camera.LEFT);
     transformData(Camera.RIGHT);
+
+    mergeData();
   }
 
   private void transformData(Camera side) {
@@ -227,23 +239,31 @@ public class Vision extends Subsystem {
       return;
     }
     ArrayList<Target> data = new ArrayList<Target>();
+    switch(side) {
+      case LEFT:
+        data = leftData;
+        break;
+      case RIGHT:
+        data = rightData;
+        break;
+    }
     for(int i = 0; i < data.size(); i++) {
+      //System.out.println("transform " + side + " " + i);
       int offsetMultiplier = 1; //Add or subtract camera offset based on which side we are on
       int squintMultiplier = 1;
       int squintRelationship = -1; //-1 if center squint < camera squint, 1 otherwise
+      boolean middleCase = false;
       switch(side) {
         case LEFT:
-          data = leftData;
           offsetMultiplier = -1;
           squintMultiplier = -1;
           break;
         case RIGHT:
-          data = rightData;
           break;
       }
       Target t = data.get(i);
-      double xComponent = Math.cos(Math.abs(t.squintRad())) * t.standoff();
-      double yComponent = Math.sin(Math.abs(t.squintRad())) * t.standoff();
+      double xComponent = Math.sin(Math.abs(t.squintRad())) * t.standoff();
+      double yComponent = Math.cos(Math.abs(t.squintRad())) * t.standoff();
       double centerX = 0;
       if(Math.signum(t.squint()) == offsetMultiplier) {
         centerX = xComponent + TRACK_WIDTH / 2;
@@ -255,30 +275,72 @@ public class Vision extends Subsystem {
       }
       else {
         centerX = TRACK_WIDTH / 2 - xComponent;
+        middleCase = true;
       }
       double centerStandoff = Math.sqrt(Math.pow(centerX, 2) + Math.pow(yComponent, 2));
-      double centerSquint = Math.atan(centerX / yComponent) * squintMultiplier;
+      double centerSquint = 0;
+      if(Math.abs(t.squint()) < 0.01) {
+        centerSquint = Math.atan(centerX / yComponent) * offsetMultiplier;
+      }
+      else {
+        centerSquint = Math.atan(centerX / yComponent) * squintMultiplier;
+      }
       //If center squint is larger, subtract camera squint from it (center - cam)
       //If camera squint is larger, sebtract center squint from it (-center + cam)
-      double cameraStandoff2centerStandoff = Math.abs(centerSquint) * squintRelationship - Math.abs(t.squintRad()) * squintRelationship;
-      double centerRotation = t.rotation() + cameraStandoff2centerStandoff;
+      double cameraStandoff2centerStandoff = 0;
+      if(middleCase ) {
+        cameraStandoff2centerStandoff = Math.PI - (Math.PI / 2 - Math.abs(t.squintRad())) - (Math.PI / 2 - Math.abs(centerSquint));
+      }
+      else {
+        cameraStandoff2centerStandoff = Math.abs(centerSquint) * squintRelationship - Math.abs(t.squintRad()) * squintRelationship;
+      }
+      //System.out.println(side + " " + i + " standoff2standoff = " + Math.toDegrees(cameraStandoff2centerStandoff));
+      double centerRotation = t.rotRad() + (cameraStandoff2centerStandoff * offsetMultiplier * -1);
 
       data.set(i, new Target(centerStandoff, Math.toDegrees(centerRotation), Math.toDegrees(centerSquint), t.timestamp()));
     }
+    switch(side) {
+      case LEFT:
+        leftData = data;
+        break;
+      case RIGHT:
+        rightData = data;
+        break;
+    }
+  }
 
-    
+  private void mergeData() {
+    mergedData = leftData;
   }
 
   public ArrayList<ArrayList<Target>> dataTransformationUnitTest() {
     leftData = new ArrayList<Target>();
     rightData = new ArrayList<Target>();
-    leftData.add(new Target(1, rotation, -45, 0));
-    leftData.add(new Target(1, rotation, 45, 0));
-    leftData.add(new Target(100, rotation, 45, 0));
+
+    //standoff, rotation, squint, time
+    leftData.add(new Target(1, 10, 0, 0));
+    leftData.add(new Target(1, -10, 0, 0));
+
+    leftData.add(new Target(1, 10, -45, 0));
+    leftData.add(new Target(1, -10, -45, 0));
+
+    leftData.add(new Target(1, 10, 45, 0));
+    leftData.add(new Target(1, -10, 45, 0));
+
+    leftData.add(new Target(100, 10, 45, 0));
+    leftData.add(new Target(100, -10, 45, 0));
+
+    rightData.add(new Target(1, 10, 0, 0));
+    rightData.add(new Target(1, -10, 0, 0));
+
+    rightData.add(new Target(1, 10, 45, 0));
+    rightData.add(new Target(1, -10, 45, 0));
+
+    rightData.add(new Target(1, 10, -45, 0));
+    rightData.add(new Target(1, -10, -45, 0));
     
-    rightData.add(new Target(standoff, rotation, squint, 0));
-    rightData.add(new Target(standoff, rotation, squint, 0));
-    rightData.add(new Target(standoff, rotation, squint, 0));
+    rightData.add(new Target(100, 10, -45, 0));
+    rightData.add(new Target(100, -10, -45, 0));
 
     transformData(Camera.LEFT);
     transformData(Camera.RIGHT);
