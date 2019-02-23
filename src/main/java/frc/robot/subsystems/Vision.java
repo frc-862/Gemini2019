@@ -147,6 +147,7 @@ public class Vision extends Subsystem {
           }
           catch(Exception e) {
             activeCams.remove(Camera.LEFT);
+            leftData = new ArrayList<Target>();
             continue;
           }
           break;
@@ -162,6 +163,7 @@ public class Vision extends Subsystem {
           }
           catch(Exception e) {
             activeCams.remove(Camera.RIGHT);
+            rightData = new ArrayList<Target>();
             continue;
           }
           break;
@@ -178,6 +180,7 @@ public class Vision extends Subsystem {
       //Collect data
       //SmartDashboard.putString("vision step", "collect");
       String lastFrame = data.substring(data.lastIndexOf("Frame"));
+     // System.out.println(lastFrame.substring(lastFrame.indexOf('[')));
       //long frameNum = Long.parseLong(lastFrame.substring(lastFrame.indexOf("Frame:") + 6, lastFrame.indexOf(",")));
       int numTargets = Integer.parseInt(lastFrame.substring(lastFrame.indexOf("Targets:") + 8, lastFrame.indexOf(" (out")));
       
@@ -185,10 +188,26 @@ public class Vision extends Subsystem {
       ArrayList<Target> parsed = new ArrayList<Target>();
       if(numTargets == 0) {
         lastCameraUpdate = currentTime;
+        switch(cam) {
+          case LEFT:
+            leftData = new ArrayList<Target>();
+            break;
+          case RIGHT:
+            rightData = new ArrayList<Target>();
+            break;
+        }
         SmartDashboard.putString("vision step", "no targets");
       }
       //Check that target information is intact
       else if(lastFrame.endsWith("]\r\n")) {
+        switch(cam) {
+        case LEFT:
+          leftData = new ArrayList<Target>();
+          break;
+        case RIGHT:
+          rightData = new ArrayList<Target>();
+          break;
+        }
         String currentTarget;
         for(int i = 0; i < numTargets; i++) {
           SmartDashboard.putString("vision step", "grab target data");
@@ -236,6 +255,7 @@ public class Vision extends Subsystem {
 
   private void transformData(Camera side) {
     if(!activeCams.contains(side)) {
+      System.out.println(side.toString() + "not connected");
       return;
     }
     ArrayList<Target> data = new ArrayList<Target>();
@@ -247,6 +267,7 @@ public class Vision extends Subsystem {
         data = rightData;
         break;
     }
+    System.out.println(data.toString());
     for(int i = 0; i < data.size(); i++) {
       //System.out.println("transform " + side + " " + i);
       int offsetMultiplier = 1; //Add or subtract camera offset based on which side we are on
