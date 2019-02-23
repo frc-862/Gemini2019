@@ -97,7 +97,7 @@ public class Core extends Subsystem {
         () -> innerRight.getVoltage(),
 
     };
-    private DoubleSupplier[] sensorValues = Robot.isGemini() ? geminiSensorValues : nebulaSensorValues;
+    private DoubleSupplier[] sensorValues = nebulaSensorValues;//Robot.isGemini() ? geminiSensorValues : nebulaSensorValues;
 
     // Put methods for controlling this subsystem
     // here. Call these from Commajnds.

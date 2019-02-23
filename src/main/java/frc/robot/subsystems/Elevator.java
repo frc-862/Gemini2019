@@ -21,6 +21,7 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.lightning.logging.DataLogger;
@@ -50,6 +51,9 @@ public class Elevator extends Subsystem {
 
     public WPI_TalonSRX elevatorMotor;
     public AnalogInput pieceDetector;
+
+    public double timeInPos = 0;
+    public final double timeoutPosition = 0;
 
     public enum HeightState {
         HIGH_ROCKET, MID_ROCKET, LOW_ROCKET, CARGO_COLLECT
@@ -176,12 +180,31 @@ public class Elevator extends Subsystem {
             elevatorMotor.setSelectedSensorPosition(Constants.elevatorTopHeight);
         }
 
+        if(timeSinceLastUpdate() > 1.0){
+            stop();
+        }
+
         SmartDashboard.putBoolean("ResetEncoderPos", resetEncoderPos);
 
     }
 
-    public void MicroAdjust(){
-        elevatorMotor.set(ControlMode.MotionMagic, elevatorMotor.getActiveTrajectoryPosition() + (Constants.microAdjAmt * Robot.oi.getLeftDirection()));
+    public void MicroAdjustUp(){
+        timeInPos = Timer.getFPGATimestamp();
+        elevatorMotor.set(ControlMode.MotionMagic, elevatorMotor.getActiveTrajectoryPosition() + (Constants.microAdjAmt * 1));
+    }
+
+    public void MicroAdjustDown(){
+        timeInPos = Timer.getFPGATimestamp();
+        elevatorMotor.set(ControlMode.MotionMagic, elevatorMotor.getActiveTrajectoryPosition() + (Constants.microAdjAmt * -1));
+    }
+
+    public void MicroAdjustAmt(double amt){
+        timeInPos = Timer.getFPGATimestamp();
+        elevatorMotor.set(ControlMode.MotionMagic, elevatorMotor.getActiveTrajectoryPosition() + amt);
+    }
+
+    public double timeSinceLastUpdate(){
+        return Timer.getFPGATimestamp() - timeInPos;
     }
 
     public void goToCollect() {
@@ -193,27 +216,32 @@ public class Elevator extends Subsystem {
         //     gravityCompensation = Constants.elevatorCargoF;
         // else
         //     gravityCompensation = Constants.elevatorEmptyF;
-
+        timeInPos = Timer.getFPGATimestamp();
         elevatorMotor.set(ControlMode.MotionMagic, Constants.elevatorCollectHeight);
 
     }
 
+    public void stop(){
+        elevatorMotor.set(ControlMode.PercentOutput, 0.0);
+    }
+
     public void goToBottom() {
+        timeInPos = Timer.getFPGATimestamp();
         elevatorMotor.set(ControlMode.MotionMagic, 0.0);
     }
 
     public void goToLow() {
-
+        timeInPos = Timer.getFPGATimestamp();
         elevatorMotor.set(ControlMode.MotionMagic, Constants.elevatorBottomHeight);
     }
 
     public void goToMid() {
-
+        timeInPos = Timer.getFPGATimestamp();
         elevatorMotor.set(ControlMode.MotionMagic, Constants.elevatorMiddleHeight);
     }
 
     public void goToHigh() {
-
+        timeInPos = Timer.getFPGATimestamp();
         elevatorMotor.set(ControlMode.MotionMagic, Constants.elevatorTopHeight);//, DemandType.ArbitraryFeedForward, gravityCompensation);
     }
 

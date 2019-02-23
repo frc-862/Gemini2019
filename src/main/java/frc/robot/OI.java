@@ -68,6 +68,10 @@ public class OI {
         else return 0;
     }
 
+    public double getCopilotLeft(){
+        return -driveFilter.filter(copilot.getRawAxis(JoystickConstants.leftJoyYAxis));
+    }
+
     public boolean getElevatorMidPosSelect() {
         return setElevatorMid != null &&
                setElevatorMid.get();
@@ -118,19 +122,20 @@ public class OI {
         hatchRetract.whenPressed(new RetractHatchCollector());
         hatchExtend.whenPressed(new ExtendHatchCollector());
         
-        (new JoystickButton(copilot, 6)).whenPressed(new InstantCommand(Robot.hatchPanelCollector, () -> Robot.hatchPanelCollector.collect()));
-        (new JoystickButton(copilot, 5)).whenPressed(new InstantCommand(Robot.hatchPanelCollector, () -> Robot.hatchPanelCollector.eject()));
+        (new JoystickButton(copilot, 5)).whenPressed(new InstantCommand(Robot.hatchPanelCollector, () -> Robot.hatchPanelCollector.collect()));
+        (new JoystickButton(copilot, 6)).whenPressed(new InstantCommand(Robot.hatchPanelCollector, () -> Robot.hatchPanelCollector.eject()));
+        (new JoystickButton(driverRight, 1)).whileHeld(new LineFollow());
 
-        (new JoystickButton(copilot, JoystickConstants.highButton)).whenPressed(new InstantCommand(Robot.elevator, () -> Robot.elevator.goToHigh()));
-        (new JoystickButton(copilot, JoystickConstants.midButton)).whenPressed(new InstantCommand(Robot.elevator, () -> Robot.elevator.goToMid()));
-        (new JoystickButton(copilot, JoystickConstants.elevatorCollectButton)).whenPressed(new InstantCommand(Robot.elevator, () -> Robot.elevator.goToCollect()));
-        (new JoystickButton(copilot, JoystickConstants.lowButton)).whenPressed(new InstantCommand(Robot.elevator, () -> Robot.elevator.goToLow()));
-        (new JoystickButton(copilot, JoystickConstants.bottomButton)).whenPressed(new InstantCommand(Robot.elevator, () -> Robot.elevator.goToBottom()));
+        (new JoystickButton(copilot, JoystickConstants.highButton)).            whileHeld(new InstantCommand(Robot.elevator, () -> Robot.elevator.goToHigh()));
+        (new JoystickButton(copilot, JoystickConstants.midButton)).             whileHeld(new InstantCommand(Robot.elevator, () -> Robot.elevator.goToMid()));
+        (new JoystickButton(copilot, JoystickConstants.elevatorCollectButton)). whileHeld(new InstantCommand(Robot.elevator, () -> Robot.elevator.goToCollect()));
+        (new JoystickButton(copilot, JoystickConstants.lowButton)).             whileHeld(new InstantCommand(Robot.elevator, () -> Robot.elevator.goToLow()));
+        (new JoystickButton(copilot, JoystickConstants.bottomButton)).          whileHeld(new InstantCommand(Robot.elevator, () -> Robot.elevator.goToBottom()));
 
     }
 
     public double getCargoCollectPower () {
-        return copilot.getRawAxis(2)-copilot.getRawAxis(3);
+        return (copilot.getRawAxis(3)-copilot.getRawAxis(2))/3;
     }
 
     public OI() {

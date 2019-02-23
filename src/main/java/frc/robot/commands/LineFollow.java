@@ -85,6 +85,7 @@ public class LineFollow extends Command {
         Robot.drivetrain.setVelocity(velocity + turn, velocity - turn);
         prevError = error;
     }
+    ;
 
 
     // Make this return true when this Command no longer needs to run execute()
