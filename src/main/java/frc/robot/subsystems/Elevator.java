@@ -225,6 +225,10 @@ public class Elevator extends Subsystem {
         elevatorMotor.set(ControlMode.PercentOutput, 0.0);
     }
 
+    public void resetTimer(){
+        timeInPos = Timer.getFPGATimestamp();
+    }
+
     public void goToBottom() {
         timeInPos = Timer.getFPGATimestamp();
         elevatorMotor.set(ControlMode.MotionMagic, 0.0);
