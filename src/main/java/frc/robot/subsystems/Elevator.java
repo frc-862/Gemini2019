@@ -103,8 +103,8 @@ public class Elevator extends Subsystem {
         elevatorMotor.config_kD(Constants.kSlotIdx, Constants.elevatorPIDF.kD, Constants.kTimeoutMs);
 
         /* Set acceleration and vcruise velocity - see documentation */
-        elevatorMotor.configMotionCruiseVelocity(640, Constants.kTimeoutMs);
-        elevatorMotor.configMotionAcceleration(150, Constants.kTimeoutMs);
+        elevatorMotor.configMotionCruiseVelocity(1400, Constants.kTimeoutMs);
+        elevatorMotor.configMotionAcceleration(500, Constants.kTimeoutMs);
 
         /* Zero the sensor */
         elevatorMotor.setSelectedSensorPosition(0, Constants.kPIDLoopIdx, Constants.kTimeoutMs);
@@ -156,20 +156,27 @@ public class Elevator extends Subsystem {
 
         SmartDashboard.putNumber("ElevatorEncoder", elevatorMotor.getSelectedSensorPosition());
 
-        if(resetEncoderPos){
-            if (sensors.isFwdLimitSwitchClosed()) {
-                elevatorMotor.setSelectedSensorPosition(Constants.elevatorTopHeight);
-            } else if (sensors.isRevLimitSwitchClosed()) {
-                elevatorMotor.setSelectedSensorPosition(0);//Constants.elevatorBottomHeight);
-            }
-            resetEncoderPos = false;
-        }
-
-
         int pos = elevatorMotor.getSelectedSensorPosition();
-        if((!resetEncoderPos) && ((pos < Constants.elevatorTopHeight) && (Constants.elevatorBottomHeight < pos))){
+
+        if(resetEncoderPos){//default true
+            if (sensors.isFwdLimitSwitchClosed()) {//check if at top - if so, set sensor pos to top height
+                elevatorMotor.setSelectedSensorPosition(Constants.elevatorTopHeight);
+                resetEncoderPos = false;
+            } else if (sensors.isRevLimitSwitchClosed()) {//if at bottom, set to 0
+                elevatorMotor.setSelectedSensorPosition(0);//Constants.elevatorBottomHeight);
+                resetEncoderPos = false;
+            } 
+        }else if((pos > Constants.elevatorInchHigh) && (pos < Constants.elevatorTopHeight)){//if between inch high and top height, reset encoders next cycle
             resetEncoderPos = true;
         }
+
+        if (pos < 0) {
+            elevatorMotor.setSelectedSensorPosition(0);
+        }else if(pos > Constants.elevatorTopHeight){
+            elevatorMotor.setSelectedSensorPosition(Constants.elevatorTopHeight);
+        }
+
+        SmartDashboard.putBoolean("ResetEncoderPos", resetEncoderPos);
 
     }
 

@@ -105,7 +105,7 @@ public class OI {
 
     public double getMicroAdjAmt(){
         if(copilot == null) return 0.0;
-        return driveFilter.filter(-copilot.getRawAxis(JoystickConstants.leftJoyYAxis));
+        return driveFilter.filter(copilot.getRawAxis(JoystickConstants.leftJoyYAxis));
     }
 
     public boolean getCargoCollectButton() {
