@@ -20,4 +20,5 @@ public class JoystickConstants {
 	public static final int elevatorCollectButton = 3;
 	public static final int lowButton = 1;
 	public static final int bottomButton = 7;
+	public static int leftJoyYAxis = 1;//TODO make this a real axis. 
 }

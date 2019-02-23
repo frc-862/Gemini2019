@@ -62,6 +62,12 @@ public class OI {
         cargoCollectOut.whenPressed(new RetractCargoCollector());
     }
 
+    public int getLeftDirection(){
+        if(copilot.getRawAxis(JoystickConstants.leftJoyYAxis) > 0) return 1;
+        else if(copilot.getRawAxis(JoystickConstants.leftJoyYAxis) < 0) return -1;
+        else return 0;
+    }
+
     public boolean getElevatorMidPosSelect() {
         return setElevatorMid != null &&
                setElevatorMid.get();
@@ -95,6 +101,11 @@ public class OI {
     public double getRightPower() {
         if (driverRight == null) return 0;
         return driveFilter.filter(-driverRight.getRawAxis(JoystickConstants.leftThrottleAxis));
+    }
+
+    public double getMicroAdjAmt(){
+        if(copilot == null) return 0.0;
+        return driveFilter.filter(-copilot.getRawAxis(JoystickConstants.leftJoyYAxis));
     }
 
     public boolean getCargoCollectButton() {

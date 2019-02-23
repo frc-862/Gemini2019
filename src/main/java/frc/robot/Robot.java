@@ -45,24 +45,12 @@ public class Robot extends LightningRobot {
 
         // set a flag, it is either gemini or nebula
         gemini = ((new File("/home/lvuser/gemini")).exists());
-
-        //String s = FileUtilities.getFilePath("");
-
+        
         registerAutonomousCommmand("Straight", new VelocityMotionProfile("straight"));
         registerAutonomousCommmand("LeftSideNear", new VelocityMotionProfile("left_side_near"));
         registerAutonomousCommmand("RightSideNear", new VelocityMotionProfile("right_side_near"));
-
         registerAutonomousCommmand("Test Left Turn", new VelocityMotionProfile("test_left_turn"));
         registerAutonomousCommmand("Test Right Turn", new VelocityMotionProfile("test_right_turn"));
-
-        //this.registerAutonomousCommmand("TEST ME NOW", new VelocityMotionProfile(new LinePath()));
-        //this.registerAutonomousCommmand("oth3r", new VelocityMotionProfile(new LeftArc90()));
-        //this.registerAutonomousCommmand("Profile Arc", new MotionProfile(new ArcSimple()));
-        //this.registerAutonomousCommmand("Profile 10FT", new MotionProfile(new TenFtPath()));
-        //this.registerAutonomousCommmand("BackRight", new MotionProfile(new RightFarRocket()));
-        //this.registerAutonomousCommmand("ArcRight90", new MotionProfile(new RightArc90()));
-        //this.registerAutonomousCommmand("ArcLeft90", new MotionProfile(new LeftArc90()));
-        //this.registerAutonomousCommmand("Profile Line", new MotionProfile(new LinePath()));
 
         CameraServer.getInstance().startAutomaticCapture();
 

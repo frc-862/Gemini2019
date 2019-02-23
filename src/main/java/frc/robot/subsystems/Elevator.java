@@ -27,8 +27,10 @@ import frc.lightning.logging.DataLogger;
 import frc.lightning.testing.SystemTest;
 import frc.lightning.util.LightningMath;
 import frc.robot.Constants;
+import frc.robot.Robot;
 import frc.robot.RobotMap;
 import frc.robot.commands.elevator.ManualElevator;
+import frc.robot.commands.elevator.MicroAdjust;
 import frc.robot.commands.elevator.UpdateElevatorState;
 import frc.robot.commands.test.ElevatorTest;
 import frc.robot.commands.test.ElevatorTest.Position;
@@ -122,7 +124,7 @@ public class Elevator extends Subsystem {
         // Set the default command for a subsystem here.
         // setDefaultCommand(new MySpecialCommand());
 
-        //setDefaultCommand(new ManualElevator());
+        setDefaultCommand(new MicroAdjust());
     }
 
     public void selectHighState() {
@@ -171,8 +173,8 @@ public class Elevator extends Subsystem {
 
     }
 
-    public void stop() {
-        elevatorMotor.set(ControlMode.PercentOutput, 0.0);
+    public void MicroAdjust(){
+        elevatorMotor.set(ControlMode.MotionMagic, elevatorMotor.getActiveTrajectoryPosition() + (Constants.microAdjAmt * Robot.oi.getLeftDirection()));
     }
 
     public void goToCollect() {

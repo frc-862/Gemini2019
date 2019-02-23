@@ -25,6 +25,7 @@ public class Constants extends ConstantBase {
     public static Gains motionPathPIDs;
     public static final int motionSlot = 1;
     public static Gains drivePIDs;
+
     public static final int driveSlot = 0;
 
     static {
@@ -50,6 +51,7 @@ public class Constants extends ConstantBase {
 
 
     // Elevator
+    public final static int microAdjAmt = 10;
     public final static int elevatorTopHeight = 6535;
     public final static int elevatorMiddleHeight = 3666;
     public static final int elevatorCollectHeight = 2160;//loading station cargo collect 2160
