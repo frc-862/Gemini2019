@@ -92,7 +92,7 @@ public class OI {
                setElevatorCargoCollect.get();
     }
 
-    private final double deadBand = 0.20;
+    private final double deadBand = 0.10;
     private final double minPower = 0.1;
     private final double maxPower = 1.0;
     private JoystickFilter driveFilter = new JoystickFilter(deadBand, minPower, maxPower, JoystickFilter.Mode.CUBED);
