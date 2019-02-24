@@ -62,13 +62,13 @@ public class OI {
         cargoCollectOut.whenPressed(new RetractCargoCollector());
     }
 
-    public int getLeftDirection(){
+    public int getLeftDirection() {
         if(copilot.getRawAxis(JoystickConstants.leftJoyYAxis) > 0) return 1;
         else if(copilot.getRawAxis(JoystickConstants.leftJoyYAxis) < 0) return -1;
         else return 0;
     }
 
-    public double getCopilotLeft(){
+    public double getCopilotLeft() {
         return -driveFilter.filter(copilot.getRawAxis(JoystickConstants.leftJoyYAxis));
     }
 
@@ -107,7 +107,7 @@ public class OI {
         return driveFilter.filter(-driverRight.getRawAxis(JoystickConstants.leftThrottleAxis));
     }
 
-    public double getMicroAdjAmt(){
+    public double getMicroAdjAmt() {
         if(copilot == null) return 0.0;
         return driveFilter.filter(copilot.getRawAxis(JoystickConstants.leftJoyYAxis));
     }
@@ -121,7 +121,7 @@ public class OI {
         climb.whenPressed(new Climb());
         hatchRetract.whenPressed(new RetractHatchCollector());
         hatchExtend.whenPressed(new ExtendHatchCollector());
-        
+
         (new JoystickButton(copilot, 5)).whenPressed(new InstantCommand(Robot.hatchPanelCollector, () -> Robot.hatchPanelCollector.collect()));
         (new JoystickButton(copilot, 6)).whenPressed(new InstantCommand(Robot.hatchPanelCollector, () -> Robot.hatchPanelCollector.eject()));
         (new JoystickButton(driverRight, 1)).whileHeld(new LineFollow());
@@ -156,12 +156,12 @@ public class OI {
         SmartDashboard.putData("Left Near Rocket", new VelocityMotionProfile("src/main/deploy/paths/LeftNearRocket"));
 
         SmartDashboard.putData("Elevator to collect",
-                new InstantCommand(Robot.elevator, () -> Robot.elevator.goToCollect()));
+                               new InstantCommand(Robot.elevator, () -> Robot.elevator.goToCollect()));
         SmartDashboard.putData("Elevator to low",
-                new InstantCommand(Robot.elevator, () -> Robot.elevator.goToLow()));
+                               new InstantCommand(Robot.elevator, () -> Robot.elevator.goToLow()));
         SmartDashboard.putData("Elevator to mid",
-                new InstantCommand(Robot.elevator, () -> Robot.elevator.goToMid()));
+                               new InstantCommand(Robot.elevator, () -> Robot.elevator.goToMid()));
         SmartDashboard.putData("Elevator to high",
-                new InstantCommand(Robot.elevator, () -> Robot.elevator.goToHigh()));
+                               new InstantCommand(Robot.elevator, () -> Robot.elevator.goToHigh()));
     }
 }

@@ -68,8 +68,8 @@ public class VelocityMotionProfile extends Command {
         if (left.canRead() && right.canRead()) {
             logger = new CommandLogger("VMP-" + fname);
             configProfile(
-                    readCSVPath(left),
-                    readCSVPath(right)
+                readCSVPath(left),
+                readCSVPath(right)
             );
             System.out.println("VMP " + fname + " built.");
         } else {
@@ -79,8 +79,8 @@ public class VelocityMotionProfile extends Command {
             if (left.canRead() && right.canRead()) {
                 logger = new CommandLogger("VMP-" + fname);
                 configProfile(
-                        readCSVPath(left),
-                        readCSVPath(right)
+                    readCSVPath(left),
+                    readCSVPath(right)
                 );
             } else {
                 System.err.println("Unable to load path: " + fname);

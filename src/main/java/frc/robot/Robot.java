@@ -45,7 +45,7 @@ public class Robot extends LightningRobot {
 
         // set a flag, it is either gemini or nebula
         gemini = ((new File("/home/lvuser/gemini")).exists());
-        
+
         registerAutonomousCommmand("Straight", new VelocityMotionProfile("straight"));
         registerAutonomousCommmand("LeftSideNear", new VelocityMotionProfile("left_side_near"));
         registerAutonomousCommmand("RightSideNear", new VelocityMotionProfile("right_side_near"));

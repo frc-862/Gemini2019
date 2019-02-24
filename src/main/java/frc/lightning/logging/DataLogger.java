@@ -109,8 +109,8 @@ public class DataLogger implements Loop {
             var matchType = ds.getMatchType();
             if (matchType != DriverStation.MatchType.None) {
                 String newName = String.format("%s-%s-%d",
-                        ds.getEventName(), matchType.toString(), ds.getMatchNumber()
-                );
+                                               ds.getEventName(), matchType.toString(), ds.getMatchNumber()
+                                              );
 
                 if (!Objects.equals(newName, baseFName)) {
                     setBaseFileName(newName);

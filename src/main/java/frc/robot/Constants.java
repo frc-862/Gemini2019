@@ -52,8 +52,8 @@ public class Constants extends ConstantBase {
 
     // Elevator
     public final static int microAdjAmt = 20;
-    
-	public static final int elevatorInchHigh = 200;
+
+    public static final int elevatorInchHigh = 200;
     public final static int elevatorTopHeight = 6635;//6535;
     public final static int elevatorMiddleHeight = 3666;// 3666;
     public static final int elevatorCollectHeight = 2705;//2360;//2260;//2160;//loading station cargo collect 2160

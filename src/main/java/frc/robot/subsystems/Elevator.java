@@ -162,25 +162,25 @@ public class Elevator extends Subsystem {
 
         int pos = elevatorMotor.getSelectedSensorPosition();
 
-        if(resetEncoderPos){//default true
+        if(resetEncoderPos) { //default true
             if (sensors.isFwdLimitSwitchClosed()) {//check if at top - if so, set sensor pos to top height
                 elevatorMotor.setSelectedSensorPosition(Constants.elevatorTopHeight);
                 resetEncoderPos = false;
             } else if (sensors.isRevLimitSwitchClosed()) {//if at bottom, set to 0
                 elevatorMotor.setSelectedSensorPosition(0);//Constants.elevatorBottomHeight);
                 resetEncoderPos = false;
-            } 
-        }else if((pos > Constants.elevatorInchHigh) && (pos < Constants.elevatorTopHeight)){//if between inch high and top height, reset encoders next cycle
+            }
+        } else if((pos > Constants.elevatorInchHigh) && (pos < Constants.elevatorTopHeight)) { //if between inch high and top height, reset encoders next cycle
             resetEncoderPos = true;
         }
 
         if (pos < 0) {
             elevatorMotor.setSelectedSensorPosition(0);
-        }else if(pos > Constants.elevatorTopHeight){
+        } else if(pos > Constants.elevatorTopHeight) {
             elevatorMotor.setSelectedSensorPosition(Constants.elevatorTopHeight);
         }
 
-        if(timeSinceLastUpdate() > 1.0){
+        if(timeSinceLastUpdate() > 1.0) {
             stop();
         }
 
@@ -188,22 +188,22 @@ public class Elevator extends Subsystem {
 
     }
 
-    public void MicroAdjustUp(){
+    public void MicroAdjustUp() {
         timeInPos = Timer.getFPGATimestamp();
         elevatorMotor.set(ControlMode.MotionMagic, elevatorMotor.getActiveTrajectoryPosition() + (Constants.microAdjAmt * 1));
     }
 
-    public void MicroAdjustDown(){
+    public void MicroAdjustDown() {
         timeInPos = Timer.getFPGATimestamp();
         elevatorMotor.set(ControlMode.MotionMagic, elevatorMotor.getActiveTrajectoryPosition() + (Constants.microAdjAmt * -1));
     }
 
-    public void MicroAdjustAmt(double amt){
+    public void MicroAdjustAmt(double amt) {
         timeInPos = Timer.getFPGATimestamp();
         elevatorMotor.set(ControlMode.MotionMagic, elevatorMotor.getActiveTrajectoryPosition() + amt);
     }
 
-    public double timeSinceLastUpdate(){
+    public double timeSinceLastUpdate() {
         return Timer.getFPGATimestamp() - timeInPos;
     }
 
@@ -221,11 +221,11 @@ public class Elevator extends Subsystem {
 
     }
 
-    public void stop(){
+    public void stop() {
         elevatorMotor.set(ControlMode.PercentOutput, 0.0);
     }
 
-    public void resetTimer(){
+    public void resetTimer() {
         timeInPos = Timer.getFPGATimestamp();
     }
 
