@@ -209,19 +209,16 @@ public abstract class CANDrivetrain extends LightningDrivetrain {
 
     public void configurePID(SlotConfiguration g, int slot) {
         withEachMaster((m) -> {
-            if (slot == -1) {
-                m.configureSlot(g);
-            } else {
-                m.config_kP(slot, g.kP);
-                m.config_kI(slot, g.kI);
-                m.config_kD(slot, g.kD);
-                m.config_kF(slot, g.kF);
-                m.config_IntegralZone(slot, g.integralZone);
-                m.configAllowableClosedloopError(slot, g.allowableClosedloopError);
-                m.configMaxIntegralAccumulator(slot, g.maxIntegralAccumulator);
-                m.configClosedLoopPeakOutput(slot, g.closedLoopPeakOutput);
-                m.configClosedLoopPeriod(slot, g.closedLoopPeriod);
-            }
+            m.config_kP(slot, g.kP);
+            m.config_kI(slot, g.kI);
+            m.config_kD(slot, g.kD);
+            m.config_kF(slot, g.kF);
+            m.config_IntegralZone(slot, g.integralZone);
+            m.configAllowableClosedloopError(slot, g.allowableClosedloopError);
+            m.configMaxIntegralAccumulator(slot, g.maxIntegralAccumulator);
+            m.configClosedLoopPeakOutput(slot, g.closedLoopPeakOutput);
+            m.configClosedLoopPeriod(slot, g.closedLoopPeriod);
+
             m.selectProfileSlot(slot, 0);
         });
     }

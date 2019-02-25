@@ -38,7 +38,9 @@ import frc.robot.commands.test.NavXTest;
 public class Core extends Subsystem {
     //private DigitalInput pressure1 = new DigitalInput(0);
 
+    @SuppressWarnings("FieldCanBeLocal")
     private WPI_VictorSPX extra1 = new WPI_VictorSPX(RobotMap.extra1CanId);
+    @SuppressWarnings("FieldCanBeLocal")
     private WPI_VictorSPX extra2 = new WPI_VictorSPX(RobotMap.extra2CanId);
 
     private DigitalInput outerLeft = new DigitalInput(5);
@@ -50,6 +52,14 @@ public class Core extends Subsystem {
     private AnalogInput innerRight = new AnalogInput(0);
     private DigitalInput midRight = new DigitalInput(3);
     private DigitalInput outerRight = new DigitalInput(2);
+
+    // Put methods for controlling this subsystem
+    // here. Call these from Commajnds.
+    private AHRS navx;
+    @SuppressWarnings("FieldCanBeLocal")
+    private Compressor compressor = new Compressor(RobotMap.compressorCANId);
+    @SuppressWarnings("FieldCanBeLocal")
+    private PowerDistributionPanel pdp = new PowerDistributionPanel(RobotMap.pdpCANId);
 
 
     private double biasAnalog(double v, double min, double max) {
@@ -98,12 +108,6 @@ public class Core extends Subsystem {
 
     };
     private DoubleSupplier[] sensorValues = nebulaSensorValues;//Robot.isGemini() ? geminiSensorValues : nebulaSensorValues;
-
-    // Put methods for controlling this subsystem
-    // here. Call these from Commajnds.
-    private AHRS navx;
-    private Compressor compressor = new Compressor(RobotMap.compressorCANId);
-    private PowerDistributionPanel pdp = new PowerDistributionPanel(RobotMap.pdpCANId);
 
     public Core() {
         setName("Core");

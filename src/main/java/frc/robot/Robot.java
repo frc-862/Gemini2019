@@ -12,7 +12,7 @@ import frc.lightning.commands.VelocityMotionProfile;
 import frc.robot.subsystems.*;
 import java.io.File;
 
-import edu.wpi.first.wpilibj.CameraServer;
+import edu.wpi.first.cameraserver.CameraServer;
 
 public class Robot extends LightningRobot {
 
@@ -53,7 +53,6 @@ public class Robot extends LightningRobot {
         registerAutonomousCommmand("Test Right Turn", new VelocityMotionProfile("test_right_turn"));
 
         CameraServer.getInstance().startAutomaticCapture();
-
     }
 
     @Override

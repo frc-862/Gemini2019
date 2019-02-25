@@ -27,7 +27,7 @@ public class CANConfig {
             return getJSON("http://127.0.0.1:1250/?action=getversion");
         } catch (Exception e) {
             System.err.println(e);
+            return new JSONObject();
         }
-        return new JSONObject();
     }
 }
