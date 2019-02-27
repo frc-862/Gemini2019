@@ -61,6 +61,10 @@ public class VelocityMotionProfile extends Command {
 
     private static InterpolatingTreeMap<InterpolatingDouble, InterpolatingMotionPoint> emptyPath = new InterpolatingTreeMap<>();
 
+    static {
+        emptyPath.put(new InterpolatingDouble(0.0), new InterpolatingMotionPoint(0,0,0,0));
+    }
+
     public VelocityMotionProfile(String fname) {
         File deploy = new File(Filesystem.getDeployDirectory(), "paths");
         File left = new File(deploy, fname + "_left.csv");
