@@ -110,7 +110,7 @@ public class VelocityMotionProfile extends Command {
 
                     result.put(new InterpolatingDouble(time),
                             new InterpolatingMotionPoint(position, velocity, acceleration, heading));
-                    time += 0.2;
+                    time += 0.02;
                 }
 
             } finally {
