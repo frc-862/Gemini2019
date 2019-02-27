@@ -47,12 +47,4 @@ public class InterpolatedMap extends TreeMap<Double, Double> {
 
         return l;
     }
-
-//    private void writeObject(java.io.ObjectOutputStream out) throws IOException {
-//        out.writeBytes("Hi Pat");
-//    }
-//
-//    private void readObject(java.io.ObjectInputStream in) throws IOException, ClassNotFoundException {
-//
-//    }
 }
