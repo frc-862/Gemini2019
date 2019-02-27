@@ -50,7 +50,7 @@ public class GeminiDrivetrain extends CANDrivetrain {
         SystemTest.register(new LeftEncoderTest());
         SystemTest.register(new RightEncoderTest());
 
-        VelocityMotionProfile.setKp(0);
+        VelocityMotionProfile.setKp(2.10);
         VelocityMotionProfile.setKa(0);
         VelocityMotionProfile.setKTheta(0);
     }
@@ -76,7 +76,7 @@ public class GeminiDrivetrain extends CANDrivetrain {
         withEachMotor((m) -> m.setNeutralMode(NeutralMode.Brake));
         withEachMaster((m) -> {
             m.configOpenloopRamp(0.2);
-
+            m.configClosedloopRamp(0.1);
             m.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, Constants.driveSlot, 0);
             m.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, Constants.motionSlot, 0);
 
@@ -98,18 +98,18 @@ public class GeminiDrivetrain extends CANDrivetrain {
 
     @Override
     public double getRightVelocity() {
-        return ((super.getRightVelocity()));// / 10)/60);//return fps
+        return (LightningMath.talon2fps(super.getRightVelocity()));// / 10)/60);//return fps
     }
 
     @Override
     public double getLeftVelocity() {
-        return ((super.getLeftVelocity()));// / 10)/60);//return fps
+        return (LightningMath.talon2fps(super.getLeftVelocity()));// / 10)/60);//return fps
     }
 
     @Override
     public void initDefaultCommand() {
         // Set the default command for a subsystem here.
-        setDefaultCommand(new TankDrive());
+        setDefaultCommand(new VelocityTankDrive());
     }
 
 }

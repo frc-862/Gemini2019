@@ -39,6 +39,7 @@ public class VelocityMotionProfile extends Command {
     }
 
     private void configProfile(double[][] left, double[][] right) {
+        System.out.println("Config velo profile");
         requires(Robot.drivetrain);
         leftPath = left;
         rightPath = right;
@@ -59,7 +60,7 @@ public class VelocityMotionProfile extends Command {
 
     private static double[][] emptyPath = new double[2][4];
     public VelocityMotionProfile(String fname) {
-        File deploy = new File(Filesystem.getDeployDirectory(), "paths)");
+        File deploy = new File(Filesystem.getDeployDirectory(), "paths");
         File left = new File(deploy, fname + "_left.csv");
         File right = new File(deploy, fname +"_right.csv");
 
@@ -140,6 +141,7 @@ public class VelocityMotionProfile extends Command {
      */
     @Override
     protected void initialize() {
+        logger.reset();
         index = 0;
         Robot.drivetrain.resetDistance();
     }
@@ -203,6 +205,6 @@ public class VelocityMotionProfile extends Command {
     protected void end() {
         logger.drain();
         logger.flush();
-        Robot.drivetrain.stop();
+        Robot.drivetrain.setVelocity(0, 0);
     }
 }

@@ -72,6 +72,9 @@ public abstract class CANDrivetrain extends LightningDrivetrain {
 
         rightMaster.setName("Rigth Master");
         SmartDashboard.putData("Right Master", rightMaster);
+
+        resetDistance();
+
     }
 
     protected CANDrivetrain(WPI_TalonSRX left, WPI_TalonSRX right) {
@@ -250,5 +253,11 @@ public abstract class CANDrivetrain extends LightningDrivetrain {
                leftMaster.getSelectedSensorVelocity() < Constants.movingVelocity &&
                rightMaster.getOutputCurrent() > Constants.movingCurrent &&
                rightMaster.getSelectedSensorVelocity() < Constants.movingVelocity;
+    }
+
+    @Override
+    public void periodic(){
+        SmartDashboard.putNumber("RawLeftEncoder", getLeftMaster().getSelectedSensorPosition());
+        SmartDashboard.putNumber("RawRightEncoder", getRightMaster().getSelectedSensorPosition());
     }
 }
