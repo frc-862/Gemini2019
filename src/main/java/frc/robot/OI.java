@@ -96,15 +96,17 @@ public class OI {
     private final double minPower = 0.1;
     private final double maxPower = 1.0;
     private JoystickFilter driveFilter = new JoystickFilter(deadBand, minPower, maxPower, JoystickFilter.Mode.CUBED);
+    private JoystickFilter leftFilter = new JoystickFilter(deadBand, minPower, maxPower, JoystickFilter.Mode.CUBED);
+    private JoystickFilter rightFilter = new JoystickFilter(deadBand, minPower, maxPower, JoystickFilter.Mode.CUBED);
 
     public double getLeftPower() {
         if (driverLeft == null) return 0;
-        return driveFilter.filter(-driverLeft.getRawAxis(JoystickConstants.leftThrottleAxis));
+        return leftFilter.filter(-driverLeft.getRawAxis(JoystickConstants.leftThrottleAxis));
     }
 
     public double getRightPower() {
         if (driverRight == null) return 0;
-        return driveFilter.filter(-driverRight.getRawAxis(JoystickConstants.leftThrottleAxis));
+        return rightFilter.filter(-driverRight.getRawAxis(JoystickConstants.leftThrottleAxis));
     }
 
     public double getMicroAdjAmt() {
@@ -145,6 +147,8 @@ public class OI {
     }
 
     public OI() {
+        leftFilter.setRampDelta(0.1);
+        rightFilter.setRampDelta(0.1);
         initializeCommands();
 
         SmartDashboard.putData("open hatch", new OpenHatchCollector());

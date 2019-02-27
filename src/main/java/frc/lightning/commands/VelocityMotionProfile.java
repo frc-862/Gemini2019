@@ -3,6 +3,9 @@ package frc.lightning.commands;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.lightning.logging.CommandLogger;
+import frc.lightning.util.InterpolatingDouble;
+import frc.lightning.util.InterpolatingMotionPoint;
+import frc.lightning.util.InterpolatingTreeMap;
 import frc.robot.Robot;
 import frc.robot.paths.Path;
 
@@ -13,14 +16,9 @@ import java.util.*;
 public class VelocityMotionProfile extends Command {
     CommandLogger logger = new CommandLogger(getClass().getSimpleName());
 
-    protected double[][] leftPath;
-    protected double[][] rightPath;
-    private int index = 0;
-
-    private final static int POS = 0;
-    private final static int VEL = 1;
-    private final static int ACC = 2;
-    private final static int HDG = 3;
+    InterpolatingTreeMap<InterpolatingDouble, InterpolatingMotionPoint> leftPath;
+    InterpolatingTreeMap<InterpolatingDouble, InterpolatingMotionPoint> rightPath;
+    double finishedAt = 0;
 
     private static double kP = 0.0;
     private static double kA = 0.0;
@@ -38,10 +36,14 @@ public class VelocityMotionProfile extends Command {
         kTheta = _kTheta;
     }
 
-    private void configProfile(double[][] left, double[][] right) {
+    private void configProfile(InterpolatingTreeMap<InterpolatingDouble, InterpolatingMotionPoint> left,
+                               InterpolatingTreeMap<InterpolatingDouble, InterpolatingMotionPoint> right) {
+        System.out.println("Config velo profile");
         requires(Robot.drivetrain);
         leftPath = left;
         rightPath = right;
+
+        finishedAt = leftPath.lastKey().value;
 
         logger.addDataElement("expectedLeft");
         logger.addDataElement("expectedRight");
@@ -57,9 +59,10 @@ public class VelocityMotionProfile extends Command {
         logger.addDataElement("actualTheta");
     }
 
-    private static double[][] emptyPath = new double[2][4];
+    private static InterpolatingTreeMap<InterpolatingDouble, InterpolatingMotionPoint> emptyPath = new InterpolatingTreeMap<>();
+
     public VelocityMotionProfile(String fname) {
-        File deploy = new File(Filesystem.getDeployDirectory(), "paths)");
+        File deploy = new File(Filesystem.getDeployDirectory(), "paths");
         File left = new File(deploy, fname + "_left.csv");
         File right = new File(deploy, fname +"_right.csv");
 
@@ -68,8 +71,8 @@ public class VelocityMotionProfile extends Command {
         if (left.canRead() && right.canRead()) {
             logger = new CommandLogger("VMP-" + fname);
             configProfile(
-                readCSVPath(left),
-                readCSVPath(right)
+                readCSVPoints(left),
+                readCSVPoints(right)
             );
             System.out.println("VMP " + fname + " built.");
         } else {
@@ -79,8 +82,8 @@ public class VelocityMotionProfile extends Command {
             if (left.canRead() && right.canRead()) {
                 logger = new CommandLogger("VMP-" + fname);
                 configProfile(
-                    readCSVPath(left),
-                    readCSVPath(right)
+                    readCSVPoints(left),
+                    readCSVPoints(right)
                 );
             } else {
                 System.err.println("Unable to load path: " + fname);
@@ -89,48 +92,40 @@ public class VelocityMotionProfile extends Command {
         }
     }
 
-    private List<String> readFile(File file) throws FileNotFoundException {
-        Scanner sc = new Scanner(file);
+    private InterpolatingTreeMap<InterpolatingDouble, InterpolatingMotionPoint> readCSVPoints(File fname) {
+        InterpolatingTreeMap<InterpolatingDouble, InterpolatingMotionPoint> result = new InterpolatingTreeMap<>();
+
         try {
-            List<String> lines = new ArrayList<>();
+            Scanner sc = new Scanner(fname);
+            double time = 0;
+            try {
 
-            while (sc.hasNextLine()) {
-                lines.add(sc.nextLine());
-            }
+                while (sc.hasNextLine()) {
+                    Scanner csv = new Scanner(sc.nextLine());
+                    csv.useDelimiter(",");
+                    double position = csv.nextDouble();
+                    double velocity = csv.nextDouble();
+                    double acceleration = csv.nextDouble();
+                    double heading = csv.nextDouble();
 
-            return lines;
-        } finally {
-            sc.close();
-        }
-    }
-
-    private double[][] readCSVPath(File fname) {
-        try {
-            var lines = readFile(fname);
-            double[][] result = new double[lines.size()][4];
-
-            for (int index = 0; index < lines.size(); ++index) {
-                Scanner scan = new Scanner(lines.get(index));
-                scan.useDelimiter(",");
-                for (int j = 0; j < 4; ++j) {
-                    result[index][j] = scan.nextDouble();
+                    result.put(new InterpolatingDouble(time),
+                            new InterpolatingMotionPoint(position, velocity, acceleration, heading));
+                    time += 0.2;
                 }
-                scan.close();
-            }
 
-            return result;
+            } finally {
+                sc.close();
+            }
 
         } catch (FileNotFoundException e) {
             System.err.println("Unable to read csv file " + fname);
-            return emptyPath;
         }
+
+        return result;
     }
 
-    public VelocityMotionProfile(Path path) {
-        this(path.getLeftPath(), path.getRightPath());
-    }
-
-    public VelocityMotionProfile(double[][] left, double[][] right) {
+    public VelocityMotionProfile(InterpolatingTreeMap<InterpolatingDouble, InterpolatingMotionPoint> left,
+                                 InterpolatingTreeMap<InterpolatingDouble, InterpolatingMotionPoint> right) {
         configProfile(left, right);
     }
 
@@ -140,19 +135,18 @@ public class VelocityMotionProfile extends Command {
      */
     @Override
     protected void initialize() {
-        index = 0;
+        logger.reset();
         Robot.drivetrain.resetDistance();
     }
 
-    private double calcBaseVelocity(String tag, double[] point, double dist) {
-        double error = point[POS] - dist;
-        double velocity = point[VEL];
-        double acceleration = point[ACC];
+    private double calcBaseVelocity(String tag, InterpolatingMotionPoint point, double dist) {
+        double error = point.position - dist;
+        double velocity = point.velocity;
+        double acceleration = point.acceleration;
 
-        logger.set("expected" + tag, point[POS]);
+        logger.set("expected" + tag, point.position);
         logger.set("actual" + tag, dist);
         logger.set("expected" + tag + "Velocity", velocity);
-
 
         /*
         Return target Velocity + scaled error + scaled acceleration
@@ -168,34 +162,32 @@ public class VelocityMotionProfile extends Command {
      */
     @Override
     protected void execute() {
-        if ((index < leftPath.length) && (index < rightPath.length)) {
-            final double leftVel = calcBaseVelocity("Left", leftPath[index], Robot.drivetrain.getLeftDistance());
-            final double rightVel = calcBaseVelocity("Right", rightPath[index], Robot.drivetrain.getRightDistance());
+        InterpolatingDouble index = new InterpolatingDouble(timeSinceInitialized());
 
-            logger.set("actualLeftVelocity", Robot.drivetrain.getLeftVelocity());
-            logger.set("actualRightVelocity", Robot.drivetrain.getRightVelocity());
+        InterpolatingMotionPoint leftPoint = leftPath.getInterpolated(index);
+        final double leftVel = calcBaseVelocity("Left", leftPoint, Robot.drivetrain.getLeftDistance());
+        final double rightVel = calcBaseVelocity("Right", rightPath.getInterpolated(index), Robot.drivetrain.getRightDistance());
 
-            final double thetaError = leftPath[index][HDG] - Robot.core.getHeading();
-            final double turn = thetaError * kTheta;
+        logger.set("actualLeftVelocity", Robot.drivetrain.getLeftVelocity());
+        logger.set("actualRightVelocity", Robot.drivetrain.getRightVelocity());
 
-            logger.set("expectedTheta", leftPath[index][HDG]);
-            logger.set("actualTheta", Robot.core.getHeading());
+        final double thetaError = leftPoint.heading - Robot.core.getHeading();
+        final double turn = thetaError * kTheta;
 
-            Robot.drivetrain.setVelocity(leftVel - turn, rightVel + turn);
+        logger.set("expectedTheta", leftPoint.heading);
+        logger.set("actualTheta", Robot.core.getHeading());
 
-            logger.write();
-            index += 1;
-        }
+        Robot.drivetrain.setVelocity(leftVel - turn, rightVel + turn);
+
+        logger.write();
     }
-
 
     /**
      */
     @Override
     protected boolean isFinished() {
-        return index >= leftPath.length;
+        return timeSinceInitialized() > finishedAt;
     }
-
 
     /**
      */
@@ -203,6 +195,6 @@ public class VelocityMotionProfile extends Command {
     protected void end() {
         logger.drain();
         logger.flush();
-        Robot.drivetrain.stop();
+        Robot.drivetrain.setVelocity(0, 0);
     }
 }
