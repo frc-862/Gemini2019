@@ -30,17 +30,17 @@ public class VelocityTankDrive extends Command {
     @Override
     protected void execute() {
 
-        SmartDashboard.putNumber("Right_Joy_Raw", Robot.oi.getRightPower());
-        SmartDashboard.putNumber("Left_Joy_Raw", Robot.oi.getLeftPower());
+        // SmartDashboard.putNumber("Right_Joy_Raw", Robot.oi.getRightPower());
+        // SmartDashboard.putNumber("Left_Joy_Raw", Robot.oi.getLeftPower());
 
         Robot.drivetrain.setVelocity(Robot.oi.getLeftPower() * Constants.velocityMultiplier,
                 Robot.oi.getRightPower()* Constants.velocityMultiplier);
 
-        SmartDashboard.putNumber("RAW_LeftVelocity", Robot.drivetrain.getLeftVelocity());
-        SmartDashboard.putNumber("RAW_RightVelocity", Robot.drivetrain.getRightVelocity());
+        // SmartDashboard.putNumber("RAW_LeftVelocity", Robot.drivetrain.getLeftVelocity());
+        // SmartDashboard.putNumber("RAW_RightVelocity", Robot.drivetrain.getRightVelocity());
 
-        SmartDashboard.putNumber("FPS_LeftVelocity", LightningMath.talon2fps(Robot.drivetrain.getLeftVelocity()));
-        SmartDashboard.putNumber("FPS_RightVelocity", LightningMath.talon2fps(Robot.drivetrain.getRightVelocity()));
+        // SmartDashboard.putNumber("FPS_LeftVelocity", LightningMath.talon2fps(Robot.drivetrain.getLeftVelocity()));
+        // SmartDashboard.putNumber("FPS_RightVelocity", LightningMath.talon2fps(Robot.drivetrain.getRightVelocity()));
     }
 
     // Make this return true when this Command no longer needs to run execute()

@@ -88,8 +88,9 @@ public class DataLogger implements Loop {
         }
 
         String valueList = fieldValues.parallelStream()
-                           .map(fn -> Double.toString(fn.getAsDouble()))
-                           .collect(Collectors.joining(","));
+        .map(fn -> Double.toString(fn.getAsDouble()))
+//        .map(fn -> "0.0")
+        .collect(Collectors.joining(","));
 
         // System.out.println(valueList);
         writer.logRawString(valueList);

@@ -70,7 +70,7 @@ public class LightningRobot extends TimedRobot {
             FaultCode.setNetworkTableEntry(code, nte);
         });
 
-        Scheduler.getInstance().setSubsystem("Core");
+        //Scheduler.getInstance().setSubsystem("Core");
     }
 
     double getLoopTime() {

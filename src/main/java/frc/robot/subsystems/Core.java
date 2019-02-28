@@ -149,6 +149,12 @@ public class Core extends Subsystem {
     public void periodic() {
         SmartDashboard.putNumber("Heading", navx.getFusedHeading());
         SmartDashboard.putNumber("Angle", navx.getAngle());
+        SmartDashboard.putNumber("YAW", navx.getYaw());
+        SmartDashboard.putNumber("ANGLE", navx.getAngle());
+        SmartDashboard.putNumber("X", navx.getRawGyroX());
+        SmartDashboard.putNumber("Y", navx.getRawGyroY());
+        SmartDashboard.putNumber("Z", navx.getRawGyroZ());
+        SmartDashboard.putNumber("Pitch", navx.getPitch());
 
         int pos = -7;
         for (DoubleSupplier sensor : sensorValues) {
@@ -168,6 +174,10 @@ public class Core extends Subsystem {
     public double getHeading() {
         return navx.getFusedHeading();
         // return 0;
+    }
+
+    public void resetNavx(){
+        navx.reset();//TODO help
     }
 
     @Override

@@ -26,8 +26,9 @@ public class MicroAdjust extends Command {
     @Override
     protected void execute() {
         double amtAdj = ((Robot.oi.getCopilotLeft() * 100)/2);
-        if(Robot.oi.getMicroAdjAmt() == 0.0);
-        else Robot.elevator.MicroAdjustAmt(amtAdj);
+        if(Robot.oi.getMicroAdjAmt() != 0.0){ 
+            Robot.elevator.MicroAdjustAmt(amtAdj);
+        }
     }
 
     // Make this return true when this Command no longer needs to run execute()

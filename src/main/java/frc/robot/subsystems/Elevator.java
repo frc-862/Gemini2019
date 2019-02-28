@@ -55,6 +55,8 @@ public class Elevator extends Subsystem {
     public double timeInPos = 0;
     public final double timeoutPosition = 0;
 
+    public double activeTrajectoryPosition = 0;
+
     public enum HeightState {
         HIGH_ROCKET, MID_ROCKET, LOW_ROCKET, CARGO_COLLECT
     }
@@ -119,7 +121,7 @@ public class Elevator extends Subsystem {
         SystemTest.register(new ElevatorTest(Position.COLLECT));
 
         DataLogger.addDataElement("ElevatorPosition", () -> elevatorMotor.getSelectedSensorPosition());
-        DataLogger.addDataElement("ElevatorSetpoint", () -> elevatorMotor.getActiveTrajectoryPosition());
+        DataLogger.addDataElement("ElevatorSetpoint", () -> activeTrajectoryPosition);
         DataLogger.addDataElement("ElevatorCurrent", () -> elevatorMotor.getOutputCurrent());
     }
 
@@ -188,19 +190,29 @@ public class Elevator extends Subsystem {
 
     }
 
+    public void setPosition(double pos) {
+        elevatorMotor.set(ControlMode.MotionMagic, pos);
+        activeTrajectoryPosition = pos;
+    }
+
     public void MicroAdjustUp() {
-        timeInPos = Timer.getFPGATimestamp();
-        elevatorMotor.set(ControlMode.MotionMagic, elevatorMotor.getActiveTrajectoryPosition() + (Constants.microAdjAmt * 1));
+        if(Robot.oi.getMicroAdjAmt() != 0.0){
+            timeInPos = Timer.getFPGATimestamp();
+            setPosition(activeTrajectoryPosition + (Constants.microAdjAmt * 1));
+        }
     }
 
     public void MicroAdjustDown() {
-        timeInPos = Timer.getFPGATimestamp();
-        elevatorMotor.set(ControlMode.MotionMagic, elevatorMotor.getActiveTrajectoryPosition() + (Constants.microAdjAmt * -1));
+        if(Robot.oi.getMicroAdjAmt() != 0.0){
+            timeInPos = Timer.getFPGATimestamp();
+            setPosition(activeTrajectoryPosition + (Constants.microAdjAmt * -1));
+        }
     }
-
     public void MicroAdjustAmt(double amt) {
-        timeInPos = Timer.getFPGATimestamp();
-        elevatorMotor.set(ControlMode.MotionMagic, elevatorMotor.getActiveTrajectoryPosition() + amt);
+        if(Robot.oi.getMicroAdjAmt() != 0.0){
+            timeInPos = Timer.getFPGATimestamp();
+            setPosition(activeTrajectoryPosition + amt);
+        }
     }
 
     public double timeSinceLastUpdate() {
@@ -217,7 +229,7 @@ public class Elevator extends Subsystem {
         // else
         //     gravityCompensation = Constants.elevatorEmptyF;
         timeInPos = Timer.getFPGATimestamp();
-        elevatorMotor.set(ControlMode.MotionMagic, Constants.elevatorCollectHeight);
+        setPosition(Constants.elevatorCollectHeight);
 
     }
 
@@ -231,22 +243,22 @@ public class Elevator extends Subsystem {
 
     public void goToBottom() {
         timeInPos = Timer.getFPGATimestamp();
-        elevatorMotor.set(ControlMode.MotionMagic, 0.0);
+        setPosition(0.0);
     }
 
     public void goToLow() {
         timeInPos = Timer.getFPGATimestamp();
-        elevatorMotor.set(ControlMode.MotionMagic, Constants.elevatorBottomHeight);
+        setPosition(Constants.elevatorBottomHeight);
     }
 
     public void goToMid() {
         timeInPos = Timer.getFPGATimestamp();
-        elevatorMotor.set(ControlMode.MotionMagic, Constants.elevatorMiddleHeight);
+        setPosition(Constants.elevatorMiddleHeight);
     }
 
     public void goToHigh() {
         timeInPos = Timer.getFPGATimestamp();
-        elevatorMotor.set(ControlMode.MotionMagic, Constants.elevatorTopHeight);//, DemandType.ArbitraryFeedForward, gravityCompensation);
+        setPosition(Constants.elevatorTopHeight);//, DemandType.ArbitraryFeedForward, gravityCompensation);
     }
 
     public boolean hasHatchPanel() {
