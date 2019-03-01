@@ -21,6 +21,7 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -182,7 +183,7 @@ public class Elevator extends Subsystem {
             elevatorMotor.setSelectedSensorPosition(Constants.elevatorTopHeight);
         }
 
-        if(timeSinceLastUpdate() > 1.0) {
+        if(timeSinceLastUpdate() > 1.0 && !DriverStation.getInstance().isAutonomous()) {
             stop();
         }
 

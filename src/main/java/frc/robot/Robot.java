@@ -9,6 +9,8 @@ package frc.robot;
 
 import frc.lightning.LightningRobot;
 import frc.lightning.commands.VelocityMotionProfile;
+import frc.robot.commands.auto.HatchAuton;
+import frc.robot.commands.elevator.SetElevatorLow;
 import frc.robot.subsystems.*;
 import java.io.File;
 
@@ -46,11 +48,14 @@ public class Robot extends LightningRobot {
         // set a flag, it is either gemini or nebula
         gemini = ((new File("/home/lvuser/gemini")).exists());
 
+        registerAutonomousCommmand("LeftNearLow", new HatchAuton("left_side_near", new SetElevatorLow()));
+
+        //TEST
         registerAutonomousCommmand("Straight", new VelocityMotionProfile("straight"));
         registerAutonomousCommmand("LeftSideNear", new VelocityMotionProfile("left_side_near"));
         registerAutonomousCommmand("RightSideNear", new VelocityMotionProfile("right_side_near"));
-        registerAutonomousCommmand("Test Left Turn", new VelocityMotionProfile("test_left_turn"));
-        registerAutonomousCommmand("Test Right Turn", new VelocityMotionProfile("test_right_turn"));
+        //registerAutonomousCommmand("Test Left Turn", new VelocityMotionProfile("test_left_turn"));
+        //registerAutonomousCommmand("Test Right Turn", new VelocityMotionProfile("test_right_turn"));
 
         //CameraServer.getInstance().startAutomaticCapture();
     }
