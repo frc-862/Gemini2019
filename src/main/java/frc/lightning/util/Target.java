@@ -15,7 +15,10 @@ public class Target {
     private double rotation;
     private double squint;
     private long timestamp;
-    public Target(double standoff, double rotation, double squint, long timestamp) {
+    private int x, y;
+    public Target(int x, int y, double standoff, double rotation, double squint, long timestamp) {
+        this.x = x;
+        this.y = y;
         this.standoff = standoff;
         this.rotation = rotation;
         this.squint = squint;
@@ -23,6 +26,12 @@ public class Target {
 
     }
 
+    public int x() {
+        return x;
+    }
+    public int y() {
+        return y;
+    }
     public double standoff() {
         return standoff;
     }
