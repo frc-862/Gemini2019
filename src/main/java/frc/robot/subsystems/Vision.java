@@ -11,12 +11,13 @@ import java.util.ArrayList;
 
 import edu.wpi.first.wpilibj.SerialPort;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.SerialPort.Port;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.lightning.logging.DataLogger;
 import frc.lightning.util.Target;
 import frc.lightning.util.NoTargetException;
-
+import java.io.FileWriter;
 /**
  * Add your docs here.
  */
@@ -35,7 +36,8 @@ public class Vision extends Subsystem {
   private double latency = 0;
 
   private final SerialPort.Port CAMERA_LEFT_PORT = SerialPort.Port.kUSB;
-  private final SerialPort.Port CAMERA_RIGHT_PORT = SerialPort.Port.kUSB1;
+  //private final SerialPort.Port CAMERA_RIGHT_PORT = SerialPort.Port.kOnboard;
+  private final SerialPort.Port CAMERA_RIGHT_PORT = SerialPort.Port.kMXP;
 
   private enum Camera {
     LEFT, RIGHT;
@@ -44,6 +46,7 @@ public class Vision extends Subsystem {
   ArrayList<Camera> activeCams = new ArrayList<Camera>();
 
   private boolean isStereo = true;
+  private boolean newDataLeft = true, newDataRight = true;
   private final double TRACK_WIDTH = 19.0;
   
   @Override
@@ -74,18 +77,26 @@ public class Vision extends Subsystem {
   }
 
   public void periodic() {
+    
     collectRawData();
-    processData();
+   // processData();
     //SmartDashboard.putString("mergedData", mergedData.toString());
-    Target bestTarget = new Target(0,0,0,0);
+    
+    
+    //Target bestTarget = new Target(0,0,0,0);
     SmartDashboard.putString("leftData", leftData.toString());
     SmartDashboard.putString("rightData", rightData.toString());
+
+    /*
     try {
       bestTarget = getBestTarget();
     }
     catch(NoTargetException e) {}
     SmartDashboard.putString("best target", bestTarget.toString());
+    */
   }
+  
+
 /*
   public void startDataStream() {
 
@@ -97,7 +108,7 @@ public class Vision extends Subsystem {
 */
   public Target getBestTarget() throws NoTargetException {
     if(mergedData.size() == 0) throw new NoTargetException();
-    Target best = new Target(0, 0, 999, 0); //Creating a first target and making squint 999
+    Target best = new Target(0, 0, 999, 0); //Creating a first target and making squint 999 
     for(Target t : mergedData) {
       if(Math.abs(t.squint()) < Math.abs(best.squint())) best = t;
     }
@@ -132,10 +143,12 @@ public class Vision extends Subsystem {
   private void collectRawData() {
     //Reset data list and read from serial port
     //SmartDashboard.putString("vision step", "start");
+    String CamName = "";
     for(Camera inCam : Camera.values()) {
       String inData = "";
       switch(inCam) {
         case LEFT:
+        CamName = "leftCam ";
           try {
             inData = serialInLeft.readString();
             if(!inData.equals("")) {
@@ -147,13 +160,17 @@ public class Vision extends Subsystem {
           }
           catch(Exception e) {
             activeCams.remove(Camera.LEFT);
-            leftData = new ArrayList<Target>();
+            //System.out.println("no left cam");
+          //  leftData = new ArrayList<Target>();
+            inData = "";
             continue;
           }
           break;
         case RIGHT:
+        CamName = "rightCam ";
           try {
             inData = serialInRight.readString();
+            System.out.println(inData);
             if(!inData.equals("")) {
               SmartDashboard.putString("Right data", inData);
             }
@@ -163,11 +180,26 @@ public class Vision extends Subsystem {
           }
           catch(Exception e) {
             activeCams.remove(Camera.RIGHT);
-            rightData = new ArrayList<Target>();
+            System.out.println("no right cam");
+          //  rightData = new ArrayList<Target>();
+          inData = "";
             continue;
           }
           break;
       }
+      try
+{
+    String filename= "/home/lvuser/log/CamLog.txt";
+    FileWriter fw = new FileWriter(filename,true); //the true will append the new data
+    String fileLine = (CamName + inData + "\n");
+
+    fw.write(fileLine);//appends the string to the file
+    fw.close();
+}
+catch(Exception e) 
+{
+    System.err.println("IOException: " + e.getMessage());
+}
       parseData(inData, inCam);
     }
     
@@ -175,16 +207,28 @@ public class Vision extends Subsystem {
 
   private void parseData(String data, Camera cam) {
     long currentTime = System.currentTimeMillis();
+    boolean successfulParse = true;
     //Check that basic frame information is intact
     if(data.indexOf("=") != -1) {
       //Collect data
       //SmartDashboard.putString("vision step", "collect");
+
       String lastFrame = data.substring(data.lastIndexOf("Frame"));
-     // System.out.println(lastFrame.substring(lastFrame.indexOf('[')));
+      //System.out.println(lastFrame.substring(lastFrame.indexOf('[')));
       //long frameNum = Long.parseLong(lastFrame.substring(lastFrame.indexOf("Frame:") + 6, lastFrame.indexOf(",")));
-      int numTargets = Integer.parseInt(lastFrame.substring(lastFrame.indexOf("Targets:") + 8, lastFrame.indexOf(" (out")));
-      
       SmartDashboard.putString("Current data", lastFrame);
+
+      int numTargets = 0;
+
+      try{
+      numTargets = Integer.parseInt(lastFrame.substring(lastFrame.indexOf("Targets:") + 8, lastFrame.indexOf(" (out")));
+    
+    }
+
+       catch(RuntimeException e) {
+         
+    }
+    
       ArrayList<Target> parsed = new ArrayList<Target>();
       if(numTargets == 0) {
         lastCameraUpdate = currentTime;
@@ -234,6 +278,24 @@ public class Vision extends Subsystem {
             break;
         }
       }
+      else {
+        //We have data, but it does not end with ']' (incomplete data)
+        successfulParse = false;
+      }
+    }
+    else {
+      //We have a connection but no new data from the camera
+      //System.out.println("no frame " + data);
+      successfulParse = false;
+    }
+
+    switch(cam) {
+      case LEFT:
+        newDataLeft = successfulParse;
+        break;
+      case RIGHT:
+        newDataRight = successfulParse;
+        break;
     }
   }
 
@@ -247,6 +309,9 @@ public class Vision extends Subsystem {
       }
       return;
     }
+    //System.out.println("\n");
+    //System.out.println(leftData.toString());
+    //System.out.println(rightData.toString());
     transformData(Camera.LEFT);
     transformData(Camera.RIGHT);
 
@@ -255,19 +320,31 @@ public class Vision extends Subsystem {
 
   private void transformData(Camera side) {
     if(!activeCams.contains(side)) {
-      System.out.println(side.toString() + "not connected");
+      //System.out.println(side.toString() + "not connected");
       return;
     }
+    //System.out.println("transforming");
     ArrayList<Target> data = new ArrayList<Target>();
     switch(side) {
       case LEFT:
+        if(!newDataLeft) {
+          //If this is the case, the data list contains data from a previous cycle and does not
+          //need to be transformed again.
+          //System.out.println("aborting transformation");
+          return;
+        }
         data = leftData;
         break;
       case RIGHT:
+        if(!newDataRight) {
+          //If this is the case, the data list contains data from a previous cycle and does not
+          //need to be transformed again.
+          //System.out.println("aborting transformation");
+          return;
+        }
         data = rightData;
         break;
     }
-    System.out.println(data.toString());
     for(int i = 0; i < data.size(); i++) {
       //System.out.println("transform " + side + " " + i);
       int offsetMultiplier = 1; //Add or subtract camera offset based on which side we are on
