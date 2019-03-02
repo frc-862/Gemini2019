@@ -47,7 +47,9 @@ public class Vision extends Subsystem {
 
   private boolean isStereo = true;
   private boolean newDataLeft = true, newDataRight = true;
-  private final double TRACK_WIDTH = 19.0;
+  private final double TRACK_WIDTH = 21.5;
+
+  private String leftPartialFrame1 = "", rightPartialFrame1 = "", leftPartialFrame2 = "", rightPartialFrame2 = "";
   
   @Override
   public void initDefaultCommand() {
@@ -79,7 +81,7 @@ public class Vision extends Subsystem {
   public void periodic() {
     
     collectRawData();
-   // processData();
+    processData();
     //SmartDashboard.putString("mergedData", mergedData.toString());
     
     
@@ -208,10 +210,19 @@ catch(Exception e)
   private void parseData(String data, Camera cam) {
     long currentTime = System.currentTimeMillis();
     boolean successfulParse = true;
-
+    String parseData = "";
+    //If we got an incomplete frame last time, stitch that onto this frame in hopes of getting the complete frame
+    switch(cam) {
+      case LEFT:
+        parseData = leftPartialFrame2 + leftPartialFrame1 + parseData;
+        break;
+      case RIGHT:
+        parseData = rightPartialFrame2 + rightPartialFrame1 + parseData;
+        break;
+    }
     try {
       //Discard everything after the last '['
-      String truncatedData = data.substring(0, data.lastIndexOf(']') + 1);
+      String truncatedData = parseData.substring(0, parseData.lastIndexOf(']') + 1);
       //Discard everything before the beginning of the last frame
       String lastFrame = truncatedData.substring(truncatedData.lastIndexOf("Frame"));
       SmartDashboard.putString("Current data", lastFrame);
@@ -242,16 +253,30 @@ catch(Exception e)
       switch(cam) {
         case LEFT:
           leftData = new ArrayList<Target>();
+          leftPartialFrame1 = "";
+          leftPartialFrame2 = "";
           leftData = parsed;
           break;
         case RIGHT:
           rightData = new ArrayList<Target>();
+          rightPartialFrame1 = "";
+          rightPartialFrame2 = "";
           rightData = parsed;
           break;
       }
     }
     catch(Exception e) {
       successfulParse = false;
+      switch(cam) {
+        case LEFT:
+        leftPartialFrame2 = leftPartialFrame1;
+          leftPartialFrame1 = data;
+          break;
+        case RIGHT:
+          rightPartialFrame2 = rightPartialFrame1;
+          rightPartialFrame1 = data;
+          break;
+      }
     }
     switch(cam) {
       case LEFT:
@@ -279,7 +304,7 @@ catch(Exception e)
     transformData(Camera.LEFT);
     transformData(Camera.RIGHT);
 
-    mergeData();
+    //mergeData();
   }
 
   private void transformData(Camera side) {
@@ -311,9 +336,9 @@ catch(Exception e)
     }
     for(int i = 0; i < data.size(); i++) {
       //System.out.println("transform " + side + " " + i);
-      int offsetMultiplier = 1; //Add or subtract camera offset based on which side we are on
-      int squintMultiplier = 1;
-      int squintRelationship = -1; //-1 if center squint < camera squint, 1 otherwise
+      int offsetMultiplier = 1; //+ if on the right camera, - on left
+      int squintMultiplier = 1; //the sign of squint as measured from the center (left -, right +)
+      int case1or2 = 1; //-1 case 1, +1 if case 2
       boolean middleCase = false;
       switch(side) {
         case LEFT:
@@ -324,40 +349,56 @@ catch(Exception e)
           break;
       }
       Target t = data.get(i);
-      double xComponent = Math.sin(Math.abs(t.squintRad())) * t.standoff();
-      double yComponent = Math.cos(Math.abs(t.squintRad())) * t.standoff();
+      //Calculate absolute value components of camera standoff
+      double xComponent = Math.sin(Math.abs(t.squintRad())) * t.standoff(); //side-to-side
+      double yComponent = Math.cos(Math.abs(t.squintRad())) * t.standoff(); //forward
       double centerX = 0;
+
+      //Calculate side-to-side component from the robot center
+      //There are 3 cases:
+        //1: target is farther out than camera
+        //2: target is on opposite side of center from camera
+        //3: target is between center and camera
+
+      //Case 1
       if(Math.signum(t.squint()) == offsetMultiplier) {
-        centerX = xComponent + TRACK_WIDTH / 2;
-        squintRelationship *= -1;
+        centerX = xComponent + (TRACK_WIDTH / 2.0);
+        case1or2 *= -1;
       }
-      else if(xComponent > TRACK_WIDTH / 2) {
-        centerX = xComponent - TRACK_WIDTH / 2;
+      //Case 2
+      else if(xComponent > TRACK_WIDTH / 2.0) {
+        centerX = xComponent - (TRACK_WIDTH / 2.0);
         squintMultiplier *= -1;
       }
+      //Case 3
       else {
-        centerX = TRACK_WIDTH / 2 - xComponent;
+        centerX = (TRACK_WIDTH / 2.0) - xComponent;
         middleCase = true;
       }
+      //Pythagorean theorem
       double centerStandoff = Math.sqrt(Math.pow(centerX, 2) + Math.pow(yComponent, 2));
+      
       double centerSquint = 0;
-      if(Math.abs(t.squint()) < 0.01) {
-        centerSquint = Math.atan(centerX / yComponent) * offsetMultiplier;
-      }
-      else {
+      //Edge case - boundary between cases 1 and 3
+      // if(Math.abs(t.squint()) < 0.01) {
+      //   centerSquint = Math.atan(centerX / yComponent) * offsetMultiplier;
+      //   //Math.atan2
+      // }
+      // else {
         centerSquint = Math.atan(centerX / yComponent) * squintMultiplier;
-      }
-      //If center squint is larger, subtract camera squint from it (center - cam)
-      //If camera squint is larger, sebtract center squint from it (-center + cam)
-      double cameraStandoff2centerStandoff = 0;
-      if(middleCase ) {
+      // }
+      double cameraStandoff2centerStandoff = 0; //180 - (target-camera-center) - (target-center-camera)
+      //Are we in case 3 above?
+      if(middleCase) {
         cameraStandoff2centerStandoff = Math.PI - (Math.PI / 2 - Math.abs(t.squintRad())) - (Math.PI / 2 - Math.abs(centerSquint));
       }
       else {
-        cameraStandoff2centerStandoff = Math.abs(centerSquint) * squintRelationship - Math.abs(t.squintRad()) * squintRelationship;
+        //One of the squints is obtuse; the other is acute. Which is which depends on which case we have, so we use a multiplier to add or subtract from pi/2
+        cameraStandoff2centerStandoff = Math.PI - ((Math.PI / 2) + Math.abs(centerSquint) * case1or2) - ((Math.PI / 2) - Math.abs(t.squintRad()) * case1or2);
       }
       //System.out.println(side + " " + i + " standoff2standoff = " + Math.toDegrees(cameraStandoff2centerStandoff));
-      double centerRotation = t.rotRad() + (cameraStandoff2centerStandoff * offsetMultiplier * -1);
+      
+      double centerRotation = t.rotRad() + (cameraStandoff2centerStandoff * offsetMultiplier);
 
       data.set(i, new Target(t.x(), t.y(), centerStandoff, Math.toDegrees(centerRotation), Math.toDegrees(centerSquint), t.timestamp()));
     }
@@ -403,6 +444,9 @@ catch(Exception e)
     
     rightData.add(new Target(0, 0, 100, 10, -45, 0));
     rightData.add(new Target(0, 0, 100, -10, -45, 0));
+    
+    newDataLeft = true;
+    newDataRight = true;
 
     transformData(Camera.LEFT);
     transformData(Camera.RIGHT);
