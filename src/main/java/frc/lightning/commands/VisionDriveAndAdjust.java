@@ -24,7 +24,11 @@ public class VisionDriveAndAdjust extends Command {
   private final double DISTANCE_ADJUST_RATIO = 10;
   private final double ROTATION_ADJUST_RATIO = 20;
   private final double ADJUST_RATIO = 15;
-  
+
+  private final double BASE_POWER = 0.25;
+  private final double SQUINT_WEIGHT = 0.05;
+  private final double SQUINT_POWER = 0.05;
+  private final double MIN_TARGET_DISTANCE = 20;
 
   public VisionDriveAndAdjust() {
     // Use requires() here to declare subsystem dependencies
@@ -52,8 +56,8 @@ public class VisionDriveAndAdjust extends Command {
 
       if (target.standoff() > 100){
 
-        double squintAdjustment = Math.signum(squint) * Math.pow(Math.abs(squint), 0.5) * 0.05; //power constant taken from the else if block directly below
-        Robot.drivetrain.setPower(.3 + squintAdjustment, .3 - squintAdjustment);
+        double squintAdjustment = Math.signum(squint) * Math.pow(Math.abs(squint), SQUINT_POWER) * SQUINT_WEIGHT; //power constant taken from the else if block directly below
+        Robot.drivetrain.setPower(BASE_POWER + squintAdjustment, BASE_POWER - squintAdjustment);
         SmartDashboard.putString("adjust status", "only squint");
       }
       //Archaic solution
@@ -111,7 +115,7 @@ public class VisionDriveAndAdjust extends Command {
 
         squintGoal = centerAngle + (standoff / DISTANCE_ADJUST_RATIO) * (target.rotation() / ROTATION_ADJUST_RATIO);
         driveAdjustment = squint - squintGoal;
-        Robot.drivetrain.setPower(.3 + driveAdjustment / ADJUST_RATIO * boundsAdjustment,.3 - driveAdjustment / ADJUST_RATIO * boundsAdjustment);
+        Robot.drivetrain.setPower(BASE_POWER + driveAdjustment / ADJUST_RATIO * boundsAdjustment,BASE_POWER - driveAdjustment / ADJUST_RATIO * boundsAdjustment);
         SmartDashboard.putString("adjust status", "everything");
         }
 
@@ -129,10 +133,10 @@ public class VisionDriveAndAdjust extends Command {
       */
 
 
-      else if (target.standoff() > 20) {
+      else if (target.standoff() > MIN_TARGET_DISTANCE){
 
           //double power = 0.035 * target.standoff() + 0.075;
-          Robot.drivetrain.setPower(0.25, 0.25);
+          Robot.drivetrain.setPower(BASE_POWER, BASE_POWER);
           SmartDashboard.putString("adjust status", "not turning");
           
       }
@@ -143,12 +147,8 @@ public class VisionDriveAndAdjust extends Command {
       }
 
   } catch(NoTargetException e) {
-
-      
       Robot.drivetrain.setPower(0, 0);
       SmartDashboard.putString("adjust status", "no target");
-      
-
   }
   }
 
