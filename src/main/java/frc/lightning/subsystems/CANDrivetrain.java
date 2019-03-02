@@ -70,7 +70,7 @@ public abstract class CANDrivetrain extends LightningDrivetrain {
         leftMaster.setName("Left Master");
         SmartDashboard.putData("Left Master", leftMaster);
 
-        rightMaster.setName("Rigth Master");
+        rightMaster.setName("Right Master");
         SmartDashboard.putData("Right Master", rightMaster);
 
         resetDistance();

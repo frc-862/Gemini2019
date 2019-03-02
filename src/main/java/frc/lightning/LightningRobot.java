@@ -126,7 +126,12 @@ public class LightningRobot extends TimedRobot {
         constants = new Constants();
         constants.readFromFile();
 
-        SmartDashboard.putData("Auto mode", chooser);
+        SmartDashboard.putData("Auto Mode", chooser);
+        SmartDashboard.putData("Auto Elevator Pos", elevatorChooser);
+        SmartDashboard.putData("Auto Game Piece", gamePieceChooser);
+        SmartDashboard.putData("Auto Start Pos", startPosChooser);
+        SmartDashboard.putData("Auto General Destination", genDestinChooser);
+        SmartDashboard.putData("Auto Specific Destination", specificDestinChooser);
 
         // By this point all datalog fields should be registered
         DataLogger.preventNewDataElements();
