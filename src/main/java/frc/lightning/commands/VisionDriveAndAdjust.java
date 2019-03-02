@@ -48,6 +48,7 @@ public class VisionDriveAndAdjust extends Command {
       double squintGoal;
       double driveAdjustment;
       double centerAngle = 0;
+      int boundsAdjustment = 1;
 
       if (target.standoff() > 100){
 
@@ -94,31 +95,25 @@ public class VisionDriveAndAdjust extends Command {
        //-----End of John's solution-----------------------------------------------------------------------------
       */
 
-      
-    
-
       //New squint correct
 
       else if (Math.abs(squint) > SQUINT_BOUND || Math.abs(target.rotation()) > ROTATION_BOUND) {
 
-        if (x > PIXEL_POSITIVE_EDGE){
-          Robot.drivetrain.setPower(0.25,0.35);
+        if (squint > SQUINT_POSITIVE_EDGE){
+          boundsAdjustment = -1;
         }
-        else if (x < -PIXEL_POSITIVE_EDGE){
-          Robot.drivetrain.setPower(0.35,0.25);
+        else if (squint < -SQUINT_POSITIVE_EDGE){
+          boundsAdjustment = -1;
         }
         else {
+          boundsAdjustment = 1;
+        }
 
         squintGoal = centerAngle + (standoff / DISTANCE_ADJUST_RATIO) * (target.rotation() / ROTATION_ADJUST_RATIO);
         driveAdjustment = squint - squintGoal;
-        Robot.drivetrain.setPower(.3 + driveAdjustment,.3 + driveAdjustment);
+        Robot.drivetrain.setPower(.3 + driveAdjustment * boundsAdjustment,.3 - driveAdjustment * boundsAdjustment);
         SmartDashboard.putString("adjust status", "everything");
-
         }
-
-        
-      }
-
 
       /*
       Old correct adjustment
