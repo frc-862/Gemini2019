@@ -40,6 +40,79 @@ public class LightningRobot extends TimedRobot {
     Command autonomousCommand;
     SendableChooser<Command> chooser = new SendableChooser<>();
 
+    Command elevatorPos;
+    SendableChooser<Command> elevatorChooser = new SendableChooser<>();
+    String gamePiece;
+    SendableChooser<String> gamePieceChooser = new SendableChooser<>();
+    String startPos;
+    SendableChooser<String> startPosChooser = new SendableChooser<>();
+    String genDestin;
+    SendableChooser<String> genDestinChooser = new SendableChooser<>();
+    String specificDestin;
+    SendableChooser<String> specificDestinChooser = new SendableChooser<>();
+
+    public Command getSelectedElevatorPos(){
+        return elevatorChooser.getSelected();
+    }
+    public String getSelectedGamePiece(){
+        return gamePieceChooser.getSelected();
+    }
+    public String getSelectedStartPos(){
+        return startPosChooser.getSelected();
+    }
+    public String getSelectedGenDestin(){
+        return genDestinChooser.getSelected();
+    }
+    public String getSelectedSpecificDestin(){
+        return specificDestinChooser.getSelected();
+    }
+
+    int elevatorPosCount = 0;
+    public void registerElevatorPos(String name, Command command) {
+        if (elevatorPosCount == 0) {
+            elevatorChooser.setDefaultOption(name, command);
+        } else {
+            elevatorChooser.addOption(name, command);
+        }
+        elevatorPosCount += 1;
+    }
+    int gamePieceCount = 0;
+    public void registerGamePiece(String name, String val) {
+        if (gamePieceCount == 0) {
+            gamePieceChooser.setDefaultOption(name, val);
+        } else {
+            gamePieceChooser.addOption(name, val);
+        }
+        gamePieceCount++;
+    }
+    int startPosCount = 0;
+    public void registerStartPos(String name, String val) {
+        if (startPosCount == 0) {
+            startPosChooser.setDefaultOption(name, val);
+        } else {
+            startPosChooser.addOption(name, val);
+        }
+        startPosCount++;
+    }
+    int genDestinCount = 0;
+    public void registerGenDestin(String name, String val) {
+        if (genDestinCount == 0) {
+            genDestinChooser.setDefaultOption(name, val);
+        } else {
+            genDestinChooser.addOption(name, val);
+        }
+        genDestinCount++;
+    }
+    int specificDestinCount = 0;
+    public void registerSpecificDestin(String name, String val) {
+        if (specificDestinCount == 0) {
+            specificDestinChooser.setDefaultOption(name, val);
+        } else {
+            specificDestinChooser.addOption(name, val);
+        }
+        specificDestinCount++;
+    }
+
     /**
      * This function is run when the robot is first started up and should be
      * used for any initialization code.
