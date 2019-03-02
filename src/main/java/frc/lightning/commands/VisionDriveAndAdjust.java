@@ -22,8 +22,8 @@ public class VisionDriveAndAdjust extends Command {
   private final double SQUINT_POSITIVE_EDGE = 10;
   private final double PIXEL_POSITIVE_EDGE = 100;
   private final double DISTANCE_ADJUST_RATIO = 10;
-  private final double ROTATION_ADJUST_RATIO = 23;
-
+  private final double ROTATION_ADJUST_RATIO = 20;
+  private final double ADJUST_RATIO = 15;
   
 
   public VisionDriveAndAdjust() {
@@ -111,7 +111,7 @@ public class VisionDriveAndAdjust extends Command {
 
         squintGoal = centerAngle + (standoff / DISTANCE_ADJUST_RATIO) * (target.rotation() / ROTATION_ADJUST_RATIO);
         driveAdjustment = squint - squintGoal;
-        Robot.drivetrain.setPower(.3 + driveAdjustment * boundsAdjustment,.3 - driveAdjustment * boundsAdjustment);
+        Robot.drivetrain.setPower(.3 + driveAdjustment / ADJUST_RATIO * boundsAdjustment,.3 - driveAdjustment / ADJUST_RATIO * boundsAdjustment);
         SmartDashboard.putString("adjust status", "everything");
         }
 
