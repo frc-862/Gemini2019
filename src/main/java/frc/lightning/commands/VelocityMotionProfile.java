@@ -179,11 +179,11 @@ public class VelocityMotionProfile extends Command {
         logger.set("actualLeftVelocity", Robot.drivetrain.getLeftVelocity());
         logger.set("actualRightVelocity", Robot.drivetrain.getRightVelocity());
 
-        final double thetaError = leftPoint.heading - Robot.core.getHeading();
+        final double thetaError = leftPoint.heading - Robot.core.getYaw();
         final double turn = thetaError * kTheta;
 
         logger.set("expectedTheta", leftPoint.heading);
-        logger.set("actualTheta", Robot.core.getHeading());
+        logger.set("actualTheta", Robot.core.getYaw());
 
         double requestLeftVel = leftVel - turn;
         double requestRightVel = rightVel + turn;

@@ -52,7 +52,7 @@ public class GeminiDrivetrain extends CANDrivetrain {
 
         VelocityMotionProfile.setKp(3.0);
         VelocityMotionProfile.setKa(0.05);
-        VelocityMotionProfile.setKTheta(0.0);
+        VelocityMotionProfile.setKTheta(-0.25);
     }
 
     @Override

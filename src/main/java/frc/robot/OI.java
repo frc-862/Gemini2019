@@ -21,6 +21,9 @@ import frc.robot.commands.hatch.ExtendHatchCollector;
 import frc.robot.commands.hatch.HatchCollectorStateChange;
 import frc.robot.commands.hatch.OpenHatchCollector;
 import frc.robot.commands.hatch.RetractHatchCollector;
+import frc.robot.commands.test.LeftDriveZero;
+import frc.robot.commands.test.ResetDriveSensors;
+import frc.robot.commands.test.RightDriveZero;
 import frc.robot.commands.LineFollow;
 import frc.robot.commands.calibration.TestMove;
 import frc.robot.commands.climber.Climb;
@@ -124,6 +127,9 @@ public class OI {
         hatchRetract.whenPressed(new RetractHatchCollector());
         hatchExtend.whenPressed(new ExtendHatchCollector());
 
+        (new JoystickButton(driverLeft, 7)).whenPressed(new LeftDriveZero());
+        (new JoystickButton(driverRight, 7)).whenPressed(new RightDriveZero());
+
         (new JoystickButton(copilot, 5)).whenPressed(new InstantCommand(Robot.hatchPanelCollector, () -> Robot.hatchPanelCollector.collect()));
         (new JoystickButton(copilot, 6)).whenPressed(new InstantCommand(Robot.hatchPanelCollector, () -> Robot.hatchPanelCollector.eject()));
         (new JoystickButton(driverRight, 1)).whileHeld(new LineFollow());
@@ -158,6 +164,8 @@ public class OI {
         SmartDashboard.putData("line follow", new LineFollow());
         SmartDashboard.putData("test move", new TestMove());
         SmartDashboard.putData("Left Near Rocket", new VelocityMotionProfile("src/main/deploy/paths/LeftNearRocket"));
+
+        SmartDashboard.putData("RESET_SENSORS", new ResetDriveSensors());
 
         SmartDashboard.putData("Elevator to collect",
                                new InstantCommand(Robot.elevator, () -> Robot.elevator.goToCollect()));

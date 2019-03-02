@@ -51,11 +51,12 @@ public class Robot extends LightningRobot {
         registerAutonomousCommmand("LeftNearLow", new HatchAuton("left_side_near", new SetElevatorLow()));
 
         //TEST
+        registerAutonomousCommmand("Circle", new VelocityMotionProfile("circle"));
         registerAutonomousCommmand("Straight", new VelocityMotionProfile("straight"));
         registerAutonomousCommmand("LeftSideNear", new VelocityMotionProfile("left_side_near"));
         registerAutonomousCommmand("RightSideNear", new VelocityMotionProfile("right_side_near"));
-        //registerAutonomousCommmand("Test Left Turn", new VelocityMotionProfile("test_left_turn"));
-        //registerAutonomousCommmand("Test Right Turn", new VelocityMotionProfile("test_right_turn"));
+        registerAutonomousCommmand("Test Left Turn", new VelocityMotionProfile("test_left_turn"));
+        registerAutonomousCommmand("Test Right Turn", new VelocityMotionProfile("test_right_turn"));
 
         //CameraServer.getInstance().startAutomaticCapture();
     }
