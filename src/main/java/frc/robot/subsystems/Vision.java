@@ -208,90 +208,51 @@ catch(Exception e)
   private void parseData(String data, Camera cam) {
     long currentTime = System.currentTimeMillis();
     boolean successfulParse = true;
-    //Check that basic frame information is intact
-    if(data.indexOf("=") != -1) {
-      //Collect data
-      //SmartDashboard.putString("vision step", "collect");
 
-      String lastFrame = data.substring(data.lastIndexOf("Frame"));
-      //System.out.println(lastFrame.substring(lastFrame.indexOf('[')));
-      //long frameNum = Long.parseLong(lastFrame.substring(lastFrame.indexOf("Frame:") + 6, lastFrame.indexOf(",")));
+    try {
+      //Discard everything after the last '['
+      String truncatedData = data.substring(0, data.lastIndexOf(']') + 1);
+      //Discard everything before the beginning of the last frame
+      String lastFrame = truncatedData.substring(truncatedData.lastIndexOf("Frame"));
       SmartDashboard.putString("Current data", lastFrame);
+      //If we've gotten this far, we have a complete frame.
+      int numTargets = Integer.parseInt(lastFrame.substring(lastFrame.indexOf("Targets:") + 8, lastFrame.indexOf(" (out")));
 
-      int numTargets = 0;
-
-      try{
-      numTargets = Integer.parseInt(lastFrame.substring(lastFrame.indexOf("Targets:") + 8, lastFrame.indexOf(" (out")));
-    
-    }
-
-       catch(RuntimeException e) {
-         
-    }
-    
       ArrayList<Target> parsed = new ArrayList<Target>();
-      if(numTargets == 0) {
-        lastCameraUpdate = currentTime;
-        switch(cam) {
-          case LEFT:
-            leftData = new ArrayList<Target>();
-            break;
-          case RIGHT:
-            rightData = new ArrayList<Target>();
-            break;
-        }
-        SmartDashboard.putString("vision step", "no targets");
+      String currentTarget;
+      for(int i = 0; i < numTargets; i++) {
+        SmartDashboard.putString("vision step", "grab target data");
+        currentTarget = lastFrame.substring(lastFrame.indexOf("Target:" + i + "["));
+        SmartDashboard.putString("vision step", "begin parse");
+        int x, y;
+        //x = Integer.parseInt(currentTarget.substring(currentTarget.indexOf("centerX:") + 8, currentTarget.indexOf(",", currentTarget.indexOf("centerX:"))));
+        //y = Integer.parseInt(currentTarget.substring(currentTarget.indexOf("centerY:") + 8, currentTarget.indexOf(",", currentTarget.indexOf("centerY:"))));
+        double standoff, rotation, squint;
+        standoff = Double.parseDouble(currentTarget.substring(currentTarget.indexOf("standoff:") + 9, currentTarget.indexOf(",", currentTarget.indexOf("standoff:"))));
+        SmartDashboard.putString("vision step", "parsed standoff");
+        rotation = Double.parseDouble(currentTarget.substring(currentTarget.indexOf("rotation:") + 9, currentTarget.indexOf(",", currentTarget.indexOf("rotation:"))));
+        SmartDashboard.putString("vision step", "parsed rotation");
+        squint = Double.parseDouble(currentTarget.substring(currentTarget.indexOf("squint:") + 7, currentTarget.indexOf("]", currentTarget.indexOf("squint:"))));
+        SmartDashboard.putString("vision step", "parsed squint");
+        SmartDashboard.putString("vision step", "end parse");
+        parsed.add(new Target(0, 0, standoff, rotation, squint, Math.round(currentTime - latency)));
       }
-      //Check that target information is intact
-      else if(lastFrame.endsWith("]\r\n")) {
-        switch(cam) {
+      lastCameraUpdate = currentTime;
+      lastFrameTime = Math.round(currentTime - latency);
+      switch(cam) {
         case LEFT:
           leftData = new ArrayList<Target>();
+          leftData = parsed;
           break;
         case RIGHT:
           rightData = new ArrayList<Target>();
+          rightData = parsed;
           break;
-        }
-        String currentTarget;
-        for(int i = 0; i < numTargets; i++) {
-          SmartDashboard.putString("vision step", "grab target data");
-          currentTarget = lastFrame.substring(lastFrame.indexOf("Target:" + i + "["));
-          SmartDashboard.putString("vision step", "begin parse");
-          int x, y;
-          x = Integer.parseInt(currentTarget.substring(currentTarget.indexOf("centerX:") + 8, currentTarget.indexOf(",", currentTarget.indexOf("centerX:"))));
-          y = Integer.parseInt(currentTarget.substring(currentTarget.indexOf("centerY:") + 8, currentTarget.indexOf(",", currentTarget.indexOf("centerY:"))));
-          double standoff, rotation, squint;
-          standoff = Double.parseDouble(currentTarget.substring(currentTarget.indexOf("standoff:") + 9, currentTarget.indexOf(",", currentTarget.indexOf("standoff:"))));
-          SmartDashboard.putString("vision step", "parsed standoff");
-          rotation = Double.parseDouble(currentTarget.substring(currentTarget.indexOf("rotation:") + 9, currentTarget.indexOf(",", currentTarget.indexOf("rotation:"))));
-          SmartDashboard.putString("vision step", "parsed rotation");
-          squint = Double.parseDouble(currentTarget.substring(currentTarget.indexOf("squint:") + 7, currentTarget.indexOf("]", currentTarget.indexOf("squint:"))));
-          SmartDashboard.putString("vision step", "parsed squint");
-          SmartDashboard.putString("vision step", "end parse");
-          parsed.add(new Target(x, y, standoff, rotation, squint, Math.round(currentTime - latency)));
-        }
-        lastCameraUpdate = currentTime;
-        lastFrameTime = Math.round(currentTime - latency);
-        switch(cam) {
-          case LEFT:
-            leftData = parsed;
-            break;
-          case RIGHT:
-            rightData = parsed;
-            break;
-        }
-      }
-      else {
-        //We have data, but it does not end with ']' (incomplete data)
-        successfulParse = false;
       }
     }
-    else {
-      //We have a connection but no new data from the camera
-      //System.out.println("no frame " + data);
+    catch(Exception e) {
       successfulParse = false;
     }
-
     switch(cam) {
       case LEFT:
         newDataLeft = successfulParse;
