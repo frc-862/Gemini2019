@@ -170,7 +170,7 @@ public class Vision extends Subsystem {
         CamName = "rightCam ";
           try {
             inData = serialInRight.readString();
-            System.out.println(inData);
+            //System.out.println(inData);
             if(!inData.equals("")) {
               SmartDashboard.putString("Right data", inData);
             }
@@ -225,8 +225,8 @@ catch(Exception e)
         currentTarget = lastFrame.substring(lastFrame.indexOf("Target:" + i + "["));
         SmartDashboard.putString("vision step", "begin parse");
         int x, y;
-        //x = Integer.parseInt(currentTarget.substring(currentTarget.indexOf("centerX:") + 8, currentTarget.indexOf(",", currentTarget.indexOf("centerX:"))));
-        //y = Integer.parseInt(currentTarget.substring(currentTarget.indexOf("centerY:") + 8, currentTarget.indexOf(",", currentTarget.indexOf("centerY:"))));
+        //x = Integer.parseInt(currentTarget.substring(currentTarget.indexOf("x:") + 2, currentTarget.indexOf(",", currentTarget.indexOf("y:"))));
+        //y = Integer.parseInt(currentTarget.substring(currentTarget.indexOf("y:") + 2, currentTarget.indexOf(",", currentTarget.indexOf("y:"))));
         double standoff, rotation, squint;
         standoff = Double.parseDouble(currentTarget.substring(currentTarget.indexOf("standoff:") + 9, currentTarget.indexOf(",", currentTarget.indexOf("standoff:"))));
         SmartDashboard.putString("vision step", "parsed standoff");
