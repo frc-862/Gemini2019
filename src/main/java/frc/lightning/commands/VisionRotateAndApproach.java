@@ -23,7 +23,8 @@ public class VisionRotateAndApproach extends Command {
   private final double SQUINT_POWER = 0.5;
   private final double SQUINT_WEIGHT = 0.05;
   private final double STANDOFF_POWER = 0.075;
-  private final double MIN_TARGET_DISTANCE = 30;
+  private final double MIN_TARGET_DISTANCE = 10;
+  private final double SINGLE_RECT_BOUND = 15;
 
 
   public VisionRotateAndApproach() {
@@ -44,9 +45,12 @@ public class VisionRotateAndApproach extends Command {
     try {
       Target target = Robot.vision.getBestTarget();
       double squint = target.squint();
+      double standoff = target.standoff();
+      double leftRectSquint;
+      double rightRectSquint;
 
       
-      if (Math.abs(squint) >  target.standoff() * SQUINT_DISTANCE_RATIO) {
+      if (Math.abs(squint) >  target.standoff() * SQUINT_DISTANCE_RATIO && standoff > 40) {
         double adjustment = Math.signum(squint) * Math.pow(Math.abs(squint), SQUINT_POWER) * SQUINT_WEIGHT;
         Robot.drivetrain.setPower(ROBOT_BASE_POWER  + adjustment, ROBOT_BASE_POWER  - adjustment);
         
@@ -69,6 +73,24 @@ public class VisionRotateAndApproach extends Command {
         
       }
     */
+
+      else if (target.standoff() > MIN_TARGET_DISTANCE){
+
+        if ((leftRectSquint >= -SINGLE_RECT_BOUND) && (rightRectSquint <= SINGLE_RECT_BOUND)){
+          Robot.drivetrain.setPower(ROBOT_BASE_POWER, ROBOT_BASE_POWER);
+        }
+        else if ((leftRectSquint < -SINGLE_RECT_BOUND) && (rightRectSquint <= SINGLE_RECT_BOUND)){
+          Robot.drivetrain.setPower(ROBOT_BASE_POWER + 0.25, ROBOT_BASE_POWER - 0.25);
+        }
+        else if ((leftRectSquint >= -SINGLE_RECT_BOUND) && (rightRectSquint > SINGLE_RECT_BOUND)){
+          Robot.drivetrain.setPower(ROBOT_BASE_POWER + 0.25, ROBOT_BASE_POWER - 0.25);
+        }
+        else {
+          SmartDashboard.putString("vision turn status", "lost target");
+        }
+
+      }
+/*
       else if (target.standoff() > MIN_TARGET_DISTANCE) {
 
           double power = ROBOT_BASE_POWER * target.standoff() + STANDOFF_POWER;
@@ -76,7 +98,7 @@ public class VisionRotateAndApproach extends Command {
           SmartDashboard.putString("vision turn status", "not turning");
           
       }
-
+*/
       else {
         Robot.drivetrain.setPower(0,0);
         SmartDashboard.putString("vision turn status", "not moving");
