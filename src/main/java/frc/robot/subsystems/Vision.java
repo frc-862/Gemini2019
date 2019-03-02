@@ -225,8 +225,8 @@ catch(Exception e)
         currentTarget = lastFrame.substring(lastFrame.indexOf("Target:" + i + "["));
         SmartDashboard.putString("vision step", "begin parse");
         int x, y;
-        //x = Integer.parseInt(currentTarget.substring(currentTarget.indexOf("centerX:") + 8, currentTarget.indexOf(",", currentTarget.indexOf("centerX:"))));
-        //y = Integer.parseInt(currentTarget.substring(currentTarget.indexOf("centerY:") + 8, currentTarget.indexOf(",", currentTarget.indexOf("centerY:"))));
+        x = Integer.parseInt(currentTarget.substring(currentTarget.indexOf("centerX:") + 8, currentTarget.indexOf(",", currentTarget.indexOf("centerX:"))));
+        y = Integer.parseInt(currentTarget.substring(currentTarget.indexOf("centerY:") + 8, currentTarget.indexOf(",", currentTarget.indexOf("centerY:"))));
         double standoff, rotation, squint;
         standoff = Double.parseDouble(currentTarget.substring(currentTarget.indexOf("standoff:") + 9, currentTarget.indexOf(",", currentTarget.indexOf("standoff:"))));
         SmartDashboard.putString("vision step", "parsed standoff");
