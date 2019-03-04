@@ -27,6 +27,7 @@ import frc.robot.commands.test.RightDriveZero;
 import frc.robot.commands.LineFollow;
 import frc.robot.commands.calibration.TestMove;
 import frc.robot.commands.climber.Climb;
+import frc.robot.commands.climber.ExtendShocks;
 import frc.robot.commands.driveTrain.ConfigMotors;
 import frc.robot.commands.cargo.DeployCargoCollector;
 import frc.robot.commands.cargo.RetractCargoCollector;
@@ -42,6 +43,7 @@ public class OI {
     private Button setElevatorHigh = new JoystickButton(copilot, 3);
     private Button setElevatorLow = new JoystickButton(copilot, 11);
     private Button setElevatorMid = new JoystickButton(copilot, 8);
+    private Button setShocksout = new JoystickButton(driverRight, 8);
 
     // TODO - duplicated button number
     private Button setElevatorCargoCollect = new JoystickButton(copilot, 8);
@@ -52,6 +54,7 @@ public class OI {
     private Button cargoCollectOut= new JoystickButton(copilot,4);//needs changed prob
     private POVButton hatchExtend = new POVButton(copilot, 0);
     private POVButton hatchRetract = new POVButton(copilot, 180);
+    
 
     private Button waitButton= new JoystickButton(driverRight, 14);//
 
@@ -69,6 +72,10 @@ public class OI {
     }
     public void cargoCollectIn  () {
         cargoCollectOut.whenPressed(new RetractCargoCollector());
+    }
+
+    public void setShocksout  () {
+        setShocksout.whenPressed(new ExtendShocks());
     }
 
     public int getLeftDirection() {
@@ -94,6 +101,12 @@ public class OI {
         return (driverRight.getRawAxis(3) - 1) / -2;
     }
     public double manualElevatorDownPwr() {
+        return (driverLeft.getRawAxis(3) - 1) / 2;
+    }
+    public double manualClimbPwrUp() {
+        return (driverRight.getRawAxis(3) - 1) / -2;
+    }
+    public double manualClimbDownPwr() {
         return (driverLeft.getRawAxis(3) - 1) / 2;
     }
     public boolean getElevatorCargoCollectPosSelect() {

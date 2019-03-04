@@ -10,6 +10,8 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
+
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.Constants;
@@ -26,16 +28,20 @@ import com.ctre.phoenix.motorcontrol.LimitSwitchSource;
 public class Climber extends Subsystem {
 
     WPI_TalonSRX motor;
+    WPI_VictorSPX motorSlave;
+    WPI_VictorSPX climberDrive;
     DoubleSolenoid deployer;
 
     public Climber() {
-        motor = new WPI_TalonSRX(RobotMap.climberID);  // TODO create with correct CAN ID in robot map
+        motor = new WPI_TalonSRX(RobotMap.climberMasterID);  // TODO create with correct CAN ID in robot map
         addChild("Motor", motor);
-
-        deployer = null; // TODO create with correct solenoid values
-
+        motorSlave = new WPI_VictorSPX(RobotMap.climberSlaveID);
+        climberDrive = new WPI_VictorSPX(RobotMap.climberDriveID);
+        addChild("Slave Motor", motorSlave);
+        deployer = new DoubleSolenoid(RobotMap.compressorCANId, RobotMap.climbFwdChan, RobotMap.climbRevChan);; // TODO create with correct solenoid values
+        motorSlave.follow(motor);
         motor.configForwardLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen, 0);
-        motor.configReverseLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyClosed, 0);
+        motor.configReverseLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen, 0);
     }
 
     /** Watch limit switches at ends of travel
@@ -53,9 +59,7 @@ public class Climber extends Subsystem {
     }
 
     @Override
-    public void initDefaultCommand() { 
-        setDefaultCommand(new DoNothing());
-    }
+    public void initDefaultCommand() { }
 
     public double getJackPosition() {
         return motor.getSelectedSensorPosition();
@@ -79,5 +83,9 @@ public class Climber extends Subsystem {
 
     public void retractSkids() {
         deployer.set(DoubleSolenoid.Value.kReverse);
+    }
+
+	public void setPower(double pwr) {
+        motor.set(ControlMode.PercentOutput, pwr);
     }
 }
