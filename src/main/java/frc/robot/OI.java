@@ -56,6 +56,12 @@ public class OI {
     private POVButton hatchRetract = new POVButton(copilot, 180);
     
 
+    private Button waitButton= new JoystickButton(driverRight, 14);//
+
+    public boolean shouldWait(){
+        return waitButton.get();
+    }
+
     public boolean getElevatorHighPosSelect() {
         return setElevatorHigh != null &&
                setElevatorHigh.get();
