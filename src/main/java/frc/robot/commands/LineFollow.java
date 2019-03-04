@@ -8,28 +8,31 @@
 package frc.robot.commands;
 
 
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.lightning.commands.LoggedCommand;
+import frc.lightning.logging.CommandLogger;
+import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.Constants;
 import frc.robot.Robot;
+import frc.robot.subsystems.GeminiDrivetrain;
 
-public class LineFollow extends LoggedCommand {
+
+
+public class LineFollow extends Command {
+    CommandLogger logger = new CommandLogger(getClass().getSimpleName());
     double turnP = .45;
-    double turningVelocity = 4;//might need to go to 5-6 because sometimes does not line up
-    double straightVelocity = 1;
+    double turningVelocity = 4;//4
+    double straightVelocity = .5;//1
     double turnI = 0.001;
     double turnD = .4;
     double prevError = 0;
     double errorAcc = 0;
-
     public LineFollow() {
         // Use requires() here to declare subsystem dependencies
         requires(Robot.drivetrain);
         logger.addDataElement("error");
         logger.addDataElement("turn");
         logger.addDataElement("velocity");
-
         SmartDashboard.putNumber("Turn Power", turnP);
         SmartDashboard.putNumber("Straight Vel", straightVelocity);
         SmartDashboard.putNumber("Turning Vel", turningVelocity);
@@ -37,67 +40,70 @@ public class LineFollow extends LoggedCommand {
         SmartDashboard.putNumber("turnD", turnD);
     }
 
-    // Basic idea, no line return false,
-    // If we have see a line for at least
-    // a calibrated amount of time (250ms?)
-    // return true
-    private double timeLineSpotted = 0;
-    private boolean lineLastCycle = false;
-    private final double lineDetectHysteresis = 0.250;
-
-    public boolean linePresent() {
-        final double error = Robot.core.lineSensor();
-
-        if (Double.isNaN(error)) {
-            lineLastCycle = false;
-        } else if (!lineLastCycle) {
-            lineLastCycle = true;
-            timeLineSpotted = Timer.getFPGATimestamp();
-        } else {
-            return (Timer.getFPGATimestamp() - timeLineSpotted) > lineDetectHysteresis;
-        }
-
-        return false;
+    // Called just before this Command runs the first time
+    @Override
+    protected void initialize() {
+        logger.reset();
     }
 
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-        if (linePresent()) {
-            Robot.drivetrain.setVelocity(Robot.oi.getLeftPower() * Constants.velocityMultiplier,
-                    Robot.oi.getRightPower()* Constants.velocityMultiplier);
+        // read & weight the sensors
+        final double error = Robot.core.lineSensor();
+        //if(error==Double.NaN)
+        //{
+        //  Robot.drivetrain.setVelocity(
+        //    (Robot.oi.getLeftPower()*Constants.velocityMultiplier),
+        //    (Robot.oi.getRightPower()*Constants.velocityMultiplier));
+        //    prevError = 0;
+        //    errorAcc = 0;
+        //} else {
+        turnP = SmartDashboard.getNumber("Turn Power", turnP);
+        straightVelocity = SmartDashboard.getNumber("Straight Vel", straightVelocity);
+        turningVelocity = SmartDashboard.getNumber("Turning Vel", turningVelocity);
+        //turningVelocity = SmartDashboard.getNumber("turn down turning", turnDown);
+        turnI = SmartDashboard.getNumber("turnI", turnI);
+        turnD = SmartDashboard.getNumber("turnD", turnD);
+
+        if (Double.isNaN(error) || Math.abs(error) <= 1) {
+            errorAcc = 0;
         } else {
-            // read & weight the sensors
-            final double error = Robot.core.lineSensor();
-
-            turnP = SmartDashboard.getNumber("Turn Power", turnP);
-            straightVelocity = SmartDashboard.getNumber("Straight Vel", straightVelocity);
-            turningVelocity = SmartDashboard.getNumber("Turning Vel", turningVelocity);
-            turnI = SmartDashboard.getNumber("turnI", turnI);
-            turnD = SmartDashboard.getNumber("turnD", turnD);
-
-            if (Double.isNaN(error) || Math.abs(error) <= 1) {
-                errorAcc = 0;
-            } else {
-                errorAcc += error;
-            }
-
-            final double turn = (error * turnP) + (errorAcc * turnI) - (prevError - error) * turnD;
-            final double velocity = (Math.abs(error) < 1) ? straightVelocity : turningVelocity;
-
-            logger.set("error", error);
-            logger.set("turn", turn);
-            logger.set("velocity", velocity);
-
-            Robot.drivetrain.setVelocity(velocity + turn, velocity - turn);
-            prevError = error;
+            errorAcc += error;
         }
-        super.execute();
+
+        final double turn = (error * turnP) + (errorAcc * turnI)-(prevError-error)*turnD;
+
+        final double velocity = (Math.abs(error) < 1) ? straightVelocity : turningVelocity;
+
+        logger.set("error", error);
+        logger.set("turn", turn);
+        logger.set("velocity", velocity);
+        logger.write();
+        System.out.println("line follow error = "+error+"/ turn = "+turn+"/ velocity ="+velocity);
+        // drive
+        Robot.drivetrain.setVelocity(velocity + turn, velocity - turn);
+        prevError = error;
     }
+    ;
+
 
     // Make this return true when this Command no longer needs to run execute()
     @Override
     protected boolean isFinished() {
         return false;
+    }
+
+    // Called once after isFinished returns true
+    @Override
+    protected void end() {
+        logger.drain();
+        logger.flush();
+    }
+
+    // Called when another command which requires one or more of the same
+    // subsystems is scheduled to run
+    @Override
+    protected void interrupted() {
     }
 }

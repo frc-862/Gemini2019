@@ -30,8 +30,8 @@ public class ManualElevator extends Command {
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-        SmartDashboard.putNumber("elevator value", Robot.oi.manualElevatorPwr() + Robot.oi.manualElevatorDownPwr());
-        Robot.elevator.elevatorMotor.set(ControlMode.PercentOutput, Robot.oi.manualElevatorPwr() + Robot.oi.manualElevatorDownPwr());
+        //SmartDashboard.putNumber("elevator value", Robot.oi.manualElevatorPwr() + Robot.oi.manualElevatorDownPwr());
+        //Robot.elevator.elevatorMotor.set(ControlMode.PercentOutput, Robot.oi.manualElevatorPwr() + Robot.oi.manualElevatorDownPwr());
     }
 
     // Make this return true when this Command no longer needs to run execute()
