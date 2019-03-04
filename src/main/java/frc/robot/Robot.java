@@ -69,7 +69,7 @@ public class Robot extends LightningRobot {
         registerAutonomousCommmand("Test Left Turn", new VelocityMotionProfile("test_left_turn"));
         registerAutonomousCommmand("Test Right Turn", new VelocityMotionProfile("test_right_turn"));
 
-        //CameraServer.getInstance().startAutomaticCapture();
+        CameraServer.getInstance().startAutomaticCapture();
     }
 
     private void registerAutoOptions(){

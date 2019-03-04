@@ -44,6 +44,16 @@ public class GeminiDrivetrain extends CANDrivetrain {
         addLeftFollower(left2, false  );
         addRightFollower(right2,true);
 
+        /* Needed? */
+        addChild(left2);
+        addChild(right2);
+        left2.setName("Left Slave");
+        SmartDashboard.putData("Left Slave", left2);
+        right2.setName("Right Slave");
+        SmartDashboard.putData("Right Slave", right2);
+
+
+        
         configureMotors();
         enableLogging();
 
