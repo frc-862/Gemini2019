@@ -32,6 +32,14 @@ public class Target {
         this.timestamp = timestamp;
 
     }
+    public Target(Target l, Target r) {
+        x = (l.x() + r.x()) / 2;
+        y = (l.y() + r.y()) / 2;
+        standoff = (l.standoff() + r.standoff()) / 2;
+        rotation = (l.rotation() + r.rotation()) / 2;
+        squint = (l.squint() + r.squint()) / 2;
+        timestamp = (l.timestamp() + r.timestamp()) / 2;
+    }
 
     public Type type() {
         return type;
