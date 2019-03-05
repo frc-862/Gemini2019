@@ -27,7 +27,6 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
  */
 public class CargoCollector extends Subsystem {
     private final WPI_VictorSPX collector;
-    private final DoubleSolenoid deployer;
     public WPI_VictorSPX collectLeft;
     public WPI_VictorSPX collectRight;
 
@@ -35,13 +34,11 @@ public class CargoCollector extends Subsystem {
 
     public static CargoCollector create() {
         return new CargoCollector(
-                   new WPI_VictorSPX(RobotMap.cargoMotor),
-                   new DoubleSolenoid(RobotMap.compressorCANId, RobotMap.cargoSolenoidFwdChan, RobotMap.cargoSolenoidRevChan)
-               );
+                   new WPI_VictorSPX(RobotMap.cargoMotor));
     }
 
 
-    public CargoCollector(WPI_VictorSPX collector, DoubleSolenoid deployer) {
+    public CargoCollector(WPI_VictorSPX collector) {
         String name = getClass().getSimpleName();
         setName(name);
 
@@ -54,10 +51,6 @@ public class CargoCollector extends Subsystem {
 
         this.collector = collector;
         addChild("Intake Motor", collector);
-
-        this.deployer = deployer;
-        addChild("Deployer", deployer);
-
 
         stop();
     }
@@ -104,15 +97,6 @@ public class CargoCollector extends Subsystem {
         collectRight.set(ControlMode.PercentOutput, pwr);
         collectLeft.set(ControlMode.PercentOutput, pwr);
     }
-
-    public void deploy() {
-        deployer.set(DoubleSolenoid.Value.kForward);
-    }
-
-    public void retract() {
-        deployer.set(DoubleSolenoid.Value.kReverse);
-    }
-
 
     public void ejectCargo() {
         collectLeft.set(ControlMode.PercentOutput, Constants.ejectDemand*-1);

@@ -10,8 +10,8 @@ package frc.robot.commands.climber;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
-public class ExtendShocks extends Command {
-  public ExtendShocks() {
+public class RetractShocks extends Command {
+  public RetractShocks() {
     // Use requires() here to declare subsystem dependencies
     requires(Robot.climber);
   }
@@ -19,14 +19,12 @@ public class ExtendShocks extends Command {
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-   
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    System.out.println("shocks out");
-    Robot.climber.extendSkids();
+    Robot.climber.retractSkids();
   }
 
   // Make this return true when this Command no longer needs to run execute()

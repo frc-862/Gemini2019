@@ -51,14 +51,14 @@ public class LineFollow extends Command {
     protected void execute() {
         // read & weight the sensors
         final double error = Robot.core.lineSensor();
-        //if(error==Double.NaN)
-        //{
-        //  Robot.drivetrain.setVelocity(
-        //    (Robot.oi.getLeftPower()*Constants.velocityMultiplier),
-        //    (Robot.oi.getRightPower()*Constants.velocityMultiplier));
-        //    prevError = 0;
-        //    errorAcc = 0;
-        //} else {
+        if(error==Double.NaN)
+        {
+          Robot.drivetrain.setVelocity(
+            (Robot.oi.getLeftPower()*Constants.velocityMultiplier),
+            (Robot.oi.getRightPower()*Constants.velocityMultiplier));
+            prevError = 0;
+            errorAcc = 0;
+        } else {
         turnP = SmartDashboard.getNumber("Turn Power", turnP);
         straightVelocity = SmartDashboard.getNumber("Straight Vel", straightVelocity);
         turningVelocity = SmartDashboard.getNumber("Turning Vel", turningVelocity);
@@ -85,7 +85,7 @@ public class LineFollow extends Command {
         Robot.drivetrain.setVelocity(velocity + turn, velocity - turn);
         prevError = error;
     }
-    ;
+    };
 
 
     // Make this return true when this Command no longer needs to run execute()

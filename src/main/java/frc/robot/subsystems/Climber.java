@@ -38,8 +38,8 @@ public class Climber extends Subsystem {
         motorSlave = new WPI_VictorSPX(RobotMap.climberSlaveID);
         climberDrive = new WPI_VictorSPX(RobotMap.climberDriveID);
         addChild("Slave Motor", motorSlave);
-        deployer = new DoubleSolenoid(RobotMap.compressorCANId, RobotMap.climbFwdChan, RobotMap.climbRevChan);; // TODO create with correct solenoid values
         motorSlave.follow(motor);
+        deployer = new DoubleSolenoid(RobotMap.compressorCANId, RobotMap.climbFwdChan, RobotMap.climbRevChan);; // TODO create with correct solenoid values
         motor.configForwardLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen, 0);
         motor.configReverseLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen, 0);
     }
@@ -85,7 +85,12 @@ public class Climber extends Subsystem {
         deployer.set(DoubleSolenoid.Value.kReverse);
     }
 
-	public void setPower(double pwr) {
+	public void setLiftPower(double pwr) {
         motor.set(ControlMode.PercentOutput, pwr);
     }
+
+    public void setFwrPower(double pwr){
+        climberDrive.set(ControlMode.PercentOutput, pwr);
+    }
+
 }

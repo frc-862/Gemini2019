@@ -19,6 +19,7 @@ import frc.robot.subsystems.*;
 import java.io.File;
 
 import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Robot extends LightningRobot {
 
@@ -115,6 +116,8 @@ public class Robot extends LightningRobot {
     @Override
     protected void robotMediumPriorityPeriodic() {
         super.robotMediumPriorityPeriodic();
+        SmartDashboard.putBoolean("gemini",gemini);
+        SmartDashboard.putBoolean("is gemini", isGemini());
     }
 
     public static boolean isGemini() {

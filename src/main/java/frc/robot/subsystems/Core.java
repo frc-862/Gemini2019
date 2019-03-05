@@ -110,7 +110,8 @@ public class Core extends Subsystem {
         () -> innerRight.getVoltage(),
 
     };
-    private DoubleSupplier[] sensorValues = nebulaSensorValues;//Robot.isGemini() ? geminiSensorValues : nebulaSensorValues;
+    
+    private DoubleSupplier[] sensorValues = Robot.isGemini() ? geminiSensorValues : nebulaSensorValues;
 
     public Core() {
         setName("Core");

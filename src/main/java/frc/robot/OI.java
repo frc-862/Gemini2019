@@ -28,6 +28,9 @@ import frc.robot.commands.LineFollow;
 import frc.robot.commands.calibration.TestMove;
 import frc.robot.commands.climber.Climb;
 import frc.robot.commands.climber.ExtendShocks;
+import frc.robot.commands.climber.ManualClimb;
+import frc.robot.commands.climber.RetractShocks;
+import frc.robot.commands.climber.driveforward;
 import frc.robot.commands.driveTrain.ConfigMotors;
 import frc.robot.commands.cargo.DeployCargoCollector;
 import frc.robot.commands.cargo.RetractCargoCollector;
@@ -103,12 +106,7 @@ public class OI {
     public double manualElevatorDownPwr() {
         return (driverLeft.getRawAxis(3) - 1) / 2;
     }
-    public double manualClimbPwrUp() {
-        return (driverRight.getRawAxis(3) - 1) / -2;
-    }
-    public double manualClimbDownPwr() {
-        return (driverLeft.getRawAxis(3) - 1) / 2;
-    }
+    
     public boolean getElevatorCargoCollectPosSelect() {
         return setElevatorCargoCollect != null &&
                setElevatorCargoCollect.get();
@@ -194,5 +192,18 @@ public class OI {
                                new InstantCommand(Robot.elevator, () -> Robot.elevator.goToMid()));
         SmartDashboard.putData("Elevator to high",
                                new InstantCommand(Robot.elevator, () -> Robot.elevator.goToHigh()));
+
+        SmartDashboard.putData("drive forward", new driveforward());
+        SmartDashboard.putData("manual climb", new ManualClimb());
+        SmartDashboard.putData("Extend Shocks",new ExtendShocks());
+        SmartDashboard.putData("Retract Shocks", new RetractShocks());
     }
+	public double forwardClimbForwardPwr() {
+        return -copilot.getRawAxis(5);
+        
+	}
+
+	public double manualClimbPower() {
+		return ((driverRight.getRawAxis(3) - 1) / -2)+((driverLeft.getRawAxis(3) - 1) / 2);
+	}
 }
