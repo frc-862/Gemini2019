@@ -316,16 +316,75 @@ catch(Exception e)
       }
       return;
     }
+    else if((leftData.size() == 1)
+     && (rightData.size() == 1)
+     && (leftData.get(0).type() == LEFT)
+     && (rightData.get(0).type() == RIGHT)) {
+       reconstructTarget();
+    }
+    else {
+      transformData(Camera.LEFT);
+      transformData(Camera.RIGHT);
+      mergeData();
+    }
     //System.out.println("\n");
     //System.out.println(leftData.toString());
     //System.out.println(rightData.toString());
-    transformData(Camera.LEFT);
-    transformData(Camera.RIGHT);
-    
-    SmartDashboard.putString("leftData", leftData.toString());
-    SmartDashboard.putString("rightData", rightData.toString());
 
-    mergeData();
+  }
+
+  private void reconstructTarget() {
+    //TODO zero checks
+    double standoff = 0, squint = 0, rotation = 0;
+
+    Target l = leftData.get(0), r = rightData.get(0);
+
+    //Calculate x and y of rectangles about robot center. Left is -, right is +.
+    double xL, xR, yL, yR, xBar, yBar;
+
+    xL = (l.standoff() * Math.sin(l.squint())) - (TRACK_WIDTH / 2);
+    xR = (r.standoff() * Math.sin(r.squint())) + (TRACK_WIDTH / 2);
+    yL = l.standoff() * Math.cos(l.squint());
+    yR = r.standoff() * Math.cos(r.squint());
+
+    xBar = (xL + xR) / 2;
+    yBar = (yL + yR) / 2;
+
+    standoff = Math.sqrt(Math.pow(xBar, 2) + Math.pow(yBar, 2));
+
+    squint = Math.atan(yBar / xBar);
+
+    //Slopes are on the level plane used above.
+    double standoffSlope = yBar / xBar;
+    double targetSlope = (yR - yL) / (xR - xL);
+    //Slope of line orthogonal to center of target
+    double normalSlope = -1 / targetSlope;
+
+    if(Math.signum(standoffSlope) != Math.signum(normalSlope)) {
+      //triangle from center of target to y-axis
+      double target2centerY = Math.abs(xBar * targetSlope);
+      //Angle of the above triangle which lays against the y-axis
+      double y2targetSupplemental = Math.atan2(Math.abs(xBar), target2centerY);
+      double y2target = Math.PI - y2targetSupplemental;
+      double rotationComplementary = Math.PI - y2target - Math.abs(squint);
+      rotation = (Math.PI / 2) - rotationComplementary;
+    }
+    else if(Math.abs(standoffSlope) < Math.abs(normalSlope)) {
+      //triangle from center of target to y-axis
+      double target2centerY = Math.abs(xBar * targetSlope);
+      double target2horizontal = Math.atan(target2centerY / Math.abs(xBar));
+      double squintComplementary = (Math.PI / 2) - Math.abs(squint);
+      rotation = (Math.PI / 2) - target2horizontal - squintComplementary;
+    }
+    else {
+      //triangle from center of target normal line to y-axis
+      double normal2centerY = Math.abs(xBar * targetSlope);
+      double normal2horizontal = Math.atan(normal2centerY / Math.abs(xBar));
+      double squintComplementary = (Math.PI / 2) - Math.abs(squint);
+      rotation = (squintComplementary - normal2horizontal) * -1;
+    }
+    mergedData.add(new Target(COMPLETE, 0, 0, standoff, rotation, squint, l.timestamp()));
+
   }
 
   private void transformData(Camera side) {
