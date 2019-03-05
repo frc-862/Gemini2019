@@ -34,6 +34,10 @@ public class Vision extends Subsystem {
   private ArrayList<Target> leftData;
   private ArrayList<Target> rightData;
   private double latency = 0;
+  //Shorthand variables for these
+  private final Target.Type COMPLETE = Target.Type.COMPLETE;
+  private final Target.Type LEFT = Target.Type.LEFT;
+  private final Target.Type RIGHT = Target.Type.RIGHT;
 
   private final SerialPort.Port CAMERA_LEFT_PORT = SerialPort.Port.kUSB;
   //private final SerialPort.Port CAMERA_RIGHT_PORT = SerialPort.Port.kOnboard;
@@ -108,7 +112,7 @@ public class Vision extends Subsystem {
 */
   public Target getBestTarget() throws NoTargetException {
     if(mergedData.size() == 0) throw new NoTargetException();
-    Target best = new Target(0, 0, 0, 0, 999, 0); //Creating a first target and making squint 999 
+    Target best = new Target(COMPLETE, 0, 0, 0, 0, 999, 0); //Creating a first target and making squint 999 
     for(Target t : mergedData) {
       if(Math.abs(t.squint()) < Math.abs(best.squint())) best = t;
     }
@@ -233,6 +237,22 @@ catch(Exception e)
         SmartDashboard.putString("vision step", "grab target data");
         currentTarget = lastFrame.substring(lastFrame.indexOf("Target:" + i + "["));
         SmartDashboard.putString("vision step", "begin parse");
+        String typeParse = currentTarget.substring(currentTarget.indexOf("type:") + 5, currentTarget.indexOf(",", currentTarget.indexOf("type:")));
+        Target.Type type;
+        switch(typeParse) {
+          case "complete":
+            type = COMPLETE;
+            break;
+          case "left":
+            type = LEFT;
+            break;
+          case "right":
+            type = RIGHT;
+            break;
+          //Ignore this target if it is of the type "not a target"
+          default:
+            continue;
+        }
         int x, y;
         //x = Integer.parseInt(currentTarget.substring(currentTarget.indexOf("x:") + 2, currentTarget.indexOf(",", currentTarget.indexOf("y:"))));
         //y = Integer.parseInt(currentTarget.substring(currentTarget.indexOf("y:") + 2, currentTarget.indexOf(",", currentTarget.indexOf("y:"))));
@@ -244,7 +264,7 @@ catch(Exception e)
         squint = Double.parseDouble(currentTarget.substring(currentTarget.indexOf("squint:") + 7, currentTarget.indexOf("]", currentTarget.indexOf("squint:"))));
         SmartDashboard.putString("vision step", "parsed squint");
         SmartDashboard.putString("vision step", "end parse");
-        parsed.add(new Target(0, 0, standoff, rotation, squint, Math.round(currentTime - latency)));
+        parsed.add(new Target(type, 0, 0, standoff, rotation, squint, Math.round(currentTime - latency)));
       }
       lastCameraUpdate = currentTime;
       lastFrameTime = Math.round(currentTime - latency);
@@ -401,7 +421,7 @@ catch(Exception e)
       
       double centerRotation = t.rotRad() + (cameraStandoff2centerStandoff * offsetMultiplier);
 
-      data.set(i, new Target(t.x(), t.y(), centerStandoff, Math.toDegrees(centerRotation), Math.toDegrees(centerSquint), t.timestamp()));
+      data.set(i, new Target(t.type(), t.x(), t.y(), centerStandoff, Math.toDegrees(centerRotation), Math.toDegrees(centerSquint), t.timestamp()));
     }
     switch(side) {
       case LEFT:
@@ -440,29 +460,29 @@ catch(Exception e)
     rightData = new ArrayList<Target>();
 
     //standoff, rotation, squint, time
-    leftData.add(new Target(0, 0, 1, 10, 0, 0));
-    leftData.add(new Target(0, 0, 1, -10, 0, 0));
+    leftData.add(new Target(COMPLETE, 0, 0, 1, 10, 0, 0));
+    leftData.add(new Target(COMPLETE, 0, 0, 1, -10, 0, 0));
 
-    leftData.add(new Target(0, 0, 1, 10, -45, 0));
-    leftData.add(new Target(0, 0, 1, -10, -45, 0));
+    leftData.add(new Target(COMPLETE, 0, 0, 1, 10, -45, 0));
+    leftData.add(new Target(COMPLETE, 0, 0, 1, -10, -45, 0));
 
-    leftData.add(new Target(0, 0, 1, 10, 45, 0));
-    leftData.add(new Target(0, 0, 1, -10, 45, 0));
+    leftData.add(new Target(COMPLETE, 0, 0, 1, 10, 45, 0));
+    leftData.add(new Target(COMPLETE, 0, 0, 1, -10, 45, 0));
 
-    leftData.add(new Target(0, 0, 100, 10, 45, 0));
-    leftData.add(new Target(0, 0, 100, -10, 45, 0));
+    leftData.add(new Target(COMPLETE, 0, 0, 100, 10, 45, 0));
+    leftData.add(new Target(COMPLETE, 0, 0, 100, -10, 45, 0));
 
-    rightData.add(new Target(0, 0, 1, 10, 0, 0));
-    rightData.add(new Target(0, 0, 1, -10, 0, 0));
+    rightData.add(new Target(COMPLETE, 0, 0, 1, 10, 0, 0));
+    rightData.add(new Target(COMPLETE, 0, 0, 1, -10, 0, 0));
 
-    rightData.add(new Target(0, 0, 1, 10, 45, 0));
-    rightData.add(new Target(0, 0, 1, -10, 45, 0));
+    rightData.add(new Target(COMPLETE, 0, 0, 1, 10, 45, 0));
+    rightData.add(new Target(COMPLETE, 0, 0, 1, -10, 45, 0));
 
-    rightData.add(new Target(0, 0, 1, 10, -45, 0));
-    rightData.add(new Target(0, 0, 1, -10, -45, 0));
+    rightData.add(new Target(COMPLETE, 0, 0, 1, 10, -45, 0));
+    rightData.add(new Target(COMPLETE, 0, 0, 1, -10, -45, 0));
     
-    rightData.add(new Target(0, 0, 100, 10, -45, 0));
-    rightData.add(new Target(0, 0, 100, -10, -45, 0));
+    rightData.add(new Target(COMPLETE, 0, 0, 100, 10, -45, 0));
+    rightData.add(new Target(COMPLETE, 0, 0, 100, -10, -45, 0));
     
     newDataLeft = true;
     newDataRight = true;

@@ -18,6 +18,13 @@ public class VisionRotateAndApproach extends Command {
 
 
   private final double SQUINT_BOUND = 5;
+  private final double SQUINT_DISTANCE_RATIO = 0.05;
+  private final double ROBOT_BASE_POWER = .25;
+  private final double SQUINT_POWER = 0.5;
+  private final double SQUINT_WEIGHT = 0.05;
+  private final double STANDOFF_POWER = 0.075;
+  private final double MIN_TARGET_DISTANCE = 10;
+  private final double SINGLE_RECT_BOUND = 15;
 
 
   public VisionRotateAndApproach() {
@@ -38,11 +45,14 @@ public class VisionRotateAndApproach extends Command {
     try {
       Target target = Robot.vision.getBestTarget();
       double squint = target.squint();
+      double standoff = target.standoff();
+      double leftRectSquint;
+      double rightRectSquint;
 
       
-      if (Math.abs(squint) >  target.standoff() * .05) {
-        double adjustment = Math.signum(squint) * Math.pow(Math.abs(squint), 0.5) * 0.02;
-        Robot.drivetrain.setPower(.3  + adjustment, .3  - adjustment);
+      if (Math.abs(squint) >  target.standoff() * SQUINT_DISTANCE_RATIO && standoff > 40) {
+        double adjustment = Math.signum(squint) * Math.pow(Math.abs(squint), SQUINT_POWER) * SQUINT_WEIGHT;
+        Robot.drivetrain.setPower(ROBOT_BASE_POWER  + adjustment, ROBOT_BASE_POWER  - adjustment);
         
         //Robot.drivetrain.setPower(.2 * Math.signum(squint), -.2 * Math.signum(squint)); 
           //Robot.drivetrain.setPower(0.4,0.4);
@@ -63,14 +73,32 @@ public class VisionRotateAndApproach extends Command {
         
       }
     */
-      else if (target.standoff() > 30) {
 
-          double power = 0.03 * target.standoff() + 0.075;
+      else if (target.standoff() > MIN_TARGET_DISTANCE){
+
+        if ((leftRectSquint >= -SINGLE_RECT_BOUND) && (rightRectSquint <= SINGLE_RECT_BOUND)){
+          Robot.drivetrain.setPower(ROBOT_BASE_POWER, ROBOT_BASE_POWER);
+        }
+        else if ((leftRectSquint < -SINGLE_RECT_BOUND) && (rightRectSquint <= SINGLE_RECT_BOUND)){
+          Robot.drivetrain.setPower(ROBOT_BASE_POWER + 0.25, ROBOT_BASE_POWER - 0.25);
+        }
+        else if ((leftRectSquint >= -SINGLE_RECT_BOUND) && (rightRectSquint > SINGLE_RECT_BOUND)){
+          Robot.drivetrain.setPower(ROBOT_BASE_POWER + 0.25, ROBOT_BASE_POWER - 0.25);
+        }
+        else {
+          SmartDashboard.putString("vision turn status", "lost target");
+        }
+
+      }
+/*
+      else if (target.standoff() > MIN_TARGET_DISTANCE) {
+
+          double power = ROBOT_BASE_POWER * target.standoff() + STANDOFF_POWER;
           Robot.drivetrain.setPower(power, power);
           SmartDashboard.putString("vision turn status", "not turning");
           
       }
-
+*/
       else {
         Robot.drivetrain.setPower(0,0);
         SmartDashboard.putString("vision turn status", "not moving");

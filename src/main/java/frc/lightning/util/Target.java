@@ -11,12 +11,19 @@ package frc.lightning.util;
  * Add your docs here.
  */
 public class Target {
+
+    public enum Type {
+        COMPLETE, LEFT, RIGHT;
+    }
+
     private double standoff;
     private double rotation;
     private double squint;
     private long timestamp;
     private int x, y;
-    public Target(int x, int y, double standoff, double rotation, double squint, long timestamp) {
+    private Type type;
+    public Target(Type type, int x, int y, double standoff, double rotation, double squint, long timestamp) {
+        this.type = type;
         this.x = x;
         this.y = y;
         this.standoff = standoff;
@@ -34,6 +41,9 @@ public class Target {
         timestamp = (l.timestamp() + r.timestamp()) / 2;
     }
 
+    public Type type() {
+        return type;
+    }
     public int x() {
         return x;
     }
