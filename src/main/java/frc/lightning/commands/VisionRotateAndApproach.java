@@ -46,14 +46,14 @@ public class VisionRotateAndApproach extends Command {
       Target target = Robot.vision.getBestTarget();
       double squint = target.squint();
       double standoff = target.standoff();
-      double leftRectSquint = 0;
+      double leftRectSquint = Robot.vision.getLeftRect().squint();
       double rightRectSquint = 0;
       double leftSquintGoal = 0;
 
       
       if (Math.abs(squint) >  standoff * SQUINT_DISTANCE_RATIO && standoff > 40) {
         double adjustment = Math.signum(squint) * Math.pow(Math.abs(squint), SQUINT_POWER) * SQUINT_WEIGHT;
-        Robot.drivetrain.setPower(ROBOT_BASE_POWER  + adjustment, ROBOT_BASE_POWER  - adjustment);
+        //Robot.drivetrain.setPower(ROBOT_BASE_POWER  + adjustment, ROBOT_BASE_POWER  - adjustment);
         
         //Robot.drivetrain.setPower(.2 * Math.signum(squint), -.2 * Math.signum(squint)); 
           //Robot.drivetrain.setPower(0.4,0.4);
@@ -98,12 +98,12 @@ public class VisionRotateAndApproach extends Command {
         leftSquintGoal = 132.958 * Math.pow(target.standoff(), -0.7778);
 
         if (leftRectSquint >= leftSquintGoal){
-          Robot.drivetrain.setPower(0.275, 0.325);
-          SmartDashboard.putString("vision turn status", "turning right");
+         // Robot.drivetrain.setPower(0.275, 0.325);
+          SmartDashboard.putString("vision turn status", "turning left");
         }
         else if (leftRectSquint < leftSquintGoal){
-          Robot.drivetrain.setPower(0.325,0.275);
-          SmartDashboard.putString("vision turn status", "turning left");
+          //Robot.drivetrain.setPower(0.325,0.275);
+          SmartDashboard.putString("vision turn status", "turning right");
         }
 
       }

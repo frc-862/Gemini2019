@@ -119,6 +119,15 @@ public class Vision extends Subsystem {
     return best;
   }
 
+  public Target getLeftRect() throws NoTargetException{
+    
+    if (!(leftData.size() == 1 && leftData.get(0).type() == LEFT)){
+      throw new NoTargetException();
+    }
+    return leftData.get(0);
+
+  }
+
   public double getLatency() {
     return latency;
   }
