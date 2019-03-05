@@ -352,15 +352,44 @@ catch(Exception e)
 
     standoff = Math.sqrt(Math.pow(xBar, 2) + Math.pow(yBar, 2));
 
-    squint = Math.atan(yBar / xBar);
+    try {
+      squint = Math.atan(xBar / yBar);
+    }
+    catch(Exception e) {
+      //We have bad data because this shouldn't happen.
+      return;
+    }
 
     //Slopes are on the level plane used above.
-    double standoffSlope = yBar / xBar;
-    double targetSlope = (yR - yL) / (xR - xL);
+    double targetSlope = 0;
+    try {
+      targetSlope = (yR - yL) / (xR - xL);
+    }
+    catch(Exception e) {
+      return; //Bad data
+    }
+    double standoffSlope = 0;
+    try {
+      standoffSlope = yBar / xBar;
+    }
+    catch(Exception e) {
+      standoffSlope = Double.POSITIVE_INFINITY;
+    }
     //Slope of line orthogonal to center of target
-    double normalSlope = -1 / targetSlope;
+    double normalSlope = 0;
+    try {
+      normalSlope = -1 / targetSlope;
+    }
+    catch(Exception e) {
+      //We want to enter the second case below.
+      normalSlope = Double.NEGATIVE_INFINITY * Math.signum(standoffSlope);
+    }
 
-    if(Math.signum(standoffSlope) != Math.signum(normalSlope)) {
+    if(standoffSlope == Double.POSITIVE_INFINITY) {
+      //Triangle from target to horizontal line through target center. x component = 1
+      rotation = Math.atan2(targetSlope, 1);
+    }
+    else if(Math.signum(standoffSlope) != Math.signum(normalSlope)) {
       //triangle from center of target to y-axis
       double target2centerY = Math.abs(xBar * targetSlope);
       //Angle of the above triangle which lays against the y-axis
