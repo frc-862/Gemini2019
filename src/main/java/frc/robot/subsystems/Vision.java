@@ -86,9 +86,7 @@ public class Vision extends Subsystem {
     
     
     //Target bestTarget = new Target(0,0,0,0);
-    SmartDashboard.putString("leftData", leftData.toString());
-    SmartDashboard.putString("rightData", rightData.toString());
-
+    SmartDashboard.putString("mergedData", mergedData.toString());
     /*
     try {
       bestTarget = getBestTarget();
@@ -303,8 +301,11 @@ catch(Exception e)
     //System.out.println(rightData.toString());
     transformData(Camera.LEFT);
     transformData(Camera.RIGHT);
+    
+    SmartDashboard.putString("leftData", leftData.toString());
+    SmartDashboard.putString("rightData", rightData.toString());
 
-    //mergeData();
+    mergeData();
   }
 
   private void transformData(Camera side) {
@@ -413,7 +414,25 @@ catch(Exception e)
   }
 
   private void mergeData() {
-    mergedData = leftData;
+    for(int i = 0; i < leftData.size(); i++) {
+      Target l = leftData.get(i);
+      for(int j = 0; j < rightData.size(); j++) {
+        Target r = rightData.get(j);
+        if((Math.abs(l.standoff() - r.standoff()) <= 10) && (Math.abs(l.squint() - r.squint()) < 10)) {
+          mergedData.add(new Target(l, r));
+          rightData.remove(j);
+          leftData.remove(i);
+          --i;
+          break;
+        }
+      }
+    }
+    for(Target t : leftData) {
+      mergedData.add(t);
+    }
+    for(Target t : rightData) {
+      mergedData.add(t);
+    }
   }
 
   public ArrayList<ArrayList<Target>> dataTransformationUnitTest() {

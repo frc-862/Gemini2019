@@ -14,6 +14,7 @@ import frc.lightning.commands.DriveStraight;
 import frc.lightning.commands.VisionDriveAndAdjust;
 import frc.lightning.commands.VisionRotateAndApproach;
 import frc.lightning.commands.VisionTests;
+import frc.lightning.commands.VisionTurn;
 import frc.lightning.commands.WaypointThenTarget;
 
 /**
@@ -63,7 +64,7 @@ public class OI {
         //pneumaticButton.whenReleased(new CloseHatchCollector());
         visionTestButtonA.whileHeld(new VisionDriveAndAdjust());
         visionTestButtonX.whileHeld(new VisionRotateAndApproach());
-        visionTestButtonY.whileHeld(new WaypointThenTarget());
+        visionTestButtonY.whileHeld(new VisionTurn());
         visionTestButtonB.whileHeld(new VisionTests());
     }
 }
