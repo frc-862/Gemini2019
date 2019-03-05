@@ -51,7 +51,7 @@ public class LineFollow extends Command {
     protected void execute() {
         // read & weight the sensors
         final double error = Robot.core.lineSensor();
-        if(error==Double.NaN)
+        if(error==Double.NaN&&prevError==Double.NaN)
         {
           Robot.drivetrain.setVelocity(
             (Robot.oi.getLeftPower()*Constants.velocityMultiplier),
@@ -62,7 +62,7 @@ public class LineFollow extends Command {
         turnP = SmartDashboard.getNumber("Turn Power", turnP);
         straightVelocity = SmartDashboard.getNumber("Straight Vel", straightVelocity);
         turningVelocity = SmartDashboard.getNumber("Turning Vel", turningVelocity);
-        //turningVelocity = SmartDashboard.getNumber("turn down turning", turnDown);
+       
         turnI = SmartDashboard.getNumber("turnI", turnI);
         turnD = SmartDashboard.getNumber("turnD", turnD);
 
@@ -100,7 +100,6 @@ public class LineFollow extends Command {
         logger.drain();
         logger.flush();
     }
-
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     @Override
