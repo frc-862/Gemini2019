@@ -51,7 +51,7 @@ public class Vision extends Subsystem {
 
   private boolean isStereo = true;
   private boolean newDataLeft = true, newDataRight = true;
-  private final double TRACK_WIDTH = 21.5;
+  private final double TRACK_WIDTH = 21.0;
 
   private String leftPartialFrame1 = "", rightPartialFrame1 = "", leftPartialFrame2 = "", rightPartialFrame2 = "";
   
@@ -90,6 +90,8 @@ public class Vision extends Subsystem {
     
     
     //Target bestTarget = new Target(0,0,0,0);
+    SmartDashboard.putString("leftData", leftData.toString());
+    SmartDashboard.putString("rightData", rightData.toString());
     SmartDashboard.putString("mergedData", mergedData.toString());
     /*
     try {
@@ -201,20 +203,20 @@ public class Vision extends Subsystem {
           break;
       }
       try
-{
-    String filename= "/home/lvuser/log/CamLog.txt";
-    FileWriter fw = new FileWriter(filename,true); //the true will append the new data
-    String fileLine = (CamName + inData + "\n");
+    {
+        String filename= "/home/lvuser/log/CamLog.txt";
+        FileWriter fw = new FileWriter(filename,true); //the true will append the new data
+        String fileLine = (CamName + inData + "\n");
 
-    fw.write(fileLine);//appends the string to the file
-    fw.close();
-}
-catch(Exception e) 
-{
-    System.err.println("IOException: " + e.getMessage());
-}
-      parseData(inData, inCam);
+        fw.write(fileLine);//appends the string to the file
+        fw.close();
     }
+    catch(Exception e) 
+    {
+        System.err.println("IOException: " + e.getMessage());
+    }
+          parseData(inData, inCam);
+        }
     
   }
 
@@ -316,6 +318,7 @@ catch(Exception e)
   }
 
   private void processData() {
+    mergedData = new ArrayList<Target>();
     if(!isStereo) {
       if(activeCams.contains(Camera.LEFT)) {
         mergedData = leftData;
@@ -332,6 +335,7 @@ catch(Exception e)
        reconstructTarget();
     }
     else {
+      //System.out.println(newDataLeft + "\t" + newDataRight + "\t" + (newDataLeft && newDataRight));
       transformData(Camera.LEFT);
       transformData(Camera.RIGHT);
       mergeData();
@@ -351,10 +355,10 @@ catch(Exception e)
     //Calculate x and y of rectangles about robot center. Left is -, right is +.
     double xL, xR, yL, yR, xBar, yBar;
 
-    xL = (l.standoff() * Math.sin(l.squint())) - (TRACK_WIDTH / 2);
-    xR = (r.standoff() * Math.sin(r.squint())) + (TRACK_WIDTH / 2);
-    yL = l.standoff() * Math.cos(l.squint());
-    yR = r.standoff() * Math.cos(r.squint());
+    xL = (l.standoff() * Math.sin(l.squintRad())) - (TRACK_WIDTH / 2);
+    xR = (r.standoff() * Math.sin(r.squintRad())) + (TRACK_WIDTH / 2);
+    yL = l.standoff() * Math.cos(l.squintRad());
+    yR = r.standoff() * Math.cos(r.squintRad());
 
     xBar = (xL + xR) / 2;
     yBar = (yL + yR) / 2;
@@ -398,30 +402,40 @@ catch(Exception e)
       //Triangle from target to horizontal line through target center. x component = 1
       rotation = Math.atan2(targetSlope, 1);
     }
-    else if(Math.signum(standoffSlope) != Math.signum(normalSlope)) {
+    else if((Math.signum(standoffSlope) != Math.signum(normalSlope)) && Math.abs(standoffSlope) >= Math.abs(targetSlope)) {
       //triangle from center of target to y-axis
       double target2centerY = Math.abs(xBar * targetSlope);
       //Angle of the above triangle which lays against the y-axis
       double y2targetSupplemental = Math.atan2(Math.abs(xBar), target2centerY);
       double y2target = Math.PI - y2targetSupplemental;
       double rotationComplementary = Math.PI - y2target - Math.abs(squint);
-      rotation = (Math.PI / 2) - rotationComplementary;
+      rotation = ((Math.PI / 2) - rotationComplementary) * Math.signum(squint);
     }
-    else if(Math.abs(standoffSlope) < Math.abs(normalSlope)) {
+    else if((Math.signum(standoffSlope) != Math.signum(normalSlope)) && Math.abs(standoffSlope) < Math.abs(targetSlope)) {
+      //triangle from center of target to x-axis
+      double target2xAxisX = Math.abs(yBar / targetSlope);
+      //Angle of the above triangle which lays against the x-axis
+      double x2targetSupplemental = Math.atan2(Math.abs(yBar), target2xAxisX);
+      double x2target = Math.PI - x2targetSupplemental;
+      //Component of rotation which is greater than pi/2
+      double rotationAcuteComponent = Math.PI - ((Math.PI / 2) - Math.abs(squint)) - x2target;
+      rotation = ((Math.PI / 2) + rotationAcuteComponent) * Math.signum(squint);
+    }
+    else if(Math.abs(standoffSlope) <= Math.abs(normalSlope)) {
       //triangle from center of target to y-axis
       double target2centerY = Math.abs(xBar * targetSlope);
       double target2horizontal = Math.atan(target2centerY / Math.abs(xBar));
       double squintComplementary = (Math.PI / 2) - Math.abs(squint);
-      rotation = (Math.PI / 2) - target2horizontal - squintComplementary;
+      rotation = ((Math.PI / 2) - target2horizontal - squintComplementary) * Math.signum(squint);
     }
     else {
       //triangle from center of target normal line to y-axis
       double normal2centerY = Math.abs(xBar * targetSlope);
       double normal2horizontal = Math.atan(normal2centerY / Math.abs(xBar));
       double squintComplementary = (Math.PI / 2) - Math.abs(squint);
-      rotation = (squintComplementary - normal2horizontal) * -1;
+      rotation = (squintComplementary - normal2horizontal) * -Math.signum(squint);
     }
-    mergedData.add(new Target(COMPLETE, 0, 0, standoff, rotation, squint, l.timestamp()));
+    mergedData.add(new Target(COMPLETE, 0, 0, standoff, Math.toDegrees(rotation), Math.toDegrees(squint), l.timestamp()));
 
   }
 

@@ -41,19 +41,32 @@ public class StereoTurn extends Command {
     //centerStandoffFromLeft = Math.pow(Math.pow( (leftStandoff * Math.cos(leftSquint)), 2) + Math.pow(leftStandoff * Math.sin(leftSquint + CAMERA_TO_CENTER), 2), .5);
 
     try {
-      double leftSquint = Robot.vision.getBestTarget().squint();
-      double leftStandoff = Robot.vision.getBestTarget().standoff();
+      // double leftSquint = Robot.vision.getBestTarget().squint();
+      // double leftStandoff = Robot.vision.getBestTarget().standoff();
 
-      centerStandoffFromLeft = Math.pow(Math.pow( (leftStandoff * Math.cos(leftSquint)), 2) + Math.pow(leftStandoff * Math.sin(leftSquint + CAMERA_TO_CENTER), 2), .5);
-      centerSquintFromLeft = Math.atan((leftStandoff * Math.cos(leftSquint)) / (leftStandoff * Math.sin(leftSquint) + CAMERA_TO_CENTER));
+      // centerStandoffFromLeft = Math.pow(Math.pow( (leftStandoff * Math.cos(leftSquint)), 2) + Math.pow(leftStandoff * Math.sin(leftSquint + CAMERA_TO_CENTER), 2), .5);
+      // centerSquintFromLeft = Math.atan((leftStandoff * Math.cos(leftSquint)) / (leftStandoff * Math.sin(leftSquint) + CAMERA_TO_CENTER));
 
-      if (Math.abs(centerSquintFromLeft) > SQUINT_BOUND) {
+      // if (Math.abs(centerSquintFromLeft) > SQUINT_BOUND) {
 
-          Robot.drivetrain.setPower(0.3 * Math.signum(centerSquintFromLeft), 0.3 * -Math.signum(centerSquintFromLeft));
-          //Robot.drivetrain.setPower(0.4,0.4);
-          SmartDashboard.putString("vision turn status", "turning");
-          SmartDashboard.putString("Left Stereo Standoff", Double.toString(centerStandoffFromLeft));
+      //     Robot.drivetrain.setPower(0.3 * Math.signum(centerSquintFromLeft), 0.3 * -Math.signum(centerSquintFromLeft));
+      //     //Robot.drivetrain.setPower(0.4,0.4);
+      //     SmartDashboard.putString("vision turn status", "turning");
+      //     SmartDashboard.putString("Left Stereo Standoff", Double.toString(centerStandoffFromLeft));
         
+      // }
+      Target t = Robot.vision.getBestTarget();
+      double squint = t.squint();
+      double standoff = t.standoff();
+      if (Math.abs(squint) > SQUINT_BOUND) {
+        //0.02 to account for standoff implementation
+        Robot.drivetrain.setPower(.2 * Math.signum(squint), 
+         -.2 * Math.signum(squint)); 
+        //Robot.drivetrain.setPower(0.4,0.4);
+        SmartDashboard.putString("vision turn status", "turning");
+      }
+      else if(standoff > 12) {
+        Robot.drivetrain.setPower(0.35, 0.35);
       }
       else {
           Robot.drivetrain.setPower(0, 0);
