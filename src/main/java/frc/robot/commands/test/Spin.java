@@ -7,44 +7,35 @@
 
 package frc.robot.commands.test;
 
-import edu.wpi.first.wpilibj.command.Command;
-import frc.robot.Robot;
+import edu.wpi.first.wpilibj.command.CommandGroup;
 
-public class Spin extends Command {
+public class Spin extends CommandGroup {
+  /**
+   * Add your docs here.
+   */
   public Spin() {
-    // Use requires() here to declare subsystem dependencies
-    // eg. requires(chassis);
-    requires(Robot.drivetrain);
-  }
 
-  // Called just before this Command runs the first time
-  @Override
-  protected void initialize() {
-    (new ResetDriveSensors()).start();
-  }
+     
+    addSequential(new ResetDriveSensors());
+    for(int i = 0 ; i < 10 ; i++){
+      addSequential(new SpinOnce());
+    }
 
-  // Called repeatedly when this Command is scheduled to run
-  @Override
-  protected void execute() {
-    Robot.drivetrain.setPower(-0.30, 0.30);
-  }
+    // Add Commands here:
+    // e.g. addSequential(new Command1());
+    // addSequential(new Command2());
+    // these will run in order.
 
-  // Make this return true when this Command no longer needs to run execute()
-  @Override
-  protected boolean isFinished() {
-    return false;
-  }
+    // To run multiple commands at the same time,
+    // use addParallel()
+    // e.g. addParallel(new Command1());
+    // addSequential(new Command2());
+    // Command1 and Command2 will run in parallel.
 
-  // Called once after isFinished returns true
-  @Override
-  protected void end() {
-    Robot.drivetrain.stop();
-  }
-
-  // Called when another command which requires one or more of the same
-  // subsystems is scheduled to run
-  @Override
-  protected void interrupted() {
-    end();
+    // A command group will require all of the subsystems that each member
+    // would require.
+    // e.g. if Command1 requires chassis, and Command2 requires arm,
+    // a CommandGroup containing them would require both the chassis and the
+    // arm.
   }
 }

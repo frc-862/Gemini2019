@@ -25,7 +25,7 @@ public class MicroAdjust extends Command {
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-        double amtAdj = ((Robot.oi.getCopilotLeft() * 100)/2);
+        double amtAdj = ((Robot.oi.getCopilotLeft() * 100)/4);
         if(Robot.oi.getMicroAdjAmt() != 0.0){ 
             Robot.elevator.MicroAdjustAmt(amtAdj);
         }

@@ -3,6 +3,7 @@ package frc.robot.commands.auto;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.TimedCommand;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.lightning.commands.VelocityMotionProfile;
 import frc.robot.commands.cargo.EjectElevatorCargo;
 import frc.robot.commands.driveTrain.WaitForDriverOK;
@@ -22,11 +23,12 @@ public class Auto extends CommandGroup {
   public Auto(Command elevatorPos, String inPiece, String start, String genDestin, String specificDestin) {
 
     this.pathFile = selectPath(start, genDestin, specificDestin);
+    SmartDashboard.putString("PATH: ", pathFile);
     initPiece(inPiece);
     this.elevatorPos = elevatorPos;
     initPiecePos();
 
-    waitForDriverOK();
+    //waitForDriverOK();
 
     getToTarget();
 

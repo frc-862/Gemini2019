@@ -197,7 +197,9 @@ public class Core extends Subsystem {
     public double getRoll(){
         return navx.getRoll();
     }
-
+    public double getRealYAW(){
+        return (navx.getYaw()+180);
+    }
     public void resetNavx(){
         navx.reset();//TODO help
     }

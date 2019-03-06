@@ -15,6 +15,7 @@ import frc.robot.commands.elevator.SetElevatorCollect;
 import frc.robot.commands.elevator.SetElevatorHigh;
 import frc.robot.commands.elevator.SetElevatorLow;
 import frc.robot.commands.elevator.SetElevatorMed;
+import frc.robot.commands.test.Spin;
 import frc.robot.subsystems.*;
 import java.io.File;
 
@@ -62,6 +63,8 @@ public class Robot extends LightningRobot {
                                                      this.getSelectedSpecificDestin()));
 
         //TEST
+        registerAutonomousCommmand("RightSideNear", new VelocityMotionProfile("RocketR_StartR_EndN"));
+        registerAutonomousCommmand("Spin", new Spin());
         registerAutonomousCommmand("LeftNearLow", new HatchAuton("left_side_near", new SetElevatorLow()));
         registerAutonomousCommmand("Circle", new VelocityMotionProfile("circle"));
         registerAutonomousCommmand("Straight", new VelocityMotionProfile("straight"));

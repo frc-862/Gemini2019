@@ -149,6 +149,10 @@ public class OI {
 
         (new JoystickButton(copilot, 5)).whenPressed(new InstantCommand(Robot.hatchPanelCollector, () -> Robot.hatchPanelCollector.collect()));
         (new JoystickButton(copilot, 6)).whenPressed(new InstantCommand(Robot.hatchPanelCollector, () -> Robot.hatchPanelCollector.eject()));
+
+        (new JoystickButton(driverLeft, 1)).whenPressed(new ToggleCommand(new InstantCommand(Robot.hatchPanelCollector, () -> Robot.hatchPanelCollector.collect()), 
+                                                                          new InstantCommand(Robot.hatchPanelCollector, () -> Robot.hatchPanelCollector.eject())));
+
         (new JoystickButton(driverRight, 1)).whileHeld(new LineFollow());
 
         (new JoystickButton(copilot, JoystickConstants.highButton)).            whenPressed(new InstantCommand(Robot.elevator, () -> Robot.elevator.goToHigh()));
@@ -166,7 +170,7 @@ public class OI {
     }
 
     public double getCargoCollectPower () {
-        return (copilot.getRawAxis(3)-copilot.getRawAxis(2))/3;
+        return (copilot.getRawAxis(2)-copilot.getRawAxis(3))/3;
     }
 
     public OI() {

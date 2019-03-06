@@ -111,7 +111,7 @@ public class Elevator extends Subsystem {
 
         /* Set acceleration and vcruise velocity - see documentation */
         elevatorMotor.configMotionCruiseVelocity(1400, Constants.kTimeoutMs);
-        elevatorMotor.configMotionAcceleration(500, Constants.kTimeoutMs);
+        elevatorMotor.configMotionAcceleration(250, Constants.kTimeoutMs);//500!!!!!
 
         /* Zero the sensor */
         elevatorMotor.setSelectedSensorPosition(0, Constants.kPIDLoopIdx, Constants.kTimeoutMs);
