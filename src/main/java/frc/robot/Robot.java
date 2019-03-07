@@ -33,6 +33,7 @@ public class Robot extends LightningRobot {
     public static HatchGroundCollector hatchGroundCollector;
     public static Elevator elevator;
     public static Climber climber;
+    public static Vision vision;
     public static OI oi;
 
     private static boolean gemini = true;
@@ -49,6 +50,8 @@ public class Robot extends LightningRobot {
         elevator = new Elevator();
         climber = new Climber();
         core = new Core();
+        // vision = new Vision();
+
         oi = new OI();
 
         // set a flag, it is either gemini or nebula
