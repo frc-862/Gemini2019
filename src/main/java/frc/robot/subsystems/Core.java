@@ -172,6 +172,8 @@ public class Core extends Subsystem {
         logger.set("PITCH", getPitch());
         logger.set("ROLL", getRoll());
 
+        
+
         int pos = -7;
         for (DoubleSupplier sensor : sensorValues) {
             SmartDashboard.putNumber("Line " + pos, sensor.getAsDouble());

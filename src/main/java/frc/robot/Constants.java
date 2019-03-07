@@ -98,15 +98,15 @@ public class Constants extends ConstantBase {
 
     //Gemini
     //max
-    public static final double geminiMaxLeftOutside = 4.41;
-    public static final double geminiMaxLeftInside = 3.95;
-    public static final double geminiMaxRightInside = 4.55;
-    public static final double geminiMaxRightOutside = 4.18;
+    public static final double geminiMaxLeftOutside = 2.47;
+    public static final double geminiMaxLeftInside = 2.48;
+    public static final double geminiMaxRightInside = 2.89;
+    public static final double geminiMaxRightOutside = 2.90;
     //min
-    public static final double geminiMinLeftOutside = 2.31;
-    public static final double geminiMinLeftInside = 1.6;
-    public static final double geminiMinRightInside = 2.25;
-    public static final double geminiMinRightOutside = 1.51;
+    public static final double geminiMinLeftOutside = .61;
+    public static final double geminiMinLeftInside = .65;
+    public static final double geminiMinRightInside = .71;
+    public static final double geminiMinRightOutside = .71;
 
     public static final double movingCurrent = 20;
     public static final double movingVelocity = 0.1;

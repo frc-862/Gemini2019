@@ -21,10 +21,10 @@ import frc.robot.subsystems.GeminiDrivetrain;
 public class LineFollow extends Command {
     CommandLogger logger = new CommandLogger(getClass().getSimpleName());
     double turnP = .45;
-    double turningVelocity = 4;//4
-    double straightVelocity = .5;//1
+    double turningVelocity = 1;//4
+    double straightVelocity = 4;//1
     double turnI = 0.001;
-    double turnD = .4;
+    double turnD = .45;
     double prevError = 0;
     double errorAcc = 0;
     public LineFollow() {
@@ -51,39 +51,40 @@ public class LineFollow extends Command {
     protected void execute() {
         // read & weight the sensors
         final double error = Robot.core.lineSensor();
-        if(error==Double.NaN) {
-            Robot.drivetrain.setVelocity(
-                (Robot.oi.getLeftPower()*Constants.velocityMultiplier),
-                (Robot.oi.getRightPower()*Constants.velocityMultiplier));
+        if(error==Double.NaN || prevError==Double.NaN)
+        {
+          Robot.drivetrain.setVelocity(
+            (Robot.oi.getLeftPower()*Constants.velocityMultiplier),
+            (Robot.oi.getRightPower()*Constants.velocityMultiplier));
             prevError = 0;
             errorAcc = 0;
         } else {
-            turnP = SmartDashboard.getNumber("Turn Power", turnP);
-            straightVelocity = SmartDashboard.getNumber("Straight Vel", straightVelocity);
-            turningVelocity = SmartDashboard.getNumber("Turning Vel", turningVelocity);
-            //turningVelocity = SmartDashboard.getNumber("turn down turning", turnDown);
-            turnI = SmartDashboard.getNumber("turnI", turnI);
-            turnD = SmartDashboard.getNumber("turnD", turnD);
+        turnP = SmartDashboard.getNumber("Turn Power", turnP);
+        straightVelocity = SmartDashboard.getNumber("Straight Vel", straightVelocity);
+        turningVelocity = SmartDashboard.getNumber("Turning Vel", turningVelocity);
+       
+        turnI = SmartDashboard.getNumber("turnI", turnI);
+        turnD = SmartDashboard.getNumber("turnD", turnD);
 
-            if (Double.isNaN(error) || Math.abs(error) <= 1) {
-                errorAcc = 0;
-            } else {
-                errorAcc += error;
-            }
-
-            final double turn = (error * turnP) + (errorAcc * turnI)-(prevError-error)*turnD;
-
-            final double velocity = (Math.abs(error) < 1) ? straightVelocity : turningVelocity;
-
-            logger.set("error", error);
-            logger.set("turn", turn);
-            logger.set("velocity", velocity);
-            logger.write();
-            System.out.println("line follow error = "+error+"/ turn = "+turn+"/ velocity ="+velocity);
-            // drive
-            Robot.drivetrain.setVelocity(velocity + turn, velocity - turn);
-            prevError = error;
+        if (Double.isNaN(error) || Math.abs(error) <= 1) {
+            errorAcc = 0;
+        } else {
+            errorAcc += error;
         }
+
+        final double turn = (error * turnP) + (errorAcc * turnI)-(prevError-error)*turnD;
+
+        final double velocity = (Math.abs(error) <= 1) ? straightVelocity : turningVelocity;
+
+        logger.set("error", error);
+        logger.set("turn", turn);
+        logger.set("velocity", velocity);
+        logger.write();
+        // System.out.println("line follow error = "+error+"/ turn = "+turn+"/ velocity ="+velocity);
+        // drive
+        Robot.drivetrain.setVelocity(velocity + turn, velocity - turn);
+        prevError = error;
+    }
     };
 
 
@@ -99,7 +100,6 @@ public class LineFollow extends Command {
         logger.drain();
         logger.flush();
     }
-
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     @Override
