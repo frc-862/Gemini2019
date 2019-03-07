@@ -10,12 +10,10 @@ package frc.robot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
-import frc.lightning.commands.DriveStraight;
-import frc.lightning.commands.VisionDriveAndAdjust;
-import frc.lightning.commands.VisionRotateAndApproach;
-import frc.lightning.commands.VisionTests;
-import frc.lightning.commands.VisionTurn;
-import frc.lightning.commands.WaypointThenTarget;
+import frc.robot.commands.vision.VisionDriveAndAdjust;
+import frc.robot.commands.vision.VisionRotateAndApproach;
+import frc.robot.commands.vision.VisionTests;
+import frc.robot.commands.vision.VisionTurn;
 
 /**
  * This class is the glue that binds the controls on the physical operator

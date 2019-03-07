@@ -5,12 +5,12 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.lightning.commands;
+package frc.robot.commands.vision;
 
 import java.util.ArrayList;
 
 import edu.wpi.first.wpilibj.command.Command;
-import frc.lightning.util.Target;
+import frc.robot.util.Target;
 import frc.robot.Robot;
 
 public class VisionTests extends Command {

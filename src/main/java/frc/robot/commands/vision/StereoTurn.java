@@ -6,12 +6,12 @@
 /*----------------------------------------------------------------------------*/
 
 
-package frc.lightning.commands;
+package frc.robot.commands.vision;
 
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.lightning.util.NoTargetException;
-import frc.lightning.util.Target;
+import frc.robot.util.NoTargetException;
+import frc.robot.util.Target;
 import frc.robot.Robot;
 
 public class StereoTurn extends Command {

@@ -5,7 +5,7 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.lightning.util;
+package frc.robot.util;
 
 /**
  * Add your docs here.
