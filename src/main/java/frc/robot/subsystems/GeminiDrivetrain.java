@@ -44,15 +44,25 @@ public class GeminiDrivetrain extends CANDrivetrain {
         addLeftFollower(left2, false  );
         addRightFollower(right2,true);
 
+        /* Needed? */
+        addChild(left2);
+        addChild(right2);
+        left2.setName("Left Slave");
+        SmartDashboard.putData("Left Slave", left2);
+        right2.setName("Right Slave");
+        SmartDashboard.putData("Right Slave", right2);
+
+
+        
         configureMotors();
         enableLogging();
 
         SystemTest.register(new LeftEncoderTest());
         SystemTest.register(new RightEncoderTest());
 
-        VelocityMotionProfile.setKp(2.10);
-        VelocityMotionProfile.setKa(0);
-        VelocityMotionProfile.setKTheta(0);
+        VelocityMotionProfile.setKp(3.0);
+        VelocityMotionProfile.setKa(0.05);
+        VelocityMotionProfile.setKTheta(-0.25);
     }
 
     @Override

@@ -21,7 +21,6 @@ public class RetractCargoCollector extends InstantCommand {
     // Called just before this Command runs the first time
     @Override
     protected void initialize() {
-        Robot.cargoCollector.retract();
     }
 
     // Called repeatedly when this Command is scheduled to run

@@ -14,9 +14,9 @@ public class RobotMap {
     public static final int compressorCANId = 11;
 
     // Cargo Collector
-    public static final int cargoMotor = 21;
-    public static final int cargoSolenoidFwdChan = 2;//1
-    public static final int cargoSolenoidRevChan = 5;//2
+    public static final int cargoMotor = 26;
+    //public static final int cargoSolenoidFwdChan = 2;//1
+    //public static final int cargoSolenoidRevChan = 5;//2
 
     // Elevator
     public static final int pieceDetector = 0;
@@ -36,10 +36,13 @@ public class RobotMap {
     public static final int grabberFwdChan = 1;//5
     public static final int grabberRevChan = 6;
     public static final int hatchDetector = 9;
-
-    public static final int climberID = 20;
+    //climber
+    public static final int climberMasterID = 20;
+    public static final int climberSlaveID = 21;
+	public static final int climberDriveID = 22;
+    public static final int climbFwdChan = 5;
+    public static final int climbRevChan = 2;
 
     public static final int extra1CanId = 12;
     public static final int extra2CanId = 13;
-
 }

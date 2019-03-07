@@ -21,9 +21,16 @@ import frc.robot.commands.hatch.ExtendHatchCollector;
 import frc.robot.commands.hatch.HatchCollectorStateChange;
 import frc.robot.commands.hatch.OpenHatchCollector;
 import frc.robot.commands.hatch.RetractHatchCollector;
+import frc.robot.commands.test.LeftDriveZero;
+import frc.robot.commands.test.ResetDriveSensors;
+import frc.robot.commands.test.RightDriveZero;
 import frc.robot.commands.LineFollow;
 import frc.robot.commands.calibration.TestMove;
 import frc.robot.commands.climber.Climb;
+import frc.robot.commands.climber.ExtendShocks;
+import frc.robot.commands.climber.ManualClimb;
+import frc.robot.commands.climber.RetractShocks;
+import frc.robot.commands.climber.driveforward;
 import frc.robot.commands.driveTrain.ConfigMotors;
 import frc.robot.commands.cargo.DeployCargoCollector;
 import frc.robot.commands.cargo.RetractCargoCollector;
@@ -39,6 +46,7 @@ public class OI {
     private Button setElevatorHigh = new JoystickButton(copilot, 3);
     private Button setElevatorLow = new JoystickButton(copilot, 11);
     private Button setElevatorMid = new JoystickButton(copilot, 8);
+    private Button setShocksout = new JoystickButton(driverRight, 8);
 
     // TODO - duplicated button number
     private Button setElevatorCargoCollect = new JoystickButton(copilot, 8);
@@ -49,6 +57,13 @@ public class OI {
     private Button cargoCollectOut= new JoystickButton(copilot,4);//needs changed prob
     private POVButton hatchExtend = new POVButton(copilot, 0);
     private POVButton hatchRetract = new POVButton(copilot, 180);
+    
+
+    private Button waitButton= new JoystickButton(driverRight, 14);//
+
+    public boolean shouldWait(){
+        return waitButton.get();
+    }
 
     public boolean getElevatorHighPosSelect() {
         return setElevatorHigh != null &&
@@ -60,6 +75,10 @@ public class OI {
     }
     public void cargoCollectIn  () {
         cargoCollectOut.whenPressed(new RetractCargoCollector());
+    }
+
+    public void setShocksout  () {
+        setShocksout.whenPressed(new ExtendShocks());
     }
 
     public int getLeftDirection() {
@@ -87,6 +106,7 @@ public class OI {
     public double manualElevatorDownPwr() {
         return (driverLeft.getRawAxis(3) - 1) / 2;
     }
+    
     public boolean getElevatorCargoCollectPosSelect() {
         return setElevatorCargoCollect != null &&
                setElevatorCargoCollect.get();
@@ -124,8 +144,15 @@ public class OI {
         hatchRetract.whenPressed(new RetractHatchCollector());
         hatchExtend.whenPressed(new ExtendHatchCollector());
 
+        (new JoystickButton(driverLeft, 7)).whenPressed(new LeftDriveZero());
+        (new JoystickButton(driverRight, 7)).whenPressed(new RightDriveZero());
+
         (new JoystickButton(copilot, 5)).whenPressed(new InstantCommand(Robot.hatchPanelCollector, () -> Robot.hatchPanelCollector.collect()));
         (new JoystickButton(copilot, 6)).whenPressed(new InstantCommand(Robot.hatchPanelCollector, () -> Robot.hatchPanelCollector.eject()));
+
+        (new JoystickButton(driverLeft, 1)).whenPressed(new ToggleCommand(new InstantCommand(Robot.hatchPanelCollector, () -> Robot.hatchPanelCollector.collect()), 
+                                                                          new InstantCommand(Robot.hatchPanelCollector, () -> Robot.hatchPanelCollector.eject())));
+
         (new JoystickButton(driverRight, 1)).whileHeld(new LineFollow());
 
         (new JoystickButton(copilot, JoystickConstants.highButton)).            whenPressed(new InstantCommand(Robot.elevator, () -> Robot.elevator.goToHigh()));
@@ -143,7 +170,7 @@ public class OI {
     }
 
     public double getCargoCollectPower () {
-        return (copilot.getRawAxis(3)-copilot.getRawAxis(2))/3;
+        return (copilot.getRawAxis(2)-copilot.getRawAxis(3))/3;
     }
 
     public OI() {
@@ -159,6 +186,8 @@ public class OI {
         SmartDashboard.putData("test move", new TestMove());
         SmartDashboard.putData("Left Near Rocket", new VelocityMotionProfile("src/main/deploy/paths/LeftNearRocket"));
 
+        SmartDashboard.putData("RESET_SENSORS", new ResetDriveSensors());
+
         SmartDashboard.putData("Elevator to collect",
                                new InstantCommand(Robot.elevator, () -> Robot.elevator.goToCollect()));
         SmartDashboard.putData("Elevator to low",
@@ -167,5 +196,18 @@ public class OI {
                                new InstantCommand(Robot.elevator, () -> Robot.elevator.goToMid()));
         SmartDashboard.putData("Elevator to high",
                                new InstantCommand(Robot.elevator, () -> Robot.elevator.goToHigh()));
+
+        SmartDashboard.putData("drive forward", new driveforward());
+        SmartDashboard.putData("manual climb", new ManualClimb());
+        SmartDashboard.putData("Extend Shocks",new ExtendShocks());
+        SmartDashboard.putData("Retract Shocks", new RetractShocks());
     }
+	public double forwardClimbForwardPwr() {
+        return -copilot.getRawAxis(5);
+        
+	}
+
+	public double manualClimbPower() {
+		return ((driverRight.getRawAxis(3) - 1) / -2)+((driverLeft.getRawAxis(3) - 1) / 2);
+	}
 }

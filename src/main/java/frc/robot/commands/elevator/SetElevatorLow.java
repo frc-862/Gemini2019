@@ -29,7 +29,7 @@ public class SetElevatorLow extends Command {
     // Make this return true when this Command no longer needs to run execute()
     @Override
     protected boolean isFinished() {
-        return epsilon(Robot.elevator.elevatorMotor.getSelectedSensorPosition(), Constants.elevatorBottomHeight, 10);
+        return true;//epsilon(Robot.elevator.elevatorMotor.getSelectedSensorPosition(), Constants.elevatorBottomHeight, 50);
     }
 
     // Called once after isFinished returns true

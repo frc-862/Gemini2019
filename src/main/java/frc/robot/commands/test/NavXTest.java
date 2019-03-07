@@ -25,12 +25,12 @@ public class NavXTest extends SystemTest {
 
     @Override
     public void setup() {
-        initialHeading = Robot.core.getHeading();
+        initialHeading = Robot.core.getYaw();
     }
 
     @Override
     public boolean didPass() {
-        return Math.abs(initialHeading - Robot.core.getHeading()) > 0;
+        return Math.abs(initialHeading - Robot.core.getYaw()) > 0;
     }
 
     @Override

@@ -20,6 +20,7 @@ import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.lightning.logging.CommandLogger;
 import frc.lightning.logging.DataLogger;
 import frc.lightning.testing.SystemTest;
 import frc.lightning.util.FaultMonitor;
@@ -36,6 +37,8 @@ import frc.robot.commands.test.NavXTest;
  * Add your docs here.
  */
 public class Core extends Subsystem {
+
+    CommandLogger logger = new CommandLogger(getClass().getSimpleName());
     //private DigitalInput pressure1 = new DigitalInput(0);
 
     @SuppressWarnings("FieldCanBeLocal")
@@ -107,7 +110,8 @@ public class Core extends Subsystem {
         () -> innerRight.getVoltage(),
 
     };
-    private DoubleSupplier[] sensorValues = nebulaSensorValues;//Robot.isGemini() ? geminiSensorValues : nebulaSensorValues;
+    
+    private DoubleSupplier[] sensorValues = Robot.isGemini() ? geminiSensorValues : nebulaSensorValues;
 
     public Core() {
         setName("Core");
@@ -116,7 +120,13 @@ public class Core extends Subsystem {
 
         navx = new AHRS(SPI.Port.kMXP);
         addChild("NavX", navx);
-        DataLogger.addDataElement("heading", () -> getHeading());
+        DataLogger.addDataElement("YAW", () -> getYaw());
+        DataLogger.addDataElement("PITCH", () -> getPitch());
+        DataLogger.addDataElement("ROLL", () -> getRoll());
+
+        logger.addDataElement("YAW");
+        logger.addDataElement("PITCH");
+        logger.addDataElement("ROLL");
 
         // monitor if the heading is exactly the same, there is always
         // some jitter in the reading, so this will not be the case
@@ -150,6 +160,18 @@ public class Core extends Subsystem {
         SmartDashboard.putNumber("Heading", navx.getFusedHeading());
         SmartDashboard.putNumber("Angle", navx.getAngle());
 
+        SmartDashboard.putNumber("YAW", navx.getYaw());
+        SmartDashboard.putNumber("PITCH", navx.getPitch());
+        SmartDashboard.putNumber("ROLL", navx.getRoll());
+        
+        SmartDashboard.putNumber("X", navx.getRawGyroX());
+        SmartDashboard.putNumber("Y", navx.getRawGyroY());
+        SmartDashboard.putNumber("Z", navx.getRawGyroZ());
+
+        logger.set("YAW", getYaw());
+        logger.set("PITCH", getPitch());
+        logger.set("ROLL", getRoll());
+
         int pos = -7;
         for (DoubleSupplier sensor : sensorValues) {
             SmartDashboard.putNumber("Line " + pos, sensor.getAsDouble());
@@ -165,9 +187,21 @@ public class Core extends Subsystem {
         SmartDashboard.putNumber("Distance from center", lineSensor());
     }
 
-    public double getHeading() {
-        return navx.getFusedHeading();
+    public double getYaw() {
+        return navx.getYaw();
         // return 0;
+    }
+    public double getPitch(){
+        return navx.getPitch();
+    }
+    public double getRoll(){
+        return navx.getRoll();
+    }
+    public double getRealYAW(){
+        return (navx.getYaw()+180);
+    }
+    public void resetNavx(){
+        navx.reset();//TODO help
     }
 
     @Override

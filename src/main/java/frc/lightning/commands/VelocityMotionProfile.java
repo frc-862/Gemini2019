@@ -55,6 +55,9 @@ public class VelocityMotionProfile extends Command {
         logger.addDataElement("actualLeftVelocity");
         logger.addDataElement("actualRightVelocity");
 
+        logger.addDataElement("requestedLeftVelocity");
+        logger.addDataElement("requestedRightVelocity");
+
         logger.addDataElement("expectedTheta");
         logger.addDataElement("actualTheta");
     }
@@ -140,6 +143,7 @@ public class VelocityMotionProfile extends Command {
     @Override
     protected void initialize() {
         logger.reset();
+        Robot.core.resetNavx();
         Robot.drivetrain.resetDistance();
     }
 
@@ -175,13 +179,19 @@ public class VelocityMotionProfile extends Command {
         logger.set("actualLeftVelocity", Robot.drivetrain.getLeftVelocity());
         logger.set("actualRightVelocity", Robot.drivetrain.getRightVelocity());
 
-        final double thetaError = leftPoint.heading - Robot.core.getHeading();
+        final double thetaError = leftPoint.heading - Robot.core.getYaw();
         final double turn = thetaError * kTheta;
 
         logger.set("expectedTheta", leftPoint.heading);
-        logger.set("actualTheta", Robot.core.getHeading());
+        logger.set("actualTheta", Robot.core.getYaw());
 
-        Robot.drivetrain.setVelocity(leftVel - turn, rightVel + turn);
+        double requestLeftVel = leftVel - turn;
+        double requestRightVel = rightVel + turn;
+
+        logger.set("requestedLeftVelocity", requestLeftVel);
+        logger.set("requestedRightVelocity", requestRightVel);
+
+        Robot.drivetrain.setVelocity(requestLeftVel, requestRightVel);
 
         logger.write();
     }
