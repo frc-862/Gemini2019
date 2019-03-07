@@ -15,20 +15,20 @@ import frc.robot.subsystems.*;
  * Add your docs here.
  */
 public class ResetDriveSensors extends InstantCommand {
-  /**
-   * Add your docs here.
-   */
-  public ResetDriveSensors() {
-    super();
-    // Use requires() here to declare subsystem dependencies
-    // eg. requires(chassis);
-  }
+    /**
+     * Add your docs here.
+     */
+    public ResetDriveSensors() {
+        super();
+        // Use requires() here to declare subsystem dependencies
+        // eg. requires(chassis);
+    }
 
-  // Called once when the command executes
-  @Override
-  protected void initialize() {
-    Robot.core.resetNavx();
-    Robot.drivetrain.resetDistance();
-  }
+    // Called once when the command executes
+    @Override
+    protected void initialize() {
+        Robot.core.resetNavx();
+        Robot.drivetrain.resetDistance();
+    }
 
 }

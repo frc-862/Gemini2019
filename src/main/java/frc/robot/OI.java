@@ -57,11 +57,11 @@ public class OI {
     private Button cargoCollectOut= new JoystickButton(copilot,4);//needs changed prob
     private POVButton hatchExtend = new POVButton(copilot, 0);
     private POVButton hatchRetract = new POVButton(copilot, 180);
-    
+
 
     private Button waitButton= new JoystickButton(driverRight, 14);//
 
-    public boolean shouldWait(){
+    public boolean shouldWait() {
         return waitButton.get();
     }
 
@@ -106,7 +106,7 @@ public class OI {
     public double manualElevatorDownPwr() {
         return (driverLeft.getRawAxis(3) - 1) / 2;
     }
-    
+
     public boolean getElevatorCargoCollectPosSelect() {
         return setElevatorCargoCollect != null &&
                setElevatorCargoCollect.get();
@@ -150,8 +150,8 @@ public class OI {
         (new JoystickButton(copilot, 5)).whenPressed(new InstantCommand(Robot.hatchPanelCollector, () -> Robot.hatchPanelCollector.collect()));
         (new JoystickButton(copilot, 6)).whenPressed(new InstantCommand(Robot.hatchPanelCollector, () -> Robot.hatchPanelCollector.eject()));
 
-        (new JoystickButton(driverLeft, 1)).whenPressed(new ToggleCommand(new InstantCommand(Robot.hatchPanelCollector, () -> Robot.hatchPanelCollector.collect()), 
-                                                                          new InstantCommand(Robot.hatchPanelCollector, () -> Robot.hatchPanelCollector.eject())));
+        (new JoystickButton(driverLeft, 1)).whenPressed(new ToggleCommand(new InstantCommand(Robot.hatchPanelCollector, () -> Robot.hatchPanelCollector.collect()),
+                new InstantCommand(Robot.hatchPanelCollector, () -> Robot.hatchPanelCollector.eject())));
 
         (new JoystickButton(driverRight, 1)).whileHeld(new LineFollow());
 
@@ -202,12 +202,12 @@ public class OI {
         SmartDashboard.putData("Extend Shocks",new ExtendShocks());
         SmartDashboard.putData("Retract Shocks", new RetractShocks());
     }
-	public double forwardClimbForwardPwr() {
+    public double forwardClimbForwardPwr() {
         return -copilot.getRawAxis(5);
-        
-	}
 
-	public double manualClimbPower() {
-		return ((driverRight.getRawAxis(3) - 1) / -2)+((driverLeft.getRawAxis(3) - 1) / 2);
-	}
+    }
+
+    public double manualClimbPower() {
+        return ((driverRight.getRawAxis(3) - 1) / -2)+((driverLeft.getRawAxis(3) - 1) / 2);
+    }
 }

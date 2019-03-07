@@ -6,7 +6,7 @@ package frc.lightning.util;
  * @see InterpolatingTreeMap
  */
 public class InterpolatingDouble implements Interpolable<InterpolatingDouble>, InverseInterpolable<InterpolatingDouble>,
-        Comparable<InterpolatingDouble> {
+    Comparable<InterpolatingDouble> {
     public Double value = 0.0;
 
     public InterpolatingDouble(Double val) {

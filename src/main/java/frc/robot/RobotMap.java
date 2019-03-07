@@ -39,7 +39,7 @@ public class RobotMap {
     //climber
     public static final int climberMasterID = 20;
     public static final int climberSlaveID = 21;
-	public static final int climberDriveID = 22;
+    public static final int climberDriveID = 22;
     public static final int climbFwdChan = 5;
     public static final int climbRevChan = 2;
 

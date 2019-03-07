@@ -253,7 +253,7 @@ public abstract class CANDrivetrain extends LightningDrivetrain {
     }
 
     @Override
-    public void periodic(){
+    public void periodic() {
         SmartDashboard.putNumber("RawLeftEncoder", getLeftMaster().getSelectedSensorPosition());
         SmartDashboard.putNumber("RawRightEncoder", getRightMaster().getSelectedSensorPosition());
     }

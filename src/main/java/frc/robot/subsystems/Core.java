@@ -110,7 +110,7 @@ public class Core extends Subsystem {
         () -> innerRight.getVoltage(),
 
     };
-    
+
     private DoubleSupplier[] sensorValues = Robot.isGemini() ? geminiSensorValues : nebulaSensorValues;
 
     public Core() {
@@ -163,7 +163,7 @@ public class Core extends Subsystem {
         SmartDashboard.putNumber("YAW", navx.getYaw());
         SmartDashboard.putNumber("PITCH", navx.getPitch());
         SmartDashboard.putNumber("ROLL", navx.getRoll());
-        
+
         SmartDashboard.putNumber("X", navx.getRawGyroX());
         SmartDashboard.putNumber("Y", navx.getRawGyroY());
         SmartDashboard.putNumber("Z", navx.getRawGyroZ());
@@ -191,16 +191,16 @@ public class Core extends Subsystem {
         return navx.getYaw();
         // return 0;
     }
-    public double getPitch(){
+    public double getPitch() {
         return navx.getPitch();
     }
-    public double getRoll(){
+    public double getRoll() {
         return navx.getRoll();
     }
-    public double getRealYAW(){
+    public double getRealYAW() {
         return (navx.getYaw()+180);
     }
-    public void resetNavx(){
+    public void resetNavx() {
         navx.reset();//TODO help
     }
 

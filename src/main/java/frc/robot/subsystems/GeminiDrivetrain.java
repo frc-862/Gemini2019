@@ -53,7 +53,7 @@ public class GeminiDrivetrain extends CANDrivetrain {
         SmartDashboard.putData("Right Slave", right2);
 
 
-        
+
         configureMotors();
         enableLogging();
 

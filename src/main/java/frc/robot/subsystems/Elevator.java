@@ -197,20 +197,20 @@ public class Elevator extends Subsystem {
     }
 
     public void MicroAdjustUp() {
-        if(Robot.oi.getMicroAdjAmt() != 0.0){
+        if(Robot.oi.getMicroAdjAmt() != 0.0) {
             timeInPos = Timer.getFPGATimestamp();
             setPosition(activeTrajectoryPosition + (Constants.microAdjAmt * 1));
         }
     }
 
     public void MicroAdjustDown() {
-        if(Robot.oi.getMicroAdjAmt() != 0.0){
+        if(Robot.oi.getMicroAdjAmt() != 0.0) {
             timeInPos = Timer.getFPGATimestamp();
             setPosition(activeTrajectoryPosition + (Constants.microAdjAmt * -1));
         }
     }
     public void MicroAdjustAmt(double amt) {
-        if(Robot.oi.getMicroAdjAmt() != 0.0){
+        if(Robot.oi.getMicroAdjAmt() != 0.0) {
             timeInPos = Timer.getFPGATimestamp();
             setPosition(activeTrajectoryPosition + amt);
         }

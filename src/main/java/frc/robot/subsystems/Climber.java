@@ -85,11 +85,11 @@ public class Climber extends Subsystem {
         deployer.set(DoubleSolenoid.Value.kReverse);
     }
 
-	public void setLiftPower(double pwr) {
+    public void setLiftPower(double pwr) {
         motor.set(ControlMode.PercentOutput, pwr);
     }
 
-    public void setFwrPower(double pwr){
+    public void setFwrPower(double pwr) {
         climberDrive.set(ControlMode.PercentOutput, pwr);
     }
 

@@ -51,19 +51,19 @@ public class LightningRobot extends TimedRobot {
     String specificDestin;
     SendableChooser<String> specificDestinChooser = new SendableChooser<>();
 
-    public Command getSelectedElevatorPos(){
+    public Command getSelectedElevatorPos() {
         return elevatorChooser.getSelected();
     }
-    public String getSelectedGamePiece(){
+    public String getSelectedGamePiece() {
         return gamePieceChooser.getSelected();
     }
-    public String getSelectedStartPos(){
+    public String getSelectedStartPos() {
         return startPosChooser.getSelected();
     }
-    public String getSelectedGenDestin(){
+    public String getSelectedGenDestin() {
         return genDestinChooser.getSelected();
     }
-    public String getSelectedSpecificDestin(){
+    public String getSelectedSpecificDestin() {
         return specificDestinChooser.getSelected();
     }
 

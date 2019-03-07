@@ -15,56 +15,56 @@ import frc.robot.Robot;
 
 public class RightDriveZero extends Command {
 
-  CommandLogger logger = new CommandLogger(getClass().getSimpleName());
+    CommandLogger logger = new CommandLogger(getClass().getSimpleName());
 
-  public RightDriveZero() {
-    // Use requires() here to declare subsystem dependencies
-    // eg. requires(chassis);
-    requires(Robot.drivetrain);
-    
-    logger.addDataElement("actualLeftVelocity");
-    logger.addDataElement("actualRightVelocity");
+    public RightDriveZero() {
+        // Use requires() here to declare subsystem dependencies
+        // eg. requires(chassis);
+        requires(Robot.drivetrain);
 
-    logger.addDataElement("actualTheta");
+        logger.addDataElement("actualLeftVelocity");
+        logger.addDataElement("actualRightVelocity");
 
-  }
+        logger.addDataElement("actualTheta");
 
-  // Called just before this Command runs the first time
-  @Override
-  protected void initialize() {
-    (new ResetDriveSensors()).start();
-    Robot.drivetrain.getRightMaster().set(ControlMode.MotionMagic, 0);
-  }
+    }
 
-  // Called repeatedly when this Command is scheduled to run
-  @Override
-  protected void execute() {
+    // Called just before this Command runs the first time
+    @Override
+    protected void initialize() {
+        (new ResetDriveSensors()).start();
+        Robot.drivetrain.getRightMaster().set(ControlMode.MotionMagic, 0);
+    }
 
-    logger.set("actualLeftVelocity", Robot.drivetrain.getLeftVelocity());
-    logger.set("actualRightVelocity", Robot.drivetrain.getRightVelocity());
+    // Called repeatedly when this Command is scheduled to run
+    @Override
+    protected void execute() {
 
-    logger.set("actualTheta", Robot.core.getYaw());
+        logger.set("actualLeftVelocity", Robot.drivetrain.getLeftVelocity());
+        logger.set("actualRightVelocity", Robot.drivetrain.getRightVelocity());
 
-    Robot.drivetrain.getLeftMaster().set(ControlMode.PercentOutput, 0.35);
-  }
+        logger.set("actualTheta", Robot.core.getYaw());
 
-  // Make this return true when this Command no longer needs to run execute()
-  @Override
-  protected boolean isFinished() {
-    return (Math.abs(Robot.core.getYaw() - 180) < 2.5);
-  }
+        Robot.drivetrain.getLeftMaster().set(ControlMode.PercentOutput, 0.35);
+    }
 
-  // Called once after isFinished returns true
-  @Override
-  protected void end() {
-    Robot.drivetrain.stop();
-  }
+    // Make this return true when this Command no longer needs to run execute()
+    @Override
+    protected boolean isFinished() {
+        return (Math.abs(Robot.core.getYaw() - 180) < 2.5);
+    }
 
-  // Called when another command which requires one or more of the same
-  // subsystems is scheduled to run
-  @Override
-  protected void interrupted() {
-    end();
-  }
+    // Called once after isFinished returns true
+    @Override
+    protected void end() {
+        Robot.drivetrain.stop();
+    }
+
+    // Called when another command which requires one or more of the same
+    // subsystems is scheduled to run
+    @Override
+    protected void interrupted() {
+        end();
+    }
 
 }

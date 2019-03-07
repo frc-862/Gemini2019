@@ -59,11 +59,11 @@ public class Robot extends LightningRobot {
 
         registerAutoOptions();
 
-        registerAutonomousCommmand("AUTON", new Auto(this.getSelectedElevatorPos(), 
-                                                     this.getSelectedGamePiece(), 
-                                                     this.getSelectedStartPos(), 
-                                                     this.getSelectedGenDestin(), 
-                                                     this.getSelectedSpecificDestin()));
+        registerAutonomousCommmand("AUTON", new Auto(this.getSelectedElevatorPos(),
+                                   this.getSelectedGamePiece(),
+                                   this.getSelectedStartPos(),
+                                   this.getSelectedGenDestin(),
+                                   this.getSelectedSpecificDestin()));
 
         //TEST
         registerAutonomousCommmand("RightSideNear", new VelocityMotionProfile("RocketR_StartR_EndN"));
@@ -79,7 +79,7 @@ public class Robot extends LightningRobot {
         CameraServer.getInstance().startAutomaticCapture();
     }
 
-    private void registerAutoOptions(){
+    private void registerAutoOptions() {
         //Elevator Positions
         this.registerElevatorPos("Low", new SetElevatorLow());
         this.registerElevatorPos("Top", new SetElevatorHigh());

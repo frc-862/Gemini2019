@@ -51,40 +51,39 @@ public class LineFollow extends Command {
     protected void execute() {
         // read & weight the sensors
         final double error = Robot.core.lineSensor();
-        if(error==Double.NaN)
-        {
-          Robot.drivetrain.setVelocity(
-            (Robot.oi.getLeftPower()*Constants.velocityMultiplier),
-            (Robot.oi.getRightPower()*Constants.velocityMultiplier));
+        if(error==Double.NaN) {
+            Robot.drivetrain.setVelocity(
+                (Robot.oi.getLeftPower()*Constants.velocityMultiplier),
+                (Robot.oi.getRightPower()*Constants.velocityMultiplier));
             prevError = 0;
             errorAcc = 0;
         } else {
-        turnP = SmartDashboard.getNumber("Turn Power", turnP);
-        straightVelocity = SmartDashboard.getNumber("Straight Vel", straightVelocity);
-        turningVelocity = SmartDashboard.getNumber("Turning Vel", turningVelocity);
-        //turningVelocity = SmartDashboard.getNumber("turn down turning", turnDown);
-        turnI = SmartDashboard.getNumber("turnI", turnI);
-        turnD = SmartDashboard.getNumber("turnD", turnD);
+            turnP = SmartDashboard.getNumber("Turn Power", turnP);
+            straightVelocity = SmartDashboard.getNumber("Straight Vel", straightVelocity);
+            turningVelocity = SmartDashboard.getNumber("Turning Vel", turningVelocity);
+            //turningVelocity = SmartDashboard.getNumber("turn down turning", turnDown);
+            turnI = SmartDashboard.getNumber("turnI", turnI);
+            turnD = SmartDashboard.getNumber("turnD", turnD);
 
-        if (Double.isNaN(error) || Math.abs(error) <= 1) {
-            errorAcc = 0;
-        } else {
-            errorAcc += error;
+            if (Double.isNaN(error) || Math.abs(error) <= 1) {
+                errorAcc = 0;
+            } else {
+                errorAcc += error;
+            }
+
+            final double turn = (error * turnP) + (errorAcc * turnI)-(prevError-error)*turnD;
+
+            final double velocity = (Math.abs(error) < 1) ? straightVelocity : turningVelocity;
+
+            logger.set("error", error);
+            logger.set("turn", turn);
+            logger.set("velocity", velocity);
+            logger.write();
+            System.out.println("line follow error = "+error+"/ turn = "+turn+"/ velocity ="+velocity);
+            // drive
+            Robot.drivetrain.setVelocity(velocity + turn, velocity - turn);
+            prevError = error;
         }
-
-        final double turn = (error * turnP) + (errorAcc * turnI)-(prevError-error)*turnD;
-
-        final double velocity = (Math.abs(error) < 1) ? straightVelocity : turningVelocity;
-
-        logger.set("error", error);
-        logger.set("turn", turn);
-        logger.set("velocity", velocity);
-        logger.write();
-        System.out.println("line follow error = "+error+"/ turn = "+turn+"/ velocity ="+velocity);
-        // drive
-        Robot.drivetrain.setVelocity(velocity + turn, velocity - turn);
-        prevError = error;
-    }
     };
 
 

@@ -116,7 +116,7 @@ public class VelocityMotionProfile extends Command {
                     double heading = csv.nextDouble();
 
                     result.put(new InterpolatingDouble(time),
-                            new InterpolatingMotionPoint(position, velocity, acceleration, heading));
+                               new InterpolatingMotionPoint(position, velocity, acceleration, heading));
                     time += 0.02;
                 }
 

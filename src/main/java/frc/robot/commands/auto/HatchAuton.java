@@ -19,24 +19,24 @@ import frc.robot.commands.hatch.RetractHatchCollector;
 
 public class HatchAuton extends CommandGroup {
 
-  private Command elevatorPos;
-  private String pathFile;
+    private Command elevatorPos;
+    private String pathFile;
 
-  public HatchAuton(String pathFile, Command elevatorPos) {
+    public HatchAuton(String pathFile, Command elevatorPos) {
 
-   this.elevatorPos = elevatorPos;
-   this.pathFile = pathFile;
+        this.elevatorPos = elevatorPos;
+        this.pathFile = pathFile;
 
-   addSequential(new CloseHatchCollector());
-   addSequential(new SetElevatorLow());  
-   addSequential(new VelocityMotionProfile(pathFile));
-   addSequential(elevatorPos);
-   addSequential(new TimedCommand(2));
-   addSequential(new ExtendHatchCollector());
-   addSequential(new TimedCommand(0.25));
-   addSequential(new OpenHatchCollector());
-   addSequential(new TimedCommand(0.25));
-   addSequential(new RetractHatchCollector());
+        addSequential(new CloseHatchCollector());
+        addSequential(new SetElevatorLow());
+        addSequential(new VelocityMotionProfile(pathFile));
+        addSequential(elevatorPos);
+        addSequential(new TimedCommand(2));
+        addSequential(new ExtendHatchCollector());
+        addSequential(new TimedCommand(0.25));
+        addSequential(new OpenHatchCollector());
+        addSequential(new TimedCommand(0.25));
+        addSequential(new RetractHatchCollector());
 
-  }
+    }
 }

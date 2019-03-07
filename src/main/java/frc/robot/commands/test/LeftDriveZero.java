@@ -16,55 +16,55 @@ import frc.robot.Robot;
 
 public class LeftDriveZero extends Command {
 
-  CommandLogger logger = new CommandLogger(getClass().getSimpleName());
+    CommandLogger logger = new CommandLogger(getClass().getSimpleName());
 
-  public LeftDriveZero() {
-    // Use requires() here to declare subsystem dependencies
-    // eg. requires(chassis);
-    requires(Robot.drivetrain);
+    public LeftDriveZero() {
+        // Use requires() here to declare subsystem dependencies
+        // eg. requires(chassis);
+        requires(Robot.drivetrain);
 
-    logger.addDataElement("actualLeftVelocity");
-    logger.addDataElement("actualRightVelocity");
+        logger.addDataElement("actualLeftVelocity");
+        logger.addDataElement("actualRightVelocity");
 
-    logger.addDataElement("actualTheta");
+        logger.addDataElement("actualTheta");
 
-  }
+    }
 
-  // Called just before this Command runs the first time
-  @Override
-  protected void initialize() {
-    (new ResetDriveSensors()).start();
-    Robot.drivetrain.getLeftMaster().set(ControlMode.MotionMagic, 0);
-  }
+    // Called just before this Command runs the first time
+    @Override
+    protected void initialize() {
+        (new ResetDriveSensors()).start();
+        Robot.drivetrain.getLeftMaster().set(ControlMode.MotionMagic, 0);
+    }
 
-  // Called repeatedly when this Command is scheduled to run
-  @Override
-  protected void execute() {
+    // Called repeatedly when this Command is scheduled to run
+    @Override
+    protected void execute() {
 
-    logger.set("actualLeftVelocity", Robot.drivetrain.getLeftVelocity());
-    logger.set("actualRightVelocity", Robot.drivetrain.getRightVelocity());
+        logger.set("actualLeftVelocity", Robot.drivetrain.getLeftVelocity());
+        logger.set("actualRightVelocity", Robot.drivetrain.getRightVelocity());
 
-    logger.set("actualTheta", Robot.core.getYaw());
+        logger.set("actualTheta", Robot.core.getYaw());
 
-    Robot.drivetrain.getRightMaster().set(ControlMode.PercentOutput, 0.35);
-  }
+        Robot.drivetrain.getRightMaster().set(ControlMode.PercentOutput, 0.35);
+    }
 
-  // Make this return true when this Command no longer needs to run execute()
-  @Override
-  protected boolean isFinished() {
-    return (Math.abs(Robot.core.getYaw() - 180) < 2.5);
-  }
+    // Make this return true when this Command no longer needs to run execute()
+    @Override
+    protected boolean isFinished() {
+        return (Math.abs(Robot.core.getYaw() - 180) < 2.5);
+    }
 
-  // Called once after isFinished returns true
-  @Override
-  protected void end() {
-    Robot.drivetrain.stop();
-  }
+    // Called once after isFinished returns true
+    @Override
+    protected void end() {
+        Robot.drivetrain.stop();
+    }
 
-  // Called when another command which requires one or more of the same
-  // subsystems is scheduled to run
-  @Override
-  protected void interrupted() {
-    end();
-  }
+    // Called when another command which requires one or more of the same
+    // subsystems is scheduled to run
+    @Override
+    protected void interrupted() {
+        end();
+    }
 }
