@@ -166,7 +166,7 @@ public class OI {
     }
 
     public double getCargoCollectPower () {
-        return (copilot.getRawAxis(3)-copilot.getRawAxis(2))/3;
+        return (copilot.getRawAxis(2)-copilot.getRawAxis(3))/3;
     }
 
     public OI() {
