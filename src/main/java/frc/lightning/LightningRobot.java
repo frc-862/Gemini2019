@@ -41,15 +41,16 @@ public class LightningRobot extends TimedRobot {
     SendableChooser<Command> chooser = new SendableChooser<>();
 
     Command elevatorPos;
-    SendableChooser<Command> elevatorChooser = new SendableChooser<>();
+    SendableChooser<Command> elevatorChooser = new SendableChooser<Command>();
     String gamePiece;
-    SendableChooser<String> gamePieceChooser = new SendableChooser<>();
+    SendableChooser<String> gamePieceChooser = new SendableChooser<String>();
     String startPos;
-    SendableChooser<String> startPosChooser = new SendableChooser<>();
+    SendableChooser<String> startPosChooser = new SendableChooser<String>();
     String genDestin;
-    SendableChooser<String> genDestinChooser = new SendableChooser<>();
+    SendableChooser<String> genDestinChooser = new SendableChooser<String>();
     String specificDestin;
-    SendableChooser<String> specificDestinChooser = new SendableChooser<>();
+    SendableChooser<String> specificDestinChooser = new SendableChooser<String>();
+    SendableChooser<Boolean> doNothing = new SendableChooser<Boolean>();
 
     public Command getSelectedElevatorPos() {
         return elevatorChooser.getSelected();
@@ -65,6 +66,9 @@ public class LightningRobot extends TimedRobot {
     }
     public String getSelectedSpecificDestin() {
         return specificDestinChooser.getSelected();
+    }
+    public boolean doNothingAuton() {
+        return doNothing.getSelected();
     }
 
     int elevatorPosCount = 0;
@@ -132,6 +136,7 @@ public class LightningRobot extends TimedRobot {
         SmartDashboard.putData("Auto Start Pos", startPosChooser);
         SmartDashboard.putData("Auto General Destination", genDestinChooser);
         SmartDashboard.putData("Auto Specific Destination", specificDestinChooser);
+        SmartDashboard.putData("Do Nothing", doNothing);
 
         // By this point all datalog fields should be registered
         DataLogger.preventNewDataElements();
