@@ -17,6 +17,7 @@ import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -56,6 +57,7 @@ public class Core extends Subsystem {
     private DigitalInput midRight = new DigitalInput(3);
     private DigitalInput outerRight = new DigitalInput(2);
 
+    private double lineFirstSeen = Timer.getFPGATimestamp();
     // Put methods for controlling this subsystem
     // here. Call these from Commajnds.
     private AHRS navx;
@@ -173,13 +175,21 @@ public class Core extends Subsystem {
         logger.set("ROLL", getRoll());
 
         
-
+        boolean sawLine = false;
         int pos = -7;
         for (DoubleSupplier sensor : sensorValues) {
-            SmartDashboard.putNumber("Line " + pos, sensor.getAsDouble());
+            double value=sensor.getAsDouble();
+            SmartDashboard.putNumber("Line " + pos, value);
+            if(value>.15)
+            {
+                sawLine=true;
+            }
             pos += 2;
         }
-
+        if(!sawLine)
+        {
+            lineFirstSeen=Timer.getFPGATimestamp()+10;
+        }
         pos = -3;
         for (DoubleSupplier sensor : rawSensorValues) {
             SmartDashboard.putNumber("Raw Line " + pos, sensor.getAsDouble());
@@ -234,5 +244,10 @@ public class Core extends Subsystem {
         }
 
         return weight / sensors;
+    }
+
+    public double timeOnLine(){
+        
+     return Math.max(0, Timer.getFPGATimestamp()-lineFirstSeen);  
     }
 }

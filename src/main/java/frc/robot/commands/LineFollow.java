@@ -22,7 +22,7 @@ public class LineFollow extends Command {
     CommandLogger logger = new CommandLogger(getClass().getSimpleName());
     double turnP = .45;
     double turningVelocity = 1;//4
-    double straightVelocity = 4;//1
+    double straightVelocity = 4 ;//1
     double turnI = 0.001;
     double turnD = .45;
     double prevError = 0;
@@ -51,7 +51,7 @@ public class LineFollow extends Command {
     protected void execute() {
         // read & weight the sensors
         final double error = Robot.core.lineSensor();
-        if(error==Double.NaN || prevError==Double.NaN)
+        if(Robot.core.timeOnLine()<0.1)
         {
           Robot.drivetrain.setVelocity(
             (Robot.oi.getLeftPower()*Constants.velocityMultiplier),
@@ -80,7 +80,7 @@ public class LineFollow extends Command {
         logger.set("turn", turn);
         logger.set("velocity", velocity);
         logger.write();
-        // System.out.println("line follow error = "+error+"/ turn = "+turn+"/ velocity ="+velocity);
+        System.out.println("line follow error = "+error+"/ turn = "+turn+"/ velocity ="+velocity);
         // drive
         Robot.drivetrain.setVelocity(velocity + turn, velocity - turn);
         prevError = error;
