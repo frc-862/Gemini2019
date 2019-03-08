@@ -63,7 +63,8 @@ public class Robot extends LightningRobot {
                                    this.getSelectedGamePiece(),
                                    this.getSelectedStartPos(),
                                    this.getSelectedGenDestin(),
-                                   this.getSelectedSpecificDestin()));
+                                   this.getSelectedSpecificDestin(),
+                                   this.doNothingAuton()));
 
         //TEST
         registerAutonomousCommmand("RightSideNear", new VelocityMotionProfile("RocketR_StartR_EndN"));

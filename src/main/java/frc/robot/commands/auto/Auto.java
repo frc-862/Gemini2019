@@ -21,24 +21,26 @@ public class Auto extends CommandGroup {
     private Command elevatorPos;
 
     //Choosers: Command elevator, String gamepiece
-    public Auto(Command elevatorPos, String inPiece, String start, String genDestin, String specificDestin) {
+    public Auto(Command elevatorPos, String inPiece, String start, String genDestin, String specificDestin, Boolean doNothing) {
 
-        requires(Robot.drivetrain);
-        requires(Robot.elevator);
-        requires(Robot.hatchPanelCollector);
-        requires(Robot.cargoCollector);
-        
-        this.pathFile = selectPath(start, genDestin, specificDestin);
-        SmartDashboard.putString("PATH: ", pathFile);
-        initPiece(inPiece);
-        this.elevatorPos = elevatorPos;
-        initPiecePos();
+        if (!doNothing) {
+            requires(Robot.drivetrain);
+            requires(Robot.elevator);
+            requires(Robot.hatchPanelCollector);
+            requires(Robot.cargoCollector);
 
-        //waitForDriverOK();
+            this.pathFile = selectPath(start, genDestin, specificDestin);
+            SmartDashboard.putString("PATH: ", pathFile);
+            initPiece(inPiece);
+            this.elevatorPos = elevatorPos;
+            initPiecePos();
 
-        getToTarget();
+            //waitForDriverOK();
 
-        deployPiece();
+            getToTarget();
+
+            deployPiece();
+        }
 
     }
 
