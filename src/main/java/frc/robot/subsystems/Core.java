@@ -57,6 +57,8 @@ public class Core extends Subsystem {
     private DigitalInput midRight = new DigitalInput(3);
     private DigitalInput outerRight = new DigitalInput(2);
 
+    
+
     private double lineFirstSeen = Timer.getFPGATimestamp();
     // Put methods for controlling this subsystem
     // here. Call these from Commajnds.
@@ -78,6 +80,7 @@ public class Core extends Subsystem {
             return 1 - ((v - min) / range);
         }
     }
+    public boolean everseen=false;
 
     private double[] lineWeights = {-7, -5, -3, -1, 1, 3, 5, 7};
 
@@ -125,6 +128,12 @@ public class Core extends Subsystem {
         DataLogger.addDataElement("YAW", () -> getYaw());
         DataLogger.addDataElement("PITCH", () -> getPitch());
         DataLogger.addDataElement("ROLL", () -> getRoll());
+
+        int i = -3;
+        for (var sensor : rawSensorValues) { 
+            DataLogger.addDataElement("LineFollow" + i, () -> sensor.getAsDouble());
+            i += 2;
+        }
 
         logger.addDataElement("YAW");
         logger.addDataElement("PITCH");
@@ -176,6 +185,7 @@ public class Core extends Subsystem {
 
         
         boolean sawLine = false;
+        
         int pos = -7;
         for (DoubleSupplier sensor : sensorValues) {
             double value=sensor.getAsDouble();
@@ -186,17 +196,26 @@ public class Core extends Subsystem {
             }
             pos += 2;
         }
+        if(!everseen){
         if(!sawLine)
         {
-            lineFirstSeen=Timer.getFPGATimestamp()+10;
+            lineFirstSeen=Timer.getFPGATimestamp();
+        }else{
+            everseen=true;
         }
+        
         pos = -3;
         for (DoubleSupplier sensor : rawSensorValues) {
+            int a=0;
+            a++;
             SmartDashboard.putNumber("Raw Line " + pos, sensor.getAsDouble());
+            
             pos += 2;
         }
-
+        }
         SmartDashboard.putNumber("Distance from center", lineSensor());
+        SmartDashboard.putNumber("line first seen", lineFirstSeen);
+        SmartDashboard.putNumber("time saw line", timeOnLine());
     }
 
     public double getYaw() {
@@ -249,5 +268,11 @@ public class Core extends Subsystem {
     public double timeOnLine(){
         
      return Math.max(0, Timer.getFPGATimestamp()-lineFirstSeen);  
+    }
+    public void resetline(){
+        everseen=false;
+    }
+    public DoubleSupplier getRawData(int a) {
+        return rawSensorValues[a];
     }
 }

@@ -15,20 +15,19 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.Constants;
 import frc.robot.Robot;
 import frc.robot.subsystems.GeminiDrivetrain;
-import frc.robot.subsystems.Core;
 
 
 
-public class LineFollow extends Command {
+public class AutonLineFollow extends Command {
     CommandLogger logger = new CommandLogger(getClass().getSimpleName());
-    double turnP = .475;
-    double turningVelocity = .5;//4
+    double turnP = .45;
+    double turningVelocity = 1;//4
     double straightVelocity = 4 ;//1
     double turnI = 0.001;
-    double turnD = .5;
+    double turnD = .45;
     double prevError = 0;
     double errorAcc = 0;
-    public LineFollow() {
+    public AutonLineFollow() {
         // Use requires() here to declare subsystem dependencies
         requires(Robot.drivetrain);
         logger.addDataElement("error");
@@ -41,11 +40,6 @@ public class LineFollow extends Command {
         SmartDashboard.putNumber("turnD", turnD);
     }
 
-    double timeout = -1;
-    public LineFollow(double timeout) {
-        this();
-        this.timeout = timeout;
-    }
     // Called just before this Command runs the first time
     @Override
     protected void initialize() {
@@ -97,13 +91,12 @@ public class LineFollow extends Command {
     // Make this return true when this Command no longer needs to run execute()
     @Override
     protected boolean isFinished() {
-        return timeout > 0 && timeSinceInitialized() > timeout;
+        return Math.abs(Robot.oi.getLeftPower()) >= 0.20 || Math.abs(Robot.oi.getRightPower()) >= 0.20;
     }
 
     // Called once after isFinished returns true
     @Override
     protected void end() {
-        Robot.core.resetline();
         logger.drain();
         logger.flush();
     }

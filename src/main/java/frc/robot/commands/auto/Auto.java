@@ -6,6 +6,8 @@ import edu.wpi.first.wpilibj.command.TimedCommand;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.lightning.commands.VelocityMotionProfile;
 import frc.robot.Robot;
+import frc.robot.commands.AutonLineFollow;
+import frc.robot.commands.LineFollow;
 import frc.robot.commands.cargo.EjectElevatorCargo;
 import frc.robot.commands.driveTrain.WaitForDriverOK;
 import frc.robot.commands.elevator.SetElevatorLow;
@@ -23,13 +25,14 @@ public class Auto extends CommandGroup {
     //Choosers: Command elevator, String gamepiece
     public Auto(Command elevatorPos, String inPiece, String start, String genDestin, String specificDestin, Boolean doNothing) {
 
-        if (!doNothing) {
+        //if (!doNothing) {
             requires(Robot.drivetrain);
             requires(Robot.elevator);
             requires(Robot.hatchPanelCollector);
             requires(Robot.cargoCollector);
 
             this.pathFile = selectPath(start, genDestin, specificDestin);
+            System.out.println("path "+pathFile);
             SmartDashboard.putString("PATH: ", pathFile);
             initPiece(inPiece);
             this.elevatorPos = elevatorPos;
@@ -38,10 +41,44 @@ public class Auto extends CommandGroup {
             //waitForDriverOK();
 
             getToTarget();
+            linefollow();
+            //deployPiece();
+        //}
 
-            deployPiece();
-        }
+    }
 
+
+
+    public Auto(Command elevatorPos, String path, String inPiece, Boolean doNothing) {
+
+        //if (!doNothing) {
+            requires(Robot.drivetrain);
+            requires(Robot.elevator);
+            requires(Robot.hatchPanelCollector);
+            requires(Robot.cargoCollector);
+
+            this.pathFile = path;
+            System.out.println("path "+pathFile);
+            SmartDashboard.putString("PATH: ", pathFile);
+            initPiece(inPiece);
+            this.elevatorPos = elevatorPos;
+            initPiecePos();
+
+            //waitForDriverOK();
+
+            getToTarget();
+            addSequential(new LineFollow());
+
+            //linefollow();
+            //deployPiece();
+        //}
+
+    }
+
+
+
+    private void linefollow() {
+        addSequential(new AutonLineFollow());
     }
 
     private void waitForDriverOK() {
@@ -129,6 +166,7 @@ public class Auto extends CommandGroup {
         if(this.piece.equals("CARGO")) {
 
         } else { // This gets the hatch out of the robot. We don't need to do anything for cargo.
+            addSequential(new LineFollow());
             addSequential(new CloseHatchCollector());
             addSequential(new SetElevatorLow());
         }

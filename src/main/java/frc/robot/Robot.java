@@ -10,17 +10,29 @@ package frc.robot;
 import frc.lightning.LightningRobot;
 import frc.lightning.commands.VelocityMotionProfile;
 import frc.robot.commands.auto.Auto;
+import frc.robot.commands.auto.CenterPath;
 import frc.robot.commands.auto.HatchAuton;
+import frc.robot.commands.auto.LeftRocket;
+import frc.robot.commands.auto.RghtRocket;
+import frc.robot.commands.driveTrain.TankDrive;
+import frc.robot.commands.driveTrain.VelocityTankDrive;
 import frc.robot.commands.elevator.SetElevatorCollect;
 import frc.robot.commands.elevator.SetElevatorHigh;
 import frc.robot.commands.elevator.SetElevatorLow;
 import frc.robot.commands.elevator.SetElevatorMed;
 import frc.robot.commands.test.Spin;
 import frc.robot.subsystems.*;
+
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 
 import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.command.Scheduler;
+import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Robot extends LightningRobot {
@@ -60,25 +72,48 @@ public class Robot extends LightningRobot {
 
         registerAutoOptions();
 
-        registerAutonomousCommmand("AUTON", new Auto(this.getSelectedElevatorPos(),
-                                   this.getSelectedGamePiece(),
-                                   this.getSelectedStartPos(),
-                                   this.getSelectedGenDestin(),
-                                   this.getSelectedSpecificDestin(),
-                                   this.doNothingAuton()));
+        registerAutonomousCommmand("Tank", new VelocityTankDrive());
+        registerAutonomousCommmand("Left Rocket",new LeftRocket());
+        registerAutonomousCommmand("Right Rocket",new RghtRocket());
+        registerAutonomousCommmand("Center Ship",new CenterPath());
 
-        //TEST
-        registerAutonomousCommmand("RightSideNear", new VelocityMotionProfile("RocketR_StartR_EndN"));
-        registerAutonomousCommmand("Spin", new Spin());
-        registerAutonomousCommmand("LeftNearLow", new HatchAuton("left_side_near", new SetElevatorLow()));
-        registerAutonomousCommmand("Circle", new VelocityMotionProfile("circle"));
-        registerAutonomousCommmand("Straight", new VelocityMotionProfile("straight"));
-        registerAutonomousCommmand("LeftSideNear", new VelocityMotionProfile("left_side_near"));
-        registerAutonomousCommmand("RightSideNear", new VelocityMotionProfile("right_side_near"));
-        registerAutonomousCommmand("Test Left Turn", new VelocityMotionProfile("test_left_turn"));
-        registerAutonomousCommmand("Test Right Turn", new VelocityMotionProfile("test_right_turn"));
+        // registerAutonomousCommmand("AUTON", new Auto(this.getSelectedElevatorPos(),
+        //                            this.getSelectedGamePiece(),
+        //                            this.getSelectedStartPos(),
+        //                            this.getSelectedGenDestin(),
+        //                            this.getSelectedSpecificDestin(),false));
+
+        // //TEST
+        // registerAutonomousCommmand("DO THIS NOW NOLAN!", new Auto(new SetElevatorLow(), "test_left_turn", "HATCH", false));
+        // registerAutonomousCommmand("RightSideNearR", new VelocityMotionProfile("RocketR_StartR_EndN"));
+        // registerAutonomousCommmand("Spin", new Spin());
+        // registerAutonomousCommmand("LeftNearLow", new HatchAuton("left_side_near", new SetElevatorLow()));
+        // registerAutonomousCommmand("Circle", new VelocityMotionProfile("circle"));
+        // registerAutonomousCommmand("Straight", new VelocityMotionProfile("straight"));
+        // registerAutonomousCommmand("LeftSideNear", new VelocityMotionProfile("left_side_near"));
+        // registerAutonomousCommmand("RightSideNear", new VelocityMotionProfile("right_side_near"));
+        // registerAutonomousCommmand("Test Left Turn", new VelocityMotionProfile("test_left_turn"));
+        // registerAutonomousCommmand("Test Right Turn", new VelocityMotionProfile("test_right_turn"));
+        // registerAutonomousCommmand("RightSideNearM", new VelocityMotionProfile("RocketR_StartM_EndN"));
+
 
         CameraServer.getInstance().startAutomaticCapture();
+    }
+
+    @Override
+    public void autonomousPeriodic() {
+        super.autonomousPeriodic();
+        try {
+            writeFile(Scheduler.getInstance().getName());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void writeFile(String toWrite) throws IOException {
+        BufferedWriter writer = new BufferedWriter(new FileWriter(Filesystem.getDeployDirectory().getAbsolutePath()+"auto_commands.txt"));
+        writer.write(toWrite);
+        writer.close();
     }
 
     private void registerAutoOptions() {

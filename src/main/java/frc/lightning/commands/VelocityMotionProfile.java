@@ -200,9 +200,9 @@ public class VelocityMotionProfile extends Command {
      */
     @Override
     protected boolean isFinished() {
-        return timeSinceInitialized() > finishedAt;
+        return timeSinceInitialized() > finishedAt || Math.abs(Robot.oi.getLeftPower()) >= 0.20 || Math.abs(Robot.oi.getRightPower()) >= 0.20;
     }
-
+    
     /**
      */
     @Override

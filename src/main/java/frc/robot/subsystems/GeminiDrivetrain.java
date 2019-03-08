@@ -60,9 +60,9 @@ public class GeminiDrivetrain extends CANDrivetrain {
         SystemTest.register(new LeftEncoderTest());
         SystemTest.register(new RightEncoderTest());
 
-        VelocityMotionProfile.setKp(3.0);
+        VelocityMotionProfile.setKp(10);
         VelocityMotionProfile.setKa(0.05);
-        VelocityMotionProfile.setKTheta(-0.25);
+        VelocityMotionProfile.setKTheta(-0.25);//-.25
     }
 
     @Override
