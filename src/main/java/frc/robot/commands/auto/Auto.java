@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.TimedCommand;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.lightning.commands.VelocityMotionProfile;
+import frc.robot.Robot;
 import frc.robot.commands.cargo.EjectElevatorCargo;
 import frc.robot.commands.driveTrain.WaitForDriverOK;
 import frc.robot.commands.elevator.SetElevatorLow;
@@ -22,6 +23,11 @@ public class Auto extends CommandGroup {
     //Choosers: Command elevator, String gamepiece
     public Auto(Command elevatorPos, String inPiece, String start, String genDestin, String specificDestin) {
 
+        requires(Robot.drivetrain);
+        requires(Robot.elevator);
+        requires(Robot.hatchPanelCollector);
+        requires(Robot.cargoCollector);
+        
         this.pathFile = selectPath(start, genDestin, specificDestin);
         SmartDashboard.putString("PATH: ", pathFile);
         initPiece(inPiece);
