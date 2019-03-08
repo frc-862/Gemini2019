@@ -20,6 +20,7 @@ import frc.robot.subsystems.*;
 import java.io.File;
 
 import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Robot extends LightningRobot {
@@ -60,10 +61,10 @@ public class Robot extends LightningRobot {
         registerAutoOptions();
 
         registerAutonomousCommmand("AUTON", new Auto(this.getSelectedElevatorPos(),
-                                   this.getSelectedGamePiece(),
-                                   this.getSelectedStartPos(),
-                                   this.getSelectedGenDestin(),
-                                   this.getSelectedSpecificDestin()));
+                                                     this.getSelectedGamePiece(),
+                                                     this.getSelectedStartPos(),
+                                                     this.getSelectedGenDestin(),
+                                                     this.getSelectedSpecificDestin()));
 
         //TEST
         registerAutonomousCommmand("RightSideNear", new VelocityMotionProfile("RocketR_StartR_EndN"));

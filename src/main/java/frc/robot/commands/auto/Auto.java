@@ -20,7 +20,7 @@ public class Auto extends CommandGroup {
     private Command elevatorPos;
 
     //Choosers: Command elevator, String gamepiece
-    public Auto(Command elevatorPos, String inPiece, String start, String genDestin, String specificDestin) {
+    public  Auto(Command elevatorPos, String inPiece, String start, String genDestin, String specificDestin) {
 
         this.pathFile = selectPath(start, genDestin, specificDestin);
         SmartDashboard.putString("PATH: ", pathFile);
