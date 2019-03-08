@@ -28,6 +28,8 @@ public class LineFollow extends Command {
     double turnD = .5;
     double prevError = 0;
     double errorAcc = 0;
+    boolean onLine = false;
+
     public LineFollow() {
         // Use requires() here to declare subsystem dependencies
         requires(Robot.drivetrain);
@@ -49,6 +51,7 @@ public class LineFollow extends Command {
     // Called just before this Command runs the first time
     @Override
     protected void initialize() {
+        onLine = false;
         logger.reset();
     }
 
@@ -57,14 +60,15 @@ public class LineFollow extends Command {
     protected void execute() {
         // read & weight the sensors
         final double error = Robot.core.lineSensor();
-        //if(Robot.core.timeOnLine()<0.1)
-        //{
-        //  Robot.drivetrain.setVelocity(
-        //    (Robot.oi.getLeftPower()*Constants.velocityMultiplier),
-        //    (Robot.oi.getRightPower()*Constants.velocityMultiplier));
-        //    prevError = 0;
-        //    errorAcc = 0;
-        //} else {
+        if(Robot.core.timeOnLine()<0.1 && !onLine)
+        {
+          Robot.drivetrain.setVelocity(
+            (Robot.oi.getLeftPower()*Constants.velocityMultiplier),
+            (Robot.oi.getRightPower()*Constants.velocityMultiplier));
+            prevError = 0;
+            errorAcc = 0;
+        } else {
+            onLine = true;
         turnP = SmartDashboard.getNumber("Turn Power", turnP);
         straightVelocity = SmartDashboard.getNumber("Straight Vel", straightVelocity);
         turningVelocity = SmartDashboard.getNumber("Turning Vel", turningVelocity);
@@ -91,7 +95,7 @@ public class LineFollow extends Command {
         Robot.drivetrain.setVelocity(velocity + turn, velocity - turn);
         prevError = error;
     }
-    //};
+    };
 
 
     // Make this return true when this Command no longer needs to run execute()
@@ -103,7 +107,6 @@ public class LineFollow extends Command {
     // Called once after isFinished returns true
     @Override
     protected void end() {
-        Robot.core.resetline();
         logger.drain();
         logger.flush();
     }

@@ -80,7 +80,6 @@ public class Core extends Subsystem {
             return 1 - ((v - min) / range);
         }
     }
-    public boolean everseen=false;
 
     private double[] lineWeights = {-7, -5, -3, -1, 1, 3, 5, 7};
 
@@ -196,22 +195,18 @@ public class Core extends Subsystem {
             }
             pos += 2;
         }
-        if(!everseen){
+
         if(!sawLine)
         {
             lineFirstSeen=Timer.getFPGATimestamp();
-        }else{
-            everseen=true;
         }
         
         pos = -3;
         for (DoubleSupplier sensor : rawSensorValues) {
-            int a=0;
-            a++;
+            
             SmartDashboard.putNumber("Raw Line " + pos, sensor.getAsDouble());
             
             pos += 2;
-        }
         }
         SmartDashboard.putNumber("Distance from center", lineSensor());
         SmartDashboard.putNumber("line first seen", lineFirstSeen);
@@ -269,9 +264,7 @@ public class Core extends Subsystem {
         
      return Math.max(0, Timer.getFPGATimestamp()-lineFirstSeen);  
     }
-    public void resetline(){
-        everseen=false;
-    }
+
     public DoubleSupplier getRawData(int a) {
         return rawSensorValues[a];
     }
