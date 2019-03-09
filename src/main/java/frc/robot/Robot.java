@@ -63,7 +63,7 @@ public class Robot extends LightningRobot {
         elevator = new Elevator();
         climber = new Climber();
         core = new Core();
-        // vision = new Vision();
+        vision = new Vision();
 
         oi = new OI();
 

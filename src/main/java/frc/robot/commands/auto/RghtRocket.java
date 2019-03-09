@@ -28,7 +28,7 @@ public class RghtRocket extends CommandGroup {
     addSequential(new CloseHatchCollector());
     addSequential(new SetElevatorLow());
     addSequential(new VelocityMotionProfile("RocketR_StartR_EndN"));
-    addSequential(new LineFollow(1));
+    //addSequential(new LineFollow(1));
     
 
     // e.g. addSequential(new Command1());
