@@ -7,6 +7,12 @@ public class Constants extends ConstantBase {
     // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     // NEVER CHECKIN WITH BENCH TEST SET TO TRUE
     // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+
+    public static int cargoDistance = 4;
+    public static int pannelDistance = 7;//TODO make these real
+
+
     public static final boolean bench_test = false;
 
     public static final double TICS_PER_ROTATION = 4 * 360;

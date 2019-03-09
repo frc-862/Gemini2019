@@ -213,6 +213,14 @@ public class Core extends Subsystem {
         SmartDashboard.putNumber("time saw line", timeOnLine());
     }
 
+    public boolean hasCargo(){
+        return false;//TODO - make this not this.
+    }
+    
+    public boolean hasHatch(){
+        return false;//TODO - make this not this.
+    }
+
     public double getYaw() {
         return navx.getYaw();
         // return 0;

@@ -146,6 +146,10 @@ public class OI {
                cargoCollectButton.get();
     }
 
+    public boolean getRainbowButtonPressed(){
+        return (new JoystickButton(driverRight, 2)).get();
+    }
+
     public void initializeCommands() {
         climb.whenPressed(new Climb());
         hatchRetract.whenPressed(new RetractHatchCollector());

@@ -37,6 +37,8 @@ public class LightningRobot extends TimedRobot {
     private int lowPriorityFreq = (int) Math.round(1 / getPeriod());
     private int backgroundPriorityFreq = (int) Math.round(10 / getPeriod());
 
+    public static boolean isDisabled = false;
+
     Command autonomousCommand;
     SendableChooser<Command> chooser = new SendableChooser<>();
 
@@ -205,6 +207,7 @@ public class LightningRobot extends TimedRobot {
             DataLogger.logData();
             loopTime = Timer.getFPGATimestamp() - time;
         }
+        isDisabled = this.isDisabled();
     }
 
     /**

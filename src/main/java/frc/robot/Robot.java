@@ -101,6 +101,12 @@ public class Robot extends LightningRobot {
     }
 
     @Override
+    public void robotPeriodic() {
+        super.robotPeriodic();
+        //leds.update();
+    }
+
+    @Override
     public void autonomousPeriodic() {
         super.autonomousPeriodic();
         try {
