@@ -26,23 +26,23 @@ public class Auto extends CommandGroup {
     public Auto(Command elevatorPos, String inPiece, String start, String genDestin, String specificDestin, Boolean doNothing) {
 
         //if (!doNothing) {
-            requires(Robot.drivetrain);
-            requires(Robot.elevator);
-            requires(Robot.hatchPanelCollector);
-            requires(Robot.cargoCollector);
+        requires(Robot.drivetrain);
+        requires(Robot.elevator);
+        requires(Robot.hatchPanelCollector);
+        requires(Robot.cargoCollector);
 
-            this.pathFile = selectPath(start, genDestin, specificDestin);
-            System.out.println("path "+pathFile);
-            SmartDashboard.putString("PATH: ", pathFile);
-            initPiece(inPiece);
-            this.elevatorPos = elevatorPos;
-            initPiecePos();
+        this.pathFile = selectPath(start, genDestin, specificDestin);
+        System.out.println("path "+pathFile);
+        SmartDashboard.putString("PATH: ", pathFile);
+        initPiece(inPiece);
+        this.elevatorPos = elevatorPos;
+        initPiecePos();
 
-            //waitForDriverOK();
+        //waitForDriverOK();
 
-            getToTarget();
-            linefollow();
-            //deployPiece();
+        getToTarget();
+        linefollow();
+        //deployPiece();
         //}
 
     }
@@ -52,25 +52,25 @@ public class Auto extends CommandGroup {
     public Auto(Command elevatorPos, String path, String inPiece, Boolean doNothing) {
 
         //if (!doNothing) {
-            requires(Robot.drivetrain);
-            requires(Robot.elevator);
-            requires(Robot.hatchPanelCollector);
-            requires(Robot.cargoCollector);
+        requires(Robot.drivetrain);
+        requires(Robot.elevator);
+        requires(Robot.hatchPanelCollector);
+        requires(Robot.cargoCollector);
 
-            this.pathFile = path;
-            System.out.println("path "+pathFile);
-            SmartDashboard.putString("PATH: ", pathFile);
-            initPiece(inPiece);
-            this.elevatorPos = elevatorPos;
-            initPiecePos();
+        this.pathFile = path;
+        System.out.println("path "+pathFile);
+        SmartDashboard.putString("PATH: ", pathFile);
+        initPiece(inPiece);
+        this.elevatorPos = elevatorPos;
+        initPiecePos();
 
-            //waitForDriverOK();
+        //waitForDriverOK();
 
-            getToTarget();
-            addSequential(new LineFollow());
+        getToTarget();
+        addSequential(new LineFollow());
 
-            //linefollow();
-            //deployPiece();
+        //linefollow();
+        //deployPiece();
         //}
 
     }

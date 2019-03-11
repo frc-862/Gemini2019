@@ -24,28 +24,28 @@ public class LEDs extends Subsystem {
         //normal chasers
         NORMAL,
         RAINBOW,
-    
+
         //game piece/collecting-related
         CARGO_COLLECTED,
-        HATCH_COLLECTED, 
+        HATCH_COLLECTED,
         HAND_OFF_READY,
-    
+
         // Indicates that we have detected
         // the vision or line targets and
         // the driver can give up control
-        VISION_READY, 
-    
+        VISION_READY,
+
         //other stuff
         LINE_FOLLOWING, /*SANDSTORM*/
 
         OFF
     }
-    
+
     private DigitalOutput bit1;// = new DigitalOutput(7);
     private DigitalOutput bit2;// = new DigitalOutput(8);
     private DigitalOutput bit3;// = new DigitalOutput(9);
 
-    public LEDs(){
+    public LEDs() {
         bit1 = new DigitalOutput(7);
         bit2 = new DigitalOutput(8);
         bit3 = new DigitalOutput(9);
@@ -53,7 +53,7 @@ public class LEDs extends Subsystem {
 
     private State state = State.NORMAL;
 
-    public void setState(State state){
+    public void setState(State state) {
         this.state = state;
     }
 
@@ -67,49 +67,49 @@ public class LEDs extends Subsystem {
     }
 
     @Override
-    public void periodic(){
+    public void periodic() {
         if(Robot.isDisabled) this.state = State.OFF;
         this.set();
     }
 
     private void set() {
         switch (state) {
-            case OFF:
-                bit1.set(false);  
-                bit2.set(false);
-                bit3.set(false);          
-                break;
-            case NORMAL:
-                bit1.set(true);  
-                bit2.set(false);
-                bit3.set(false); 
-                break;
-            case CARGO_COLLECTED:
-                bit1.set(false);  
-                bit2.set(true);
-                bit3.set(false); 
-                break;
-            case HATCH_COLLECTED:
-                bit1.set(true);  
-                bit2.set(true);
-                bit3.set(false); 
-                break;
-            case LINE_FOLLOWING:
-                bit1.set(false);  
-                bit2.set(false);
-                bit3.set(true); 
-                break;
-            case RAINBOW:
-                bit1.set(true);  
-                bit2.set(false);
-                bit3.set(true); 
-                break;
-            default://NORMAL
-                bit1.set(true);  
-                bit2.set(false);
-                bit3.set(false);
-                break;
-            
+        case OFF:
+            bit1.set(false);
+            bit2.set(false);
+            bit3.set(false);
+            break;
+        case NORMAL:
+            bit1.set(true);
+            bit2.set(false);
+            bit3.set(false);
+            break;
+        case CARGO_COLLECTED:
+            bit1.set(false);
+            bit2.set(true);
+            bit3.set(false);
+            break;
+        case HATCH_COLLECTED:
+            bit1.set(true);
+            bit2.set(true);
+            bit3.set(false);
+            break;
+        case LINE_FOLLOWING:
+            bit1.set(false);
+            bit2.set(false);
+            bit3.set(true);
+            break;
+        case RAINBOW:
+            bit1.set(true);
+            bit2.set(false);
+            bit3.set(true);
+            break;
+        default://NORMAL
+            bit1.set(true);
+            bit2.set(false);
+            bit3.set(false);
+            break;
+
         }
     }
 

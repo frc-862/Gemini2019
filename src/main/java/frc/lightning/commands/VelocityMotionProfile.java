@@ -202,7 +202,7 @@ public class VelocityMotionProfile extends Command {
     protected boolean isFinished() {
         return timeSinceInitialized() > finishedAt || Math.abs(Robot.oi.getLeftPower()) >= 0.20 || Math.abs(Robot.oi.getRightPower()) >= 0.20;
     }
-    
+
     /**
      */
     @Override

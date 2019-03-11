@@ -65,7 +65,7 @@ public class OI {
     private POVButton hatchRetract = new POVButton(copilot, 180);
 
     private Button hatchAuto = new JoystickButton(driverRight, 13);
-    //TODO ask for driver preferace 
+    //TODO ask for driver preferace
 
     private Button waitButton= new JoystickButton(driverRight, 14);//
 
@@ -88,7 +88,7 @@ public class OI {
     public void setShocksout  () {
         setShocksout.whenPressed(new ExtendShocks());
     }
-    public void hatchAuto (String start, String genDestin, String specificDestin, Command elevatorPos){
+    public void hatchAuto (String start, String genDestin, String specificDestin, Command elevatorPos) {
         hatchAuto.whenPressed(new HatchAuton(this.selectPath(start, genDestin, specificDestin), elevatorPos));
     }
     public int getLeftDirection() {
@@ -149,7 +149,7 @@ public class OI {
                cargoCollectButton.get();
     }
 
-    public boolean getRainbowButtonPressed(){
+    public boolean getRainbowButtonPressed() {
         return (new JoystickButton(driverRight, 2)).get();
     }
 

@@ -57,7 +57,7 @@ public class Core extends Subsystem {
     private DigitalInput midRight = new DigitalInput(3);
     private DigitalInput outerRight = new DigitalInput(2);
 
-    
+
 
     private double lineFirstSeen = Timer.getFPGATimestamp();
     // Put methods for controlling this subsystem
@@ -129,7 +129,7 @@ public class Core extends Subsystem {
         DataLogger.addDataElement("ROLL", () -> getRoll());
 
         int i = -3;
-        for (var sensor : rawSensorValues) { 
+        for (var sensor : rawSensorValues) {
             DataLogger.addDataElement("LineFollow" + i, () -> sensor.getAsDouble());
             i += 2;
         }
@@ -182,30 +182,28 @@ public class Core extends Subsystem {
         logger.set("PITCH", getPitch());
         logger.set("ROLL", getRoll());
 
-        
+
         boolean sawLine = false;
-        
+
         int pos = -7;
         for (DoubleSupplier sensor : sensorValues) {
             double value=sensor.getAsDouble();
             SmartDashboard.putNumber("Line " + pos, value);
-            if(value>.15)
-            {
+            if(value>.15) {
                 sawLine=true;
             }
             pos += 2;
         }
 
-        if(!sawLine)
-        {
+        if(!sawLine) {
             lineFirstSeen=Timer.getFPGATimestamp();
         }
-        
+
         pos = -3;
         for (DoubleSupplier sensor : rawSensorValues) {
-            
+
             SmartDashboard.putNumber("Raw Line " + pos, sensor.getAsDouble());
-            
+
             pos += 2;
         }
         SmartDashboard.putNumber("Distance from center", lineSensor());
@@ -213,11 +211,11 @@ public class Core extends Subsystem {
         SmartDashboard.putNumber("time saw line", timeOnLine());
     }
 
-    public boolean hasCargo(){
+    public boolean hasCargo() {
         return false;//TODO - make this not this.
     }
-    
-    public boolean hasHatch(){
+
+    public boolean hasHatch() {
         return false;//TODO - make this not this.
     }
 
@@ -268,9 +266,9 @@ public class Core extends Subsystem {
         return weight / sensors;
     }
 
-    public double timeOnLine(){
-        
-     return Math.max(0, Timer.getFPGATimestamp()-lineFirstSeen);  
+    public double timeOnLine() {
+
+        return Math.max(0, Timer.getFPGATimestamp()-lineFirstSeen);
     }
 
     public DoubleSupplier getRawData(int a) {

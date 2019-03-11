@@ -62,7 +62,7 @@ public class AutonLineFollow extends Command {
         turnP = SmartDashboard.getNumber("Turn Power", turnP);
         straightVelocity = SmartDashboard.getNumber("Straight Vel", straightVelocity);
         turningVelocity = SmartDashboard.getNumber("Turning Vel", turningVelocity);
-       
+
         turnI = SmartDashboard.getNumber("turnI", turnI);
         turnD = SmartDashboard.getNumber("turnD", turnD);
 

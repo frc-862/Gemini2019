@@ -18,7 +18,7 @@ import frc.robot.commands.hatch.OpenHatchCollector;
 import frc.robot.commands.hatch.RetractHatchCollector;
 
 public class HatchAuton extends CommandGroup {
-    
+
     private Command elevatorPos;
     private String pathFile;
 
