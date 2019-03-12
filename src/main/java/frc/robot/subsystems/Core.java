@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.lightning.geometry.Rotation2d;
 import frc.lightning.logging.CommandLogger;
 import frc.lightning.logging.DataLogger;
 import frc.lightning.testing.SystemTest;
@@ -261,5 +262,9 @@ public class Core extends Subsystem {
 
     public DoubleSupplier getRawData(int a) {
         return rawSensorValues[a];
+    }
+
+    // TODO implement in a smart way
+    public void setHeading(Rotation2d rotation) {
     }
 }

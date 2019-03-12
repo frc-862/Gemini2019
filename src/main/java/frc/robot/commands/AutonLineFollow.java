@@ -95,6 +95,7 @@ public class AutonLineFollow extends Command {
         logger.drain();
         logger.flush();
     }
+
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     @Override

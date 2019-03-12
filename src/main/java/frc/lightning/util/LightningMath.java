@@ -4,6 +4,7 @@ import frc.robot.Constants;
 import frc.robot.RobotConstants;
 
 public class LightningMath {
+    public static final double kEpsilon = 1e-12;
     public static double wheelCircumference =  RobotConstants.wheelDiameter * Math.PI;
 
     public static double talon2ips(double talon) {
@@ -147,7 +148,7 @@ public class LightningMath {
     }
 
     public static boolean isZero(double val) {
-        return Math.abs(val) < 0.0000001;
+        return Math.abs(val) < kEpsilon;
     }
 
     public static boolean isEqual(double v1, double v2) {
@@ -163,4 +164,8 @@ public class LightningMath {
         return rotations * Constants.TICS_PER_ROTATION;
     }
 
+    public static double interpolate(double a, double b, double x) {
+        x = limit(x, 0.0, 1.0);
+        return a + (b - a) * x;
+    }
 }
