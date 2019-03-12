@@ -9,10 +9,11 @@ public class DataLoggerOutOfBand implements DoubleSupplier {
     private static Object swap = new Object();  // used as a mutex on values&scratch
     private static double[] values = null;
     private static double[] scratch = null;
+    private static Notifier notifier;
     int index;
 
     static {
-        new Notifier(new Runnable() {
+        notifier = new Notifier(new Runnable() {
             @Override
             public void run() {
                 synchronized (DataLoggerOutOfBand.class) {
@@ -37,6 +38,10 @@ public class DataLoggerOutOfBand implements DoubleSupplier {
             suppliers.add(fn);
             values = new double[suppliers.size()];
             scratch = new double[suppliers.size()];
+
+            if (suppliers.size() == 1) {
+                notifier.startPeriodic(0.02);
+            }
         }
     }
 
