@@ -8,7 +8,6 @@ package frc.robot.commands.hatch;
 
 import edu.wpi.first.wpilibj.command.InstantCommand;
 import frc.robot.Robot;
-import edu.wpi.first.wpilibj.Timer;
 
 /**
  * Add your docs here.

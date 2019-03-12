@@ -1,11 +1,10 @@
 package frc.lightning.commands;
 
+import edu.wpi.first.wpilibj.command.Command;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
-import edu.wpi.first.wpilibj.command.Command;
 
 public class StatefulCommand extends Command {
     private Enum<?> state;

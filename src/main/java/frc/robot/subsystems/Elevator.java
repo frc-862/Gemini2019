@@ -7,38 +7,26 @@
 
 package frc.robot.subsystems;
 
-import java.io.DataInput;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.LimitSwitchNormal;
 import com.ctre.phoenix.motorcontrol.LimitSwitchSource;
 import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
-import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import edu.wpi.first.wpilibj.AnalogInput;
-import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.lightning.logging.DataLogger;
 import frc.lightning.testing.SystemTest;
-import frc.lightning.util.LightningMath;
 import frc.robot.Constants;
 import frc.robot.Robot;
 import frc.robot.RobotMap;
-import frc.robot.commands.elevator.ManualElevator;
 import frc.robot.commands.elevator.MicroAdjust;
-import frc.robot.commands.elevator.UpdateElevatorState;
 import frc.robot.commands.test.ElevatorTest;
 import frc.robot.commands.test.ElevatorTest.Position;
-import frc.robot.subsystems.Core;
-
-import javax.xml.crypto.Data;
 
 /**
  * Add your docs here.

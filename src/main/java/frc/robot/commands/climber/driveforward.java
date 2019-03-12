@@ -8,9 +8,7 @@
 package frc.robot.commands.climber;
 
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
-import frc.robot.subsystems.Climber;
 
 public class driveforward extends Command {
     public driveforward() {

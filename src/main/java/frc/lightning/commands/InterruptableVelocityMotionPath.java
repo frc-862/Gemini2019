@@ -3,7 +3,6 @@ package frc.lightning.commands;
 import frc.lightning.util.InterpolatingDouble;
 import frc.lightning.util.InterpolatingMotionPoint;
 import frc.lightning.util.InterpolatingTreeMap;
-
 import java.util.function.BooleanSupplier;
 
 public class InterruptableVelocityMotionPath extends VelocityMotionProfile {

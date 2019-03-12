@@ -1,8 +1,7 @@
 package frc.lightning.util;
 
-import java.util.HashMap;
-
 import edu.wpi.first.wpilibj.Timer;
+import java.util.HashMap;
 
 public class StateMachine implements Loop {
     public class State {

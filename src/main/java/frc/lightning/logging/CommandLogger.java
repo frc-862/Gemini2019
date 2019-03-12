@@ -1,5 +1,6 @@
 package frc.lightning.logging;
 
+import edu.wpi.first.wpilibj.Timer;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -10,8 +11,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Vector;
 import java.util.concurrent.ArrayBlockingQueue;
-
-import edu.wpi.first.wpilibj.Timer;
 
 public class CommandLogger {
     final int logDepth = 1000;

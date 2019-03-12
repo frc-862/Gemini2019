@@ -16,12 +16,11 @@ import frc.lightning.commands.VelocityMotionProfile;
 import frc.lightning.subsystems.CANDrivetrain;
 import frc.lightning.testing.SystemTest;
 import frc.lightning.util.LightningMath;
-import frc.robot.commands.driveTrain.TankDrive;
+import frc.robot.Constants;
+import frc.robot.RobotMap;
 import frc.robot.commands.driveTrain.VelocityTankDrive;
 import frc.robot.commands.test.LeftEncoderTest;
 import frc.robot.commands.test.RightEncoderTest;
-import frc.robot.Constants;
-import frc.robot.RobotMap;
 
 /**
  * Add your docs here.

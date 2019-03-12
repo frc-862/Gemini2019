@@ -7,33 +7,24 @@
 
 package frc.robot;
 
+import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.wpilibj.Filesystem;
+import edu.wpi.first.wpilibj.command.Scheduler;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.lightning.LightningRobot;
-import frc.lightning.commands.VelocityMotionProfile;
-import frc.robot.commands.auto.Auto;
 import frc.robot.commands.auto.CenterPath;
-import frc.robot.commands.auto.HatchAuton;
 import frc.robot.commands.auto.LeftRocket;
 import frc.robot.commands.auto.RghtRocket;
-import frc.robot.commands.driveTrain.TankDrive;
 import frc.robot.commands.driveTrain.VelocityTankDrive;
 import frc.robot.commands.elevator.SetElevatorCollect;
 import frc.robot.commands.elevator.SetElevatorHigh;
 import frc.robot.commands.elevator.SetElevatorLow;
 import frc.robot.commands.elevator.SetElevatorMed;
-import frc.robot.commands.test.Spin;
 import frc.robot.subsystems.*;
-
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-
-import edu.wpi.first.cameraserver.CameraServer;
-import edu.wpi.first.wpilibj.Filesystem;
-import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.command.Scheduler;
-import edu.wpi.first.wpilibj.command.Scheduler;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Robot extends LightningRobot {
 

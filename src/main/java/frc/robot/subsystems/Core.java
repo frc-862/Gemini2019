@@ -7,14 +7,10 @@
 
 package frc.robot.subsystems;
 
-import java.util.Arrays;
-import java.util.function.DoubleSupplier;
-
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-import com.ctre.phoenix.motorcontrol.can.VictorSPX;
-import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import com.kauailabs.navx.frc.AHRS;
+import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.Compressor;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.Timer;
@@ -24,15 +20,11 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.lightning.logging.CommandLogger;
 import frc.lightning.logging.DataLogger;
 import frc.lightning.testing.SystemTest;
-import frc.lightning.util.FaultMonitor;
-import frc.lightning.util.UnchangingFaultMonitor;
-import frc.lightning.util.FaultCode.Codes;
 import frc.robot.Constants;
 import frc.robot.Robot;
 import frc.robot.RobotMap;
-import edu.wpi.first.wpilibj.AnalogInput;
-import edu.wpi.first.wpilibj.DigitalInput;
 import frc.robot.commands.test.NavXTest;
+import java.util.function.DoubleSupplier;
 
 /**
  * Add your docs here.
@@ -42,10 +34,8 @@ public class Core extends Subsystem {
     CommandLogger logger = new CommandLogger(getClass().getSimpleName());
     //private DigitalInput pressure1 = new DigitalInput(0);
 
-    @SuppressWarnings("FieldCanBeLocal")
-    private WPI_VictorSPX extra1 = new WPI_VictorSPX(RobotMap.extra1CanId);
-    @SuppressWarnings("FieldCanBeLocal")
-    private WPI_VictorSPX extra2 = new WPI_VictorSPX(RobotMap.extra2CanId);
+//    private WPI_VictorSPX extra1 = new WPI_VictorSPX(RobotMap.extra1CanId);
+//     private WPI_VictorSPX extra2 = new WPI_VictorSPX(RobotMap.extra2CanId);
 
     private DigitalInput outerLeft = new DigitalInput(5);
     private DigitalInput midLeft = new DigitalInput(4);
@@ -63,9 +53,7 @@ public class Core extends Subsystem {
     // Put methods for controlling this subsystem
     // here. Call these from Commajnds.
     private AHRS navx;
-    @SuppressWarnings("FieldCanBeLocal")
     private Compressor compressor = new Compressor(RobotMap.compressorCANId);
-    @SuppressWarnings("FieldCanBeLocal")
     private PowerDistributionPanel pdp = new PowerDistributionPanel(RobotMap.pdpCANId);
 
 
@@ -159,8 +147,8 @@ public class Core extends Subsystem {
         addChild("midRight", midRight);
         addChild("outerRight", outerRight);
 
-        addChild("extra motor 1", extra1);
-        addChild("extra motor 2", extra2);
+        // addChild("extra motor 1", extra1);
+        // addChild("extra motor 2", extra2);
 
         SystemTest.register(new NavXTest());
     }

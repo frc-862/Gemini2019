@@ -8,7 +8,6 @@
 package frc.robot.commands.elevator;
 
 import edu.wpi.first.wpilibj.command.Command;
-import frc.robot.Constants;
 import frc.robot.Robot;
 
 public class SetElevatorLow extends Command {
@@ -35,8 +34,4 @@ public class SetElevatorLow extends Command {
     // Called once after isFinished returns true
     @Override
     protected void end() { }
-
-    private boolean epsilon(double value, double target, double tolerance) {
-        return Math.abs(value - target) <= tolerance;
-    }
 }

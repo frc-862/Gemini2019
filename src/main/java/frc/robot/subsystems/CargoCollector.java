@@ -9,16 +9,10 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
-
-import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Subsystem;
-import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import frc.robot.Constants;
-import frc.robot.RobotConstants;
 import frc.robot.RobotMap;
-import frc.robot.commands.cargo.CargoCollect;
 import frc.robot.commands.cargo.SetCargoPower;
-import edu.wpi.first.wpilibj.DoubleSolenoid;
 
 /**
  * CargoCollector includes both ground collect

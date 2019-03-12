@@ -9,9 +9,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.lightning.logging.DataLogger;
 import frc.lightning.util.FaultCode;
+import frc.lightning.util.FaultCode.Codes;
 import frc.lightning.util.FaultMonitor;
 import frc.lightning.util.TimedFaultMonitor;
-import frc.lightning.util.FaultCode.Codes;
 import frc.robot.Constants;
 import java.util.Map;
 

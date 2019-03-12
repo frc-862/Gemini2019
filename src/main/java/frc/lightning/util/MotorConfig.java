@@ -1,5 +1,9 @@
 package frc.lightning.util;
 
+import com.ctre.phoenix.motorcontrol.can.BaseMotorController;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import edu.wpi.first.wpilibj.Filesystem;
+import frc.lightning.ConstantBase;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -15,13 +19,9 @@ import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import com.ctre.phoenix.motorcontrol.can.BaseMotorController;
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
-import edu.wpi.first.wpilibj.Filesystem;
-import frc.lightning.ConstantBase;
 
 public class MotorConfig {
     static Map<String,MotorConfig> motorConfigCache = new LinkedHashMap<>();

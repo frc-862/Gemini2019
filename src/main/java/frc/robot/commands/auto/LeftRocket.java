@@ -9,7 +9,6 @@ package frc.robot.commands.auto;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import frc.lightning.commands.VelocityMotionProfile;
-import frc.robot.commands.LineFollow;
 import frc.robot.commands.elevator.SetElevatorLow;
 import frc.robot.commands.hatch.CloseHatchCollector;
 

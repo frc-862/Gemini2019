@@ -4,13 +4,11 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
 public class CANConfig {
     public static Object getJSON(String urlToRead) throws Exception {
-        StringBuilder result = new StringBuilder();
         URL url = new URL(urlToRead);
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setRequestMethod("GET");

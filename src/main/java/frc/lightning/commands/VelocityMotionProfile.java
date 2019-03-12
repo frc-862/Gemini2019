@@ -7,8 +7,6 @@ import frc.lightning.util.InterpolatingDouble;
 import frc.lightning.util.InterpolatingMotionPoint;
 import frc.lightning.util.InterpolatingTreeMap;
 import frc.robot.Robot;
-import frc.robot.paths.Path;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.*;
@@ -109,14 +107,18 @@ public class VelocityMotionProfile extends Command {
 
                 while (sc.hasNextLine()) {
                     Scanner csv = new Scanner(sc.nextLine());
-                    csv.useDelimiter(",");
-                    double position = csv.nextDouble();
-                    double velocity = csv.nextDouble();
-                    double acceleration = csv.nextDouble();
-                    double heading = csv.nextDouble();
+                    try {
+                        csv.useDelimiter(",");
+                        double position = csv.nextDouble();
+                        double velocity = csv.nextDouble();
+                        double acceleration = csv.nextDouble();
+                        double heading = csv.nextDouble();
+                        result.put(new InterpolatingDouble(time),
+                                   new InterpolatingMotionPoint(position, velocity, acceleration, heading));
+                    } finally {
+                        csv.close();
+                    }
 
-                    result.put(new InterpolatingDouble(time),
-                               new InterpolatingMotionPoint(position, velocity, acceleration, heading));
                     time += 0.02;
                 }
 

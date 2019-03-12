@@ -7,9 +7,6 @@
 
 package frc.lightning.subsystems;
 
-import java.util.Vector;
-import java.util.function.BiConsumer;
-import java.util.function.Consumer;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.BaseMotorController;
@@ -21,7 +18,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.lightning.logging.DataLogger;
 import frc.lightning.util.LightningMath;
 import frc.robot.Constants;
-import frc.robot.misc.Gains;
+import java.util.Vector;
+import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 
 /**
  * Add your docs here.

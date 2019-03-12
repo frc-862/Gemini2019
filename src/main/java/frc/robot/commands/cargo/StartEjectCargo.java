@@ -9,7 +9,6 @@ package frc.robot.commands.cargo;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
-import frc.robot.Constants;
 
 public class StartEjectCargo extends Command {
     public StartEjectCargo() {

@@ -1,7 +1,7 @@
 package frc.lightning.logging;
 
-import java.util.function.Supplier;
 import edu.wpi.first.wpilibj.command.Command;
+import java.util.function.Supplier;
 
 /**
  * Created by phurley on 12/7/16.

@@ -8,7 +8,6 @@
 package frc.robot.commands.test;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
-
 import edu.wpi.first.wpilibj.command.Command;
 import frc.lightning.logging.CommandLogger;
 import frc.robot.Robot;
@@ -32,7 +31,8 @@ public class RightDriveZero extends Command {
     // Called just before this Command runs the first time
     @Override
     protected void initialize() {
-        (new ResetDriveSensors()).start();
+        Robot.drivetrain.resetDistance();
+        Robot.core.resetNavx();
         Robot.drivetrain.getRightMaster().set(ControlMode.MotionMagic, 0);
     }
 

@@ -1,8 +1,8 @@
 package frc.lightning.util;
 
-import java.util.function.DoubleSupplier;
 import edu.wpi.first.wpilibj.Timer;
 import frc.lightning.util.FaultCode.Codes;
+import java.util.function.DoubleSupplier;
 
 public class UnchangingFaultMonitor extends AbstractFaultMonitor {
     final double duration;

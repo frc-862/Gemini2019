@@ -1,10 +1,9 @@
 package frc.lightning.subsystems;
 
-import java.util.function.Consumer;
-
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.SpeedController;
 import frc.lightning.logging.DataLogger;
+import java.util.function.Consumer;
 
 /**
  * Add your docs here.

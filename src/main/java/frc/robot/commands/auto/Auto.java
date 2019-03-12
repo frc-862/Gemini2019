@@ -75,8 +75,6 @@ public class Auto extends CommandGroup {
 
     }
 
-
-
     private void linefollow() {
         addSequential(new AutonLineFollow());
     }

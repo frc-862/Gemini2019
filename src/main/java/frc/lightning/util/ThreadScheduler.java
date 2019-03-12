@@ -1,8 +1,7 @@
 package frc.lightning.util;
 
-import java.util.LinkedList;
-
 import edu.wpi.first.wpilibj.Notifier;
+import java.util.LinkedList;
 
 public class ThreadScheduler {
     private LinkedList<Runnable> queue = new LinkedList<>();

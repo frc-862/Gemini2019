@@ -7,12 +7,10 @@
 
 package frc.lightning.testing;
 
+import edu.wpi.first.wpilibj.command.Command;
+import frc.lightning.util.FaultCode;
 import java.util.Iterator;
 import java.util.PriorityQueue;
-
-import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.command.Subsystem;
-import frc.lightning.util.FaultCode;
 
 public class SystemTestCommand extends Command {
     private static PriorityQueue<SystemTest> tests = new PriorityQueue<>();

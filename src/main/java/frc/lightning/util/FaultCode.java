@@ -1,5 +1,8 @@
 package frc.lightning.util;
 
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -10,10 +13,6 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.function.BiConsumer;
 import java.util.stream.Collectors;
-
-import edu.wpi.first.networktables.NetworkTableEntry;
-import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class FaultCode {
     public enum Codes {

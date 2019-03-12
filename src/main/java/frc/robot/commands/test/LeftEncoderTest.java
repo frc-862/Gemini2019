@@ -8,7 +8,6 @@
 package frc.robot.commands.test;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
-
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.lightning.testing.SystemTest;
 import frc.lightning.util.FaultCode;

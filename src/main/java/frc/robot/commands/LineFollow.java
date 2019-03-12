@@ -8,16 +8,11 @@
 package frc.robot.commands;
 
 
+import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.lightning.logging.CommandLogger;
-import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.Constants;
 import frc.robot.Robot;
-import frc.robot.subsystems.GeminiDrivetrain;
-import frc.robot.subsystems.Core;
-
-
 
 public class LineFollow extends Command {
     CommandLogger logger = new CommandLogger(getClass().getSimpleName());

@@ -7,11 +7,10 @@
 
 package frc.robot.commands.vision;
 
-import java.util.ArrayList;
-
 import edu.wpi.first.wpilibj.command.Command;
-import frc.robot.util.Target;
 import frc.robot.Robot;
+import frc.robot.util.Target;
+import java.util.ArrayList;
 
 public class VisionTests extends Command {
     public VisionTests() {

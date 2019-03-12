@@ -9,9 +9,9 @@ package frc.robot.commands.cargo;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import frc.robot.Robot;
-import frc.robot.commands.elevator.SetElevatorToSelectedState;
-import frc.robot.commands.elevator.SetElevatorCollect;
 import frc.robot.commands.LEDs.LEDsSetPurple;
+import frc.robot.commands.elevator.SetElevatorCollect;
+import frc.robot.commands.elevator.SetElevatorToSelectedState;
 
 public class AutomatedCargoEject extends CommandGroup {
     /**

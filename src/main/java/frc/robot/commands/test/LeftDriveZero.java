@@ -8,10 +8,8 @@
 package frc.robot.commands.test;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
-
 import edu.wpi.first.wpilibj.command.Command;
 import frc.lightning.logging.CommandLogger;
-import frc.lightning.util.LightningMath;
 import frc.robot.Robot;
 
 public class LeftDriveZero extends Command {
@@ -33,14 +31,14 @@ public class LeftDriveZero extends Command {
     // Called just before this Command runs the first time
     @Override
     protected void initialize() {
-        (new ResetDriveSensors()).start();
+        Robot.drivetrain.resetDistance();
+        Robot.core.resetNavx();
         Robot.drivetrain.getLeftMaster().set(ControlMode.MotionMagic, 0);
     }
 
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-
         logger.set("actualLeftVelocity", Robot.drivetrain.getLeftVelocity());
         logger.set("actualRightVelocity", Robot.drivetrain.getRightVelocity());
 

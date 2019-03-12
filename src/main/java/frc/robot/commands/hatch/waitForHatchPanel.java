@@ -9,6 +9,7 @@ package frc.robot.commands.hatch;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
+
 public class waitForHatchPanel extends Command {
     public waitForHatchPanel() {
         // Use requires() here to declare subsystem dependencies

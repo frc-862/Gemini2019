@@ -9,8 +9,6 @@ package frc.robot.commands.cargo;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
-import frc.robot.subsystems.CargoCollector;
-
 
 public class WaitForCargo extends Command {//thank you senor computer man. we really appreciate it. ;]
     public WaitForCargo() {

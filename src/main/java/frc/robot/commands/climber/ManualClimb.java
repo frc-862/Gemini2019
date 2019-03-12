@@ -7,8 +7,6 @@
 
 package frc.robot.commands.climber;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
-
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 

@@ -1,9 +1,8 @@
 package frc.lightning.util;
 
-import java.util.function.BooleanSupplier;
-
 import edu.wpi.first.wpilibj.Timer;
 import frc.lightning.util.FaultCode.Codes;
+import java.util.function.BooleanSupplier;
 
 public class TimedFaultMonitor extends AbstractFaultMonitor {
     final double duration;

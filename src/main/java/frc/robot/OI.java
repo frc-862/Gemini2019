@@ -14,13 +14,22 @@ import edu.wpi.first.wpilibj.buttons.POVButton;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.InstantCommand;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.lightning.LightningRobot;
 import frc.lightning.commands.ToggleCommand;
 import frc.lightning.commands.VelocityMotionProfile;
 import frc.lightning.util.JoystickFilter;
+import frc.robot.commands.LineFollow;
+import frc.robot.commands.auto.HatchAuton;
+import frc.robot.commands.calibration.TestMove;
+import frc.robot.commands.cargo.DeployCargoCollector;
+import frc.robot.commands.cargo.RetractCargoCollector;
+import frc.robot.commands.climber.Climb;
+import frc.robot.commands.climber.ExtendShocks;
+import frc.robot.commands.climber.ManualClimb;
+import frc.robot.commands.climber.RetractShocks;
+import frc.robot.commands.climber.driveforward;
+import frc.robot.commands.driveTrain.ConfigMotors;
 import frc.robot.commands.hatch.CloseHatchCollector;
 import frc.robot.commands.hatch.ExtendHatchCollector;
-import frc.robot.commands.hatch.HatchCollectorStateChange;
 import frc.robot.commands.hatch.OpenHatchCollector;
 import frc.robot.commands.hatch.RetractHatchCollector;
 import frc.robot.commands.test.LeftDriveZero;
@@ -29,17 +38,6 @@ import frc.robot.commands.test.RightDriveZero;
 import frc.robot.commands.vision.StereoTurn;
 import frc.robot.commands.vision.VisionRotateAndApproach;
 import frc.robot.commands.vision.VisionTurn;
-import frc.robot.commands.LineFollow;
-import frc.robot.commands.auto.HatchAuton;
-import frc.robot.commands.calibration.TestMove;
-import frc.robot.commands.climber.Climb;
-import frc.robot.commands.climber.ExtendShocks;
-import frc.robot.commands.climber.ManualClimb;
-import frc.robot.commands.climber.RetractShocks;
-import frc.robot.commands.climber.driveforward;
-import frc.robot.commands.driveTrain.ConfigMotors;
-import frc.robot.commands.cargo.DeployCargoCollector;
-import frc.robot.commands.cargo.RetractCargoCollector;
 
 public class OI {
     //Drive Joysticks
@@ -54,18 +52,13 @@ public class OI {
     private Button setElevatorMid = new JoystickButton(copilot, 8);
     private Button setShocksout = new JoystickButton(driverRight, 8);
 
-    // TODO - duplicated button number
     private Button setElevatorCargoCollect = new JoystickButton(copilot, 8);
-    private Button hatchToggle = new JoystickButton(copilot, 6);
-    private Button hatchExtenToggle = new JoystickButton(copilot, 5);
     private Button climb = new JoystickButton(copilot, 10);
-    private Button cargoCollectIn= new JoystickButton(copilot,5);//needs changed prob
     private Button cargoCollectOut= new JoystickButton(copilot,4);//needs changed prob
     private POVButton hatchExtend = new POVButton(copilot, 0);
     private POVButton hatchRetract = new POVButton(copilot, 180);
 
     private Button hatchAuto = new JoystickButton(driverRight, 13);
-    //TODO ask for driver preferace
 
     private Button waitButton= new JoystickButton(driverRight, 14);//
 
@@ -149,8 +142,9 @@ public class OI {
                cargoCollectButton.get();
     }
 
+    private Button rainbowButton = new JoystickButton(driverRight, 2);
     public boolean getRainbowButtonPressed() {
-        return (new JoystickButton(driverRight, 2)).get();
+        return rainbowButton.get();
     }
 
     public void initializeCommands() {
@@ -222,15 +216,14 @@ public class OI {
         SmartDashboard.putData("Extend Shocks",new ExtendShocks());
         SmartDashboard.putData("Retract Shocks", new RetractShocks());
     }
+
     public double forwardClimbForwardPwr() {
         return -copilot.getRawAxis(5);
-
     }
 
     public double manualClimbPower() {
         return ((driverRight.getRawAxis(3) - 1) / -2)+((driverLeft.getRawAxis(3) - 1) / 2);
     }
-
 
     private String selectPath(String start, String genDestin, String specificDestin) {
         String selectedPath = "";//default left rocket near
