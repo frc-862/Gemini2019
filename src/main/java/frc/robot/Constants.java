@@ -116,4 +116,6 @@ public class Constants extends ConstantBase {
 
     public static final double movingCurrent = 20;
     public static final double movingVelocity = 0.1;
+
+    public static final int stallDetectLoopDelay = 4;
 }

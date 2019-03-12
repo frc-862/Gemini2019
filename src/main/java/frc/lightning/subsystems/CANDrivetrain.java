@@ -244,16 +244,20 @@ public abstract class CANDrivetrain extends LightningDrivetrain {
         withEachMaster((m) -> m.setSelectedSensorPosition(0));
     }
 
+    private int stallCount = 0;
     public boolean isStalled() {
-        return leftMaster.getOutputCurrent() > Constants.movingCurrent &&
-               leftMaster.getSelectedSensorVelocity() < Constants.movingVelocity &&
-               rightMaster.getOutputCurrent() > Constants.movingCurrent &&
-               rightMaster.getSelectedSensorVelocity() < Constants.movingVelocity;
+        return stallCount > Constants.stallDetectLoopDelay;
     }
 
     @Override
     public void periodic() {
-        SmartDashboard.putNumber("RawLeftEncoder", getLeftMaster().getSelectedSensorPosition());
-        SmartDashboard.putNumber("RawRightEncoder", getRightMaster().getSelectedSensorPosition());
+        if (Math.abs(leftMaster.getSelectedSensorVelocity()) < Constants.movingVelocity &&
+            Math.abs(rightMaster.getSelectedSensorVelocity()) < Constants.movingVelocity &&
+            leftMaster.getOutputCurrent() > Constants.movingCurrent && 
+            rightMaster.getOutputCurrent() > Constants.movingCurrent) {
+        stallCount += 1;
+        } else {
+            stallCount = 0;
+        }
     }
 }
