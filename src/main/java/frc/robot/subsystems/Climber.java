@@ -8,6 +8,8 @@
 package frc.robot.subsystems;
 
 
+import java.sql.Time;
+
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.LimitSwitchNormal;
 import com.ctre.phoenix.motorcontrol.LimitSwitchSource;
@@ -88,5 +90,8 @@ public class Climber extends Subsystem {
     public void setFwrPower(double pwr) {
         climberDrive.set(ControlMode.PercentOutput, pwr);
     }
-
+    public double getEncoderValue(){
+        return motor.getSelectedSensorPosition();
+    }
+    
 }
