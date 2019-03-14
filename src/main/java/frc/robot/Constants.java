@@ -4,16 +4,9 @@ import frc.lightning.ConstantBase;
 import frc.robot.misc.Gains;
 
 public class Constants extends ConstantBase {
-    // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    // NEVER CHECKIN WITH BENCH TEST SET TO TRUE
-    // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
-
     public static int cargoDistance = 4;
     public static int pannelDistance = 7;//TODO make these real
 
-
-    public static final boolean bench_test = false;
 
     public static final double TICS_PER_ROTATION = 4 * 360;
 
@@ -22,8 +15,14 @@ public class Constants extends ConstantBase {
     public static final double holdPower = -0.2;
     public static final double hasCargoDistance = 0.7;
     // Climber
-    public static final int retractedPosition = 0;
-    public static final int extendedPosition = 7000; // TODO calibrate this value
+    public static final int climberRetractedPosition = 0;
+    public static final int climberExtenedPosition = 7000; // TODO calibrate this value
+    public static final int climberMaxHeight = 7000;
+    public static final int climberOffHardStop = 100;
+    public final static Gains climberPIDF = new Gains(0, 0, 0, 0.0, 0, 0);
+    public final static int climberCruiseVelocity = 1400;
+    public final static int climberAcceleration = 250;
+
     // PIDs
     public final static int kSensorUnitsPerRotation = 4 * 360;
     public final static double kNeutralDeadband = 0.001;
@@ -33,6 +32,7 @@ public class Constants extends ConstantBase {
     public static Gains drivePIDs;
 
     public static final int driveSlot = 0;
+
 
     static {
         //if(Robot.isGemini()) {

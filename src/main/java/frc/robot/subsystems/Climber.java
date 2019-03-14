@@ -8,11 +8,7 @@
 package frc.robot.subsystems;
 
 
-import java.sql.Time;
-
-import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.LimitSwitchNormal;
-import com.ctre.phoenix.motorcontrol.LimitSwitchSource;
+import com.ctre.phoenix.motorcontrol.*;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
@@ -25,11 +21,11 @@ import frc.robot.RobotMap;
  * Add your docs here.
  */
 public class Climber extends Subsystem {
+    private WPI_TalonSRX motor;
+    private WPI_VictorSPX motorSlave;
+    private WPI_VictorSPX climberDrive;
+    private DoubleSolenoid deployer;
 
-    WPI_TalonSRX motor;
-    WPI_VictorSPX motorSlave;
-    WPI_VictorSPX climberDrive;
-    DoubleSolenoid deployer;
     boolean resetEncoderPos=true;
 
     public Climber() {
@@ -42,6 +38,43 @@ public class Climber extends Subsystem {
         deployer = new DoubleSolenoid(RobotMap.compressorCANId, RobotMap.climbFwdChan, RobotMap.climbRevChan);; // TODO create with correct solenoid values
         motor.configForwardLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen, 0);
         motor.configReverseLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen, 0);
+
+        /* Factory default hardware to prevent unexpected behavior */
+        motor.configFactoryDefault();
+
+        motor.configForwardLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen, 0);
+        motor.configReverseLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen, 0);
+
+        /* Configure Sensor Source for Primary PID */
+        motor.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder,
+                Constants.kPIDLoopIdx,
+                Constants.kTimeoutMs);
+
+        /**
+         * Configure Talon SRX Output and Sesnor direction accordingly
+         * Invert Motor to have green LEDs when driving Talon Forward / Requesting Postiive Output
+         * Phase sensor to have positive increment when driving Talon Forward (Green LED)
+         */
+        motor.setSensorPhase(true);
+        motor.setInverted(true);
+
+        /* Set relevant frame periods to be at least as fast as periodic rate */
+        motor.setStatusFramePeriod(StatusFrameEnhanced.Status_13_Base_PIDF0, 20, Constants.kTimeoutMs);
+        motor.setStatusFramePeriod(StatusFrameEnhanced.Status_10_MotionMagic, 20, Constants.kTimeoutMs);
+
+        /* Set Motion Magic gains in slot0 - see documentation */
+        motor.selectProfileSlot(Constants.kSlotIdx, Constants.kPIDLoopIdx);
+        motor.config_kF(Constants.kSlotIdx, Constants.climberPIDF.kF, Constants.kTimeoutMs);
+        motor.config_kP(Constants.kSlotIdx, Constants.climberPIDF.kP, Constants.kTimeoutMs);
+        motor.config_kI(Constants.kSlotIdx, Constants.climberPIDF.kI, Constants.kTimeoutMs);
+        motor.config_kD(Constants.kSlotIdx, Constants.climberPIDF.kD, Constants.kTimeoutMs);
+
+        /* Set acceleration and vcruise velocity - see documentation */
+        motor.configMotionCruiseVelocity(Constants.climberCruiseVelocity, Constants.kTimeoutMs);
+        motor.configMotionAcceleration(Constants.climberAcceleration, Constants.kTimeoutMs);
+
+        /* Zero the sensor */
+        motor.setSelectedSensorPosition(0, Constants.kPIDLoopIdx, Constants.kTimeoutMs);
     }
 
     /** Watch limit switches at ends of travel
@@ -51,26 +84,27 @@ public class Climber extends Subsystem {
 
     @Override
     public void periodic() {
-        
-        int pos = motor.getSelectedSensorPosition();
         var sensors = motor.getSensorCollection();
-        // Set the default command for a subsystem here.
-        if (sensors.isFwdLimitSwitchClosed()) {
-            motor.setSelectedSensorPosition(Constants.extendedPosition);
-        } else if (sensors.isRevLimitSwitchClosed()) {
-            motor.setSelectedSensorPosition(Constants.retractedPosition);
-        }
-        SmartDashboard.putNumber("lift/climber encoder", motor.getSelectedSensorPosition());
+        int pos = sensors.getQuadraturePosition();
+
+        SmartDashboard.putNumber("climber encoder", motor.getSelectedSensorPosition());
+
         if(resetEncoderPos) { //default true
             if (sensors.isFwdLimitSwitchClosed()) {//check if at top - if so, set sensor pos to top height
-                motor.setSelectedSensorPosition(Constants.retractedPosition);
+                motor.setSelectedSensorPosition(0);
                 resetEncoderPos = false;
             } else if (sensors.isRevLimitSwitchClosed()) {//if at bottom, set to 0
-                motor.setSelectedSensorPosition(Constants.extendedPosition);//Constants.elevatorBottomHeight);
+                motor.setSelectedSensorPosition(Constants.climberMaxHeight);
                 resetEncoderPos = false;
             }
-        } else if((pos > Constants.elevatorInchHigh) && (pos < Constants.elevatorTopHeight)) { //if between inch high and top height, reset encoders next cycle
+        } else if((pos > Constants.climberOffHardStop) && (pos < Constants.climberMaxHeight)) { //if between inch high and top height, reset encoders next cycle
             resetEncoderPos = true;
+        }
+
+        if (pos < 0) {
+            motor.setSelectedSensorPosition(0);
+        } else if(pos > Constants.climberMaxHeight) {
+            motor.setSelectedSensorPosition(Constants.climberMaxHeight);
         }
     }
 
@@ -82,11 +116,11 @@ public class Climber extends Subsystem {
     }
 
     public void extendJack() {
-        motor.set(ControlMode.MotionMagic, Constants.extendedPosition);
+        motor.set(ControlMode.MotionMagic, Constants.climberExtenedPosition);
     }
 
     public void retractJack() {
-        motor.set(ControlMode.MotionMagic, Constants.retractedPosition);
+        motor.set(ControlMode.MotionMagic, 0);
     }
 
     public void stopJack() {
@@ -105,11 +139,7 @@ public class Climber extends Subsystem {
         motor.set(ControlMode.PercentOutput, pwr);
     }
 
-    public void setFwrPower(double pwr) {
+    public void setClimberDrivePower(double pwr) {
         climberDrive.set(ControlMode.PercentOutput, pwr);
     }
-    public double getEncoderValue(){
-        return motor.getSelectedSensorPosition();
-    }
-    
 }

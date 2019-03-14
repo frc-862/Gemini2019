@@ -26,7 +26,7 @@ public class LiftDriveforward extends TimedCommand {
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    Robot.climber.setFwrPower(.9);
+    Robot.climber.setClimberDrivePower(.9);
   }
 
   // Called repeatedly when this Command is scheduled to run
