@@ -7,34 +7,44 @@
 
 package frc.robot.commands.climber;
 
-import edu.wpi.first.wpilibj.command.CommandGroup;
+import edu.wpi.first.wpilibj.command.Command;
+import frc.lightning.util.LightningMath;
+import frc.robot.Constants;
 import frc.robot.Robot;
 
-public class AutoClimb extends CommandGroup {
-    /**
-     * Add your docs here.
-     */
+public class AutoClimb extends Command {
     public AutoClimb() {
-        // Add Commands here:
-        // e.g. addSequential(new Command1());
-        // addSequential(new Command2());
-        // these will run in order.
-        addSequential( new Climb());
-        addSequential(new ExtendShocks());
-        //addParallel(new driveforward());
-        //addParallel(new drivebottomforward(5));
-        addParallel(new RetractClimb());
-        //addSequential();
-        // To run multiple commands at the same time,
-        // use addParallel()
-        // e.g. addParallel(new Command1());
-        // addSequential(new Command2());
-        // Command1 and Command2 will run in parallel.
+        requires(Robot.climber);
+    }
 
-        // A command group will require all of the subsystems that each member
-        // would require.
-        // e.g. if Command1 requires chassis, and Command2 requires arm,
-        // a CommandGroup containing them would require both the chassis and the
-        // arm.
+    @Override
+    protected void initialize() {
+        Robot.climber.extendJack();
+    }
+
+    @Override
+    protected void execute() {
+        int pos = Robot.climber.getJackPosition();
+
+        if (pos >= Constants.deployShockPositioin) {
+            Robot.climber.extendSkids();
+        }
+
+        if (LightningMath.epsilonEqual(pos, Constants.climberExtenedPosition, Constants.climberEpsilon)) {
+            Robot.climber.setClimberDrivePower(1);
+        }
+
+        // TODO needs end of climb logic to stop Bosch motor and raise climber
+    }
+
+    @Override
+    protected boolean isFinished() {
+        return false;
+    }
+
+    @Override
+    protected void end() {
+        Robot.climber.setClimberDrivePower(0);
+        Robot.climber.setLiftPower(0);
     }
 }
