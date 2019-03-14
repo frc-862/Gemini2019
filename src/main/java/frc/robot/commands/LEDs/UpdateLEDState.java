@@ -15,9 +15,7 @@ public class UpdateLEDState extends Command {
     public UpdateLEDState() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
-        requires(Robot.drivetrain);
         requires(Robot.leds);
-        requires(Robot.core);
     }
 
     // Called just before this Command runs the first time

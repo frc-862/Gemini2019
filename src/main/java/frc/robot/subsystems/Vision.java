@@ -586,5 +586,4 @@ public class Vision extends Subsystem {
 
         return transformedData;
     }
-
 }

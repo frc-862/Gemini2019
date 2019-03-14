@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.TimedCommand;
 import frc.lightning.commands.VelocityMotionProfile;
+import frc.robot.commands.LineFollow;
 import frc.robot.commands.elevator.SetElevatorLow;
 import frc.robot.commands.hatch.CloseHatchCollector;
 import frc.robot.commands.hatch.ExtendHatchCollector;
@@ -19,18 +20,26 @@ import frc.robot.commands.hatch.RetractHatchCollector;
 
 public class HatchAuton extends CommandGroup {
 
-    public HatchAuton(String pathFile, Command elevatorPos) {
+    public HatchAuton(String pathFile, Command elevatorPos, boolean autoDeploy) {
 
+        //Init Positions
         addSequential(new CloseHatchCollector());
         addSequential(new SetElevatorLow());
-        addSequential(new VelocityMotionProfile(pathFile));
-        addSequential(elevatorPos);
-        addSequential(new TimedCommand(2));
-        addSequential(new ExtendHatchCollector());
-        addSequential(new TimedCommand(0.25));
-        addSequential(new OpenHatchCollector());
-        addSequential(new TimedCommand(0.25));
-        addSequential(new RetractHatchCollector());
 
+        //Drive Into Target
+        addSequential(new VelocityMotionProfile(pathFile));
+        //FOLLOW VISION && LINE
+
+        addSequential(elevatorPos);
+
+        //Auto Deploy Hatch
+        if(autoDeploy){
+            addSequential(new TimedCommand(2));
+            addSequential(new ExtendHatchCollector());
+            addSequential(new TimedCommand(0.25));
+            addSequential(new OpenHatchCollector());
+            addSequential(new TimedCommand(0.25));
+            addSequential(new RetractHatchCollector());
+        }
     }
 }

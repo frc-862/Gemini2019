@@ -42,35 +42,35 @@ public class LightningRobot extends TimedRobot {
     Command autonomousCommand;
     SendableChooser<Command> chooser = new SendableChooser<>();
 
-    Command elevatorPos;
-    SendableChooser<Command> elevatorChooser = new SendableChooser<Command>();
-    String gamePiece;
-    SendableChooser<String> gamePieceChooser = new SendableChooser<String>();
-    String startPos;
-    SendableChooser<String> startPosChooser = new SendableChooser<String>();
-    String genDestin;
-    SendableChooser<String> genDestinChooser = new SendableChooser<String>();
-    String specificDestin;
-    SendableChooser<String> specificDestinChooser = new SendableChooser<String>();
+    static Command elevatorPos;
+    static SendableChooser<Command> elevatorChooser = new SendableChooser<Command>();
+    static String gamePiece;
+    static SendableChooser<String> gamePieceChooser = new SendableChooser<String>();
+    static String startPos;
+    static SendableChooser<String> startPosChooser = new SendableChooser<String>();
+    static String genDestin;
+    static SendableChooser<String> genDestinChooser = new SendableChooser<String>();
+    static String specificDestin;
+    static SendableChooser<String> specificDestinChooser = new SendableChooser<String>();
 
-    public Command getSelectedElevatorPos() {
+    public static Command getSelectedElevatorPos() {
         return elevatorChooser.getSelected();
     }
-    public String getSelectedGamePiece() {
+    public static String getSelectedGamePiece() {
         return gamePieceChooser.getSelected();
     }
-    public String getSelectedStartPos() {
+    public static String getSelectedStartPos() {
         return startPosChooser.getSelected();
     }
-    public String getSelectedGenDestin() {
+    public static String getSelectedGenDestin() {
         return genDestinChooser.getSelected();
     }
-    public String getSelectedSpecificDestin() {
+    public static String getSelectedSpecificDestin() {
         return specificDestinChooser.getSelected();
     }
 
-    int elevatorPosCount = 0;
-    public void registerElevatorPos(String name, Command command) {
+    static int elevatorPosCount = 0;
+    public static void registerElevatorPos(String name, Command command) {
         if (elevatorPosCount == 0) {
             elevatorChooser.setDefaultOption(name, command);
         } else {
@@ -78,8 +78,8 @@ public class LightningRobot extends TimedRobot {
         }
         elevatorPosCount += 1;
     }
-    int gamePieceCount = 0;
-    public void registerGamePiece(String name, String val) {
+    static int gamePieceCount = 0;
+    public static void registerGamePiece(String name, String val) {
         if (gamePieceCount == 0) {
             gamePieceChooser.setDefaultOption(name, val);
         } else {
@@ -87,8 +87,8 @@ public class LightningRobot extends TimedRobot {
         }
         gamePieceCount++;
     }
-    int startPosCount = 0;
-    public void registerStartPos(String name, String val) {
+    static int startPosCount = 0;
+    public static void registerStartPos(String name, String val) {
         if (startPosCount == 0) {
             startPosChooser.setDefaultOption(name, val);
         } else {
@@ -96,8 +96,8 @@ public class LightningRobot extends TimedRobot {
         }
         startPosCount++;
     }
-    int genDestinCount = 0;
-    public void registerGenDestin(String name, String val) {
+    static int genDestinCount = 0;
+    public static void registerGenDestin(String name, String val) {
         if (genDestinCount == 0) {
             genDestinChooser.setDefaultOption(name, val);
         } else {
@@ -105,8 +105,8 @@ public class LightningRobot extends TimedRobot {
         }
         genDestinCount++;
     }
-    int specificDestinCount = 0;
-    public void registerSpecificDestin(String name, String val) {
+    static int specificDestinCount = 0;
+    public static void registerSpecificDestin(String name, String val) {
         if (specificDestinCount == 0) {
             specificDestinChooser.setDefaultOption(name, val);
         } else {

@@ -81,8 +81,8 @@ public class OI {
     public void setShocksout  () {
         setShocksout.whenPressed(new ExtendShocks());
     }
-    public void hatchAuto (String start, String genDestin, String specificDestin, Command elevatorPos) {
-        hatchAuto.whenPressed(new HatchAuton(this.selectPath(start, genDestin, specificDestin), elevatorPos));
+    public void hatchAuto (String pathFile, Command elevatorPos, boolean autoDeploy) {
+        hatchAuto.whenPressed(new HatchAuton(pathFile, elevatorPos, autoDeploy));
     }
     public int getLeftDirection() {
         if(copilot.getRawAxis(JoystickConstants.leftJoyYAxis) > 0) return 1;
@@ -223,65 +223,5 @@ public class OI {
 
     public double manualClimbPower() {
         return ((driverRight.getRawAxis(3) - 1) / -2)+((driverLeft.getRawAxis(3) - 1) / 2);
-    }
-
-    private String selectPath(String start, String genDestin, String specificDestin) {
-        String selectedPath = "";//default left rocket near
-        switch(genDestin) {
-        case "ROCK_RIGHT":
-            selectedPath += ("RocketR_" + selectStart(start, specificDestin));
-            break;
-        case "SHIP_FRONT":
-            selectedPath += ("CargoC_" + selectStart(start, specificDestin));
-            break;
-        case "SHIP_LEFT":
-            selectedPath += ("CargoL_" + selectStart(start, specificDestin));
-            break;
-        case "SHIP_RIGHT":
-            selectedPath += ("CargoR_" + selectStart(start, specificDestin));
-            break;
-        default://ROCK_LEFT
-            selectedPath += ("RocketL_" + selectStart(start, specificDestin));
-            break;
-        }
-        return selectedPath;
-    }
-
-    private String selectStart(String start, String specificDestin) {
-        String nextSeg = "";
-        switch(start) {
-        case "CENTER":
-            nextSeg += ("StartM_" + selectDestin(specificDestin));
-            break;
-        case "RIGHT":
-            nextSeg += ("StartR_" + selectDestin(specificDestin));
-            break;
-        default://LEFT
-            nextSeg += ("StartL_" + selectDestin(specificDestin));
-            break;
-        }
-        return nextSeg;
-    }
-
-    private String selectDestin(String specificDestin) {
-        String nextSeg = "";
-        switch(specificDestin) {
-        case "FAR":
-            nextSeg += ("EndF");
-            break;
-        case "RIGHT":
-            nextSeg += ("EndR");
-            break;
-        case "LEFT":
-            nextSeg += ("EndL");
-            break;
-        case "MID":
-            nextSeg += ("EndM");
-            break;
-        default://NEAR
-            nextSeg += ("EndN");
-            break;
-        }
-        return nextSeg;
     }
 }
