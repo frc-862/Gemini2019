@@ -16,9 +16,11 @@ public class Constants extends ConstantBase {
     public static final double hasCargoDistance = 0.7;
     // Climber
     public static final int climberRetractedPosition = 0;
-    public static final int climberExtenedPosition = 7000; // TODO calibrate this value
+    public final static int deployShockPositioin = 5000;
+    public static final int climberExtenedPosition = 6000; // TODO calibrate this value
     public static final int climberMaxHeight = 7000;
     public static final int climberOffHardStop = 100;
+    public static final int climberEpsilon = 100;
     public final static Gains climberPIDF = new Gains(0, 0, 0, 0.0, 0, 0);
     public final static int climberCruiseVelocity = 1400;
     public final static int climberAcceleration = 250;

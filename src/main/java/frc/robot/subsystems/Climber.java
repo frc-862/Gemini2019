@@ -111,7 +111,7 @@ public class Climber extends Subsystem {
     @Override
     public void initDefaultCommand() { }
 
-    public double getJackPosition() {
+    public int getJackPosition() {
         return motor.getSelectedSensorPosition();
     }
 
