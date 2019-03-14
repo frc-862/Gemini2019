@@ -252,10 +252,10 @@ public abstract class CANDrivetrain extends LightningDrivetrain {
     @Override
     public void periodic() {
         if (Math.abs(leftMaster.getSelectedSensorVelocity()) < Constants.movingVelocity &&
-            Math.abs(rightMaster.getSelectedSensorVelocity()) < Constants.movingVelocity &&
-            leftMaster.getOutputCurrent() > Constants.movingCurrent && 
-            rightMaster.getOutputCurrent() > Constants.movingCurrent) {
-        stallCount += 1;
+                Math.abs(rightMaster.getSelectedSensorVelocity()) < Constants.movingVelocity &&
+                leftMaster.getOutputCurrent() > Constants.movingCurrent &&
+                rightMaster.getOutputCurrent() > Constants.movingCurrent) {
+            stallCount += 1;
         } else {
             stallCount = 0;
         }

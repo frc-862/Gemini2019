@@ -14,34 +14,34 @@ import frc.robot.Robot;
  * Add your docs here.
  */
 public class LiftDriveforward extends TimedCommand {
-  /**
-   * Add your docs here.
-   */
-  public LiftDriveforward(double timeout) {
-    super(timeout);
-    // Use requires() here to declare subsystem dependencies
-    // eg. requires(chassis);
-  }
+    /**
+     * Add your docs here.
+     */
+    public LiftDriveforward(double timeout) {
+        super(timeout);
+        // Use requires() here to declare subsystem dependencies
+        // eg. requires(chassis);
+    }
 
-  // Called just before this Command runs the first time
-  @Override
-  protected void initialize() {
-    Robot.climber.setClimberDrivePower(.9);
-  }
+    // Called just before this Command runs the first time
+    @Override
+    protected void initialize() {
+        Robot.climber.setClimberDrivePower(.9);
+    }
 
-  // Called repeatedly when this Command is scheduled to run
-  @Override
-  protected void execute() {
-  }
+    // Called repeatedly when this Command is scheduled to run
+    @Override
+    protected void execute() {
+    }
 
-  // Called once after timeout
-  @Override
-  protected void end() {
-  }
+    // Called once after timeout
+    @Override
+    protected void end() {
+    }
 
-  // Called when another command which requires one or more of the same
-  // subsystems is scheduled to run
-  @Override
-  protected void interrupted() {
-  }
+    // Called when another command which requires one or more of the same
+    // subsystems is scheduled to run
+    @Override
+    protected void interrupted() {
+    }
 }

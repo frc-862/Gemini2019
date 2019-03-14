@@ -47,8 +47,8 @@ public class Climber extends Subsystem {
 
         /* Configure Sensor Source for Primary PID */
         motor.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder,
-                Constants.kPIDLoopIdx,
-                Constants.kTimeoutMs);
+                                           Constants.kPIDLoopIdx,
+                                           Constants.kTimeoutMs);
 
         /**
          * Configure Talon SRX Output and Sesnor direction accordingly
@@ -80,7 +80,7 @@ public class Climber extends Subsystem {
     /** Watch limit switches at ends of travel
      * and auto calibrate encoder position
      */
-    
+
 
     @Override
     public void periodic() {

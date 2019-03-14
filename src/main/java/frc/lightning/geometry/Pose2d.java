@@ -63,7 +63,7 @@ public class Pose2d implements IPose2d<Pose2d> {
             c = (1.0 - cos_theta) / delta.dtheta;
         }
         return new Pose2d(new Translation2d(delta.dx * s - delta.dy * c, delta.dx * c + delta.dy * s),
-                new Rotation2d(cos_theta, sin_theta, false));
+                          new Rotation2d(cos_theta, sin_theta, false));
     }
 
     /**
@@ -80,7 +80,7 @@ public class Pose2d implements IPose2d<Pose2d> {
             halftheta_by_tan_of_halfdtheta = -(half_dtheta * transform.getRotation().sin()) / cos_minus_one;
         }
         final Translation2d translation_part = transform.getTranslation()
-                .rotateBy(new Rotation2d(halftheta_by_tan_of_halfdtheta, -half_dtheta, false));
+                                               .rotateBy(new Rotation2d(halftheta_by_tan_of_halfdtheta, -half_dtheta, false));
         return new Twist2d(translation_part.x(), translation_part.y(), dtheta);
     }
 
@@ -104,7 +104,7 @@ public class Pose2d implements IPose2d<Pose2d> {
     @Override
     public Pose2d transformBy(final Pose2d other) {
         return new Pose2d(translation_.translateBy(other.translation_.rotateBy(rotation_)),
-                rotation_.rotateBy(other.rotation_));
+                          rotation_.rotateBy(other.rotation_));
     }
 
     /**
@@ -150,7 +150,7 @@ public class Pose2d implements IPose2d<Pose2d> {
 
     public boolean epsilonEquals(final Pose2d other, double epsilon) {
         return getTranslation().epsilonEquals(other.getTranslation(), epsilon)
-                && getRotation().isParallel(other.getRotation());
+               && getRotation().isParallel(other.getRotation());
     }
 
     private static Translation2d intersectionInternal(final Pose2d a, final Pose2d b) {
@@ -161,7 +161,7 @@ public class Pose2d implements IPose2d<Pose2d> {
 
         final double tan_b = b_r.tan();
         final double t = ((a_t.x() - b_t.x()) * tan_b + b_t.y() - a_t.y())
-                / (a_r.sin() - a_r.cos() * tan_b);
+                         / (a_r.sin() - a_r.cos() * tan_b);
         if (Double.isNaN(t)) {
             return new Translation2d(Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY);
         }

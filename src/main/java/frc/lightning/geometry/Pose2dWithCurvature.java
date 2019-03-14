@@ -83,8 +83,8 @@ public class Pose2dWithCurvature implements IPose2d<Pose2dWithCurvature>, ICurva
     @Override
     public Pose2dWithCurvature interpolate(final Pose2dWithCurvature other, double x) {
         return new Pose2dWithCurvature(getPose().interpolate(other.getPose(), x),
-                LightningMath.interpolate(getCurvature(), other.getCurvature(), x),
-                LightningMath.interpolate(getDCurvatureDs(), other.getDCurvatureDs(), x));
+                                       LightningMath.interpolate(getCurvature(), other.getCurvature(), x),
+                                       LightningMath.interpolate(getDCurvatureDs(), other.getDCurvatureDs(), x));
     }
 
     @Override
@@ -97,7 +97,7 @@ public class Pose2dWithCurvature implements IPose2d<Pose2dWithCurvature>, ICurva
         if (other == null || !(other instanceof Pose2dWithCurvature)) return false;
         Pose2dWithCurvature p2dwc = (Pose2dWithCurvature) other;
         return getPose().equals(p2dwc.getPose()) && LightningMath.isEqual(getCurvature(), p2dwc.getCurvature()) &&
-                LightningMath.isEqual(getDCurvatureDs(), p2dwc.getDCurvatureDs());
+               LightningMath.isEqual(getDCurvatureDs(), p2dwc.getDCurvatureDs());
     }
 
     @Override

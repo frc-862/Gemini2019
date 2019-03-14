@@ -95,7 +95,7 @@ public class Rotation2d implements IRotation2d<Rotation2d> {
      */
     public Rotation2d rotateBy(final Rotation2d other) {
         return new Rotation2d(cos_angle_ * other.cos_angle_ - sin_angle_ * other.sin_angle_,
-                cos_angle_ * other.sin_angle_ + sin_angle_ * other.cos_angle_, true);
+                              cos_angle_ * other.sin_angle_ + sin_angle_ * other.cos_angle_, true);
     }
 
     public Rotation2d normal() {

@@ -72,7 +72,7 @@ public class RobotState extends Subsystem {
 
     public synchronized Pose2d getPredictedFieldToVehicle(double lookahead_time) {
         return getLatestFieldToVehicle().getValue()
-                .transformBy(Pose2d.exp(vehicle_velocity_predicted_.scaled(lookahead_time)));
+               .transformBy(Pose2d.exp(vehicle_velocity_predicted_.scaled(lookahead_time)));
     }
 
 //    public synchronized Pose2d getFieldToLidar(double timestamp) {
@@ -84,9 +84,9 @@ public class RobotState extends Subsystem {
     }
 
     public synchronized void addObservations(double timestamp, Twist2d measured_velocity,
-                                             Twist2d predicted_velocity) {
+            Twist2d predicted_velocity) {
         addFieldToVehicleObservation(timestamp,
-                Kinematics.integrateForwardKinematics(getLatestFieldToVehicle().getValue(), measured_velocity));
+                                     Kinematics.integrateForwardKinematics(getLatestFieldToVehicle().getValue(), measured_velocity));
         vehicle_velocity_measured_ = measured_velocity;
         vehicle_velocity_predicted_ = predicted_velocity;
     }
@@ -95,8 +95,8 @@ public class RobotState extends Subsystem {
             right_encoder_delta_distance, Rotation2d current_gyro_angle) {
         final Pose2d last_measurement = getLatestFieldToVehicle().getValue();
         final Twist2d delta = Kinematics.forwardKinematics(last_measurement.getRotation(),
-                left_encoder_delta_distance, right_encoder_delta_distance,
-                current_gyro_angle);
+                              left_encoder_delta_distance, right_encoder_delta_distance,
+                              current_gyro_angle);
         distance_driven_ += delta.dx; //do we care about dy here?
         return delta;
     }

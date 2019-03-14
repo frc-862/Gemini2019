@@ -40,7 +40,7 @@ public class Kinematics {
      * For convenience, integrate forward kinematics with a Twist2d and previous rotation.
      */
     public static Pose2d integrateForwardKinematics(Pose2d current_pose,
-                                                    Twist2d forward_kinematics) {
+            Twist2d forward_kinematics) {
         return current_pose.transformBy(Pose2d.exp(forward_kinematics));
     }
 }
