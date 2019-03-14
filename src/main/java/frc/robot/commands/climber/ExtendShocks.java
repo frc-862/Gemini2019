@@ -13,7 +13,7 @@ import frc.robot.Robot;
 public class ExtendShocks extends Command {
     public ExtendShocks() {
         // Use requires() here to declare subsystem dependencies
-        requires(Robot.climber);
+        //requires(Robot.climber);
     }
 
     // Called just before this Command runs the first time

@@ -211,7 +211,7 @@ public class OI {
         SmartDashboard.putData("Elevator to high",
                                new InstantCommand(Robot.elevator, () -> Robot.elevator.goToHigh()));
 
-        SmartDashboard.putData("drive forward", new driveforward());
+        SmartDashboard.putData("lift drive forward", new driveforward());
         SmartDashboard.putData("manual climb", new ManualClimb());
         SmartDashboard.putData("Extend Shocks",new ExtendShocks());
         SmartDashboard.putData("Retract Shocks", new RetractShocks());
