@@ -23,7 +23,7 @@ public class Constants extends ConstantBase {
     public static final double hasCargoDistance = 0.7;
     // Climber
     public static final int retractedPosition = 0;
-    public static final int extendedPosition = 42; // TODO calibrate this value
+    public static final int extendedPosition = 7000; // TODO calibrate this value
     // PIDs
     public final static int kSensorUnitsPerRotation = 4 * 360;
     public final static double kNeutralDeadband = 0.001;

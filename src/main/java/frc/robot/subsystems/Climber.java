@@ -8,6 +8,8 @@
 package frc.robot.subsystems;
 
 
+import java.sql.Time;
+
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.LimitSwitchNormal;
 import com.ctre.phoenix.motorcontrol.LimitSwitchSource;
@@ -15,6 +17,7 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants;
 import frc.robot.RobotMap;
 
@@ -27,6 +30,7 @@ public class Climber extends Subsystem {
     WPI_VictorSPX motorSlave;
     WPI_VictorSPX climberDrive;
     DoubleSolenoid deployer;
+    boolean resetEncoderPos=true;
 
     public Climber() {
         motor = new WPI_TalonSRX(RobotMap.climberMasterID);  // TODO create with correct CAN ID in robot map
@@ -43,14 +47,30 @@ public class Climber extends Subsystem {
     /** Watch limit switches at ends of travel
      * and auto calibrate encoder position
      */
+    
+
     @Override
     public void periodic() {
+        
+        int pos = motor.getSelectedSensorPosition();
         var sensors = motor.getSensorCollection();
         // Set the default command for a subsystem here.
         if (sensors.isFwdLimitSwitchClosed()) {
             motor.setSelectedSensorPosition(Constants.extendedPosition);
         } else if (sensors.isRevLimitSwitchClosed()) {
             motor.setSelectedSensorPosition(Constants.retractedPosition);
+        }
+        SmartDashboard.putNumber("lift/climber encoder", motor.getSelectedSensorPosition());
+        if(resetEncoderPos) { //default true
+            if (sensors.isFwdLimitSwitchClosed()) {//check if at top - if so, set sensor pos to top height
+                motor.setSelectedSensorPosition(Constants.retractedPosition);
+                resetEncoderPos = false;
+            } else if (sensors.isRevLimitSwitchClosed()) {//if at bottom, set to 0
+                motor.setSelectedSensorPosition(Constants.extendedPosition);//Constants.elevatorBottomHeight);
+                resetEncoderPos = false;
+            }
+        } else if((pos > Constants.elevatorInchHigh) && (pos < Constants.elevatorTopHeight)) { //if between inch high and top height, reset encoders next cycle
+            resetEncoderPos = true;
         }
     }
 
@@ -88,5 +108,8 @@ public class Climber extends Subsystem {
     public void setFwrPower(double pwr) {
         climberDrive.set(ControlMode.PercentOutput, pwr);
     }
-
+    public double getEncoderValue(){
+        return motor.getSelectedSensorPosition();
+    }
+    
 }
