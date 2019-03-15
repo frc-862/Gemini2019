@@ -22,10 +22,13 @@ import frc.robot.commands.auto.HatchAuton;
 import frc.robot.commands.calibration.TestMove;
 import frc.robot.commands.cargo.DeployCargoCollector;
 import frc.robot.commands.cargo.RetractCargoCollector;
+import frc.robot.commands.climber.AutoClimb;
 import frc.robot.commands.climber.Climb;
 import frc.robot.commands.climber.ExtendShocks;
+import frc.robot.commands.climber.ClimbGoToPosition;
 import frc.robot.commands.climber.ManualClimb;
 import frc.robot.commands.climber.RetractShocks;
+import frc.robot.commands.climber.StatefulAutoClimb;
 import frc.robot.commands.climber.driveforward;
 import frc.robot.commands.driveTrain.ConfigMotors;
 import frc.robot.commands.hatch.CloseHatchCollector;
@@ -210,6 +213,11 @@ public class OI {
                                new InstantCommand(Robot.elevator, () -> Robot.elevator.goToMid()));
         SmartDashboard.putData("Elevator to high",
                                new InstantCommand(Robot.elevator, () -> Robot.elevator.goToHigh()));
+        SmartDashboard.putData(new StatefulAutoClimb());
+        SmartDashboard.putData(new ClimbGoToPosition());
+        SmartDashboard.putData(new AutoClimb());
+
+
 
         SmartDashboard.putData("lift drive forward", new driveforward());
         SmartDashboard.putData("manual climb", new ManualClimb());

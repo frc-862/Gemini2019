@@ -190,7 +190,7 @@ public class Vision extends Subsystem {
                     }
                 } catch(Exception e) {
                     activeCams.remove(Camera.RIGHT);
-                    System.out.println("no right cam");
+                    //ystem.out.println("no right cam");
                     //  rightData = new ArrayList<Target>();
                     inData = "";
                     continue;
@@ -205,7 +205,7 @@ public class Vision extends Subsystem {
                 fw.write(fileLine);//appends the string to the file
                 fw.close();
             } catch(Exception e) {
-                System.err.println("IOException: " + e.getMessage());
+                //System.err.println("IOException: " + e.getMessage());
             }
             parseData(inData, inCam);
         }

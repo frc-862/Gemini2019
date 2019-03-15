@@ -21,7 +21,9 @@ public class StatefulAutoClimb extends StatefulCommand {
         WAIT_TO_DRIVE_FORWARD,
         DRIVE_FORWARD,
         RAISE_JACK,
+        FULL_UP_JACK,
         WAIT_FOR_JACK,
+        IM_GIVIEN_ALL_SHE_GOT_CAPT,
         DONE
     }
 
@@ -73,7 +75,7 @@ public class StatefulAutoClimb extends StatefulCommand {
     public void driveForward() {
         Robot.climber.setClimberDrivePower(1);
         Robot.drivetrain.setPower(0.4, 0.4);
-        if (Timer.getFPGATimestamp() - startedDrivingAt > 3) {
+        if (Timer.getFPGATimestamp() - startedDrivingAt > 7) {
             setState(States.RAISE_JACK);
         }
     }
@@ -86,6 +88,26 @@ public class StatefulAutoClimb extends StatefulCommand {
     public void waitForJack() {
         if (LightningMath.epsilonEqual(Robot.climber.getJackPosition(),
                 Constants.climberRetractedPosition, Constants.climberEpsilon)) {
+            setState(States.FULL_UP_JACK);
+        }
+        
+    }
+    public void fullUpJack(){
+        Robot.climber.setLiftPower(-.465);
+        if(Robot.climber.isJackSnug()){
+            setState(States.IM_GIVIEN_ALL_SHE_GOT_CAPT);
+        }
+    }
+
+    public void imGivienAllSheGotCaptEnter() {
+        startedDrivingAt = Timer.getFPGATimestamp();
+    }
+
+
+    public void imGivienAllSheGotCapt (){
+        Robot.climber.setClimberDrivePower(1);
+        Robot.drivetrain.setPower(0.4, 0.4);
+        if (Timer.getFPGATimestamp() - startedDrivingAt > 1) {
             setState(States.DONE);
         }
     }

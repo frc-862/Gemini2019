@@ -16,6 +16,9 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants;
 import frc.robot.RobotMap;
+import frc.robot.commands.climber.Climb;
+import frc.robot.commands.climber.RetractClimb;
+import frc.robot.commands.climber.StatefulAutoClimb;
 
 /**
  * Add your docs here.
@@ -32,6 +35,7 @@ public class Climber extends Subsystem {
         motor = new WPI_TalonSRX(RobotMap.climberMasterID);  // TODO create with correct CAN ID in robot map
         addChild("Motor", motor);
         motorSlave = new WPI_VictorSPX(RobotMap.climberSlaveID);
+        motorSlave.setInverted(true);
         climberDrive = new WPI_VictorSPX(RobotMap.climberDriveID);
         addChild("Slave Motor", motorSlave);
         motorSlave.follow(motor);
@@ -81,20 +85,20 @@ public class Climber extends Subsystem {
      * and auto calibrate encoder position
      */
 
-
+    private SensorCollection sensors;
     @Override
     public void periodic() {
-        var sensors = motor.getSensorCollection();
+        sensors = motor.getSensorCollection();
         int pos = sensors.getQuadraturePosition();
 
         SmartDashboard.putNumber("climber encoder", motor.getSelectedSensorPosition());
 
         if(resetEncoderPos) { //default true
             if (sensors.isFwdLimitSwitchClosed()) {//check if at top - if so, set sensor pos to top height
-                motor.setSelectedSensorPosition(0);
+                motor.setSelectedSensorPosition(Constants.climberMaxHeight);
                 resetEncoderPos = false;
             } else if (sensors.isRevLimitSwitchClosed()) {//if at bottom, set to 0
-                motor.setSelectedSensorPosition(Constants.climberMaxHeight);
+                motor.setSelectedSensorPosition(0);
                 resetEncoderPos = false;
             }
         } else if((pos > Constants.climberOffHardStop) && (pos < Constants.climberMaxHeight)) { //if between inch high and top height, reset encoders next cycle
@@ -106,6 +110,9 @@ public class Climber extends Subsystem {
         } else if(pos > Constants.climberMaxHeight) {
             motor.setSelectedSensorPosition(Constants.climberMaxHeight);
         }
+        
+        //SmartDashboard.putData(new Climb());
+        //SmartDashboard.putData(new RetractClimb());
     }
 
     @Override
@@ -141,5 +148,11 @@ public class Climber extends Subsystem {
 
     public void setClimberDrivePower(double pwr) {
         climberDrive.set(ControlMode.PercentOutput, pwr);
+    }
+    public void goToPos(int pos){
+        motor.set(ControlMode.MotionMagic, pos);
+    }
+    public boolean isJackSnug() {
+        return sensors.isRevLimitSwitchClosed();
     }
 }
