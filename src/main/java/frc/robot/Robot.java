@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.lightning.LightningRobot;
+import frc.lightning.commands.VelocityMotionProfile;
 import frc.robot.commands.auto.CenterPath;
 import frc.robot.commands.auto.LeftRocket;
 import frc.robot.commands.auto.RghtRocket;
@@ -47,14 +48,14 @@ public class Robot extends LightningRobot {
         System.out.println("Initializing our robot");
 
         drivetrain = GeminiDrivetrain.create();
-        leds = new LEDs();
+        //leds = new LEDs();
         hatchGroundCollector = new HatchGroundCollector();
         hatchPanelCollector = new HatchCollector();
         cargoCollector = CargoCollector.create();
         elevator = new Elevator();
         climber = new Climber();
         core = new Core();
-        vision = new Vision();
+        //vision = new Vision();
 
         oi = new OI();
 
@@ -67,6 +68,8 @@ public class Robot extends LightningRobot {
         registerAutonomousCommmand("Left Rocket",new LeftRocket());
         registerAutonomousCommmand("Right Rocket",new RghtRocket());
         registerAutonomousCommmand("Center Ship",new CenterPath());
+        
+        registerAutonomousCommmand("Test Right Rocket", new VelocityMotionProfile("RocketR_StartR_EndN"));
 
         // registerAutonomousCommmand("AUTON", new Auto(this.getSelectedElevatorPos(),
         //                            this.getSelectedGamePiece(),

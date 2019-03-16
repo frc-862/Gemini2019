@@ -156,9 +156,9 @@ public class OI {
         hatchExtend.whenPressed(new ExtendHatchCollector());
 
         //Vision Things
-        (new JoystickButton(driverLeft, 12)).whenPressed(new VisionRotateAndApproach());//TODO - FIx Buttons
-        (new JoystickButton(driverLeft, 13)).whenPressed(new VisionTurn());//TODO - FIx Buttons
-        (new JoystickButton(driverLeft, 14)).whenPressed(new StereoTurn());//TODO - FIx Buttons
+        //(new JoystickButton(driverLeft, 12)).whenPressed(new VisionRotateAndApproach());//TODO - FIx Buttons
+        //(new JoystickButton(driverLeft, 13)).whenPressed(new VisionTurn());//TODO - FIx Buttons
+        //(new JoystickButton(driverLeft, 14)).whenPressed(new StereoTurn());//TODO - FIx Buttons
         //(new JoystickButton(driverLeft, 15)).whenPressed(new DriveAndAdjust());//TODO - FIx Buttons
 
         (new JoystickButton(driverLeft, 7)).whenPressed(new LeftDriveZero());

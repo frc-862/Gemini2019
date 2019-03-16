@@ -47,7 +47,7 @@ public class Constants extends ConstantBase {
         //    drivePIDs = new Gains( 0.0, 0.0, 0.0, 0.0,  0);
         //}
 
-        Gains universalGAINS = new Gains/*(0.1, 0.0, 0.0, 0.1, 0);*/(4.55, 0.0,  0.0,   0.74,  0);//gemini //p = 4.65
+        Gains universalGAINS = new Gains/*(0.1, 0.0, 0.0, 0.1, 0);*/(4.65, 0.0,  0.0,   1.5,  0);//gemini //p = 4.65
 
         motionPathPIDs = universalGAINS;// new Gains(4.65, 0.0,  0.0,   0.74,  0);// 9!!!
 

@@ -5,7 +5,7 @@ import frc.robot.RobotConstants;
 
 public class LightningMath {
     public static final double kEpsilon = 1e-12;
-    public static double wheelCircumference =  RobotConstants.wheelDiameter * Math.PI;
+    public static double    wheelCircumference =  RobotConstants.wheelDiameter * Math.PI;
 
     public static double talon2ips(double talon) {
         // multiply 100ms by 10 to get seconds
