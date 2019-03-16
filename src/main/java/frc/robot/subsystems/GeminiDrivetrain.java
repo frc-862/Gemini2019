@@ -51,8 +51,6 @@ public class GeminiDrivetrain extends CANDrivetrain {
         right2.setName("Right Slave");
         SmartDashboard.putData("Right Slave", right2);
 
-
-
         configureMotors();
         enableLogging();
 
@@ -85,7 +83,13 @@ public class GeminiDrivetrain extends CANDrivetrain {
         withEachMotor((m) -> m.setNeutralMode(NeutralMode.Brake));
         withEachMaster((m) -> {
             m.configOpenloopRamp(0.2);
-            m.configClosedloopRamp(0.1);
+            m.configClosedloopRamp(0.15);
+
+            m.configContinuousCurrentLimit(38);
+            m.configPeakCurrentDuration(100);
+            m.configPeakCurrentLimit(50);
+            m.enableCurrentLimit(true);
+
             m.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, Constants.driveSlot, 0);
             m.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, Constants.motionSlot, 0);
 
