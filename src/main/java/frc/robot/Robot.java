@@ -7,8 +7,12 @@
 
 package frc.robot;
 
+import edu.wpi.cscore.MjpegServer;
+import edu.wpi.cscore.UsbCamera;
+import edu.wpi.cscore.VideoMode;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.Filesystem;
+import edu.wpi.first.wpilibj.SerialPort;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.lightning.LightningRobot;
@@ -37,7 +41,8 @@ public class Robot extends LightningRobot {
     public static HatchGroundCollector hatchGroundCollector;
     public static Elevator elevator;
     public static Climber climber;
-    public static Vision vision;
+//    public static Vision vision;
+    public static SimpleVision vision;
     public static OI oi;
 
     private static boolean gemini = true;
@@ -54,7 +59,8 @@ public class Robot extends LightningRobot {
         elevator = new Elevator();
         climber = new Climber();
         core = new Core();
-        vision = new Vision();
+        // vision = new Vision();
+        vision = new SimpleVision(SerialPort.Port.kUSB);
 
         oi = new OI();
 
@@ -88,7 +94,10 @@ public class Robot extends LightningRobot {
         // registerAutonomousCommmand("RightSideNearM", new VelocityMotionProfile("RocketR_StartM_EndN"));
 
 
-        CameraServer.getInstance().startAutomaticCapture();
+//        var visionCam = new UsbCamera("VisionProcCam", 0);
+//        visionCam.setVideoMode(VideoMode.PixelFormat.kYUYV, 320, 254, 50);
+//        var camServer = new MjpegServer("VisionCamServer", MJPG_STREAM_PORT);
+//        camServer.setSource(visionCam);
     }
 
     @Override
