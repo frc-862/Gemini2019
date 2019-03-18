@@ -587,4 +587,11 @@ public class Vision extends Subsystem {
         return transformedData;
     }
 
+    public boolean simpleTargetFound() {
+        return true;
+    }
+
+    public int simpleError() {
+        return 0;
+    }
 }
