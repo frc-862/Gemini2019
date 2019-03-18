@@ -18,6 +18,7 @@ import frc.lightning.testing.SystemTest;
 import frc.lightning.util.LightningMath;
 import frc.robot.Constants;
 import frc.robot.RobotMap;
+import frc.robot.commands.driveTrain.TankDrive;
 import frc.robot.commands.driveTrain.VelocityTankDrive;
 import frc.robot.commands.test.LeftEncoderTest;
 import frc.robot.commands.test.RightEncoderTest;
@@ -57,9 +58,9 @@ public class GeminiDrivetrain extends CANDrivetrain {
         SystemTest.register(new LeftEncoderTest());
         SystemTest.register(new RightEncoderTest());
 
-        VelocityMotionProfile.setKp(10);
+        VelocityMotionProfile.setKp(6.0); //10
         VelocityMotionProfile.setKa(0.05);
-        VelocityMotionProfile.setKTheta(-0.0);//-.25
+        VelocityMotionProfile.setKTheta(-0.1);//-.25
     }
 
     @Override

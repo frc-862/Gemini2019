@@ -23,7 +23,12 @@ public class JoystickFilter {
         rampDelta = maxPower * 2;
     }
 
-    public void setRampDelta(double d) {
+    public JoystickFilter(double deadBand2, double minPower2, double maxPower2, Mode mode2, double ramp) {
+        this(deadBand2, minPower2, maxPower2, mode2);
+        rampDelta = ramp;
+	}
+
+	public void setRampDelta(double d) {
         rampDelta = d;
     }
 

@@ -42,7 +42,7 @@ public class Climber extends Subsystem {
         deployer = new DoubleSolenoid(RobotMap.compressorCANId, RobotMap.climbFwdChan, RobotMap.climbRevChan);; // TODO create with correct solenoid values
         motor.configForwardLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen, 0);
         motor.configReverseLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen, 0);
-
+        
         /* Factory default hardware to prevent unexpected behavior */
         motor.configFactoryDefault();
 

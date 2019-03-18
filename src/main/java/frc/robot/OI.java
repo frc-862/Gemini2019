@@ -122,8 +122,8 @@ public class OI {
     private final double minPower = 0.1;
     private final double maxPower = 1.0;
     private JoystickFilter driveFilter = new JoystickFilter(deadBand, minPower, maxPower, JoystickFilter.Mode.CUBED);
-    private JoystickFilter leftFilter = new JoystickFilter(deadBand, minPower, maxPower, JoystickFilter.Mode.CUBED);
-    private JoystickFilter rightFilter = new JoystickFilter(deadBand, minPower, maxPower, JoystickFilter.Mode.CUBED);
+    private JoystickFilter leftFilter = new JoystickFilter(deadBand, minPower, maxPower, JoystickFilter.Mode.CUBED, 0.1);
+    private JoystickFilter rightFilter = new JoystickFilter(deadBand, minPower, maxPower, JoystickFilter.Mode.CUBED, 0.1);
 
     public double getLeftPower() {
         if (driverLeft == null) return 0;
