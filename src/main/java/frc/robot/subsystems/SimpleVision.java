@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.SerialPort;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.lightning.util.SerialByLine;
@@ -13,6 +14,10 @@ public class SimpleVision extends Subsystem {
     private Pattern pattern = Pattern.compile("SV(\\d+) (\\d+)(?:\\.\\d*)? (\\d+)(?:\\.\\d*)? (\\d+) (\\d+)");
 
     private int x, y, width, height;
+    private double previousError;
+    private double previousTimestamp;
+    private double error;
+    private double errorD;
 
     @Override
     public void periodic() {
@@ -21,17 +26,6 @@ public class SimpleVision extends Subsystem {
         SmartDashboard.putNumber("Vision Width", width);
         SmartDashboard.putNumber("Vision Height", height);
         SmartDashboard.putNumber("Vision Error", getError());
-    }
-
-    public double getError() {
-        // Might be smarter to return last error before we lost the
-        // target, but that is also confusing
-        if (!simpleTargetFound()) return 0;
-
-        final int imageWidth = 320;
-        final double imageMiddle = imageWidth / 2.0;
-
-        return (imageMiddle - x) / imageMiddle;
     }
 
     public SimpleVision(SerialPort.Port port) {
@@ -50,15 +44,36 @@ public class SimpleVision extends Subsystem {
     }
 
     private void positionUpdate(String update) {
+        double now = Timer.getFPGATimestamp();
+
         Matcher m = pattern.matcher(update);
         if (m.find()) {
+            final int imageWidth = 320;
+            final double imageMiddle = imageWidth / 2.0;
+
             x = Integer.parseInt(m.group(2));
             y = Integer.parseInt(m.group(3));
             width = Integer.parseInt(m.group(4));
             height = Integer.parseInt(m.group(5));
+
+            double deltaT = previousTimestamp - now;
+            previousTimestamp = now;
+            error = (imageMiddle - x) / imageMiddle;
+            errorD = (previousError - error) / deltaT;
+            previousError = error;
         } else {
+            error = 0;
+            errorD = 0;
             System.out.println("Unable to process Simple Vision: " + update);
         }
+    }
+
+    public double getError() {
+        return error;
+    }
+
+    public double getErrorD() {
+        return errorD;
     }
 
     @Override

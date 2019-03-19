@@ -38,6 +38,7 @@ import frc.robot.commands.hatch.RetractHatchCollector;
 import frc.robot.commands.test.LeftDriveZero;
 import frc.robot.commands.test.ResetDriveSensors;
 import frc.robot.commands.test.RightDriveZero;
+import frc.robot.commands.vision.SimpleFollowVision;
 
 public class OI {
     //Drive Joysticks
@@ -157,6 +158,8 @@ public class OI {
 //        (new JoystickButton(driverLeft, 13)).whenPressed(new VisionTurn());//TODO - FIx Buttons
 //        (new JoystickButton(driverLeft, 14)).whenPressed(new StereoTurn());//TODO - FIx Buttons
         //(new JoystickButton(driverLeft, 15)).whenPressed(new DriveAndAdjust());//TODO - FIx Buttons
+
+        (new JoystickButton(driverLeft, 3)).whileHeld(new SimpleFollowVision());//TODO - FIx Buttons
 
         (new JoystickButton(driverLeft, 7)).whenPressed(new LeftDriveZero());
         (new JoystickButton(driverRight, 7)).whenPressed(new RightDriveZero());
