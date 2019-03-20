@@ -38,6 +38,8 @@ import frc.robot.commands.hatch.RetractHatchCollector;
 import frc.robot.commands.test.LeftDriveZero;
 import frc.robot.commands.test.ResetDriveSensors;
 import frc.robot.commands.test.RightDriveZero;
+import frc.robot.commands.vision.StereoTurn;
+import frc.robot.commands.vision.VisionTurn;
 import frc.robot.commands.vision.SimpleFollowVision;
 
 public class OI {
@@ -153,12 +155,13 @@ public class OI {
         hatchRetract.whenPressed(new RetractHatchCollector());
         hatchExtend.whenPressed(new ExtendHatchCollector());
 
-        //Vision Things
-//        (new JoystickButton(driverLeft, 12)).whenPressed(new VisionRotateAndApproach());//TODO - FIx Buttons
-//        (new JoystickButton(driverLeft, 13)).whenPressed(new VisionTurn());//TODO - FIx Buttons
-//        (new JoystickButton(driverLeft, 14)).whenPressed(new StereoTurn());//TODO - FIx Buttons
-        //(new JoystickButton(driverLeft, 15)).whenPressed(new DriveAndAdjust());//TODO - FIx Buttons
-
+        //StereoVision Things
+        if (Robot.stereoVision != null) {
+            (new JoystickButton(driverRight, 3)).whileHeld(new VisionTurn());//TODO - FIx Buttons
+            (new JoystickButton(driverLeft, 14)).whenPressed(new StereoTurn());//TODO - FIx Buttons
+            //(new JoystickButton(driverLeft, 15)).whenPressed(new DriveAndAdjust());//TODO - FIx Buttons
+        }
+		
         if (Robot.simpleVision != null) {
             (new JoystickButton(driverLeft, 3)).whileHeld(new SimpleFollowVision());
         }

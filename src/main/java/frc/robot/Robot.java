@@ -39,6 +39,7 @@ public class Robot extends LightningRobot {
     public static Climber climber;
 //    public static Vision simpleVision;
     public static SimpleVision simpleVision;
+    public static StereoVision stereoVision;
     public static OI oi;
 
     private static boolean gemini = true;
@@ -56,6 +57,7 @@ public class Robot extends LightningRobot {
         climber = new Climber();
         core = new Core();
         simpleVision = new SimpleVision(SerialPort.Port.kUSB);
+        stereoVision = new StereoVision();
 
         oi = new OI();
 

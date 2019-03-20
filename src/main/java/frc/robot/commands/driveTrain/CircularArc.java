@@ -18,7 +18,7 @@ public class CircularArc extends Command {
 
     public CircularArc() {
         //TODO Re-Config PIDF Gains?
-        requires(Robot.drivetrain);//TODO Need Vision
+        requires(Robot.drivetrain);//TODO Need StereoVision
     }
 
     @Override
@@ -54,11 +54,11 @@ public class CircularArc extends Command {
     //Numbers Needed
 
     private int getLinearDistanceFromWaypoint() {
-        return 1;//TODO get this from simpleVision
+        return 1;//TODO get this from vision
     }
 
     private double getSquint() {
-        return 1.0;//TODO get this from simpleVision
+        return 1.0;//TODO get this from vision
     }
 
     //Maths
