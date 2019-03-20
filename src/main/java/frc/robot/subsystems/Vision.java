@@ -25,7 +25,7 @@ public class Vision extends Subsystem {
     // here. Call these from Commands.
   
     private Solenoid ledRingLeft = new Solenoid(11, 4);
-    private Solenoid ledRingRight = new Solenoid(11, 6);
+    private Solenoid ledRingRight = new Solenoid(11, 3);
     private SerialPort serialInLeft, serialInRight;
     private double connected = 0;
     private long lastCameraUpdate = 0; //time the most recent frame was RECIEVED
@@ -54,9 +54,9 @@ public class Vision extends Subsystem {
   
     ArrayList<Camera> activeCams = new ArrayList<Camera>();
   
-    private boolean isStereo = true;
+    private final boolean isStereo = true;
     private boolean newDataLeft = true, newDataRight = true;
-    private final double TRACK_WIDTH = 21.0;
+    private final double TRACK_WIDTH = 19.0;
   
     private String leftPartialFrame1 = "", rightPartialFrame1 = "", leftPartialFrame2 = "", rightPartialFrame2 = "";
     
@@ -112,9 +112,6 @@ public class Vision extends Subsystem {
       
       
       //Target bestTarget = new Target(0,0,0,0);
-      SmartDashboard.putString("leftData", leftData.toString());
-      SmartDashboard.putString("rightData", rightData.toString());
-      SmartDashboard.putString("mergedData", mergedData.toString());
       /*
       try {
         bestTarget = getBestTarget();
@@ -134,6 +131,8 @@ public class Vision extends Subsystem {
       
     }
   */
+
+    
     public void ledsOn() {
         ledRingLeft.set(true);
         ledRingRight.set(true);
@@ -142,6 +141,7 @@ public class Vision extends Subsystem {
         ledRingLeft.set(false);
         ledRingRight.set(false);
     }
+    
 
     public Target getBestTarget() throws NoTargetException {
       if(mergedData.size() == 0) throw new NoTargetException();
@@ -372,6 +372,9 @@ public class Vision extends Subsystem {
         transformData(Camera.RIGHT);
         mergeData();
       }
+      SmartDashboard.putString("leftData", leftData.toString());
+      SmartDashboard.putString("rightData", rightData.toString());
+      SmartDashboard.putString("mergedData", mergedData.toString());
       //System.out.println("\n");
       //System.out.println(leftData.toString());
       //System.out.println(rightData.toString());

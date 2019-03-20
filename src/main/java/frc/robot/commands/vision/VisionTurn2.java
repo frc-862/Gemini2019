@@ -40,6 +40,7 @@ public class VisionTurn2 extends Command {
     // Called just before this Command runs the first time
     @Override
     protected void initialize() {
+        //Robot.vision.ledsOn();
       finishing = false;
         Robot.drivetrain.setPower(0,0);
         finalHeading = 0;
@@ -72,7 +73,7 @@ public class VisionTurn2 extends Command {
             end();
         }
         else if(!finishing && target.standoff() < 140 && target.standoff() > 25 && Math.abs(target.squint() - (Robot.core.getContinuousHeading() - startRotation)) > SQUINT_BOUND) {
-            double basePower = 0.15 * Math.signum(target.squint());
+            double basePower = 0.2 * Math.signum(target.squint());
             SmartDashboard.putNumber("visionturn sign", basePower);
             Robot.drivetrain.setPower(0.2 + basePower, 0.2 -basePower);
             System.out.println("Moving . . . ");
@@ -111,11 +112,13 @@ public class VisionTurn2 extends Command {
               SmartDashboard.putNumber("final approach progress", (Robot.drivetrain.getLeftDistance() + Robot.drivetrain.getRightDistance()) / 2 - finalApproachDist);
               SmartDashboard.putNumber("encoder dist", ((Robot.drivetrain.getLeftDistance() + Robot.drivetrain.getRightDistance()) / 2));
               Robot.drivetrain.setPower(0.2, 0.2);
+              //Robot.vision.ledsOff();
               finishing = true;
             } 
             else if(finishing) {
               SmartDashboard.putString("vision turn status", "VisionTurn finished");
               Robot.drivetrain.setPower(0, 0);
+
             }
             else {
                 end();
@@ -129,6 +132,8 @@ public class VisionTurn2 extends Command {
     // Make this return true when this Command no longer needs to run execute()
     @Override
     protected boolean isFinished() {
+        //return Robot.core.timeOnLine() > 0.2;
+        //return Robot.oi.getLeftPower() > 0.5;
         return false;
         //return ((Robot.drivetrain.getLeftDistance() + Robot.drivetrain.getRightDistance()) / 2) >= (target.standoff() - 12);
         
@@ -145,6 +150,7 @@ public class VisionTurn2 extends Command {
     // subsystems is scheduled to run
     @Override
     protected void interrupted() {
+        //Robot.vision.ledsOff();
         end();
     }
 }
