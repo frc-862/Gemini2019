@@ -54,11 +54,11 @@ public class CircularArc extends Command {
     //Numbers Needed
 
     private int getLinearDistanceFromWaypoint() {
-        return 1;//TODO get this from vision
+        return 1;//TODO get this from simpleVision
     }
 
     private double getSquint() {
-        return 1.0;//TODO get this from vision
+        return 1.0;//TODO get this from simpleVision
     }
 
     //Maths

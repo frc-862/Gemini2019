@@ -38,7 +38,7 @@ public class SimpleVision extends Subsystem {
             camera.flush();
             new SerialByLine(camera, this::positionUpdate);
         } catch(RuntimeException e) {
-            System.out.println("Unable to open vision camera on port " + port);
+            System.out.println("Unable to open simpleVision camera on port " + port);
         }
         System.out.println("Vision camera initialized on port " + port);
     }

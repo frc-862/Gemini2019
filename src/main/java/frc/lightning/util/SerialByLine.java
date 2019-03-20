@@ -43,7 +43,7 @@ public class SerialByLine {
             // just exit
             System.out.println("Vision interrupted");
         } catch (Exception e) {
-            System.out.println("Unexpected vision error: " + e);
+            System.out.println("Unexpected simpleVision error: " + e);
             e.printStackTrace();
         }
     }

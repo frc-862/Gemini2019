@@ -1,11 +1,9 @@
 package frc.robot.commands.vision;
 
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants;
 import frc.robot.Robot;
-import frc.robot.commands.LineFollow;
 
 public class SimpleFollowVision extends Command {
     final double kP = Constants.velocityMultiplier * 0.8;
@@ -24,18 +22,18 @@ public class SimpleFollowVision extends Command {
         double gain = 0;
 
         // TODO add a D term, scale correctly for time! (should that be in SimpleVision?)
-        if (Robot.vision.simpleTargetFound()) {
-            double error = Robot.vision.getError();
+        if (Robot.simpleVision.simpleTargetFound()) {
+            double error = Robot.simpleVision.getError();
 
             if (Math.abs(error) > onTargetEpsilon) {
-                gain = Robot.vision.getError() * kP;
+                gain = Robot.simpleVision.getError() * kP;
 
                 if (gain < minTurnPower) {
                     gain = minTurnPower * Math.signum(gain);
                 }
             }
 
-            gain += Robot.vision.getErrorD() * kD;
+            gain += Robot.simpleVision.getErrorD() * kD;
         }
 
         SmartDashboard.putNumber("Simple Vision Gain ", gain);

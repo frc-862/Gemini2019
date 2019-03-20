@@ -7,10 +7,6 @@
 
 package frc.robot;
 
-import edu.wpi.cscore.MjpegServer;
-import edu.wpi.cscore.UsbCamera;
-import edu.wpi.cscore.VideoMode;
-import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.SerialPort;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -41,8 +37,8 @@ public class Robot extends LightningRobot {
     public static HatchGroundCollector hatchGroundCollector;
     public static Elevator elevator;
     public static Climber climber;
-//    public static Vision vision;
-    public static SimpleVision vision;
+//    public static Vision simpleVision;
+    public static SimpleVision simpleVision;
     public static OI oi;
 
     private static boolean gemini = true;
@@ -59,8 +55,7 @@ public class Robot extends LightningRobot {
         elevator = new Elevator();
         climber = new Climber();
         core = new Core();
-        // vision = new Vision();
-        vision = new SimpleVision(SerialPort.Port.kUSB);
+        simpleVision = new SimpleVision(SerialPort.Port.kUSB);
 
         oi = new OI();
 
