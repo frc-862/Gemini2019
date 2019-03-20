@@ -132,9 +132,9 @@ public class VisionTurn2 extends Command {
     // Make this return true when this Command no longer needs to run execute()
     @Override
     protected boolean isFinished() {
-        //return Robot.core.timeOnLine() > 0.2;
+        return Robot.core.timeOnLine() > 0.2;
         //return Robot.oi.getLeftPower() > 0.5;
-        return false;
+       // return false;
         //return ((Robot.drivetrain.getLeftDistance() + Robot.drivetrain.getRightDistance()) / 2) >= (target.standoff() - 12);
         
     }
