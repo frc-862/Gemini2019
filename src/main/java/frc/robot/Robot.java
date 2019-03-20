@@ -37,7 +37,6 @@ public class Robot extends LightningRobot {
     public static HatchGroundCollector hatchGroundCollector;
     public static Elevator elevator;
     public static Climber climber;
-//    public static Vision simpleVision;
     public static SimpleVision simpleVision;
     public static StereoVision stereoVision;
     public static OI oi;
@@ -56,8 +55,10 @@ public class Robot extends LightningRobot {
         elevator = new Elevator();
         climber = new Climber();
         core = new Core();
-        simpleVision = new SimpleVision(SerialPort.Port.kUSB);
-        stereoVision = new StereoVision();
+
+        // One or the other not both!
+//        simpleVision = new SimpleVision(SerialPort.Port.kUSB);
+//        stereoVision = new StereoVision();
 
         oi = new OI();
 
