@@ -11,7 +11,7 @@ package frc.robot.commands.vision;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
-import frc.robot.NoTargetException;
+import frc.robot.util.NoTargetException;
 import frc.robot.util.Target;
 
 public class StereoTurn extends Command {

@@ -11,10 +11,9 @@ import edu.wpi.first.wpilibj.SerialPort;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.NoTargetException;
+import frc.robot.util.NoTargetException;
 import frc.robot.util.Target;
 
-import java.io.FileWriter;
 import java.util.ArrayList;
 
 /**
