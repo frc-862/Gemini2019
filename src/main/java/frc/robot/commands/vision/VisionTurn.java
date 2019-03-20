@@ -14,7 +14,7 @@ import frc.robot.Robot;
 import frc.robot.util.NoTargetException;
 import frc.robot.util.Target;
 
-public class VisionTurn2 extends Command {
+public class VisionTurn extends Command {
 
 //Variables and constants that will be moved to another class later
 
@@ -30,7 +30,7 @@ public class VisionTurn2 extends Command {
 
 //End of things that will be moved later
 
-    public VisionTurn2() {
+    public VisionTurn() {
       finalApproachDist = 0;
         // Use requires() here to declare subsystem dependencies
         requires(Robot.vision);
