@@ -159,7 +159,9 @@ public class OI {
 //        (new JoystickButton(driverLeft, 14)).whenPressed(new StereoTurn());//TODO - FIx Buttons
         //(new JoystickButton(driverLeft, 15)).whenPressed(new DriveAndAdjust());//TODO - FIx Buttons
 
-        (new JoystickButton(driverLeft, 3)).whileHeld(new SimpleFollowVision());//TODO - FIx Buttons
+        if (Robot.simpleVision != null) {
+            (new JoystickButton(driverLeft, 3)).whileHeld(new SimpleFollowVision());
+        }
 
         (new JoystickButton(driverLeft, 7)).whenPressed(new LeftDriveZero());
         (new JoystickButton(driverRight, 7)).whenPressed(new RightDriveZero());
