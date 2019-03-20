@@ -31,7 +31,7 @@ public class LEDs extends Subsystem {
         HAND_OFF_READY,
 
         // Indicates that we have detected
-        // the vision or line targets and
+        // the stereoVision or line targets and
         // the driver can give up control
         VISION_READY,
 

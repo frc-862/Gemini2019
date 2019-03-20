@@ -33,21 +33,21 @@ public class VisionTurn extends Command {
     public VisionTurn() {
       finalApproachDist = 0;
         // Use requires() here to declare subsystem dependencies
-        requires(Robot.vision);
+        requires(Robot.stereoVision);
         requires(Robot.drivetrain);
     }
 
     // Called just before this Command runs the first time
     @Override
     protected void initialize() {
-        //Robot.vision.ledsOn();
+        //Robot.stereoVision.ledsOn();
       finishing = false;
         Robot.drivetrain.setPower(0,0);
         finalHeading = 0;
         target = null;
         Timer.delay(0.2);
         try {
-            target = Robot.vision.getBestTarget();
+            target = Robot.stereoVision.getBestTarget();
         } catch(NoTargetException e) {
             end();
         }
@@ -62,14 +62,14 @@ public class VisionTurn extends Command {
 
         counter++;
         try {
-            target = Robot.vision.getBestTarget();
+            target = Robot.stereoVision.getBestTarget();
             startRotation = Robot.core.getContinuousHeading();
         } catch(NoTargetException e) {
         }
         //Robot.drivetrain.setPower(0.3,0.3);
-        //SmartDashboard.putString("vision turn status", "VisionTurn start");
+        //SmartDashboard.putString("stereoVision turn status", "VisionTurn start");
         if (target == null){
-            SmartDashboard.putString("vision turn status", "target1 null");
+            SmartDashboard.putString("stereoVision turn status", "target1 null");
             end();
         }
         else if(!finishing && target.standoff() < 140 && target.standoff() > 25 && Math.abs(target.squint() - (Robot.core.getContinuousHeading() - startRotation)) > SQUINT_BOUND) {
@@ -77,22 +77,22 @@ public class VisionTurn extends Command {
             SmartDashboard.putNumber("visionturn sign", basePower);
             Robot.drivetrain.setPower(0.2 + basePower, 0.2 -basePower);
             System.out.println("Moving . . . ");
-            SmartDashboard.putNumber("vision target turn", target.squint());
+            SmartDashboard.putNumber("stereoVision target turn", target.squint());
             SmartDashboard.putNumber("counter",counter);
-            SmartDashboard.putString("vision turn status", "VisionTurn turning");
+            SmartDashboard.putString("stereoVision turn status", "VisionTurn turning");
         }
         else {
             startRotation = 0;
-            SmartDashboard.putString("vision turn status", "turn done");
+            SmartDashboard.putString("stereoVision turn status", "turn done");
             if(finalHeading == 0) {
                 finalHeading = Robot.core.getContinuousHeading();
             }
             try {
-                target2 = Robot.vision.getBestTarget();
+                target2 = Robot.stereoVision.getBestTarget();
                 startDist = (Robot.drivetrain.getLeftDistance() + Robot.drivetrain.getRightDistance()) / 2;
                 SmartDashboard.putNumber("startDist", startDist);
                 SmartDashboard.putNumber("standoff", target2.standoff());
-                SmartDashboard.putString("vision turn status", "got target2");
+                SmartDashboard.putString("stereoVision turn status", "got target2");
                 
             } catch(NoTargetException e) {
             }
@@ -103,20 +103,20 @@ public class VisionTurn extends Command {
                 SmartDashboard.putNumber("final heading", finalHeading);
                 SmartDashboard.putNumber("DistAway",  ((Robot.drivetrain.getLeftDistance() + Robot.drivetrain.getRightDistance()) / 2 - startDist));
                 Robot.drivetrain.setPower(0.2,0.2);
-                SmartDashboard.putString("vision turn status", "VisionTurn Straight");
+                SmartDashboard.putString("stereoVision turn status", "VisionTurn Straight");
                 finalApproachDist = (Robot.drivetrain.getLeftDistance() + Robot.drivetrain.getRightDistance()) / 2;
             } 
             else if((Robot.drivetrain.getLeftDistance() + Robot.drivetrain.getRightDistance()) / 2 - finalApproachDist < 50) {
               SmartDashboard.putNumber("final approach dist", finalApproachDist);
-              SmartDashboard.putString("vision turn status", "VisionTurn final approach");
+              SmartDashboard.putString("stereoVision turn status", "VisionTurn final approach");
               SmartDashboard.putNumber("final approach progress", (Robot.drivetrain.getLeftDistance() + Robot.drivetrain.getRightDistance()) / 2 - finalApproachDist);
               SmartDashboard.putNumber("encoder dist", ((Robot.drivetrain.getLeftDistance() + Robot.drivetrain.getRightDistance()) / 2));
               Robot.drivetrain.setPower(0.2, 0.2);
-              //Robot.vision.ledsOff();
+              //Robot.stereoVision.ledsOff();
               finishing = true;
             } 
             else if(finishing) {
-              SmartDashboard.putString("vision turn status", "VisionTurn finished");
+              SmartDashboard.putString("stereoVision turn status", "VisionTurn finished");
               Robot.drivetrain.setPower(0, 0);
 
             }
@@ -143,14 +143,14 @@ public class VisionTurn extends Command {
     @Override
     protected void end() {
         Robot.drivetrain.setPower(0,0);
-        //SmartDashboard.putString("vision turn status", "VisionTurn Done");
+        //SmartDashboard.putString("stereoVision turn status", "VisionTurn Done");
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     @Override
     protected void interrupted() {
-        //Robot.vision.ledsOff();
+        //Robot.stereoVision.ledsOff();
         end();
     }
 }

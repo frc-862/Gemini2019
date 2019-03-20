@@ -154,10 +154,12 @@ public class OI {
         hatchRetract.whenPressed(new RetractHatchCollector());
         hatchExtend.whenPressed(new ExtendHatchCollector());
 
-        //Vision Things
-        (new JoystickButton(driverRight, 3)).whileHeld(new VisionTurn());//TODO - FIx Buttons
-        (new JoystickButton(driverLeft, 14)).whenPressed(new StereoTurn());//TODO - FIx Buttons
-        //(new JoystickButton(driverLeft, 15)).whenPressed(new DriveAndAdjust());//TODO - FIx Buttons
+        //StereoVision Things
+        if (Robot.stereoVision != null) {
+            (new JoystickButton(driverRight, 3)).whileHeld(new VisionTurn());//TODO - FIx Buttons
+            (new JoystickButton(driverLeft, 14)).whenPressed(new StereoTurn());//TODO - FIx Buttons
+            //(new JoystickButton(driverLeft, 15)).whenPressed(new DriveAndAdjust());//TODO - FIx Buttons
+        }
 
         (new JoystickButton(driverLeft, 7)).whenPressed(new LeftDriveZero());
         (new JoystickButton(driverRight, 7)).whenPressed(new RightDriveZero());

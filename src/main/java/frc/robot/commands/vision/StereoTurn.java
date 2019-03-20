@@ -25,7 +25,7 @@ public class StereoTurn extends Command {
     public StereoTurn() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
-        requires(Robot.vision);
+        requires(Robot.stereoVision);
         requires(Robot.drivetrain);
     }
 
@@ -43,8 +43,8 @@ public class StereoTurn extends Command {
         //centerStandoffFromLeft = Math.pow(Math.pow( (leftStandoff * Math.cos(leftSquint)), 2) + Math.pow(leftStandoff * Math.sin(leftSquint + CAMERA_TO_CENTER), 2), .5);
 
         try {
-            // double leftSquint = Robot.vision.getBestTarget().squint();
-            // double leftStandoff = Robot.vision.getBestTarget().standoff();
+            // double leftSquint = Robot.stereoVision.getBestTarget().squint();
+            // double leftStandoff = Robot.stereoVision.getBestTarget().standoff();
 
             // centerStandoffFromLeft = Math.pow(Math.pow( (leftStandoff * Math.cos(leftSquint)), 2) + Math.pow(leftStandoff * Math.sin(leftSquint + CAMERA_TO_CENTER), 2), .5);
             // centerSquintFromLeft = Math.atan((leftStandoff * Math.cos(leftSquint)) / (leftStandoff * Math.sin(leftSquint) + CAMERA_TO_CENTER));
@@ -53,23 +53,23 @@ public class StereoTurn extends Command {
 
             //     Robot.drivetrain.setPower(0.3 * Math.signum(centerSquintFromLeft), 0.3 * -Math.signum(centerSquintFromLeft));
             //     //Robot.drivetrain.setPower(0.4,0.4);
-            //     SmartDashboard.putString("vision turn status", "turning");
+            //     SmartDashboard.putString("stereoVision turn status", "turning");
             //     SmartDashboard.putString("Left Stereo Standoff", Double.toString(centerStandoffFromLeft));
 
             // }
-            Target t = Robot.vision.getBestTarget();
+            Target t = Robot.stereoVision.getBestTarget();
             final double squint = t.squint();
             final double standoff = t.standoff();
             if ( Math.abs(squint) > BIG_SQUINT_BOUND) {
                 Robot.drivetrain.setPower(.25 * Math.signum(squint),-.25 * Math.signum(squint));
-                SmartDashboard.putString("vision turn status", "big adjust");
+                SmartDashboard.putString("stereoVision turn status", "big adjust");
                 
             }
             else if (Math.abs(squint) > SQUINT_BOUND && standoff >= 20){
 
                 double adjustPower = 0.1 * Math.signum(squint);
                 Robot.drivetrain.setPower(.25 + adjustPower, .25 - adjustPower);
-                SmartDashboard.putString("vision turn status", "small adjust");
+                SmartDashboard.putString("stereoVision turn status", "small adjust");
                 currentDistance = (Robot.drivetrain.getLeftDistance() + Robot.drivetrain.getRightDistance()) / 2;
             }
             
@@ -81,14 +81,14 @@ public class StereoTurn extends Command {
                 //robotPower = Math.max(.2, robotPower);
               
                     Robot.drivetrain.setPower(.25, .25);
-                    SmartDashboard.putString("vision turn status", "straight");
+                    SmartDashboard.putString("stereoVision turn status", "straight");
             } 
 
         } catch(NoTargetException e) {
 
 
             Robot.drivetrain.setPower(0, 0);
-            SmartDashboard.putString("vision turn status", "no target");
+            SmartDashboard.putString("stereoVision turn status", "no target");
 
 
         }
