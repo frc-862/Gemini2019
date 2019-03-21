@@ -154,6 +154,10 @@ public class OI {
         hatchRetract.whenPressed(new RetractHatchCollector());
         hatchExtend.whenPressed(new ExtendHatchCollector());
 
+        //Vision Testing 3/20
+        (new JoystickButton((new Joystick(0)), 2)).whileHeld(new StereoTurn());//A
+        (new JoystickButton((new Joystick(0)), 1)).whileHeld(new VisionTurn2());//X
+
         //Vision Things
         (new JoystickButton(driverRight, 3)).whileHeld(new VisionTurn2());//TODO - FIx Buttons
         (new JoystickButton(driverLeft, 14)).whenPressed(new StereoTurn());//TODO - FIx Buttons
@@ -161,6 +165,8 @@ public class OI {
 
         (new JoystickButton(driverLeft, 7)).whenPressed(new LeftDriveZero());
         (new JoystickButton(driverRight, 7)).whenPressed(new RightDriveZero());
+
+        
 
         (new JoystickButton(copilot, 5)).whenPressed(new InstantCommand(Robot.hatchPanelCollector, () -> Robot.hatchPanelCollector.collect()));
         (new JoystickButton(copilot, 6)).whenPressed(new InstantCommand(Robot.hatchPanelCollector, () -> Robot.hatchPanelCollector.eject()));
@@ -215,7 +221,9 @@ public class OI {
         SmartDashboard.putData(new ClimbGoToPosition());
         SmartDashboard.putData(new AutoClimb());
 
-
+        //Vision Command
+        SmartDashboard.putData("VisionTurn", new VisionTurn2());
+        SmartDashboard.putData("StereoTurn", new StereoTurn());
 
         SmartDashboard.putData("lift drive forward", new driveforward());
         SmartDashboard.putData("manual climb", new ManualClimb());

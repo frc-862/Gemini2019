@@ -17,7 +17,7 @@ import frc.robot.util.Target;
 public class StereoTurn extends Command {
 
     private final double SQUINT_BOUND = 5;
-    private final double BIG_SQUINT_BOUND = 15;
+    private final double BIG_SQUINT_BOUND = 5;
     private final double CAMERA_TO_CENTER = 10;
     double centerStandoffFromLeft, centerSquintFromLeft;
     double currentDistance = 0;
@@ -61,14 +61,14 @@ public class StereoTurn extends Command {
             final double squint = t.squint();
             final double standoff = t.standoff();
             if ( Math.abs(squint) > BIG_SQUINT_BOUND) {
-                Robot.drivetrain.setPower(.25 * Math.signum(squint),-.25 * Math.signum(squint));
+                Robot.drivetrain.setPower(1 * Math.signum(squint),-1 * Math.signum(squint));
                 SmartDashboard.putString("vision turn status", "big adjust");
                 
             }
             else if (Math.abs(squint) > SQUINT_BOUND && standoff >= 20){
 
-                double adjustPower = 0.1 * Math.signum(squint);
-                Robot.drivetrain.setPower(.25 + adjustPower, .25 - adjustPower);
+                double adjustPower = 0.3 * Math.signum(squint);
+                Robot.drivetrain.setPower(.35 + adjustPower, .35 - adjustPower);
                 SmartDashboard.putString("vision turn status", "small adjust");
                 currentDistance = (Robot.drivetrain.getLeftDistance() + Robot.drivetrain.getRightDistance()) / 2;
             }
@@ -80,7 +80,7 @@ public class StereoTurn extends Command {
                 //robotPower = Math.min(maxPower, robotPower);
                 //robotPower = Math.max(.2, robotPower);
               
-                    Robot.drivetrain.setPower(.25, .25);
+                    Robot.drivetrain.setPower(.35, .35);
                     SmartDashboard.putString("vision turn status", "straight");
             } 
 
@@ -99,6 +99,7 @@ public class StereoTurn extends Command {
     @Override
     protected boolean isFinished() {
         return false;
+        //return Robot.core.timeOnLine() > 0.2;
     }
 
     // Called once after isFinished returns true

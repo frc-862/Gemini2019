@@ -88,7 +88,7 @@ public class Robot extends LightningRobot {
         // registerAutonomousCommmand("RightSideNearM", new VelocityMotionProfile("RocketR_StartM_EndN"));
 
 
-        //CameraServer.getInstance().startAutomaticCapture();
+        CameraServer.getInstance().startAutomaticCapture();
     }
 
     @Override
