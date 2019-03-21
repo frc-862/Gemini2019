@@ -22,7 +22,7 @@ public class VisionTests extends Command {
     @Override
     protected void initialize() {
         System.out.println("\n\n\n\n\nData transformation test:\n");
-        ArrayList<ArrayList<Target>> dataTransformTestData = Robot.vision.dataTransformationUnitTest();
+        ArrayList<ArrayList<Target>> dataTransformTestData = Robot.stereoVision.dataTransformationUnitTest();
         for (ArrayList<Target> l : dataTransformTestData) {
             for(Target t : l) {
                 System.out.println(t.toString() + "\n\n");

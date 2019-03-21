@@ -11,16 +11,15 @@ import edu.wpi.first.wpilibj.SerialPort;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.NoTargetException;
+import frc.robot.util.NoTargetException;
 import frc.robot.util.Target;
 
-import java.io.FileWriter;
 import java.util.ArrayList;
 
 /**
  * Add your docs here.
  */
-public class Vision extends Subsystem {
+public class StereoVision extends Subsystem {
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
   
@@ -66,7 +65,7 @@ public class Vision extends Subsystem {
       // setDefaultCommand(new MySpecialCommand());
     }
   
-    public Vision() {
+    public StereoVision() {
       try {
         serialInLeft = new SerialPort(115200, CAMERA_LEFT_PORT);
         activeCams.add(Camera.LEFT);
@@ -188,7 +187,7 @@ public class Vision extends Subsystem {
   
     private void collectRawData() {
       //Reset data list and read from serial port
-      //SmartDashboard.putString("vision step", "start");
+      //SmartDashboard.putString("stereoVision step", "start");
       String CamName = "";
       for(Camera inCam : Camera.values()) {
         String inData = "";
@@ -277,9 +276,9 @@ public class Vision extends Subsystem {
         ArrayList<Target> parsed = new ArrayList<Target>();
         String currentTarget;
         for(int i = 0; i < numTargets; i++) {
-          SmartDashboard.putString("vision step", "grab target data");
+          SmartDashboard.putString("stereoVision step", "grab target data");
           currentTarget = lastFrame.substring(lastFrame.indexOf("Target:" + i + "["));
-          SmartDashboard.putString("vision step", "begin parse");
+          SmartDashboard.putString("stereoVision step", "begin parse");
           String typeParse = currentTarget.substring(currentTarget.indexOf("type:") + 5, currentTarget.indexOf(",", currentTarget.indexOf("type:")));
           Target.Type type;
           switch(typeParse) {
@@ -301,12 +300,12 @@ public class Vision extends Subsystem {
           //y = Integer.parseInt(currentTarget.substring(currentTarget.indexOf("y:") + 2, currentTarget.indexOf(",", currentTarget.indexOf("y:"))));
           double standoff, rotation, squint;
           standoff = Double.parseDouble(currentTarget.substring(currentTarget.indexOf("standoff:") + 9, currentTarget.indexOf(",", currentTarget.indexOf("standoff:"))));
-          SmartDashboard.putString("vision step", "parsed standoff");
+          SmartDashboard.putString("stereoVision step", "parsed standoff");
           rotation = Double.parseDouble(currentTarget.substring(currentTarget.indexOf("rotation:") + 9, currentTarget.indexOf(",", currentTarget.indexOf("rotation:"))));
-          SmartDashboard.putString("vision step", "parsed rotation");
+          SmartDashboard.putString("stereoVision step", "parsed rotation");
           squint = Double.parseDouble(currentTarget.substring(currentTarget.indexOf("squint:") + 7, currentTarget.indexOf("]", currentTarget.indexOf("squint:"))));
-          SmartDashboard.putString("vision step", "parsed squint");
-          SmartDashboard.putString("vision step", "end parse");
+          SmartDashboard.putString("stereoVision step", "parsed squint");
+          SmartDashboard.putString("stereoVision step", "end parse");
           parsed.add(new Target(type, 0, 0, standoff, rotation, squint, Math.round(currentTime - latency)));
         }
         lastCameraUpdate = currentTime;

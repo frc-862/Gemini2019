@@ -11,7 +11,7 @@ package frc.robot.commands.vision;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
-import frc.robot.NoTargetException;
+import frc.robot.util.NoTargetException;
 import frc.robot.util.Target;
 
 public class StereoTurn extends Command {
@@ -25,7 +25,7 @@ public class StereoTurn extends Command {
     public StereoTurn() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
-        requires(Robot.vision);
+        requires(Robot.stereoVision);
         requires(Robot.drivetrain);
     }
 
@@ -43,8 +43,8 @@ public class StereoTurn extends Command {
         //centerStandoffFromLeft = Math.pow(Math.pow( (leftStandoff * Math.cos(leftSquint)), 2) + Math.pow(leftStandoff * Math.sin(leftSquint + CAMERA_TO_CENTER), 2), .5);
 
         try {
-            // double leftSquint = Robot.vision.getBestTarget().squint();
-            // double leftStandoff = Robot.vision.getBestTarget().standoff();
+            // double leftSquint = Robot.stereoVision.getBestTarget().squint();
+            // double leftStandoff = Robot.stereoVision.getBestTarget().standoff();
 
             // centerStandoffFromLeft = Math.pow(Math.pow( (leftStandoff * Math.cos(leftSquint)), 2) + Math.pow(leftStandoff * Math.sin(leftSquint + CAMERA_TO_CENTER), 2), .5);
             // centerSquintFromLeft = Math.atan((leftStandoff * Math.cos(leftSquint)) / (leftStandoff * Math.sin(leftSquint) + CAMERA_TO_CENTER));
@@ -53,11 +53,11 @@ public class StereoTurn extends Command {
 
             //     Robot.drivetrain.setPower(0.3 * Math.signum(centerSquintFromLeft), 0.3 * -Math.signum(centerSquintFromLeft));
             //     //Robot.drivetrain.setPower(0.4,0.4);
-            //     SmartDashboard.putString("vision turn status", "turning");
+            //     SmartDashboard.putString("stereoVision turn status", "turning");
             //     SmartDashboard.putString("Left Stereo Standoff", Double.toString(centerStandoffFromLeft));
 
             // }
-            Target t = Robot.vision.getBestTarget();
+            Target t = Robot.stereoVision.getBestTarget();
             final double squint = t.squint();
             final double standoff = t.standoff();
             if ( Math.abs(squint) > BIG_SQUINT_BOUND) {
@@ -80,7 +80,7 @@ public class StereoTurn extends Command {
                 //robotPower = Math.min(maxPower, robotPower);
                 //robotPower = Math.max(.2, robotPower);
               
-                    Robot.drivetrain.setPower(.35, .35);
+                    Robot.drivetrain.setPower(.35, .35); 
                     SmartDashboard.putString("vision turn status", "straight");
             } 
 
@@ -88,7 +88,7 @@ public class StereoTurn extends Command {
 
 
             Robot.drivetrain.setPower(0, 0);
-            SmartDashboard.putString("vision turn status", "no target");
+            SmartDashboard.putString("stereoVision turn status", "no target");
 
 
         }
