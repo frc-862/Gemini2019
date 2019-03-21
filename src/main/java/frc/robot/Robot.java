@@ -40,8 +40,10 @@ public class Robot extends LightningRobot {
     public static Climber climber;
     public static Vision vision;
     public static OI oi;
+    public static GroundCollector groundCollector;
 
     private static boolean gemini = true;
+    
 
     public Robot() {
         super();
@@ -55,6 +57,7 @@ public class Robot extends LightningRobot {
         elevator = new Elevator();
         climber = new Climber();
         core = new Core();
+        groundCollector = new GroundCollector(); 
         //vision = new Vision();
 
         oi = new OI();

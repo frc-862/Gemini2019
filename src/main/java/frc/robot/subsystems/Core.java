@@ -106,6 +106,8 @@ public class Core extends Subsystem {
 
     private DoubleSupplier[] sensorValues = nebulaSensorValues;//Robot.isGemini() ? geminiSensorValues : nebulaSensorValues;
 
+    private boolean sawLine;
+
     public Core() {
         setName("Core");
 
@@ -172,7 +174,7 @@ public class Core extends Subsystem {
         logger.set("ROLL", getRoll());
 
 
-        boolean sawLine = false;
+        sawLine = false;
 
         int pos = -7;
         for (DoubleSupplier sensor : sensorValues) {
@@ -256,8 +258,13 @@ public class Core extends Subsystem {
     }
 
     public double timeOnLine() {
+        // if (!sawLine) return 0;
 
-        return Math.max(0, Timer.getFPGATimestamp()-lineFirstSeen);
+        double result = Timer.getFPGATimestamp()-lineFirstSeen;
+        if (result < 0.05) {
+            return 0;
+        }
+        return result;
     }
 
     public DoubleSupplier getRawData(int a) {

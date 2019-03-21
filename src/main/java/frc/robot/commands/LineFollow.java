@@ -57,7 +57,7 @@ public class LineFollow extends Command {
         prevError = 0;
         errorAcc = 0;
 
-        if (Robot.core.timeOnLine() > 0.12) {
+        if (Robot.core.timeOnLine() > 0.2) {
             state = State.followForward;
         }
     }
@@ -92,12 +92,12 @@ public class LineFollow extends Command {
     }
 
     private double backupError = 0;
-
+    private boolean isReverse=false;
     private void followForward() {
         updateCalculations();
         Robot.drivetrain.setVelocity(velocity + turn, velocity - turn);
 
-        if (Robot.drivetrain.isStalled() && prevError > 1.5) {
+        if (Robot.drivetrain.isStalled() && Math.abs(prevError)> 1.5||isReverse) {
             state = State.followBackward;
             backupError = prevError;
         }
@@ -105,10 +105,12 @@ public class LineFollow extends Command {
 
     private void followBackward() {
         updateCalculations();
-        Robot.drivetrain.setVelocity(-velocity + turn, -velocity - turn);
-
+        isReverse=true;
+        //Robot.drivetrain.setVelocity(-velocity - turn, -velocity + turn);
+        Robot.drivetrain.setVelocity(-velocity, -velocity);
         if (prevError < 1 || prevError < (backupError / 3)) {
             state = State.followForward;
+            isReverse=false;
         }
     }
 

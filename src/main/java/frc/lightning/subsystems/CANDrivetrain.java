@@ -12,6 +12,8 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.BaseMotorController;
 import com.ctre.phoenix.motorcontrol.can.SlotConfiguration;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+
+import edu.wpi.first.hal.HAL;
 import edu.wpi.first.wpilibj.Sendable;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -256,8 +258,15 @@ public abstract class CANDrivetrain extends LightningDrivetrain {
                 leftMaster.getOutputCurrent() > Constants.movingCurrent &&
                 rightMaster.getOutputCurrent() > Constants.movingCurrent) {
             stallCount += 1;
+        } else if (HAL.getBrownedOut()) {
+            stallCount += 1;
         } else {
             stallCount = 0;
         }
+        SmartDashboard.putNumber("Left Current", leftMaster.getOutputCurrent());
+        SmartDashboard.putNumber("Right Current", rightMaster.getOutputCurrent());
+        SmartDashboard.putNumber("Stall Count", stallCount);
+        SmartDashboard.putBoolean("Stalled", isStalled());
+        
     }
 }

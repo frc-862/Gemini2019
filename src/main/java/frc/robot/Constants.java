@@ -94,15 +94,15 @@ public class Constants extends ConstantBase {
     // Line Follow
     //Nebula
     //max
-    public static final double nebulaMaxLeftOutside = 2.4;
-    public static final double nebulaMaxLeftInside = 1.5;
-    public static final double nebulaMaxRightInside = 2.0;
-    public static final double nebulaMaxRightOutside = 2.2;
+    public static final double nebulaMaxLeftOutside = 2.1;
+    public static final double nebulaMaxLeftInside = 1.78;
+    public static final double nebulaMaxRightInside = 1.51;
+    public static final double nebulaMaxRightOutside = 2.1;
     //min
-    public static final double nebulaMinLeftOutside =0.62;
-    public static final double nebulaMinLeftInside = .47;
-    public static final double nebulaMinRightInside = .49;
-    public static final double nebulaMinRightOutside = .66;
+    public static final double nebulaMinLeftOutside =0.92;
+    public static final double nebulaMinLeftInside = .96;
+    public static final double nebulaMinRightInside = .88;
+    public static final double nebulaMinRightOutside = 1.07;
 
     //Gemini
     //max
@@ -116,8 +116,8 @@ public class Constants extends ConstantBase {
     public static final double geminiMinRightInside = .71;
     public static final double geminiMinRightOutside = .71;
 
-    public static final double movingCurrent = 20;
-    public static final double movingVelocity = 0.1;
+    public static final double movingCurrent = 8;
+    public static final double movingVelocity = 1;
 
     public static final int stallDetectLoopDelay = 4;
 }

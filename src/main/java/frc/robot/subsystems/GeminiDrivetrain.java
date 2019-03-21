@@ -11,6 +11,8 @@ import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
+
+import edu.wpi.first.hal.HAL;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.lightning.commands.VelocityMotionProfile;
 import frc.lightning.subsystems.CANDrivetrain;
@@ -100,7 +102,10 @@ public class GeminiDrivetrain extends CANDrivetrain {
 
         configurePID(Constants.drivePIDs);
     }
-
+    public boolean getBrownOut(){
+        return HAL.getBrownedOut();
+    }
+    
     @Override
     public void setVelocity(double left, double right) {
         // convert from ft/s to talon units (enc ticks/ 100ms)

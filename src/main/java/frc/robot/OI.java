@@ -38,6 +38,7 @@ import frc.robot.commands.hatch.RetractHatchCollector;
 import frc.robot.commands.test.LeftDriveZero;
 import frc.robot.commands.test.ResetDriveSensors;
 import frc.robot.commands.test.RightDriveZero;
+import frc.robot.commands.vision.SimpleVision;
 import frc.robot.commands.vision.StereoTurn;
 import frc.robot.commands.vision.VisionRotateAndApproach;
 import frc.robot.commands.vision.VisionTurn;
@@ -134,7 +135,9 @@ public class OI {
         if (driverRight == null) return 0;
         return rightFilter.filter(-driverRight.getRawAxis(JoystickConstants.leftThrottleAxis));
     }
-
+    public double getGroundCollectPower(){
+        return copilot.getRawAxis(5);
+    }
     public double getMicroAdjAmt() {
         if(copilot == null) return 0.0;
         return driveFilter.filter(copilot.getRawAxis(JoystickConstants.leftJoyYAxis));
@@ -204,6 +207,7 @@ public class OI {
         SmartDashboard.putData("Left Near Rocket", new VelocityMotionProfile("src/main/deploy/paths/LeftNearRocket"));
 
         SmartDashboard.putData("RESET_SENSORS", new ResetDriveSensors());
+        SmartDashboard.putData("simple vision", new SimpleVision());
 
         SmartDashboard.putData("Elevator to collect",
                                new InstantCommand(Robot.elevator, () -> Robot.elevator.goToCollect()));
