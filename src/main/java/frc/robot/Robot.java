@@ -9,6 +9,7 @@ package frc.robot;
 
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.Filesystem;
+import edu.wpi.first.wpilibj.SerialPort;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.lightning.LightningRobot;
@@ -38,7 +39,8 @@ public class Robot extends LightningRobot {
     public static HatchGroundCollector hatchGroundCollector;
     public static Elevator elevator;
     public static Climber climber;
-    public static Vision vision;
+    public static SimpleVision simpleVision;
+    public static StereoVision stereoVision;
     public static OI oi;
     public static GroundCollector groundCollector;
 
@@ -57,8 +59,12 @@ public class Robot extends LightningRobot {
         elevator = new Elevator();
         climber = new Climber();
         core = new Core();
-        groundCollector = new GroundCollector(); 
+        // groundCollector = new GroundCollector(); 
         //vision = new Vision();
+
+        // One or the other not both!
+//        simpleVision = new SimpleVision(SerialPort.Port.kUSB);
+//        stereoVision = new StereoVision();
 
         oi = new OI();
 
@@ -92,7 +98,6 @@ public class Robot extends LightningRobot {
         // registerAutonomousCommmand("Test Left Turn", new VelocityMotionProfile("test_left_turn"));
         // registerAutonomousCommmand("Test Right Turn", new VelocityMotionProfile("test_right_turn"));
         // registerAutonomousCommmand("RightSideNearM", new VelocityMotionProfile("RocketR_StartM_EndN"));
-
 
         CameraServer.getInstance().startAutomaticCapture();
     }

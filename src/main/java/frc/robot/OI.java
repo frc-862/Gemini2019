@@ -38,10 +38,10 @@ import frc.robot.commands.hatch.RetractHatchCollector;
 import frc.robot.commands.test.LeftDriveZero;
 import frc.robot.commands.test.ResetDriveSensors;
 import frc.robot.commands.test.RightDriveZero;
-import frc.robot.commands.vision.SimpleVision;
+import frc.robot.commands.vision.SimpleFollowVision;
 import frc.robot.commands.vision.StereoTurn;
-import frc.robot.commands.vision.VisionRotateAndApproach;
 import frc.robot.commands.vision.VisionTurn;
+import frc.robot.commands.vision.SimpleFollowVision;
 
 public class OI {
     //Drive Joysticks
@@ -158,14 +158,22 @@ public class OI {
         hatchRetract.whenPressed(new RetractHatchCollector());
         hatchExtend.whenPressed(new ExtendHatchCollector());
 
-        //Vision Things
-        //(new JoystickButton(driverLeft, 12)).whenPressed(new VisionRotateAndApproach());//TODO - FIx Buttons
-        //(new JoystickButton(driverLeft, 13)).whenPressed(new VisionTurn());//TODO - FIx Buttons
-        //(new JoystickButton(driverLeft, 14)).whenPressed(new StereoTurn());//TODO - FIx Buttons
-        //(new JoystickButton(driverLeft, 15)).whenPressed(new DriveAndAdjust());//TODO - FIx Buttons
+        //StereoVision Things
+        if (Robot.stereoVision != null) {
+            (new JoystickButton(driverRight, 3)).whileHeld(new VisionTurn());//TODO - FIx Buttons
+            (new JoystickButton(driverLeft, 14)).whenPressed(new StereoTurn());//TODO - FIx Buttons
+            //(new JoystickButton(driverLeft, 15)).whenPressed(new DriveAndAdjust());//TODO - FIx Buttons
+        }
+		
+        if (Robot.simpleVision != null) {
+            (new JoystickButton(driverLeft, 3)).whileHeld(new SimpleFollowVision());
+            SmartDashboard.putData("simple vision", new SimpleFollowVision());
+        }
 
         (new JoystickButton(driverLeft, 7)).whenPressed(new LeftDriveZero());
         (new JoystickButton(driverRight, 7)).whenPressed(new RightDriveZero());
+
+        
 
         (new JoystickButton(copilot, 5)).whenPressed(new InstantCommand(Robot.hatchPanelCollector, () -> Robot.hatchPanelCollector.collect()));
         (new JoystickButton(copilot, 6)).whenPressed(new InstantCommand(Robot.hatchPanelCollector, () -> Robot.hatchPanelCollector.eject()));
@@ -207,7 +215,6 @@ public class OI {
         SmartDashboard.putData("Left Near Rocket", new VelocityMotionProfile("src/main/deploy/paths/LeftNearRocket"));
 
         SmartDashboard.putData("RESET_SENSORS", new ResetDriveSensors());
-        SmartDashboard.putData("simple vision", new SimpleVision());
 
         SmartDashboard.putData("Elevator to collect",
                                new InstantCommand(Robot.elevator, () -> Robot.elevator.goToCollect()));
@@ -221,7 +228,9 @@ public class OI {
         SmartDashboard.putData(new ClimbGoToPosition());
         SmartDashboard.putData(new AutoClimb());
 
-
+        //Vision Command
+        SmartDashboard.putData("VisionTurn", new VisionTurn());
+        SmartDashboard.putData("StereoTurn", new StereoTurn());
 
         SmartDashboard.putData("lift drive forward", new driveforward());
         SmartDashboard.putData("manual climb", new ManualClimb());

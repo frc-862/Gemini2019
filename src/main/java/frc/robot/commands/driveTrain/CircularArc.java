@@ -18,7 +18,7 @@ public class CircularArc extends Command {
 
     public CircularArc() {
         //TODO Re-Config PIDF Gains?
-        requires(Robot.drivetrain);//TODO Need Vision
+        requires(Robot.drivetrain);//TODO Need StereoVision
     }
 
     @Override
