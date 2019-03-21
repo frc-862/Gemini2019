@@ -1,4 +1,4 @@
-/*----------------------------------------------------------------------------*/
+// /*----------------------------------------------------------------------------*/
 /* Copyright (c) 2018 FIRST. All Rights Reserved.                             */
 /* Open Source Software - may be modified and shared by FRC teams. The code   */
 /* must be accompanied by the FIRST BSD license file in the root directory of */
@@ -8,7 +8,9 @@
 package frc.robot.commands.auto;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
+import frc.lightning.commands.InterruptableVelocityMotionPath;
 import frc.lightning.commands.VelocityMotionProfile;
+import frc.robot.Robot;
 import frc.robot.commands.elevator.SetElevatorLow;
 import frc.robot.commands.hatch.CloseHatchCollector;
 
@@ -23,7 +25,10 @@ public class CenterPath extends CommandGroup {
         // these will run in order.
         addSequential(new CloseHatchCollector());
         addSequential(new SetElevatorLow());
-        addSequential(new VelocityMotionProfile("ShipM_StartM_EndR"));
+        addSequential(new InterruptableVelocityMotionPath("ShipM_StartM_EndR", (InterruptableVelocityMotionPath mp) -> { 
+            return ((mp.getDuration()- mp.timeSinceInitialized()) <= 1.0 ) && (Robot.stereoVision.targetFound());
+        }));//TODO copy to other commands
+
         //addSequential(new LineFollow(1));
         // To run multiple commands at the same time,
         // use addParallel()

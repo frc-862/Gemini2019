@@ -88,11 +88,15 @@ public class StereoVision extends Subsystem {
   
     }
   
+    public boolean targetFound() {
+      return visionGo;
+    }
+
     public void periodic() {
 
       try {
         Target t = getBestTarget();
-        if(t.standoff() < 130 && Math.abs(t.squint()) < 20 && Math.abs(t.rotation()) < 30){
+        if(t.standoff() < 130 && Math.abs(t.squint()) < 30 && Math.abs(t.rotation()) < 180){
           visionGo = true;
         }
         else {

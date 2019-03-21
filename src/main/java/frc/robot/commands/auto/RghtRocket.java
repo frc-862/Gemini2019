@@ -8,13 +8,14 @@
 package frc.robot.commands.auto;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
+import frc.lightning.commands.InterruptableVelocityMotionPath;
 import frc.lightning.commands.VelocityMotionProfile;
 import frc.robot.commands.elevator.SetElevatorLow;
 import frc.robot.commands.hatch.CloseHatchCollector;
 
 public class RghtRocket extends CommandGroup {
     /**
-
+     * 
      * Add your docs here.
      */
 
@@ -23,7 +24,7 @@ public class RghtRocket extends CommandGroup {
 
         addSequential(new CloseHatchCollector());
         addSequential(new SetElevatorLow());
-        addSequential(new VelocityMotionProfile("RocketR_StartR_EndN"));
+        //addSequential(new InterruptableVelocityMotionPath("RocketR_StartR_EndN"));
         //addSequential(new LineFollow(1));
 
 
