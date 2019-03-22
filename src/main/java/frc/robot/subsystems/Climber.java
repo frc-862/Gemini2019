@@ -18,7 +18,7 @@ import frc.robot.Constants;
 import frc.robot.RobotMap;
 import frc.robot.commands.climber.Climb;
 import frc.robot.commands.climber.RetractClimb;
-import frc.robot.commands.climber.StatefulAutoClimb;
+import frc.robot.commands.climber.JankStatefulClimb;
 
 /**
  * Add your docs here.
@@ -37,6 +37,7 @@ public class Climber extends Subsystem {
         motorSlave = new WPI_VictorSPX(RobotMap.climberSlaveID);
         motorSlave.setInverted(false);
         climberDrive = new WPI_VictorSPX(RobotMap.climberDriveID);
+        climberDrive.setInverted(false);
         addChild("Slave Motor", motorSlave);
         motorSlave.follow(motor);
         deployer = new DoubleSolenoid(RobotMap.compressorCANId, RobotMap.climbFwdChan, RobotMap.climbRevChan);; // TODO create with correct solenoid values
@@ -155,5 +156,8 @@ public class Climber extends Subsystem {
     }
     public boolean isJackSnug() {
         return sensors.isRevLimitSwitchClosed();
+    }
+    public void upABit(){
+        motor.set(ControlMode.MotionMagic, 9750);
     }
 }

@@ -64,8 +64,8 @@ public class Robot extends LightningRobot {
         //stereoVision = new StereoVision();
 
         // One or the other not both!
-//        simpleVision = new SimpleVision(SerialPort.Port.kUSB);
-        stereoVision = new StereoVision();
+        simpleVision = new SimpleVision(SerialPort.Port.kUSB);
+        // stereoVision = new StereoVision();
 
         oi = new OI();
 

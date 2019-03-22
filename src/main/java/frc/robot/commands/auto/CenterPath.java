@@ -25,9 +25,10 @@ public class CenterPath extends CommandGroup {
         // these will run in order.
         addSequential(new CloseHatchCollector());
         addSequential(new SetElevatorLow());
-        addSequential(new InterruptableVelocityMotionPath("ShipM_StartM_EndR", (InterruptableVelocityMotionPath mp) -> { 
-            return ((mp.getDuration()- mp.timeSinceInitialized()) <= 1.0 ) && (Robot.stereoVision.targetFound());
-        }));//TODO copy to other commands
+        addSequential(new VelocityMotionProfile("ShipM_StartM_EndR"));
+        //addSequential(new InterruptableVelocityMotionPath("ShipM_StartM_EndR", (InterruptableVelocityMotionPath mp) -> { 
+        //    return ((mp.getDuration()- mp.timeSinceInitialized()) <= 1.0 ) && (Robot.stereoVision.targetFound());
+        //}));//TODO copy to other commands
 
         //addSequential(new LineFollow(1));
         // To run multiple commands at the same time,

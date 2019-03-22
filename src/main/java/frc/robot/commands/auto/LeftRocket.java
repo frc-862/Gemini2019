@@ -23,7 +23,7 @@ public class LeftRocket extends CommandGroup {
         // these will run in order.
         addSequential(new CloseHatchCollector());
         addSequential(new SetElevatorLow());
-        //addSequential(new InterruptableVelocityMotionPath("RocketL_StartL_EndN"));
+        addSequential(new VelocityMotionProfile("RocketL_StartL_EndN"));
         //addSequential(new LineFollow(1));
         // To run multiple commands at the same time,
         // use addParallel()
