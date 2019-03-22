@@ -35,7 +35,7 @@ public class Climber extends Subsystem {
         motor = new WPI_TalonSRX(RobotMap.climberMasterID);  // TODO create with correct CAN ID in robot map
         addChild("Motor", motor);
         motorSlave = new WPI_VictorSPX(RobotMap.climberSlaveID);
-        motorSlave.setInverted(true);
+        motorSlave.setInverted(false);
         climberDrive = new WPI_VictorSPX(RobotMap.climberDriveID);
         addChild("Slave Motor", motorSlave);
         motorSlave.follow(motor);
@@ -59,8 +59,9 @@ public class Climber extends Subsystem {
          * Invert Motor to have green LEDs when driving Talon Forward / Requesting Postiive Output
          * Phase sensor to have positive increment when driving Talon Forward (Green LED)
          */
-        motor.setSensorPhase(true);
-        motor.setInverted(true);
+        motor.setSensorPhase(false);
+        
+        motor.setInverted(false);
 
         /* Set relevant frame periods to be at least as fast as periodic rate */
         motor.setStatusFramePeriod(StatusFrameEnhanced.Status_13_Base_PIDF0, 20, Constants.kTimeoutMs);

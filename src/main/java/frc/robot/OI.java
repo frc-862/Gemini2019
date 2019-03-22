@@ -160,7 +160,7 @@ public class OI {
 
         //StereoVision Things
         if (Robot.stereoVision != null) {
-            (new JoystickButton(driverRight, 3)).whileHeld(new VisionTurn());//TODO - FIx Buttons
+            //(new JoystickButton(driverRight, 3)).whileHeld(new VisionTurn());//TODO - FIx Buttons
             (new JoystickButton(driverLeft, 14)).whenPressed(new StereoTurn());//TODO - FIx Buttons
             //(new JoystickButton(driverLeft, 15)).whenPressed(new DriveAndAdjust());//TODO - FIx Buttons
         }
@@ -229,7 +229,7 @@ public class OI {
         SmartDashboard.putData(new AutoClimb());
 
         //Vision Command
-        SmartDashboard.putData("VisionTurn", new VisionTurn());
+        //SmartDashboard.putData("VisionTurn", new VisionTurn());
         SmartDashboard.putData("StereoTurn", new StereoTurn());
 
         SmartDashboard.putData("lift drive forward", new driveforward());

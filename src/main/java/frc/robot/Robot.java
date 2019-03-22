@@ -60,11 +60,11 @@ public class Robot extends LightningRobot {
         climber = new Climber();
         core = new Core();
         // groundCollector = new GroundCollector(); 
-        //vision = new Vision();
+        //stereoVision = new StereoVision();
 
         // One or the other not both!
 //        simpleVision = new SimpleVision(SerialPort.Port.kUSB);
-//        stereoVision = new StereoVision();
+        stereoVision = new StereoVision();
 
         oi = new OI();
 
