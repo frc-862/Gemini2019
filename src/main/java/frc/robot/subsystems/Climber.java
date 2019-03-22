@@ -158,6 +158,6 @@ public class Climber extends Subsystem {
         return sensors.isRevLimitSwitchClosed();
     }
     public void upABit(){
-        motor.set(ControlMode.MotionMagic, 9750);
+        motor.set(ControlMode.MotionMagic, 8000);
     }
 }
