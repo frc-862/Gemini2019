@@ -7,40 +7,36 @@
 
 package frc.robot.commands.auto;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.CommandGroup;
+import edu.wpi.first.wpilibj.command.ConditionalCommand;
 import frc.lightning.commands.InterruptableVelocityMotionPath;
 import frc.lightning.commands.VelocityMotionProfile;
 import frc.robot.Robot;
+import frc.robot.commands.LineFollow;
 import frc.robot.commands.elevator.SetElevatorLow;
 import frc.robot.commands.hatch.CloseHatchCollector;
+import frc.robot.commands.hatch.ExtendHatchCollector;
 
 public class CenterPath extends CommandGroup {
-    /**
-     * Add your docs here.
-     */
+
     public CenterPath() {
-        // Add Commands here:
-        // e.g. addSequential(new Command1());
-        // addSequential(new Command2());
-        // these will run in order.
         addSequential(new CloseHatchCollector());
         addSequential(new SetElevatorLow());
-        addSequential(new VelocityMotionProfile("ShipM_StartM_EndR"));
-        //addSequential(new InterruptableVelocityMotionPath("ShipM_StartM_EndR", (InterruptableVelocityMotionPath mp) -> { 
-        //    return ((mp.getDuration()- mp.timeSinceInitialized()) <= 1.0 ) && (Robot.stereoVision.targetFound());
-        //}));//TODO copy to other commands
 
-        //addSequential(new LineFollow(1));
-        // To run multiple commands at the same time,
-        // use addParallel()
-        // e.g. addParallel(new Command1());
-        // addSequential(new Command2());
-        // Command1 and Command2 will run in parallel.
+        addSequential(new InterruptableVelocityMotionPath("ShipM_StartM_EndR", (InterruptableVelocityMotionPath mp) -> { 
+            return Robot.core.timeOnLine() > 0.2;
+        }));
 
-        // A command group will require all of the subsystems that each member
-        // would require.
-        // e.g. if Command1 requires chassis, and Command2 requires arm,
-        // a CommandGroup containing them would require both the chassis and the
-        // arm.
+        addSequential(new LineFollow());
+
+        addSequential(new ConditionalCommand(new ExtendHatchCollector()) {
+        
+            @Override
+            protected boolean condition() {
+                return Math.abs(Robot.core.lineSensor()) < 1.5;
+            }
+        });
+
     }
 }
