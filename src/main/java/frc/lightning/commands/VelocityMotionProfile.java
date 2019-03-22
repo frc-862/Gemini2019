@@ -34,6 +34,10 @@ public class VelocityMotionProfile extends Command {
         kTheta = _kTheta;
     }
 
+    public double getDuration(){
+        return this.finishedAt;
+    }
+
     private void configProfile(InterpolatingTreeMap<InterpolatingDouble, InterpolatingMotionPoint> left,
                                InterpolatingTreeMap<InterpolatingDouble, InterpolatingMotionPoint> right) {
         System.out.println("Config velo profile");
