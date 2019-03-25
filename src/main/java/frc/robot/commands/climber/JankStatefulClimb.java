@@ -74,7 +74,7 @@ public class JankStatefulClimb extends StatefulCommand {
     public void driveForward() {
         Robot.climber.setClimberDrivePower(1);
         Robot.drivetrain.setPower(0.4, 0.4);
-        if (Timer.getFPGATimestamp() - startedDrivingAt > 7) {
+        if (Timer.getFPGATimestamp() - startedDrivingAt > 7) {//TODO make faster
             startedDrivingAt = Timer.getFPGATimestamp();
             Robot.climber.setClimberDrivePower(0);
             Robot.drivetrain.stop();

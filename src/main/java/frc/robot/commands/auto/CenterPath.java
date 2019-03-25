@@ -23,20 +23,21 @@ public class CenterPath extends CommandGroup {
     public CenterPath() {
         addSequential(new CloseHatchCollector());
         addSequential(new SetElevatorLow());
+        addSequential(new VelocityMotionProfile("ShipM_StartM_EndR"));
 
-        addSequential(new InterruptableVelocityMotionPath("ShipM_StartM_EndR", (InterruptableVelocityMotionPath mp) -> { 
-            return Robot.core.timeOnLine() > 0.2;
-        }));
-
-        addSequential(new LineFollow());
-
-        addSequential(new ConditionalCommand(new ExtendHatchCollector()) {
+        //addSequential(new InterruptableVelocityMotionPath("ShipM_StartM_EndR", (InterruptableVelocityMotionPath mp) -> { 
+        //    return Robot.core.timeOnLine() > 0.2;
+        //}));
+//
+        //addSequential(new LineFollow());
+//
+        //addSequential(new ConditionalCommand(new ExtendHatchCollector()) {
+        //
+        //    @Override
+        //    protected boolean condition() {
+        //        return Math.abs(Robot.core.lineSensor()) < 1.5;
+        //    }
+        //});
         
-            @Override
-            protected boolean condition() {
-                return Math.abs(Robot.core.lineSensor()) < 1.5;
-            }
-        });
-
     }
 }
