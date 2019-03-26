@@ -86,7 +86,9 @@ public class GeminiDrivetrain extends CANDrivetrain {
         withEachMotor((m) -> m.setNeutralMode(NeutralMode.Brake));
         withEachMaster((m) -> {
             m.configOpenloopRamp(0.1);
-            m.configClosedloopRamp(0.15);
+            m.configClosedloopRamp(0.05);
+
+            m.configAllowableClosedloopError(0, (int) Math.round(LightningMath.fps2talon(0.5)));
 
             m.configContinuousCurrentLimit(38);
             m.configPeakCurrentDuration(100);

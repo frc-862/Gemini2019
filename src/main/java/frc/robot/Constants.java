@@ -37,22 +37,10 @@ public class Constants extends ConstantBase {
 
 
     static {
-        //if(Robot.isGemini()) {
-        //    //_____GEMINI_____\\
-        //    motionPathPIDs = new Gains(4.65, 0.0,  0.0,   0.74,  0);
-        //    drivePIDs = new Gains(4.65, 0.0,  0.0,   0.74,  0);
-        //} else {
-        //    //_____NEBULA_____\\
-        //    motionPathPIDs = new Gains(0.0, 0.0,  0.0, 0.0,  0);
-        //    drivePIDs = new Gains( 0.0, 0.0, 0.0, 0.0,  0);
-        //}
+        Gains universalGAINS = new Gains(2.0, 0.0,  0.14, 0.99,  0);
 
-        Gains universalGAINS = new Gains/*(0.1, 0.0, 0.0, 0.1, 0);*/(4.0, 0.0,  0.34, 1.15,  0);//gemini //p = 4.65
-
-        motionPathPIDs = universalGAINS;// new Gains(4.65, 0.0,  0.0,   0.74,  0);// 9!!!
-
-        drivePIDs = universalGAINS;// new Gains( 4.65, 0.0,  0.0, 0.74,  0);
-        //drivePIDs = new Gains( 4.65, 0.0,  0.0, 0.74,  0);
+        motionPathPIDs = universalGAINS;
+        drivePIDs = universalGAINS;
     }
 
     public final static int kPrimaryPIDSlot = 0;
@@ -88,8 +76,6 @@ public class Constants extends ConstantBase {
     // DriveTrain
     public final static double velocityMultiplier = 11.7;
     public final static int drivePowerCurve = 3;
-
-    //public final static Gains drivePIDF = new Gains(862, 0, 0, 8.62, 0);
 
     // Line Follow
     //Nebula
