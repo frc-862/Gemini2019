@@ -25,7 +25,7 @@ public class groundcollectrotate extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    Robot.groundCollector.setGroundCollet(Robot.oi.getCargoCollectPower());
+    Robot.groundCollector.setGroundCollet(Robot.oi.groundCollectPwr());
   }
 
   // Make this return true when this Command no longer needs to run execute()

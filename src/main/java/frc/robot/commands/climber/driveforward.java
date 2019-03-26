@@ -25,8 +25,8 @@ public class driveforward extends Command {
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-        Robot.climber.setClimberDrivePower(Robot.oi.forwardClimbForwardPwr());
-        Robot.drivetrain.setPower(Robot.oi.forwardClimbForwardPwr()*.3, Robot.oi.forwardClimbForwardPwr()*.3);
+        Robot.climber.setClimberDrivePower(Robot.oi.groundCollectPwr());
+        Robot.drivetrain.setPower(Robot.oi.groundCollectPwr()*.3, Robot.oi.groundCollectPwr()*.3);
 
     }
 

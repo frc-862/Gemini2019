@@ -229,8 +229,8 @@ public class OI {
         SmartDashboard.putData(new AutoClimb());
 
         //Vision Command
-        SmartDashboard.putData("VisionTurn", new VisionTurn());
-        SmartDashboard.putData("StereoTurn", new StereoTurn());
+        // SmartDashboard.putData("VisionTurn", new VisionTurn());
+        // SmartDashboard.putData("StereoTurn", new StereoTurn());
 
         SmartDashboard.putData("lift drive forward", new driveforward());
         SmartDashboard.putData("manual climb", new ManualClimb());
@@ -238,7 +238,7 @@ public class OI {
         SmartDashboard.putData("Retract Shocks", new RetractShocks());
     }
 
-    public double forwardClimbForwardPwr() {
+    public double groundCollectPwr() {
         return -copilot.getRawAxis(5);
     }
 

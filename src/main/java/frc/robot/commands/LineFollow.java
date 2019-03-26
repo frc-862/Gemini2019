@@ -97,7 +97,7 @@ public class LineFollow extends Command {
         updateCalculations();
         Robot.drivetrain.setVelocity(velocity + turn, velocity - turn);
 
-        if (Robot.drivetrain.isStalled() && Math.abs(prevError)> 1.5||isReverse) {
+        if ((Robot.drivetrain.isStalled() )&& (Math.abs(prevError)> 1.5)||(isReverse)) {
             state = State.followBackward;
             backupError = prevError;
         }
@@ -108,7 +108,7 @@ public class LineFollow extends Command {
         isReverse=true;
         //Robot.drivetrain.setVelocity(-velocity - turn, -velocity + turn);
         Robot.drivetrain.setVelocity(-velocity, -velocity);
-        if (prevError < 1 || prevError < (backupError / 3)) {
+        if ((prevError < 1) || (prevError < (backupError / 3))) {
             state = State.followForward;
             isReverse=false;
         }
@@ -135,7 +135,7 @@ public class LineFollow extends Command {
     // Make this return true when this Command no longer needs to run execute()
     @Override
     protected boolean isFinished() {
-        return timeout > 0 && timeSinceInitialized() > timeout;
+        return ((timeout > 0) && (timeSinceInitialized() > timeout))|| (Robot.drivetrain.isStalled()&&(Math.abs(prevError)>1.5));
     }
 
     // Called once after isFinished returns true
