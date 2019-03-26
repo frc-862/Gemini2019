@@ -18,7 +18,7 @@ import frc.robot.Constants;
 import frc.robot.RobotMap;
 import frc.robot.commands.climber.Climb;
 import frc.robot.commands.climber.RetractClimb;
-import frc.robot.commands.climber.StatefulAutoClimb;
+import frc.robot.commands.climber.JankStatefulClimb;
 
 /**
  * Add your docs here.
@@ -35,8 +35,9 @@ public class Climber extends Subsystem {
         motor = new WPI_TalonSRX(RobotMap.climberMasterID);  // TODO create with correct CAN ID in robot map
         addChild("Motor", motor);
         motorSlave = new WPI_VictorSPX(RobotMap.climberSlaveID);
-        motorSlave.setInverted(true);
+        motorSlave.setInverted(false);
         climberDrive = new WPI_VictorSPX(RobotMap.climberDriveID);
+        climberDrive.setInverted(false);
         addChild("Slave Motor", motorSlave);
         motorSlave.follow(motor);
         deployer = new DoubleSolenoid(RobotMap.compressorCANId, RobotMap.climbFwdChan, RobotMap.climbRevChan);; // TODO create with correct solenoid values
@@ -59,8 +60,9 @@ public class Climber extends Subsystem {
          * Invert Motor to have green LEDs when driving Talon Forward / Requesting Postiive Output
          * Phase sensor to have positive increment when driving Talon Forward (Green LED)
          */
-        motor.setSensorPhase(true);
-        motor.setInverted(true);
+        motor.setSensorPhase(false);
+        
+        motor.setInverted(false);
 
         /* Set relevant frame periods to be at least as fast as periodic rate */
         motor.setStatusFramePeriod(StatusFrameEnhanced.Status_13_Base_PIDF0, 20, Constants.kTimeoutMs);
@@ -154,5 +156,8 @@ public class Climber extends Subsystem {
     }
     public boolean isJackSnug() {
         return sensors.isRevLimitSwitchClosed();
+    }
+    public void upABit(){
+        motor.set(ControlMode.MotionMagic, 8000);
     }
 }

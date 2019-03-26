@@ -27,6 +27,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.function.BooleanSupplier;
 
 public class Robot extends LightningRobot {
 
@@ -60,11 +61,11 @@ public class Robot extends LightningRobot {
         climber = new Climber();
         core = new Core();
         // groundCollector = new GroundCollector(); 
-        //vision = new Vision();
+        //stereoVision = new StereoVision();
 
         // One or the other not both!
-//        simpleVision = new SimpleVision(SerialPort.Port.kUSB);
-//        stereoVision = new StereoVision();
+        simpleVision = new SimpleVision(SerialPort.Port.kUSB);
+        // stereoVision = new StereoVision();
 
         oi = new OI();
 
@@ -77,8 +78,9 @@ public class Robot extends LightningRobot {
         registerAutonomousCommmand("Left Rocket",new LeftRocket());
         registerAutonomousCommmand("Right Rocket",new RghtRocket());
         registerAutonomousCommmand("Center Ship",new CenterPath());
+        BooleanSupplier bs;
         
-        registerAutonomousCommmand("Test Right Rocket", new VelocityMotionProfile("RocketR_StartR_EndN"));
+        //registerAutonomousCommmand("Test Right Rocket", new VelocityMotionProfile("RocketR_StartR_EndN"));
 
         // registerAutonomousCommmand("AUTON", new Auto(this.getSelectedElevatorPos(),
         //                            this.getSelectedGamePiece(),

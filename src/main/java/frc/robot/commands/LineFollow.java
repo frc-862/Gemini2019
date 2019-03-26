@@ -34,6 +34,7 @@ public class LineFollow extends Command {
         logger.addDataElement("leftpos");
         logger.addDataElement("rightpos");
         logger.addDataElement("stalled");
+        logger.addDataElement("state");
         SmartDashboard.putNumber("Turn Power", turnP);
         SmartDashboard.putNumber("Straight Vel", straightVelocity);
         SmartDashboard.putNumber("Turning Vel", turningVelocity);
@@ -94,6 +95,8 @@ public class LineFollow extends Command {
         logger.set("stalled", Robot.drivetrain.isStalled() ? 1 : 0);
         logger.write();
 
+        SmartDashboard.putString("LineFollowState", state.name());
+
         prevError = error;
     }
 
@@ -103,17 +106,21 @@ public class LineFollow extends Command {
         updateCalculations();
         Robot.drivetrain.setVelocity(velocity + turn, velocity - turn);
 
-        if (Robot.drivetrain.isStalled() && Math.abs(prevError)> 1.4) {
-            state = State.followBackward;
-            backupError = prevError;
+        if (Robot.drivetrain.isStalled() && Math.abs(prevError)> 1.5) {
+            if (Math.abs(prevError)> 1.5) {
+                state = State.followBackward;
+                backupError = prevError;
+            } else {
+                Robot.drivetrain.setVelocity(0, 0);
+            }
         }
     }
 
     private void followBackward() {
         updateCalculations();
-        Robot.drivetrain.setVelocity(-velocity - turn, -velocity + turn);
+        //Robot.drivetrain.setVelocity(-velocity - turn, -velocity + turn);
 
-        if (prevError < 1 || prevError < (backupError / 3)) {
+        if (Math.abs(prevError) < 1) {
             state = State.followForward;
         }
     }
@@ -139,6 +146,9 @@ public class LineFollow extends Command {
     // Make this return true when this Command no longer needs to run execute()
     @Override
     protected boolean isFinished() {
+        if (Math.abs(Robot.core.lineSensor()) < 1.5 && Math.abs(Robot.drivetrain.getVelocity()) < 0.25)
+            return true;
+
         return timeout > 0 && timeSinceInitialized() > timeout;
     }
 
@@ -147,5 +157,6 @@ public class LineFollow extends Command {
     protected void end() {
         logger.drain();
         logger.flush();
+        Robot.drivetrain.setPower(0,0);
     }
 }

@@ -102,7 +102,7 @@ public class Core extends Subsystem {
 
     };
 
-    private DoubleSupplier[] sensorValues = nebulaSensorValues;//Robot.isGemini() ? geminiSensorValues : nebulaSensorValues;
+    private DoubleSupplier[] sensorValues = Robot.isGemini() ? geminiSensorValues : nebulaSensorValues;
 
     private boolean sawLine;
 

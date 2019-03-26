@@ -24,14 +24,7 @@ import frc.robot.commands.auto.HatchAuton;
 import frc.robot.commands.calibration.TestMove;
 import frc.robot.commands.cargo.DeployCargoCollector;
 import frc.robot.commands.cargo.RetractCargoCollector;
-import frc.robot.commands.climber.AutoClimb;
-import frc.robot.commands.climber.Climb;
-import frc.robot.commands.climber.ExtendShocks;
-import frc.robot.commands.climber.ClimbGoToPosition;
-import frc.robot.commands.climber.ManualClimb;
-import frc.robot.commands.climber.RetractShocks;
-import frc.robot.commands.climber.StatefulAutoClimb;
-import frc.robot.commands.climber.driveforward;
+import frc.robot.commands.climber.*;
 import frc.robot.commands.driveTrain.ConfigMotors;
 import frc.robot.commands.hatch.CloseHatchCollector;
 import frc.robot.commands.hatch.ExtendHatchCollector;
@@ -162,7 +155,7 @@ public class OI {
 
         //StereoVision Things
         if (Robot.stereoVision != null) {
-            (new JoystickButton(driverRight, 3)).whileHeld(new VisionTurn());//TODO - FIx Buttons
+            //(new JoystickButton(driverRight, 3)).whileHeld(new VisionTurn());//TODO - FIx Buttons
             (new JoystickButton(driverLeft, 14)).whenPressed(new StereoTurn());//TODO - FIx Buttons
             //(new JoystickButton(driverLeft, 15)).whenPressed(new DriveAndAdjust());//TODO - FIx Buttons
         }
@@ -175,11 +168,8 @@ public class OI {
         // TODO Fix button numbers
         (new TwoButtonButton(new JoystickButton(driverLeft, 10),
                 new JoystickButton(driverRight, 10))).whenPressed(new StatefulAutoClimb());
-
         (new JoystickButton(driverLeft, 7)).whenPressed(new LeftDriveZero());
         (new JoystickButton(driverRight, 7)).whenPressed(new RightDriveZero());
-
-        
 
         (new JoystickButton(copilot, 5)).whenPressed(new InstantCommand(Robot.hatchPanelCollector, () -> Robot.hatchPanelCollector.collect()));
         (new JoystickButton(copilot, 6)).whenPressed(new InstantCommand(Robot.hatchPanelCollector, () -> Robot.hatchPanelCollector.eject()));
@@ -219,7 +209,7 @@ public class OI {
         SmartDashboard.putData("line follow", new LineFollow());
         SmartDashboard.putData("test move", new TestMove());
         SmartDashboard.putData("Left Near Rocket", new VelocityMotionProfile("src/main/deploy/paths/LeftNearRocket"));
-
+        SmartDashboard.putData("Auto Climb",new JankStatefulClimb());
         SmartDashboard.putData("RESET_SENSORS", new ResetDriveSensors());
 
         SmartDashboard.putData("Elevator to collect",
@@ -230,13 +220,17 @@ public class OI {
                                new InstantCommand(Robot.elevator, () -> Robot.elevator.goToMid()));
         SmartDashboard.putData("Elevator to high",
                                new InstantCommand(Robot.elevator, () -> Robot.elevator.goToHigh()));
-        SmartDashboard.putData(new StatefulAutoClimb());
+        SmartDashboard.putData(new JankStatefulClimb());
         SmartDashboard.putData(new ClimbGoToPosition());
         SmartDashboard.putData(new AutoClimb());
+        
+        SmartDashboard.putData("CLimber To Zero", new InstantCommand(Robot.climber, () -> Robot.climber.goToPos(0)));
 
         //Vision Command
-        SmartDashboard.putData("VisionTurn", new VisionTurn());
-        SmartDashboard.putData("StereoTurn", new StereoTurn());
+        //SmartDashboard.putData("VisionTurn", new VisionTurn());
+        if (Robot.stereoVision != null) {
+            SmartDashboard.putData("StereoTurn", new StereoTurn());
+        }
 
         SmartDashboard.putData("lift drive forward", new driveforward());
         SmartDashboard.putData("manual climb", new ManualClimb());
