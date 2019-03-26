@@ -31,6 +31,9 @@ public class LineFollow extends Command {
         logger.addDataElement("error");
         logger.addDataElement("turn");
         logger.addDataElement("velocity");
+        logger.addDataElement("leftpos");
+        logger.addDataElement("rightpos");
+        logger.addDataElement("stalled");
         SmartDashboard.putNumber("Turn Power", turnP);
         SmartDashboard.putNumber("Straight Vel", straightVelocity);
         SmartDashboard.putNumber("Turning Vel", turningVelocity);
@@ -86,18 +89,21 @@ public class LineFollow extends Command {
         logger.set("error", error);
         logger.set("turn", turn);
         logger.set("velocity", velocity);
+        logger.set("leftpos", Robot.drivetrain.getLeftDistance());
+        logger.set("rightpos", Robot.drivetrain.getRightDistance());
+        logger.set("stalled", Robot.drivetrain.isStalled() ? 1 : 0);
         logger.write();
 
         prevError = error;
     }
 
     private double backupError = 0;
-    private boolean isReverse=false;
+
     private void followForward() {
         updateCalculations();
         Robot.drivetrain.setVelocity(velocity + turn, velocity - turn);
 
-        if (Robot.drivetrain.isStalled() && Math.abs(prevError)> 1.5||isReverse) {
+        if (Robot.drivetrain.isStalled() && Math.abs(prevError)> 1.4) {
             state = State.followBackward;
             backupError = prevError;
         }
@@ -105,12 +111,10 @@ public class LineFollow extends Command {
 
     private void followBackward() {
         updateCalculations();
-        isReverse=true;
-        //Robot.drivetrain.setVelocity(-velocity - turn, -velocity + turn);
-        Robot.drivetrain.setVelocity(-velocity, -velocity);
+        Robot.drivetrain.setVelocity(-velocity - turn, -velocity + turn);
+
         if (prevError < 1 || prevError < (backupError / 3)) {
             state = State.followForward;
-            isReverse=false;
         }
     }
 
@@ -130,7 +134,7 @@ public class LineFollow extends Command {
             followBackward();
             break;
         }
-    };
+    }
 
     // Make this return true when this Command no longer needs to run execute()
     @Override
