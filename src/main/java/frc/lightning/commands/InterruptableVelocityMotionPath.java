@@ -5,7 +5,7 @@ import frc.lightning.util.InterpolatingMotionPoint;
 import frc.lightning.util.InterpolatingTreeMap;
 
 public class InterruptableVelocityMotionPath extends VelocityMotionProfile {
-    
+
     public abstract interface EndCondition {
         public abstract boolean getAsBoolean(InterruptableVelocityMotionPath path);
     }

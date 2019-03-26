@@ -45,8 +45,8 @@ public class JankStatefulClimb extends StatefulCommand {
     }
 
     public void startClimb() {
-       Robot.climber.extendJack();
-       setState(States.WAIT_TO_DEPLOY_SKIDS);
+        Robot.climber.extendJack();
+        setState(States.WAIT_TO_DEPLOY_SKIDS);
     }
 
     public void waitToDeploySkids() {
@@ -62,7 +62,7 @@ public class JankStatefulClimb extends StatefulCommand {
 
     public void waitToDriveForward() {
         if (LightningMath.epsilonEqual(Robot.climber.getJackPosition(),
-                Constants.climberExtenedPosition, Constants.climberEpsilon)) {
+                                       Constants.climberExtenedPosition, Constants.climberEpsilon)) {
             setState(States.DRIVE_FORWARD);
         }
     }
@@ -81,7 +81,7 @@ public class JankStatefulClimb extends StatefulCommand {
             setState(States.BACKUP_A_BIT);
         }
     }
-    public void backupABit(){
+    public void backupABit() {
         Robot.climber.setClimberDrivePower(-1);
         if (Timer.getFPGATimestamp() - startedDrivingAt > .4) {
             Robot.climber.setClimberDrivePower(0);

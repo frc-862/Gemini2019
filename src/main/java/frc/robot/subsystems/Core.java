@@ -150,7 +150,7 @@ public class Core extends Subsystem {
         SystemTest.register(new NavXTest());
     }
 
-    public boolean isVisionReady(){
+    public boolean isVisionReady() {
         return false;//TODO fix
     }
 

@@ -34,7 +34,7 @@ public class VelocityMotionProfile extends Command {
         kTheta = _kTheta;
     }
 
-    public double getDuration(){
+    public double getDuration() {
         return this.finishedAt;
     }
 

@@ -46,7 +46,7 @@ public class Robot extends LightningRobot {
     public static GroundCollector groundCollector;
 
     private static boolean gemini = true;
-    
+
 
     public Robot() {
         super();
@@ -60,7 +60,7 @@ public class Robot extends LightningRobot {
         elevator = new Elevator();
         climber = new Climber();
         core = new Core();
-        // groundCollector = new GroundCollector(); 
+        // groundCollector = new GroundCollector();
         //stereoVision = new StereoVision();
 
         // One or the other not both!
@@ -79,7 +79,7 @@ public class Robot extends LightningRobot {
         registerAutonomousCommmand("Right Rocket",new RghtRocket());
         registerAutonomousCommmand("Center Ship",new CenterPath());
         BooleanSupplier bs;
-        
+
         //registerAutonomousCommmand("Test Right Rocket", new VelocityMotionProfile("RocketR_StartR_EndN"));
 
         // registerAutonomousCommmand("AUTON", new Auto(this.getSelectedElevatorPos(),

@@ -46,5 +46,5 @@ public class RobotMap {
 
     public static final int extra1CanId = 12;
     public static final int extra2CanId = 13;
-	
+
 }

@@ -42,14 +42,14 @@ public class UpdateLEDState extends Command {
         TIME_2_CLIMB_KIDS,      //101
         CLIMBING,               //110
         ALL_DONE_NAP_TIME       //111
-        
+
 
     */
     // Called repeatedly when this Command is scheduled to run
     LEDs.State state;
     @Override
     protected void execute() {
-        
+
         if(Robot.core.hasCargo()||Robot.core.hasHatch()) state = LEDs.State.PIECE_COLLECTED;
 
         else if(Timer.getMatchTime() < 30) state = LEDs.State.TIME_2_CLIMB_KIDS;

@@ -43,7 +43,7 @@ public class Climber extends Subsystem {
         deployer = new DoubleSolenoid(RobotMap.compressorCANId, RobotMap.climbFwdChan, RobotMap.climbRevChan);; // TODO create with correct solenoid values
         motor.configForwardLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen, 0);
         motor.configReverseLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen, 0);
-        
+
         /* Factory default hardware to prevent unexpected behavior */
         motor.configFactoryDefault();
 
@@ -61,7 +61,7 @@ public class Climber extends Subsystem {
          * Phase sensor to have positive increment when driving Talon Forward (Green LED)
          */
         motor.setSensorPhase(false);
-        
+
         motor.setInverted(false);
 
         /* Set relevant frame periods to be at least as fast as periodic rate */
@@ -112,7 +112,7 @@ public class Climber extends Subsystem {
         } else if(pos > Constants.climberMaxHeight) {
             motor.setSelectedSensorPosition(Constants.climberMaxHeight);
         }
-        
+
         //SmartDashboard.putData(new Climb());
         //SmartDashboard.putData(new RetractClimb());
     }
@@ -148,23 +148,23 @@ public class Climber extends Subsystem {
         motor.set(ControlMode.PercentOutput, pwr);
     }
 
-    public boolean isDoneClimbing(){
+    public boolean isDoneClimbing() {
         return false;//TODO fix
     }
 
     public void setClimberDrivePower(double pwr) {
         climberDrive.set(ControlMode.PercentOutput, pwr);
     }
-    public void goToPos(int pos){
+    public void goToPos(int pos) {
         motor.set(ControlMode.MotionMagic, pos);
     }
     public boolean isJackSnug() {
         return sensors.isRevLimitSwitchClosed();
     }
-    public void upABit(){
+    public void upABit() {
         motor.set(ControlMode.MotionMagic, 8000);
     }
-    public int getTicks(){
+    public int getTicks() {
         return motor.getSelectedSensorPosition();
     }
 }

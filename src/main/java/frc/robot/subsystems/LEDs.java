@@ -31,7 +31,7 @@ public class LEDs extends Subsystem {
     // here. Call these from Commands.
 
     public enum State {
-        
+
         //Normal
         OFF,                    //0
         STD_BLUE_ORANGE_CHASE,  //1
@@ -44,7 +44,7 @@ public class LEDs extends Subsystem {
         TIME_2_CLIMB_KIDS,      //101
         CLIMBING,               //110
         ALL_DONE_NAP_TIME       //111
-        
+
     }
 
     private DigitalOutput bit1;
@@ -78,33 +78,33 @@ public class LEDs extends Subsystem {
 
     private void set() {
         switch (state) {
-            case STD_BLUE_ORANGE_CHASE:
-                setBits(0, 0, 1);
-                break;
-            case LINE_FOLLOW_READY:
-                setBits(0, 1, 0);
-                break;
-            case VISION_READY:
-                setBits(0, 1, 1);
-                break;
-            case PIECE_COLLECTED:
-                setBits(1, 0, 0);
-                break;
-            case TIME_2_CLIMB_KIDS:
-                setBits(1, 0, 1);
-                break;
-            case CLIMBING:
-                setBits(1, 1, 0);
-                break;
-            case ALL_DONE_NAP_TIME:
-                setBits(1, 1, 1);
-                break;
-            default://OFF
-                setBits(0, 0, 0);
-                break;
+        case STD_BLUE_ORANGE_CHASE:
+            setBits(0, 0, 1);
+            break;
+        case LINE_FOLLOW_READY:
+            setBits(0, 1, 0);
+            break;
+        case VISION_READY:
+            setBits(0, 1, 1);
+            break;
+        case PIECE_COLLECTED:
+            setBits(1, 0, 0);
+            break;
+        case TIME_2_CLIMB_KIDS:
+            setBits(1, 0, 1);
+            break;
+        case CLIMBING:
+            setBits(1, 1, 0);
+            break;
+        case ALL_DONE_NAP_TIME:
+            setBits(1, 1, 1);
+            break;
+        default://OFF
+            setBits(0, 0, 0);
+            break;
         }
     }
-    private void setBits(int i1, int i2, int i3){
+    private void setBits(int i1, int i2, int i3) {
         boolean b1 = (i1 == 1) ? true : false;
         boolean b2 = (i2 == 1) ? true : false;
         boolean b3 = (i3 == 1) ? true : false;

@@ -15,7 +15,7 @@ import frc.robot.commands.hatch.CloseHatchCollector;
 
 public class RghtRocket extends CommandGroup {
     /**
-     * 
+     *
      * Add your docs here.
      */
 

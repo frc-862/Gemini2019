@@ -130,7 +130,7 @@ public class OI {
         if (driverRight == null) return 0;
         return rightFilter.filter(-driverRight.getRawAxis(JoystickConstants.leftThrottleAxis));
     }
-    public double getGroundCollectPower(){
+    public double getGroundCollectPower() {
         return copilot.getRawAxis(5);
     }
     public double getMicroAdjAmt() {
@@ -159,7 +159,7 @@ public class OI {
             (new JoystickButton(driverLeft, 14)).whenPressed(new StereoTurn());//TODO - FIx Buttons
             //(new JoystickButton(driverLeft, 15)).whenPressed(new DriveAndAdjust());//TODO - FIx Buttons
         }
-		
+
         if (Robot.simpleVision != null) {
             (new JoystickButton(driverLeft, 3)).whileHeld(new SimpleFollowVision());
             SmartDashboard.putData("simple vision", new SimpleFollowVision());
@@ -167,7 +167,7 @@ public class OI {
 
         // TODO Fix button numbers
         (new TwoButtonButton(new JoystickButton(driverLeft, 10),
-                new JoystickButton(driverRight, 10))).whenPressed(new StatefulAutoClimb());
+                             new JoystickButton(driverRight, 10))).whenPressed(new StatefulAutoClimb());
         (new JoystickButton(driverLeft, 7)).whenPressed(new LeftDriveZero());
         (new JoystickButton(driverRight, 7)).whenPressed(new RightDriveZero());
 
@@ -223,7 +223,7 @@ public class OI {
         SmartDashboard.putData(new JankStatefulClimb());
         SmartDashboard.putData(new ClimbGoToPosition());
         SmartDashboard.putData(new AutoClimb());
-        
+
         SmartDashboard.putData("CLimber To Zero", new InstantCommand(Robot.climber, () -> Robot.climber.goToPos(0)));
 
         //Vision Command

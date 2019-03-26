@@ -25,7 +25,7 @@ public class CenterPath extends CommandGroup {
         addSequential(new SetElevatorLow());
         addSequential(new VelocityMotionProfile("ShipM_StartM_EndR"));
 
-        //addSequential(new InterruptableVelocityMotionPath("ShipM_StartM_EndR", (InterruptableVelocityMotionPath mp) -> { 
+        //addSequential(new InterruptableVelocityMotionPath("ShipM_StartM_EndR", (InterruptableVelocityMotionPath mp) -> {
         //    return Robot.core.timeOnLine() > 0.2;
         //}));
 //
@@ -38,6 +38,6 @@ public class CenterPath extends CommandGroup {
         //        return Math.abs(Robot.core.lineSensor()) < 1.5;
         //    }
         //});
-        
+
     }
 }

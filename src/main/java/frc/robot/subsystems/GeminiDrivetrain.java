@@ -102,10 +102,10 @@ public class GeminiDrivetrain extends CANDrivetrain {
 
         configurePID(Constants.drivePIDs);
     }
-    public boolean getBrownOut(){
+    public boolean getBrownOut() {
         return HAL.getBrownedOut();
     }
-    
+
     @Override
     public void setVelocity(double left, double right) {
         // convert from ft/s to talon units (enc ticks/ 100ms)
