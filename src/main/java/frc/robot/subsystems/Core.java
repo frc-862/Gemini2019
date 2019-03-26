@@ -31,8 +31,6 @@ import java.util.function.DoubleSupplier;
  * Add your docs here.
  */
 public class Core extends Subsystem {
-
-    CommandLogger logger = new CommandLogger(getClass().getSimpleName());
     //private DigitalInput pressure1 = new DigitalInput(0);
 
 //    private WPI_VictorSPX extra1 = new WPI_VictorSPX(RobotMap.extra1CanId);
@@ -125,10 +123,6 @@ public class Core extends Subsystem {
             i += 2;
         }
 
-        logger.addDataElement("YAW");
-        logger.addDataElement("PITCH");
-        logger.addDataElement("ROLL");
-
         // monitor if the heading is exactly the same, there is always
         // some jitter in the reading, so this will not be the case
         // if we are getting valid values from the sensor for >= 3 seconds
@@ -172,11 +166,6 @@ public class Core extends Subsystem {
         SmartDashboard.putNumber("X", navx.getRawGyroX());
         SmartDashboard.putNumber("Y", navx.getRawGyroY());
         SmartDashboard.putNumber("Z", navx.getRawGyroZ());
-
-        logger.set("YAW", getYaw());
-        logger.set("PITCH", getPitch());
-        logger.set("ROLL", getRoll());
-
 
         sawLine = false;
 

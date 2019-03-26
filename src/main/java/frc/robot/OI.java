@@ -17,19 +17,14 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.lightning.commands.ToggleCommand;
 import frc.lightning.commands.VelocityMotionProfile;
 import frc.lightning.util.JoystickFilter;
+import frc.lightning.util.TwoButtonButton;
+import frc.lightning.util.TwoButtonTrigger;
 import frc.robot.commands.LineFollow;
 import frc.robot.commands.auto.HatchAuton;
 import frc.robot.commands.calibration.TestMove;
 import frc.robot.commands.cargo.DeployCargoCollector;
 import frc.robot.commands.cargo.RetractCargoCollector;
-import frc.robot.commands.climber.AutoClimb;
-import frc.robot.commands.climber.Climb;
-import frc.robot.commands.climber.ExtendShocks;
-import frc.robot.commands.climber.ClimbGoToPosition;
-import frc.robot.commands.climber.ManualClimb;
-import frc.robot.commands.climber.RetractShocks;
-import frc.robot.commands.climber.JankStatefulClimb;
-import frc.robot.commands.climber.driveforward;
+import frc.robot.commands.climber.*;
 import frc.robot.commands.driveTrain.ConfigMotors;
 import frc.robot.commands.hatch.CloseHatchCollector;
 import frc.robot.commands.hatch.ExtendHatchCollector;
@@ -170,7 +165,9 @@ public class OI {
             SmartDashboard.putData("simple vision", new SimpleFollowVision());
         }
 
-        //(new Two)
+        // TODO Fix button numbers
+        (new TwoButtonButton(new JoystickButton(driverLeft, 10),
+                new JoystickButton(driverRight, 10))).whenPressed(new StatefulAutoClimb());
         (new JoystickButton(driverLeft, 7)).whenPressed(new LeftDriveZero());
         (new JoystickButton(driverRight, 7)).whenPressed(new RightDriveZero());
 
