@@ -148,6 +148,10 @@ public class Climber extends Subsystem {
         motor.set(ControlMode.PercentOutput, pwr);
     }
 
+    public boolean isDoneClimbing(){
+        return false;//TODO fix
+    }
+
     public void setClimberDrivePower(double pwr) {
         climberDrive.set(ControlMode.PercentOutput, pwr);
     }
@@ -159,5 +163,8 @@ public class Climber extends Subsystem {
     }
     public void upABit(){
         motor.set(ControlMode.MotionMagic, 8000);
+    }
+    public int getTicks(){
+        return motor.getSelectedSensorPosition();
     }
 }

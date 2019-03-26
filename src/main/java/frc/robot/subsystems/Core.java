@@ -156,6 +156,10 @@ public class Core extends Subsystem {
         SystemTest.register(new NavXTest());
     }
 
+    public boolean isVisionReady(){
+        return false;//TODO fix
+    }
+
     @Override
     public void periodic() {
         SmartDashboard.putNumber("Heading", navx.getFusedHeading());
