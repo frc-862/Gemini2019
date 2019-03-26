@@ -31,8 +31,6 @@ import java.util.function.DoubleSupplier;
  * Add your docs here.
  */
 public class Core extends Subsystem {
-
-    CommandLogger logger = new CommandLogger(getClass().getSimpleName());
     //private DigitalInput pressure1 = new DigitalInput(0);
 
 //    private WPI_VictorSPX extra1 = new WPI_VictorSPX(RobotMap.extra1CanId);
@@ -104,7 +102,7 @@ public class Core extends Subsystem {
 
     };
 
-    private DoubleSupplier[] sensorValues = nebulaSensorValues;//Robot.isGemini() ? geminiSensorValues : nebulaSensorValues;
+    private DoubleSupplier[] sensorValues = Robot.isGemini() ? geminiSensorValues : nebulaSensorValues;
 
     private boolean sawLine;
 
@@ -124,10 +122,6 @@ public class Core extends Subsystem {
             DataLogger.addDataElement("LineFollow" + i, () -> sensor.getAsDouble());
             i += 2;
         }
-
-        logger.addDataElement("YAW");
-        logger.addDataElement("PITCH");
-        logger.addDataElement("ROLL");
 
         // monitor if the heading is exactly the same, there is always
         // some jitter in the reading, so this will not be the case
@@ -156,6 +150,10 @@ public class Core extends Subsystem {
         SystemTest.register(new NavXTest());
     }
 
+    public boolean isVisionReady() {
+        return false;//TODO fix
+    }
+
     @Override
     public void periodic() {
         SmartDashboard.putNumber("Heading", navx.getFusedHeading());
@@ -169,10 +167,7 @@ public class Core extends Subsystem {
         SmartDashboard.putNumber("Y", navx.getRawGyroY());
         SmartDashboard.putNumber("Z", navx.getRawGyroZ());
 
-        logger.set("YAW", getYaw());
-        logger.set("PITCH", getPitch());
-        logger.set("ROLL", getRoll());
-
+        SmartDashboard.putBoolean("Moving", navx.isMoving());
 
         sawLine = false;
 
@@ -273,5 +268,10 @@ public class Core extends Subsystem {
 
     // TODO implement in a smart way
     public void setHeading(Rotation2d rotation) {
+    }
+
+
+    public boolean isMoving() {
+        return navx.isMoving();
     }
 }

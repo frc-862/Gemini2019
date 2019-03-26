@@ -17,22 +17,22 @@ import frc.robot.RobotMap;
  * Add your docs here.
  */
 public class GroundCollector extends Subsystem {
- 
-  public WPI_VictorSPX groundollect;
-  public GroundCollector() {
-    groundollect = new WPI_VictorSPX(RobotMap.groundCollect);
-        addChild("Ground Collect", groundollect);
-    
-    // Use requires() here to declare subsystem dependencies
-    // eg. requires(chassis);
-  }
-  public void setGroundCollet(double pwr){
-    groundollect.set(ControlMode.PercentOutput, pwr);
-  }
 
-  @Override
-  public void initDefaultCommand() {
-    // Set the default command for a subsystem here.
-    // setDefaultCommand(new MySpecialCommand());
-  }
+    public WPI_VictorSPX groundollect;
+    public GroundCollector() {
+        groundollect = new WPI_VictorSPX(RobotMap.groundCollect);
+        addChild("Ground Collect", groundollect);
+
+        // Use requires() here to declare subsystem dependencies
+        // eg. requires(chassis);
+    }
+    public void setGroundCollet(double pwr) {
+        groundollect.set(ControlMode.PercentOutput, pwr);
+    }
+
+    @Override
+    public void initDefaultCommand() {
+        // Set the default command for a subsystem here.
+        // setDefaultCommand(new MySpecialCommand());
+    }
 }

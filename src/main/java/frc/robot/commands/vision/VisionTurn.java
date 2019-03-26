@@ -31,7 +31,7 @@ public class VisionTurn extends Command {
 //End of things that will be moved later
 
     public VisionTurn() {
-      finalApproachDist = 0;
+        finalApproachDist = 0;
         // Use requires() here to declare subsystem dependencies
         requires(Robot.stereoVision);
         requires(Robot.drivetrain);
@@ -41,7 +41,7 @@ public class VisionTurn extends Command {
     @Override
     protected void initialize() {
         //Robot.stereoVision.ledsOn();
-      finishing = false;
+        finishing = false;
         Robot.drivetrain.setPower(0,0);
         finalHeading = 0;
         target = null;
@@ -68,7 +68,7 @@ public class VisionTurn extends Command {
         }
         //Robot.drivetrain.setPower(0.3,0.3);
         //SmartDashboard.putString("stereoVision turn status", "VisionTurn start");
-        if (target == null){
+        if (target == null) {
             SmartDashboard.putString("stereoVision turn status", "target1 null");
             end();
         }
@@ -93,7 +93,7 @@ public class VisionTurn extends Command {
                 SmartDashboard.putNumber("startDist", startDist);
                 SmartDashboard.putNumber("standoff", target2.standoff());
                 SmartDashboard.putString("stereoVision turn status", "got target2");
-                
+
             } catch(NoTargetException e) {
             }
             if(target2 == null) {
@@ -105,19 +105,19 @@ public class VisionTurn extends Command {
                 Robot.drivetrain.setPower(0.2,0.2);
                 SmartDashboard.putString("stereoVision turn status", "VisionTurn Straight");
                 finalApproachDist = (Robot.drivetrain.getLeftDistance() + Robot.drivetrain.getRightDistance()) / 2;
-            } 
+            }
             else if((Robot.drivetrain.getLeftDistance() + Robot.drivetrain.getRightDistance()) / 2 - finalApproachDist < 50) {
-              SmartDashboard.putNumber("final approach dist", finalApproachDist);
-              SmartDashboard.putString("stereoVision turn status", "VisionTurn final approach");
-              SmartDashboard.putNumber("final approach progress", (Robot.drivetrain.getLeftDistance() + Robot.drivetrain.getRightDistance()) / 2 - finalApproachDist);
-              SmartDashboard.putNumber("encoder dist", ((Robot.drivetrain.getLeftDistance() + Robot.drivetrain.getRightDistance()) / 2));
-              Robot.drivetrain.setPower(0.2, 0.2);
-              //Robot.stereoVision.ledsOff();
-              finishing = true;
-            } 
+                SmartDashboard.putNumber("final approach dist", finalApproachDist);
+                SmartDashboard.putString("stereoVision turn status", "VisionTurn final approach");
+                SmartDashboard.putNumber("final approach progress", (Robot.drivetrain.getLeftDistance() + Robot.drivetrain.getRightDistance()) / 2 - finalApproachDist);
+                SmartDashboard.putNumber("encoder dist", ((Robot.drivetrain.getLeftDistance() + Robot.drivetrain.getRightDistance()) / 2));
+                Robot.drivetrain.setPower(0.2, 0.2);
+                //Robot.stereoVision.ledsOff();
+                finishing = true;
+            }
             else if(finishing) {
-              SmartDashboard.putString("stereoVision turn status", "VisionTurn finished");
-              Robot.drivetrain.setPower(0, 0);
+                SmartDashboard.putString("stereoVision turn status", "VisionTurn finished");
+                Robot.drivetrain.setPower(0, 0);
 
             }
             else {
@@ -132,11 +132,11 @@ public class VisionTurn extends Command {
     // Make this return true when this Command no longer needs to run execute()
     @Override
     protected boolean isFinished() {
-       // return Robot.core.timeOnLine() > 0.2;
+        // return Robot.core.timeOnLine() > 0.2;
         //return Robot.oi.getLeftPower() > 0.5;
         return false;
         //return ((Robot.drivetrain.getLeftDistance() + Robot.drivetrain.getRightDistance()) / 2) >= (target.standoff() - 12);
-        
+
     }
 
     // Called once after isFinished returns true

@@ -16,8 +16,8 @@ public class Constants extends ConstantBase {
     public static final double hasCargoDistance = 0.7;
     // Climber
     public static final int climberRetractedPosition = 0;
-    public final static int deployShockPositioin = 2500;
-    public static final int climberExtenedPosition = 11000; // TODO calibrate this value
+    public final static int deployShockPositioin = 100;
+    public static final int climberExtenedPosition = 10250; // TODO calibrate this value
     public static final int climberMaxHeight = 11800;
     public static final int climberOffHardStop = 100;
     public static final int climberEpsilon = 100;
@@ -64,8 +64,8 @@ public class Constants extends ConstantBase {
     public static final int elevatorInchHigh = 200;
     public final static int elevatorTopHeight = 6635;//6535;
     public final static int elevatorMiddleHeight = 3666;// 3666;
-    public static final int elevatorCollectHeight = 2705;//2360;//2260;//2160;//loading station cargo collect 2160
-    public final static int elevatorBottomHeight = 1015;//915;//815;
+    public static final int elevatorCollectHeight = 2605;//2360;//2260;//2160;//loading station cargo collect 2160
+    public final static int elevatorBottomHeight = 915;//915;//815;
     public final static double elevatorDownPower=-0.2;
     public final static double elevatorUpPower=0.4;
     public final static double elevatorCollectorHoldPower=0.07;
@@ -94,15 +94,15 @@ public class Constants extends ConstantBase {
     // Line Follow
     //Nebula
     //max
-    public static final double nebulaMaxLeftOutside = 2.1;
-    public static final double nebulaMaxLeftInside = 1.78;
-    public static final double nebulaMaxRightInside = 1.51;
-    public static final double nebulaMaxRightOutside = 2.1;
+    public static final double nebulaMaxLeftOutside = 4;
+    public static final double nebulaMaxLeftInside = 2.25;
+    public static final double nebulaMaxRightInside = 3.65;
+    public static final double nebulaMaxRightOutside = 3.67;
     //min
-    public static final double nebulaMinLeftOutside =0.92;
-    public static final double nebulaMinLeftInside = .96;
-    public static final double nebulaMinRightInside = .88;
-    public static final double nebulaMinRightOutside = 1.07;
+    public static final double nebulaMinLeftOutside =1.52;
+    public static final double nebulaMinLeftInside = .83;
+    public static final double nebulaMinRightInside = 1.07;
+    public static final double nebulaMinRightOutside = 1.04;
 
     //Gemini
     //max

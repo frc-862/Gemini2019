@@ -7,6 +7,7 @@
 
 package frc.robot.commands.LEDs;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 import frc.robot.subsystems.LEDs;
@@ -25,15 +26,41 @@ public class UpdateLEDState extends Command {
     protected void initialize() {
     }
 
+
+    /*
+
+    STATES
+        //Normal
+        OFF,                    //0
+        STD_BLUE_ORANGE_CHASE,  //1
+        //Vision/Line Ready
+        LINE_FOLLOW_READY,      //10
+        VISION_READY,           //11
+        //Game Piece
+        PIECE_COLLECTED,        //100
+        //Climb
+        TIME_2_CLIMB_KIDS,      //101
+        CLIMBING,               //110
+        ALL_DONE_NAP_TIME       //111
+
+
+    */
     // Called repeatedly when this Command is scheduled to run
+    LEDs.State state;
     @Override
     protected void execute() {
-        LEDs.State state = LEDs.State.NORMAL;
-        if(Robot.core.hasCargo()) state = LEDs.State.CARGO_COLLECTED;
-        else if(Robot.core.hasHatch()) state = LEDs.State.HATCH_COLLECTED;
-        else if(Robot.core.timeOnLine() > 0.25) state = LEDs.State.LINE_FOLLOWING;
-        else if(Robot.oi.getRainbowButtonPressed()) state = LEDs.State.RAINBOW;
-        else state = LEDs.State.NORMAL;
+
+        if(Robot.core.hasCargo()||Robot.core.hasHatch()) state = LEDs.State.PIECE_COLLECTED;
+
+        else if(Timer.getMatchTime() < 30) state = LEDs.State.TIME_2_CLIMB_KIDS;
+
+        else if(Robot.core.isVisionReady()) state = LEDs.State.VISION_READY;
+        else if(Robot.core.timeOnLine() > 0.25) state = LEDs.State.LINE_FOLLOW_READY;
+        else state = LEDs.State.STD_BLUE_ORANGE_CHASE;
+
+        if(Robot.climber.getTicks() > 5) state = LEDs.State.CLIMBING;
+        if(Robot.climber.isDoneClimbing()) state = LEDs.State.ALL_DONE_NAP_TIME;
+
         Robot.leds.setState(state);
     }
 

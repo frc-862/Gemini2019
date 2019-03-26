@@ -267,6 +267,6 @@ public abstract class CANDrivetrain extends LightningDrivetrain {
         SmartDashboard.putNumber("Right Current", rightMaster.getOutputCurrent());
         SmartDashboard.putNumber("Stall Count", stallCount);
         SmartDashboard.putBoolean("Stalled", isStalled());
-        
+
     }
 }

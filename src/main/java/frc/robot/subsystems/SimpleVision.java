@@ -18,6 +18,7 @@ public class SimpleVision extends Subsystem {
     private double previousTimestamp;
     private double error;
     private double errorD;
+    private String lastLine;
 
     @Override
     public void periodic() {
@@ -26,6 +27,7 @@ public class SimpleVision extends Subsystem {
         SmartDashboard.putNumber("Vision Width", width);
         SmartDashboard.putNumber("Vision Height", height);
         SmartDashboard.putNumber("Vision Error", getError());
+        //SmartDashboard.putString("Vision data", lastLine);
     }
 
     public SimpleVision(SerialPort.Port port) {
@@ -46,6 +48,7 @@ public class SimpleVision extends Subsystem {
     private void positionUpdate(String update) {
         double now = Timer.getFPGATimestamp();
 
+        lastLine = update;
         Matcher m = pattern.matcher(update);
         if (m.find()) {
             final int imageWidth = 320;

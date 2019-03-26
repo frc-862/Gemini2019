@@ -63,26 +63,26 @@ public class StereoTurn extends Command {
             if ( Math.abs(squint) > BIG_SQUINT_BOUND) {
                 Robot.drivetrain.setPower(1 * Math.signum(squint),-1 * Math.signum(squint));
                 SmartDashboard.putString("vision turn status", "big adjust");
-                
+
             }
-            else if (Math.abs(squint) > SQUINT_BOUND && standoff >= 20){
+            else if (Math.abs(squint) > SQUINT_BOUND && standoff >= 20) {
 
                 double adjustPower = 0.3 * Math.signum(squint);
                 Robot.drivetrain.setPower(.35 + adjustPower, .35 - adjustPower);
                 SmartDashboard.putString("vision turn status", "small adjust");
                 currentDistance = (Robot.drivetrain.getLeftDistance() + Robot.drivetrain.getRightDistance()) / 2;
             }
-            
-             else {
+
+            else {
                 //double scaledStandoff = t.standoff() / 72; //start slowing down at 50 in from the target
                 //final double maxPower = .5;
                 //double robotPower = maxPower * scaledStandoff;
                 //robotPower = Math.min(maxPower, robotPower);
                 //robotPower = Math.max(.2, robotPower);
-              
-                    Robot.drivetrain.setPower(.35, .35); 
-                    SmartDashboard.putString("vision turn status", "straight");
-            } 
+
+                Robot.drivetrain.setPower(.35, .35);
+                SmartDashboard.putString("vision turn status", "straight");
+            }
 
         } catch(NoTargetException e) {
 

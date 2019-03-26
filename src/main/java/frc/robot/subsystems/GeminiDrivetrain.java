@@ -85,7 +85,7 @@ public class GeminiDrivetrain extends CANDrivetrain {
 
         withEachMotor((m) -> m.setNeutralMode(NeutralMode.Brake));
         withEachMaster((m) -> {
-            m.configOpenloopRamp(0.2);
+            m.configOpenloopRamp(0.1);
             m.configClosedloopRamp(0.15);
 
             m.configContinuousCurrentLimit(38);
@@ -102,10 +102,10 @@ public class GeminiDrivetrain extends CANDrivetrain {
 
         configurePID(Constants.drivePIDs);
     }
-    public boolean getBrownOut(){
+    public boolean getBrownOut() {
         return HAL.getBrownedOut();
     }
-    
+
     @Override
     public void setVelocity(double left, double right) {
         // convert from ft/s to talon units (enc ticks/ 100ms)

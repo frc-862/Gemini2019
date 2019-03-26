@@ -18,7 +18,7 @@ public class SimpleFollowVision extends Command {
     @Override
     protected void execute() {
         double velocity = (Robot.oi.getLeftPower() + Robot.oi.getRightPower()) / 2.0 *
-                Constants.velocityMultiplier;
+                          Constants.velocityMultiplier;
         double gain = 0;
 
         // TODO add a D term, scale correctly for time! (should that be in SimpleVision?)

@@ -13,23 +13,22 @@ import frc.lightning.util.LightningMath;
 import frc.robot.Constants;
 import frc.robot.Robot;
 
-public class StatefulAutoClimb extends StatefulCommand {
+public class JankStatefulClimb extends StatefulCommand {
     enum States {
         START_CLIMB,
         WAIT_TO_DEPLOY_SKIDS,
         DEPLOY_SKIDS,
         WAIT_TO_DRIVE_FORWARD,
         DRIVE_FORWARD,
+        BACKUP_A_BIT,
         RAISE_JACK,
-        FULL_UP_JACK,
-        WAIT_FOR_JACK,
-        IM_GIVIEN_ALL_SHE_GOT_CAPT,
+        SLEEP,
         DONE
     }
 
     double startedDrivingAt;
 
-    public StatefulAutoClimb() {
+    public JankStatefulClimb() {
         super(States.START_CLIMB);
         requires(Robot.climber);
         requires(Robot.drivetrain);
@@ -75,41 +74,25 @@ public class StatefulAutoClimb extends StatefulCommand {
     public void driveForward() {
         Robot.climber.setClimberDrivePower(1);
         Robot.drivetrain.setPower(0.4, 0.4);
-        if (Timer.getFPGATimestamp() - startedDrivingAt > 7) {
+        if (Timer.getFPGATimestamp() - startedDrivingAt > 7) {//TODO make faster
+            startedDrivingAt = Timer.getFPGATimestamp();
+            Robot.climber.setClimberDrivePower(0);
+            Robot.drivetrain.stop();
+            setState(States.BACKUP_A_BIT);
+        }
+    }
+    public void backupABit() {
+        Robot.climber.setClimberDrivePower(-1);
+        if (Timer.getFPGATimestamp() - startedDrivingAt > .4) {
+            Robot.climber.setClimberDrivePower(0);
+            Robot.drivetrain.stop();
             setState(States.RAISE_JACK);
         }
     }
-
     public void raiseJack() {
-        Robot.climber.retractJack();
-        setState(States.WAIT_FOR_JACK);
-    }
-
-    public void waitForJack() {
-        if (LightningMath.epsilonEqual(Robot.climber.getJackPosition(),
-                                       Constants.climberRetractedPosition, Constants.climberEpsilon)) {
-            setState(States.FULL_UP_JACK);
-        }
-
-    }
-    public void fullUpJack() {
-        Robot.climber.setLiftPower(-.465);
-        if(Robot.climber.isJackSnug()) {
-            setState(States.IM_GIVIEN_ALL_SHE_GOT_CAPT);
-        }
-    }
-
-    public void imGivienAllSheGotCaptEnter() {
-        startedDrivingAt = Timer.getFPGATimestamp();
-    }
-
-
-    public void imGivienAllSheGotCapt () {
-        Robot.climber.setClimberDrivePower(1);
-        Robot.drivetrain.setPower(0.4, 0.4);
-        if (Timer.getFPGATimestamp() - startedDrivingAt > 1) {
-            setState(States.DONE);
-        }
+        Robot.climber.upABit();
+        Robot.climber.retractSkids();
+        setState(States.SLEEP);
     }
 
     @Override
