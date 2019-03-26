@@ -167,6 +167,8 @@ public class Core extends Subsystem {
         SmartDashboard.putNumber("Y", navx.getRawGyroY());
         SmartDashboard.putNumber("Z", navx.getRawGyroZ());
 
+        SmartDashboard.putBoolean("Moving", navx.isMoving());
+
         sawLine = false;
 
         int pos = -7;
@@ -266,5 +268,10 @@ public class Core extends Subsystem {
 
     // TODO implement in a smart way
     public void setHeading(Rotation2d rotation) {
+    }
+
+
+    public boolean isMoving() {
+        return navx.isMoving();
     }
 }

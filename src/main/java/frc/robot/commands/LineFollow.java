@@ -33,7 +33,7 @@ public class LineFollow extends Command {
         logger.addDataElement("velocity");
         logger.addDataElement("leftpos");
         logger.addDataElement("rightpos");
-        logger.addDataElement("stalled");
+        logger.addDataElement("moving");
         logger.addDataElement("state");
         SmartDashboard.putNumber("Turn Power", turnP);
         SmartDashboard.putNumber("Straight Vel", straightVelocity);
@@ -92,7 +92,7 @@ public class LineFollow extends Command {
         logger.set("velocity", velocity);
         logger.set("leftpos", Robot.drivetrain.getLeftDistance());
         logger.set("rightpos", Robot.drivetrain.getRightDistance());
-        logger.set("stalled", Robot.drivetrain.isStalled() ? 1 : 0);
+        logger.set("moving", Robot.core.isMoving() ? 1 : 0);
         logger.write();
 
         SmartDashboard.putString("LineFollowState", state.name());
@@ -106,7 +106,7 @@ public class LineFollow extends Command {
         updateCalculations();
         Robot.drivetrain.setVelocity(velocity + turn, velocity - turn);
 
-        if (Robot.drivetrain.isStalled() && Math.abs(prevError)> 1.5) {
+        if (!Robot.core.isMoving() && Math.abs(prevError)> 1.5) {
             if (Math.abs(prevError)> 1.5) {
                 state = State.followBackward;
                 backupError = prevError;
