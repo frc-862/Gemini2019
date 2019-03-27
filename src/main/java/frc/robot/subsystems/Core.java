@@ -40,12 +40,14 @@ public class Core extends Subsystem {
     private DigitalInput midLeft = new DigitalInput(4);
     private AnalogInput innerLeft = new AnalogInput(3);
     private AnalogInput centerLeft = new AnalogInput(2);
+     
 
     private AnalogInput centerRight = new AnalogInput(1);
     private AnalogInput innerRight = new AnalogInput(0);
     private DigitalInput midRight = new DigitalInput(3);
     private DigitalInput outerRight = new DigitalInput(2);
 
+    private AnalogInput airPreasure = new AnalogInput(4);
 
 
     private double lineFirstSeen = Timer.getFPGATimestamp();
@@ -156,6 +158,8 @@ public class Core extends Subsystem {
 
     @Override
     public void periodic() {
+        SmartDashboard.putNumber("preasure", airPreasure.getVoltage());
+
         SmartDashboard.putNumber("Heading", navx.getFusedHeading());
         SmartDashboard.putNumber("Angle", navx.getAngle());
 

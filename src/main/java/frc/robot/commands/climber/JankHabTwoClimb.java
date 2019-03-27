@@ -13,7 +13,7 @@ import frc.lightning.util.LightningMath;
 import frc.robot.Constants;
 import frc.robot.Robot;
 
-public class JankStatefulClimb extends StatefulCommand {
+public class JankHabTwoClimb extends StatefulCommand {
     enum States {
         START_CLIMB,
         WAIT_TO_DEPLOY_SKIDS,
@@ -28,7 +28,7 @@ public class JankStatefulClimb extends StatefulCommand {
 
     double startedDrivingAt;
 
-    public JankStatefulClimb() {
+    public JankHabTwoClimb() {
         super(States.START_CLIMB);
         requires(Robot.climber);
         requires(Robot.drivetrain);
@@ -45,12 +45,12 @@ public class JankStatefulClimb extends StatefulCommand {
     }
 
     public void startClimb() {
-        Robot.climber.extendJack();
+        Robot.climber.extendJackHabTwo();
         setState(States.WAIT_TO_DEPLOY_SKIDS);
     }
 
     public void waitToDeploySkids() {
-        if (Robot.climber.getJackPosition() >= Constants.deployShockPositioin) {
+        if (Robot.climber.getJackPosition() >= 0) {
             setState(States.DEPLOY_SKIDS);
         }
     }
@@ -62,7 +62,7 @@ public class JankStatefulClimb extends StatefulCommand {
 
     public void waitToDriveForward() {
         if (LightningMath.epsilonEqual(Robot.climber.getJackPosition(),
-                                       Constants.climberExtenedPosition, Constants.climberEpsilon)) {
+                                       Constants.habTwo, Constants.climberEpsilon)) {
             setState(States.DRIVE_FORWARD);
         }
     }
@@ -90,7 +90,7 @@ public class JankStatefulClimb extends StatefulCommand {
         }
     }
     public void raiseJack() {
-        Robot.climber.upABit(8000);
+        Robot.climber.upABit(0);
         Robot.climber.retractSkids();
         setState(States.SLEEP);
     }

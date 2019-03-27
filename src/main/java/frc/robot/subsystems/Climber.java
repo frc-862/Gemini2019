@@ -18,7 +18,7 @@ import frc.robot.Constants;
 import frc.robot.RobotMap;
 import frc.robot.commands.climber.Climb;
 import frc.robot.commands.climber.RetractClimb;
-import frc.robot.commands.climber.JankStatefulClimb;
+import frc.robot.commands.climber.JankHabTwoClimb;
 
 /**
  * Add your docs here.
@@ -127,6 +127,9 @@ public class Climber extends Subsystem {
     public void extendJack() {
         motor.set(ControlMode.MotionMagic, Constants.climberExtenedPosition);
     }
+    public void extendJackHabTwo() {
+        motor.set(ControlMode.MotionMagic, Constants.habTwo);
+    }
 
     public void retractJack() {
         motor.set(ControlMode.MotionMagic, 0);
@@ -161,8 +164,8 @@ public class Climber extends Subsystem {
     public boolean isJackSnug() {
         return sensors.isRevLimitSwitchClosed();
     }
-    public void upABit() {
-        motor.set(ControlMode.MotionMagic, 8000);
+    public void upABit(int i) {
+        motor.set(ControlMode.MotionMagic, i);
     }
     public int getTicks() {
         return motor.getSelectedSensorPosition();

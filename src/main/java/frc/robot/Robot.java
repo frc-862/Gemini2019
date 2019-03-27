@@ -60,7 +60,7 @@ public class Robot extends LightningRobot {
         elevator = new Elevator();
         climber = new Climber();
         core = new Core();
-        // groundCollector = new GroundCollector();
+        groundCollector = new GroundCollector();
         //stereoVision = new StereoVision();
 
         // One or the other not both!

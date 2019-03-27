@@ -17,7 +17,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.lightning.commands.ToggleCommand;
 import frc.lightning.commands.VelocityMotionProfile;
 import frc.lightning.util.JoystickFilter;
-import frc.lightning.util.TwoButtonButton;
+//import frc.lightning.util.TwoButtonButton;
 import frc.lightning.util.TwoButtonTrigger;
 import frc.robot.commands.LineFollow;
 import frc.robot.commands.auto.HatchAuton;
@@ -166,8 +166,8 @@ public class OI {
         }
 
         // TODO Fix button numbers
-        (new TwoButtonButton(new JoystickButton(driverLeft, 10),
-                             new JoystickButton(driverRight, 10))).whenPressed(new StatefulAutoClimb());
+        //(new TwoButtonButton(new JoystickButton(driverLeft, 10),
+        //                     new JoystickButton(driverRight, 10))).whenPressed(new StatefulAutoClimb());
         (new JoystickButton(driverLeft, 7)).whenPressed(new LeftDriveZero());
         (new JoystickButton(driverRight, 7)).whenPressed(new RightDriveZero());
 
@@ -209,7 +209,8 @@ public class OI {
         SmartDashboard.putData("line follow", new LineFollow());
         SmartDashboard.putData("test move", new TestMove());
         SmartDashboard.putData("Left Near Rocket", new VelocityMotionProfile("src/main/deploy/paths/LeftNearRocket"));
-        SmartDashboard.putData("Auto Climb",new JankStatefulClimb());
+        SmartDashboard.putData("Auto Climb Hab 3",new JankStatefulClimb());
+        SmartDashboard.putData("Auto Climb Hab 2",new JankHabTwoClimb());
         SmartDashboard.putData("RESET_SENSORS", new ResetDriveSensors());
 
         SmartDashboard.putData("Elevator to collect",
@@ -220,7 +221,7 @@ public class OI {
                                new InstantCommand(Robot.elevator, () -> Robot.elevator.goToMid()));
         SmartDashboard.putData("Elevator to high",
                                new InstantCommand(Robot.elevator, () -> Robot.elevator.goToHigh()));
-        SmartDashboard.putData(new JankStatefulClimb());
+        SmartDashboard.putData(new JankHabTwoClimb());
         SmartDashboard.putData(new ClimbGoToPosition());
         SmartDashboard.putData(new AutoClimb());
 
@@ -236,10 +237,11 @@ public class OI {
         SmartDashboard.putData("manual climb", new ManualClimb());
         SmartDashboard.putData("Extend Shocks",new ExtendShocks());
         SmartDashboard.putData("Retract Shocks", new RetractShocks());
+        SmartDashboard.putData("Climb to height", new ClimbToHeight());
     }
 
     public double groundCollectPwr() {
-        return -copilot.getRawAxis(5);
+        return copilot.getRawAxis(5);
     }
 
     public double manualClimbPower() {

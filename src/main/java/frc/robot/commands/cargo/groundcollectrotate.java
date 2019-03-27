@@ -11,8 +11,8 @@ import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.OI;
 import frc.robot.Robot;
 
-public class groundcollectrotate extends Command {
-    public groundcollectrotate() {
+public class GroundCollectRotate extends Command {
+    public GroundCollectRotate() {
         // Use requires() here to declare subsystem dependencies
         requires(Robot.groundCollector);
     }
@@ -25,7 +25,7 @@ public class groundcollectrotate extends Command {
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-        Robot.groundCollector.setGroundCollet(Robot.oi.getCargoCollectPower());
+        Robot.groundCollector.setGroundCollet(Robot.oi.groundCollectPwr());
     }
 
     // Make this return true when this Command no longer needs to run execute()

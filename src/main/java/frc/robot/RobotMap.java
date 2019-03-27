@@ -15,7 +15,7 @@ public class RobotMap {
 
     // Cargo Collector
     public static final int cargoMotor = 26;
-    public static final int groundCollect = 0;
+    public static final int groundCollect = 26;
     //public static final int cargoSolenoidFwdChan = 2;//1
     //public static final int cargoSolenoidRevChan = 5;//2
 
