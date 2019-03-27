@@ -16,9 +16,6 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants;
 import frc.robot.RobotMap;
-import frc.robot.commands.climber.Climb;
-import frc.robot.commands.climber.RetractClimb;
-import frc.robot.commands.climber.JankHabTwoClimb;
 
 /**
  * Add your docs here.
@@ -112,9 +109,6 @@ public class Climber extends Subsystem {
         } else if(pos > Constants.climberMaxHeight) {
             motor.setSelectedSensorPosition(Constants.climberMaxHeight);
         }
-
-        //SmartDashboard.putData(new Climb());
-        //SmartDashboard.putData(new RetractClimb());
     }
 
     @Override

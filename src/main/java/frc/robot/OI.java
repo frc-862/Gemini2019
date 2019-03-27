@@ -17,7 +17,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.lightning.commands.ToggleCommand;
 import frc.lightning.commands.VelocityMotionProfile;
 import frc.lightning.util.JoystickFilter;
-//import frc.lightning.util.TwoButtonButton;
 import frc.lightning.util.TwoButtonTrigger;
 import frc.robot.commands.LineFollow;
 import frc.robot.commands.auto.HatchAuton;
@@ -52,7 +51,6 @@ public class OI {
     private Button setShocksout = new JoystickButton(driverRight, 8);
 
     private Button setElevatorCargoCollect = new JoystickButton(copilot, 8);
-    private Button climb = new JoystickButton(copilot, 10);
     private Button cargoCollectOut= new JoystickButton(copilot,4);//needs changed prob
     private POVButton hatchExtend = new POVButton(copilot, 0);
     private POVButton hatchRetract = new POVButton(copilot, 180);
@@ -149,7 +147,6 @@ public class OI {
     }
 
     public void initializeCommands() {
-        climb.whenPressed(new Climb());
         hatchRetract.whenPressed(new RetractHatchCollector());
         hatchExtend.whenPressed(new ExtendHatchCollector());
 
@@ -221,7 +218,6 @@ public class OI {
                                new InstantCommand(Robot.elevator, () -> Robot.elevator.goToMid()));
         SmartDashboard.putData("Elevator to high",
                                new InstantCommand(Robot.elevator, () -> Robot.elevator.goToHigh()));
-        SmartDashboard.putData(new JankHabTwoClimb());
         SmartDashboard.putData(new ClimbGoToPosition());
         SmartDashboard.putData(new AutoClimb());
 
