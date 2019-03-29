@@ -48,7 +48,7 @@ public class SimpleVision extends Subsystem {
 
         Matcher m = pattern.matcher(update);
         if (m.find()) {
-            final int imageWidth = 320;
+            final double imageWidth = 320;
             final double imageMiddle = imageWidth / 2.0;
 
             x = Integer.parseInt(m.group(2));
@@ -56,14 +56,19 @@ public class SimpleVision extends Subsystem {
             width = Integer.parseInt(m.group(4));
             height = Integer.parseInt(m.group(5));
 
+            if (height == 0) {
+                error = 0;
+                errorD = 0;
+            }
+
             double deltaT = previousTimestamp - now;
             previousTimestamp = now;
             error = (imageMiddle - x) / imageMiddle;
             errorD = (previousError - error) / deltaT;
             previousError = error;
         } else {
-            error = 0;
-            errorD = 0;
+            //error = 0;
+            //errorD = 0;
             System.out.println("Unable to process Simple Vision: " + update);
         }
     }
