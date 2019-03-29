@@ -28,7 +28,7 @@ public class SimpleFollowVision extends Command {
             if (Math.abs(error) > onTargetEpsilon) {
                 gain = Robot.simpleVision.getError() * kP;
 
-                if (gain < minTurnPower) {
+                if (Math.abs(gain) < minTurnPower) {
                     gain = minTurnPower * Math.signum(gain);
                 }
             }

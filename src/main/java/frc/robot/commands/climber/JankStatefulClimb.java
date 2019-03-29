@@ -83,7 +83,7 @@ public class JankStatefulClimb extends StatefulCommand {
     }
     public void backupABit() {
         Robot.climber.setClimberDrivePower(-1);
-        if (Timer.getFPGATimestamp() - startedDrivingAt > .4) {
+        if (Timer.getFPGATimestamp() - startedDrivingAt > 1) {
             Robot.climber.setClimberDrivePower(0);
             Robot.drivetrain.stop();
             setState(States.RAISE_JACK);

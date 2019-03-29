@@ -31,7 +31,7 @@ public class GroundCollectRotate extends Command {
         if(Math.abs(Robot.oi.groundCollectPwr())>.25)
         {
             Robot.hatchPanelCollector.retract();
-            Robot.hatchPanelCollector.eject();
+            Robot.hatchPanelCollector.collect();
 
         }
         Robot.groundCollector.setGroundCollet(Robot.oi.groundCollectPwr());

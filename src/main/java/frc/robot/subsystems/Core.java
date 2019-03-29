@@ -11,8 +11,10 @@ import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.PWM;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
@@ -55,8 +57,9 @@ public class Core extends Subsystem {
     // here. Call these from Commajnds.
     private AHRS navx;
     private Compressor compressor = new Compressor(RobotMap.compressorCANId);
+    private Solenoid ring = new Solenoid (RobotMap.compressorCANId,3);
     private PowerDistributionPanel pdp = new PowerDistributionPanel(RobotMap.pdpCANId);
-
+    private AnalogInput groundCollectEncoder = new AnalogInput(5);
 
     private double biasAnalog(double v, double min, double max) {
         final double midPoint = (max + min) / 2.0;
@@ -125,6 +128,8 @@ public class Core extends Subsystem {
             i += 2;
         }
 
+
+
         // monitor if the heading is exactly the same, there is always
         // some jitter in the reading, so this will not be the case
         // if we are getting valid values from the sensor for >= 3 seconds
@@ -150,14 +155,23 @@ public class Core extends Subsystem {
         // addChild("extra motor 2", extra2);
 
         SystemTest.register(new NavXTest());
+
+        ringOn();
     }
 
     public boolean isVisionReady() {
         return false;//TODO fix
     }
-
+    public void ringOn(){
+        ring.set(true);
+    }
+    public void ringOff(){
+        ring.set(true);
+    }
     @Override
     public void periodic() {
+        // SmartDashboard.putNumber("Ground Collect Encoder", groundCollectEncoder.getVoltage());
+        // System.out.println("GCE: " + groundCollectEncoder.getVoltage());
         SmartDashboard.putNumber("preasure", airPreasure.getVoltage());
 
         SmartDashboard.putNumber("Heading", navx.getFusedHeading());
