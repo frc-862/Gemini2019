@@ -191,7 +191,7 @@ public class OI {
     }
 
     public double getCargoCollectPower () {
-        return (copilot.getRawAxis(2)-copilot.getRawAxis(3))/3;
+        return (copilot.getRawAxis(3)-copilot.getRawAxis(2))/3;
     }
 
     public OI() {
@@ -237,7 +237,7 @@ public class OI {
     }
 
     public double groundCollectPwr() {
-        return copilot.getRawAxis(5);
+        return -copilot.getRawAxis(5);
     }
 
     public double manualClimbPower() {

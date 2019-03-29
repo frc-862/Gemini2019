@@ -10,6 +10,9 @@ package frc.robot.commands.cargo;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.OI;
 import frc.robot.Robot;
+import frc.robot.commands.hatch.OpenHatchCollector;
+import frc.robot.commands.hatch.RetractHatchCollector;
+
 
 public class GroundCollectRotate extends Command {
     public GroundCollectRotate() {
@@ -25,6 +28,12 @@ public class GroundCollectRotate extends Command {
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
+        if(Math.abs(Robot.oi.groundCollectPwr())>.25)
+        {
+            Robot.hatchPanelCollector.retract();
+            Robot.hatchPanelCollector.eject();
+
+        }
         Robot.groundCollector.setGroundCollet(Robot.oi.groundCollectPwr());
     }
 
