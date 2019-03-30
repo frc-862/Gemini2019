@@ -19,6 +19,9 @@ public class SimpleVision extends Subsystem {
     private double error;
     private double errorD;
     private String lastLine;
+    private int objectCount;
+    private enum Mode { aligning, straight };
+    Mode mode = Mode.aligning;
 
     @Override
     public void periodic() {
@@ -54,6 +57,7 @@ public class SimpleVision extends Subsystem {
             final int imageWidth = 320;
             final double imageMiddle = imageWidth / 2.0;
 
+            objectCount = Integer.parseInt(m.group(1));
             x = Integer.parseInt(m.group(2));
             y = Integer.parseInt(m.group(3));
             width = Integer.parseInt(m.group(4));
@@ -70,6 +74,8 @@ public class SimpleVision extends Subsystem {
             System.out.println("Unable to process Simple Vision: " + update);
         }
     }
+
+    public int getObjectCount() { return objectCount; }
 
     public double getError() {
         return error;
