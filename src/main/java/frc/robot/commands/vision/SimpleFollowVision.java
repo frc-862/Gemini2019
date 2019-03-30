@@ -7,17 +7,20 @@ import frc.robot.Robot;
 
 public class SimpleFollowVision extends Command {
     private double gain;
-
+    double kpp = .188;
     enum Mode { aligning, closing };
     private Mode mode;
 
-    final double kP = Constants.velocityMultiplier * 0.1;
-    final double kD = 0;
-    final double minTurnPower = 1;
-    final double onTargetEpsilon = 0.1;  // scaled 0..1
+    double kP = Constants.velocityMultiplier * kpp;
+    double kD = .0;
+    double minTurnPower = 1;
+    double onTargetEpsilon = 0.1;  // scaled 0..1
 
     public SimpleFollowVision() {
         requires(Robot.drivetrain);
+        SmartDashboard.putNumber("VFollow Power", kpp);
+        SmartDashboard.putNumber("Vfollow D", kD);
+        SmartDashboard.putNumber("dead zone vison", onTargetEpsilon);
     }
 
     @Override
@@ -27,18 +30,21 @@ public class SimpleFollowVision extends Command {
 
     @Override
     protected void execute() {
+        onTargetEpsilon = SmartDashboard.getNumber("dead zone vison", onTargetEpsilon);
+        kpp = SmartDashboard.getNumber("VFollow Power", kpp);
+        kD = SmartDashboard.getNumber("Vfollow D", kD);
+
         switch (mode) {
             case aligning:
                 aligning();
                 break;
-
             case closing:
                 closing();
                 break;
         }
     }
 
-    protected  void closing() {
+    protected void closing() {
         if (Robot.simpleVision.getObjectCount() == 2) {
             mode = Mode.aligning;
             aligning();
@@ -52,33 +58,26 @@ public class SimpleFollowVision extends Command {
     protected void aligning() {
         if (Robot.simpleVision.getObjectCount() == 1) {
             mode = Mode.closing;
-        } else {
+        } else if (Robot.simpleVision.getObjectCount() == 2) {
+            kP = Constants.velocityMultiplier * kpp;
             double velocity = (Robot.oi.getLeftPower() + Robot.oi.getRightPower()) / 2.0 *
                     Constants.velocityMultiplier;
             gain = 0;
 
-            // TODO add a D term, scale correctly for time! (should that be in SimpleVision?)
-            if (Robot.simpleVision.simpleTargetFound()) {
-                double error = Robot.simpleVision.getError();
+            double error = Robot.simpleVision.getError();
 
-                if (Math.abs(error) > onTargetEpsilon) {
-                    gain = Robot.simpleVision.getError() * kP;
+            if (Math.abs(error) > onTargetEpsilon) {
+                gain = error * kP;
 
-                    if (gain < minTurnPower) {
-                        gain = minTurnPower * Math.signum(gain);
-                    }
+                if (Math.abs(gain) < minTurnPower) {
+                    gain = minTurnPower * Math.signum(gain);
                 }
 
                 gain += Robot.simpleVision.getErrorD() * kD;
             }
 
             SmartDashboard.putNumber("Simple Vision Gain ", gain);
-            SmartDashboard.putNumber("Simple Vision Velocity ", velocity);
             Robot.drivetrain.setVelocity(velocity - gain, velocity + gain);
-
-//        if (Robot.core.timeOnLine() > 0.1) {
-//            (new LineFollow()).start();
-//        }
         }
     }
 

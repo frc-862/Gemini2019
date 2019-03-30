@@ -7,6 +7,7 @@
 
 package frc.robot;
 
+import edu.wpi.cscore.VideoMode.PixelFormat;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.SerialPort;
@@ -78,41 +79,25 @@ public class Robot extends LightningRobot {
         registerAutonomousCommmand("Left Rocket",new LeftRocket());
         registerAutonomousCommmand("Right Rocket",new RghtRocket());
         registerAutonomousCommmand("Center Ship",new CenterPath());
-        BooleanSupplier bs;
 
-        //registerAutonomousCommmand("Test Right Rocket", new VelocityMotionProfile("RocketR_StartR_EndN"));
-
-        // registerAutonomousCommmand("AUTON", new Auto(this.getSelectedElevatorPos(),
-        //                            this.getSelectedGamePiece(),
-        //                            this.getSelectedStartPos(),
-        //                            this.getSelectedGenDestin(),
-        //                            this.getSelectedSpecificDestin(),false));
-
-        // //TEST
-        // registerAutonomousCommmand("DO THIS NOW NOLAN!", new Auto(new SetElevatorLow(), "test_left_turn", "HATCH", false));
-        // registerAutonomousCommmand("RightSideNearR", new VelocityMotionProfile("RocketR_StartR_EndN"));
-        // registerAutonomousCommmand("Spin", new Spin());
-        // registerAutonomousCommmand("LeftNearLow", new HatchAuton("left_side_near", new SetElevatorLow()));
-        // registerAutonomousCommmand("Circle", new VelocityMotionProfile("circle"));
-        // registerAutonomousCommmand("Straight", new VelocityMotionProfile("straight"));
-        // registerAutonomousCommmand("LeftSideNear", new VelocityMotionProfile("left_side_near"));
-        // registerAutonomousCommmand("RightSideNear", new VelocityMotionProfile("right_side_near"));
-        // registerAutonomousCommmand("Test Left Turn", new VelocityMotionProfile("test_left_turn"));
-        // registerAutonomousCommmand("Test Right Turn", new VelocityMotionProfile("test_right_turn"));
-        // registerAutonomousCommmand("RightSideNearM", new VelocityMotionProfile("RocketR_StartM_EndN"));
-
-        CameraServer.getInstance().startAutomaticCapture();
+        CameraServer.getInstance().startAutomaticCapture().setVideoMode(PixelFormat.kMJPEG, 160, 120, 10);
     }
 
-    @Override
-    public void robotPeriodic() {
-        super.robotPeriodic();
-        //leds.update();
-    }
+    //@Override
+    //public void robotPeriodic() {
+    //    super.robotPeriodic();
+    //    //leds.update();
+    //}
+//
+    //@Override
+    //public void teleopPeriodic() {
+    //    core.ringOn();
+    //}
 
     @Override
     public void autonomousPeriodic() {
-        super.autonomousPeriodic();
+        core.ringOn();
+        super.autonomousPeriodic(); 
         try {
             writeFile(Scheduler.getInstance().getName());
         } catch (IOException e) {

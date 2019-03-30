@@ -78,9 +78,7 @@ public class OI {
     public void setShocksout  () {
         setShocksout.whenPressed(new ExtendShocks());
     }
-    public void hatchAuto (String start, String genDestin, String specificDestin, Command elevatorPos) {
-        hatchAuto.whenPressed(new HatchAuton(this.selectPath(start, genDestin, specificDestin), elevatorPos));
-    }
+
     public int getLeftDirection() {
         if(copilot.getRawAxis(JoystickConstants.leftJoyYAxis) > 0) return 1;
         else if(copilot.getRawAxis(JoystickConstants.leftJoyYAxis) < 0) return -1;
@@ -237,7 +235,7 @@ public class OI {
     }
 
     public double groundCollectPwr() {
-        return -copilot.getRawAxis(5);
+        return copilot.getRawAxis(5);
     }
 
     public double manualClimbPower() {

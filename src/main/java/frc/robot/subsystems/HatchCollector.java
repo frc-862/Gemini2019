@@ -21,6 +21,7 @@ public class HatchCollector extends Subsystem {
 
     DoubleSolenoid extender, grabber;
     DigitalInput hatchDetector;
+    private boolean retracted = true;
 
     public HatchCollector() {
         extender = new DoubleSolenoid(RobotMap.compressorCANId, RobotMap.extenderFwdChan, RobotMap.extenderRevChan);// OBOT - 11, 4, 5 TODO change these
@@ -35,13 +36,25 @@ public class HatchCollector extends Subsystem {
     }
 
     public void extend() {
-        extender.set(DoubleSolenoid.Value.kForward);
+        if (retracted) {
+          extender.set(DoubleSolenoid.Value.kForward);
+        }
+        retracted = false;
     }
+
+    private boolean collecting = false;
     public void collect() {
-        grabber.set(DoubleSolenoid.Value.kForward);
+        if (!collecting) {
+            grabber.set(DoubleSolenoid.Value.kForward);
+        }
+        collecting = true;
     }
+
     public void eject() {
-        grabber.set(DoubleSolenoid.Value.kReverse);
+        if (collecting) {
+            grabber.set(DoubleSolenoid.Value.kReverse);
+        }
+        collecting = false;
     }
 
     public DoubleSolenoid.Value getPosition() {
@@ -55,6 +68,9 @@ public class HatchCollector extends Subsystem {
     }
 
     public void retract() {
-        extender.set(DoubleSolenoid.Value.kReverse);
+        if (!retracted) {
+            extender.set(DoubleSolenoid.Value.kReverse);
+        }
+        retracted = true;
     }
 }

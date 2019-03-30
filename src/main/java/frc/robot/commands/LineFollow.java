@@ -146,10 +146,11 @@ public class LineFollow extends Command {
     // Make this return true when this Command no longer needs to run execute()
     @Override
     protected boolean isFinished() {
-        if (Math.abs(Robot.core.lineSensor()) < 1.5 && Math.abs(Robot.drivetrain.getVelocity()) < 0.25)
-            return true;
-
-        return timeout > 0 && timeSinceInitialized() > timeout;
+        //if (Math.abs(Robot.core.lineSensor()) < 1.5 && Math.abs(Robot.drivetrain.getVelocity()) < 0.25)
+        //    return true;
+//
+        //return timeout > 0 && timeSinceInitialized() > timeout;
+        return false;
     }
 
     // Called once after isFinished returns true
