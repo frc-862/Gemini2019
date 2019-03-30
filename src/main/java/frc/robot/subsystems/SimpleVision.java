@@ -4,7 +4,6 @@ import edu.wpi.first.wpilibj.SerialPort;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.lightning.util.ExponentialSmoothingFilter;
 import frc.lightning.util.SerialByLine;
 
 import java.util.regex.Matcher;
@@ -20,7 +19,9 @@ public class SimpleVision extends Subsystem {
     private double error;
     private double errorD;
     private String lastLine;
-    private double rawError;
+    private int objectCount;
+    private enum Mode { aligning, straight };
+    Mode mode = Mode.aligning;
 
     @Override
     public void periodic() {
@@ -29,7 +30,6 @@ public class SimpleVision extends Subsystem {
         SmartDashboard.putNumber("Vision Width", width);
         SmartDashboard.putNumber("Vision Height", height);
         SmartDashboard.putNumber("Vision Error", getError());
-        SmartDashboard.putNumber("Raw Vision Error", rawError);
         //SmartDashboard.putString("Vision data", lastLine);
     }
 
@@ -48,7 +48,6 @@ public class SimpleVision extends Subsystem {
         System.out.println("Vision camera initialized on port " + port);
     }
 
-    private ExponentialSmoothingFilter filter = new ExponentialSmoothingFilter(0.95);
     private void positionUpdate(String update) {
         double now = Timer.getFPGATimestamp();
 
@@ -58,32 +57,25 @@ public class SimpleVision extends Subsystem {
             final int imageWidth = 320;
             final double imageMiddle = imageWidth / 2.0;
 
+            objectCount = Integer.parseInt(m.group(1));
             x = Integer.parseInt(m.group(2));
             y = Integer.parseInt(m.group(3));
             width = Integer.parseInt(m.group(4));
             height = Integer.parseInt(m.group(5));
 
-            if (height > 0) {
-                double deltaT = previousTimestamp - now;
-                previousTimestamp = now;
-                rawError = (imageMiddle - x) / imageMiddle;
-                error = filter.filter(rawError);
-                errorD = (previousError - error) / deltaT;
-                previousError = error;
-            } else {
-                error = 0;
-                filter.reset();
-                errorD = 0;    
-                rawError = 0;
-            }
+            double deltaT = previousTimestamp - now;
+            previousTimestamp = now;
+            error = (imageMiddle - x) / imageMiddle;
+            errorD = (previousError - error) / deltaT;
+            previousError = error;
         } else {
             error = 0;
-            filter.reset();
             errorD = 0;
-            rawError = 0;
             System.out.println("Unable to process Simple Vision: " + update);
         }
     }
+
+    public int getObjectCount() { return objectCount; }
 
     public double getError() {
         return error;
