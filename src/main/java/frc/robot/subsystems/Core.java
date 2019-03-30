@@ -42,7 +42,7 @@ public class Core extends Subsystem {
     private DigitalInput midLeft = new DigitalInput(4);
     private AnalogInput innerLeft = new AnalogInput(3);
     private AnalogInput centerLeft = new AnalogInput(2);
-     
+
 
     private AnalogInput centerRight = new AnalogInput(1);
     private AnalogInput innerRight = new AnalogInput(0);
@@ -162,10 +162,10 @@ public class Core extends Subsystem {
     public boolean isVisionReady() {
         return false;//TODO fix
     }
-    public void ringOn(){
+    public void ringOn() {
         ring.set(true);
     }
-    public void ringOff(){
+    public void ringOff() {
         ring.set(true);
     }
     @Override

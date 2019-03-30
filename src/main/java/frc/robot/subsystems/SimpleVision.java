@@ -75,7 +75,9 @@ public class SimpleVision extends Subsystem {
         }
     }
 
-    public int getObjectCount() { return objectCount; }
+    public int getObjectCount() {
+        return objectCount;
+    }
 
     public double getError() {
         return error;

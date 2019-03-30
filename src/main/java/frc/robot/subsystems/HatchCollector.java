@@ -37,7 +37,7 @@ public class HatchCollector extends Subsystem {
 
     public void extend() {
         if (retracted) {
-          extender.set(DoubleSolenoid.Value.kForward);
+            extender.set(DoubleSolenoid.Value.kForward);
         }
         retracted = false;
     }

@@ -35,12 +35,12 @@ public class SimpleFollowVision extends Command {
         kD = SmartDashboard.getNumber("Vfollow D", kD);
 
         switch (mode) {
-            case aligning:
-                aligning();
-                break;
-            case closing:
-                closing();
-                break;
+        case aligning:
+            aligning();
+            break;
+        case closing:
+            closing();
+            break;
         }
     }
 
@@ -50,7 +50,7 @@ public class SimpleFollowVision extends Command {
             aligning();
         } else if (Robot.simpleVision.getObjectCount() == 1) {
             double velocity = (Robot.oi.getLeftPower() + Robot.oi.getRightPower()) / 2.0 *
-                    Constants.velocityMultiplier;
+                              Constants.velocityMultiplier;
             Robot.drivetrain.setVelocity(velocity - gain, velocity + gain);
         }
     }
@@ -61,7 +61,7 @@ public class SimpleFollowVision extends Command {
         } else if (Robot.simpleVision.getObjectCount() == 2) {
             kP = Constants.velocityMultiplier * kpp;
             double velocity = (Robot.oi.getLeftPower() + Robot.oi.getRightPower()) / 2.0 *
-                    Constants.velocityMultiplier;
+                              Constants.velocityMultiplier;
             gain = 0;
 
             double error = Robot.simpleVision.getError();

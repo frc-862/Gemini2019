@@ -97,7 +97,7 @@ public class Robot extends LightningRobot {
     @Override
     public void autonomousPeriodic() {
         core.ringOn();
-        super.autonomousPeriodic(); 
+        super.autonomousPeriodic();
         try {
             writeFile(Scheduler.getInstance().getName());
         } catch (IOException e) {
