@@ -93,7 +93,7 @@ public class JankHabTwoClimb extends StatefulCommand {
             setState(States.BACKUP_A_BIT);
         }
     }
-    
+
     public void backupABit() {
         Robot.climber.setClimberDrivePower(-1);
         if (Timer.getFPGATimestamp() - startedDrivingAt > 1) {

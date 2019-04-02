@@ -15,7 +15,7 @@ public class SimpleFollowVision extends Command {
     double kD = .0;
     double minTurnPower = 1;
     double onTargetEpsilon = 0.1;  // scaled 0..1
-    
+
 
     public SimpleFollowVision() {
         requires(Robot.drivetrain);
