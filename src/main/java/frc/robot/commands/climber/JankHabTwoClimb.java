@@ -46,6 +46,7 @@ public class JankHabTwoClimb extends StatefulCommand {
 
     public void startClimb() {
         Robot.climber.extendJackHabTwo();
+        Robot.climber.extendSkids();
         setState(States.WAIT_TO_DEPLOY_SKIDS);
     }
 
@@ -60,10 +61,21 @@ public class JankHabTwoClimb extends StatefulCommand {
         setState(States.WAIT_TO_DRIVE_FORWARD);
     }
 
+    private double startedToClimb;
+    public void waitToDriveForwardEnter() {
+        startedToClimb = Timer.getFPGATimestamp();
+    }
+
+    private double driveForwardTime = 4.5;
+
     public void waitToDriveForward() {
         if (LightningMath.epsilonEqual(Robot.climber.getJackPosition(),
                                        Constants.habTwo, Constants.climberEpsilon)) {
             setState(States.DRIVE_FORWARD);
+            driveForwardTime = 4.5;
+        } else if (Timer.getFPGATimestamp() - startedToClimb > 5.0) {
+            setState(States.DRIVE_FORWARD);
+            driveForwardTime = 6;
         }
     }
 
@@ -74,13 +86,14 @@ public class JankHabTwoClimb extends StatefulCommand {
     public void driveForward() {
         Robot.climber.setClimberDrivePower(1);
         Robot.drivetrain.setPower(0.4, 0.4);
-        if (Timer.getFPGATimestamp() - startedDrivingAt > 4.5) {//TODO make faster
+        if (Timer.getFPGATimestamp() - startedDrivingAt > driveForwardTime) {//TODO make faster
             startedDrivingAt = Timer.getFPGATimestamp();
             Robot.climber.setClimberDrivePower(0);
             Robot.drivetrain.stop();
             setState(States.BACKUP_A_BIT);
         }
     }
+    
     public void backupABit() {
         Robot.climber.setClimberDrivePower(-1);
         if (Timer.getFPGATimestamp() - startedDrivingAt > 1) {

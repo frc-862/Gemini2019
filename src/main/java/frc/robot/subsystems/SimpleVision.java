@@ -37,7 +37,7 @@ public class SimpleVision extends Subsystem {
         try {
             camera = new SerialPort(115200, port);
             camera.writeString("setmapping2 YUYV 320 240 50.0 Lightning SimpleVision\n");
-//            camera.writeString("setpar serlog None\n");
+//            camera.writetring("setpar serlog None\n");
             camera.writeString("setpar serout USB\n");
             camera.writeString("streamon\n");
             camera.flush();

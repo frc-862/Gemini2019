@@ -6,15 +6,16 @@ import frc.robot.Constants;
 import frc.robot.Robot;
 
 public class SimpleFollowVision extends Command {
-    private double gain;
-    double kpp = .188;
     enum Mode { aligning, closing };
     private Mode mode;
 
+    private double gain;
+    double kpp = .188;
     double kP = Constants.velocityMultiplier * kpp;
     double kD = .0;
     double minTurnPower = 1;
     double onTargetEpsilon = 0.1;  // scaled 0..1
+    
 
     public SimpleFollowVision() {
         requires(Robot.drivetrain);

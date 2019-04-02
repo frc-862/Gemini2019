@@ -10,6 +10,7 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj.DigitalOutput;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
 import frc.robot.commands.LEDs.UpdateLEDState;
 
@@ -50,11 +51,12 @@ public class LEDs extends Subsystem {
     private DigitalOutput bit1;
     private DigitalOutput bit2;
     private DigitalOutput bit3;
+    private boolean climb = false;
 
     public LEDs() {
-        bit1 = new DigitalOutput(7);
-        bit2 = new DigitalOutput(8);
-        bit3 = new DigitalOutput(9);
+        bit1 = new DigitalOutput(6);
+        bit2 = new DigitalOutput(7);
+        bit3 = new DigitalOutput(8);
     }
 
     private State state = State.OFF;
@@ -67,13 +69,30 @@ public class LEDs extends Subsystem {
 
     @Override
     public void initDefaultCommand() {
-        setDefaultCommand(new UpdateLEDState());
+        //setDefaultCommand(new UpdateLEDState());
     }
 
     @Override
     public void periodic() {
-        if(Robot.isDisabled) this.state = State.OFF;
+        SmartDashboard.putString("LED State", this.state.toString());
+        if(Robot.isDisabled) {
+            this.state = State.OFF;
+        } else {
+            if (climb) {
+                state = State.CLIMBING;
+            } else if (Robot.core.timeOnLine() > 0.254) {
+                state = State.LINE_FOLLOW_READY;
+            } else if (Robot.simpleVision.simpleTargetFound()) {
+                state = State.VISION_READY;
+            } else {
+                state = State.STD_BLUE_ORANGE_CHASE;
+            }
+        }
         this.set();
+    }
+
+    public void climbing() {
+        climb = true;
     }
 
     private void set() {

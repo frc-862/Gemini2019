@@ -18,6 +18,7 @@ import frc.lightning.commands.ToggleCommand;
 import frc.lightning.commands.VelocityMotionProfile;
 import frc.lightning.util.JoystickFilter;
 import frc.lightning.util.TwoButtonTrigger;
+import frc.robot.commands.DriverAssist;
 import frc.robot.commands.LineFollow;
 import frc.robot.commands.auto.HatchAuton;
 import frc.robot.commands.calibration.TestMove;
@@ -172,13 +173,16 @@ public class OI {
         (new JoystickButton(driverLeft, 1)).whenPressed(new ToggleCommand(new InstantCommand(Robot.hatchPanelCollector, () -> Robot.hatchPanelCollector.collect()),
                 new InstantCommand(Robot.hatchPanelCollector, () -> Robot.hatchPanelCollector.eject())));
 
-        (new JoystickButton(driverRight, 1)).whileHeld(new LineFollow());
+        (new JoystickButton(driverRight, 1)).whileHeld(new DriverAssist());
 
         (new JoystickButton(copilot, JoystickConstants.highButton)).            whenPressed(new InstantCommand(Robot.elevator, () -> Robot.elevator.goToHigh()));
         (new JoystickButton(copilot, JoystickConstants.midButton)).             whenPressed(new InstantCommand(Robot.elevator, () -> Robot.elevator.goToMid()));
         (new JoystickButton(copilot, JoystickConstants.elevatorCollectButton)). whenPressed(new InstantCommand(Robot.elevator, () -> Robot.elevator.goToCollect()));
         (new JoystickButton(copilot, JoystickConstants.lowButton)).             whenPressed(new InstantCommand(Robot.elevator, () -> Robot.elevator.goToLow()));
         (new JoystickButton(copilot, JoystickConstants.bottomButton)).          whenPressed(new InstantCommand(Robot.elevator, () -> Robot.elevator.goToBottom()));
+        (new JoystickButton(driverRight, 11)).whenPressed(new JankStatefulClimb());
+        (new JoystickButton(driverLeft, 11)).whenPressed(new ClimbGoToPosition());
+
 
         (new JoystickButton(copilot, JoystickConstants.highButton)).            whileHeld(new InstantCommand(() -> Robot.elevator.resetTimer()));
         (new JoystickButton(copilot, JoystickConstants.midButton)).             whileHeld(new InstantCommand(() -> Robot.elevator.resetTimer()));

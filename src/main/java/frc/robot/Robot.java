@@ -54,7 +54,7 @@ public class Robot extends LightningRobot {
         System.out.println("Initializing our robot");
 
         drivetrain = GeminiDrivetrain.create();
-        //leds = new LEDs();
+        leds = new LEDs();
         hatchGroundCollector = new HatchGroundCollector();
         hatchPanelCollector = new HatchCollector();
         cargoCollector = CargoCollector.create();
