@@ -8,10 +8,11 @@
 package frc.robot.commands.hatch;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
+import edu.wpi.first.wpilibj.command.InstantCommand;
 import frc.robot.Robot;
-import frc.robot.commands.LEDs.LEDsSetYellow;
 import frc.robot.commands.driveTrain.DriveBackDuration;
 import frc.robot.commands.elevator.SetElevatorLow;
+import frc.robot.subsystems.LEDs;
 
 public class automatedHatchCollect extends CommandGroup {
     /**
@@ -33,14 +34,15 @@ public class automatedHatchCollect extends CommandGroup {
         // e.g. if Command1 requires chassis, and Command2 requires arm,
         // a CommandGroup containing them would require both the chassis and the arm.
         requires(Robot.hatchPanelCollector);
-        requires(Robot.leds);
+
+        addSequential(new InstantCommand(() -> Robot.leds.setState(LEDs.State.AUTONOMOUS)));
         addSequential(new SetElevatorLow());
         addSequential(new ExtendHatchCollector());
         addSequential(new DeployGroundHatchCollector());
         addSequential(new OpenHatchCollector());
         addSequential(new waitForHatchPanel());
-        addSequential(new LEDsSetYellow());
         addSequential(new RetractHatchCollector());
         addSequential(new DriveBackDuration(1));
+        addSequential(new InstantCommand(() -> Robot.leds.clearState(LEDs.State.AUTONOMOUS)));
     }
 }

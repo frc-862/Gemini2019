@@ -8,9 +8,10 @@
 package frc.robot.commands.cargo;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
+import edu.wpi.first.wpilibj.command.InstantCommand;
 import frc.robot.Robot;
-import frc.robot.commands.LEDs.LEDsSetGreen;
 import frc.robot.commands.elevator.SetElevatorLow;
+import frc.robot.subsystems.LEDs;
 
 public class AutomatedCargoCollect extends CommandGroup {
     /**
@@ -35,12 +36,13 @@ public class AutomatedCargoCollect extends CommandGroup {
         // arm.
         requires(Robot.cargoCollector);
         requires(Robot.elevator);
+        addSequential(new InstantCommand(() -> Robot.leds.setState(LEDs.State.AUTONOMOUS)));
         addSequential(new DeployCargoCollector());
         addSequential(new StartCollectCargo());
         addSequential(new WaitForCargo());
         addSequential(new StartEjectCargo());
         addSequential(new SetElevatorLow());
-        addSequential(new LEDsSetGreen());
         addSequential(new RetractCargoCollector());
+        addSequential(new InstantCommand(() -> Robot.leds.clearState(LEDs.State.AUTONOMOUS)));
     }
 }

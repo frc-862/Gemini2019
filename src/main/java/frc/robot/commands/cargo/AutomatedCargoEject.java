@@ -8,10 +8,11 @@
 package frc.robot.commands.cargo;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
+import edu.wpi.first.wpilibj.command.InstantCommand;
 import frc.robot.Robot;
-import frc.robot.commands.LEDs.LEDsSetPurple;
 import frc.robot.commands.elevator.SetElevatorCollect;
 import frc.robot.commands.elevator.SetElevatorToSelectedState;
+import frc.robot.subsystems.LEDs;
 
 public class AutomatedCargoEject extends CommandGroup {
     /**
@@ -36,10 +37,12 @@ public class AutomatedCargoEject extends CommandGroup {
         // arm.
 
         requires(Robot.elevator);
+
+        addSequential(new InstantCommand(() -> Robot.leds.setState(LEDs.State.AUTONOMOUS)));
         addSequential(new SetElevatorToSelectedState());
         addSequential(new EjectElevatorCargo());
         addSequential(new SetElevatorCollect());
         //addSequential(new StopCargoCollector());
-        addSequential(new LEDsSetPurple());
+        addSequential(new InstantCommand(() -> Robot.leds.clearState(LEDs.State.AUTONOMOUS)));
     }
 }

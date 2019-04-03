@@ -8,129 +8,72 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.DigitalOutput;
-import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.Robot;
-import frc.robot.commands.LEDs.UpdateLEDState;
-
-/**
- * Add your docs here.
- */
 
 public class LEDs extends Subsystem {
-    public void setYellow() {
-    }
-
-    public void setGreen() {
-    }
-
-    public void setPurple() {
-    }
-
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
 
     public enum State {
-
         //Normal
-        OFF,                    //0
-        STD_BLUE_ORANGE_CHASE,  //1
-        //Vision/Line Ready
-        LINE_FOLLOW_READY,      //10
-        VISION_READY,           //11
-        //Game Piece
-        PIECE_COLLECTED,        //100
-        //Climb
-        TIME_2_CLIMB_KIDS,      //101
-        CLIMBING,               //110
-        ALL_DONE_NAP_TIME       //111
+        OFF,
+        STD_BLUE_ORANGE_CHASE,
+        AUTONOMOUS,
+        END_OF_MATCH_WARNING,
+        CLIMBING,
+        DRIVER_ASSIST_READY,
+        CENTERED,
 
+        COUNT
     }
 
-    private DigitalOutput bit1;
-    private DigitalOutput bit2;
-    private DigitalOutput bit3;
+    private boolean[] active = new boolean[State.COUNT.ordinal()];
+    private State state;
+
+    private DigitalOutput bit1 = new DigitalOutput(6);
+    private DigitalOutput bit2 = new DigitalOutput(7);
+    private DigitalOutput bit3 = new DigitalOutput(8);
     private boolean climb = false;
 
     public LEDs() {
-        bit1 = new DigitalOutput(6);
-        bit2 = new DigitalOutput(7);
-        bit3 = new DigitalOutput(8);
+        state = State.STD_BLUE_ORANGE_CHASE;
+        active[state.ordinal()] = true;
     }
 
-    private State state = State.OFF;
-
-    public void setState(State state) {
-        this.state = state;
+    public void setState(State new_state) {
+        active[new_state.ordinal()] = true;
+        if (new_state.ordinal() > state.ordinal()) {
+            state = new_state;
+            set();
+        }
     }
 
-    //7, 8, 9
+    public void clearState(State old_state) {
+        state = State.OFF;
+        active[state.ordinal()] = false;
+        for(int i = State.COUNT.ordinal() - 1; i > 0; ++i) {
+            if (active[i]) {
+                state = State.values()[i];
+                break;
+            }
+        }
+        set();
+    }
 
     @Override
-    public void initDefaultCommand() {
-        //setDefaultCommand(new UpdateLEDState());
-    }
+    public void initDefaultCommand() { }
 
     @Override
     public void periodic() {
         SmartDashboard.putString("LED State", this.state.toString());
-        if(Robot.isDisabled) {
-            this.state = State.OFF;
-        } else {
-            if (climb) {
-                state = State.CLIMBING;
-            } else if (Robot.core.timeOnLine() > 0.254) {
-                state = State.LINE_FOLLOW_READY;
-            } else if (Robot.simpleVision.simpleTargetFound()) {
-                state = State.VISION_READY;
-            } else {
-                state = State.STD_BLUE_ORANGE_CHASE;
-            }
-        }
-        this.set();
-    }
-
-    public void climbing() {
-        climb = true;
     }
 
     private void set() {
-        switch (state) {
-        case STD_BLUE_ORANGE_CHASE:
-            setBits(0, 0, 1);
-            break;
-        case LINE_FOLLOW_READY:
-            setBits(0, 1, 0);
-            break;
-        case VISION_READY:
-            setBits(0, 1, 1);
-            break;
-        case PIECE_COLLECTED:
-            setBits(1, 0, 0);
-            break;
-        case TIME_2_CLIMB_KIDS:
-            setBits(1, 0, 1);
-            break;
-        case CLIMBING:
-            setBits(1, 1, 0);
-            break;
-        case ALL_DONE_NAP_TIME:
-            setBits(1, 1, 1);
-            break;
-        default://OFF
-            setBits(0, 0, 0);
-            break;
-        }
+        int bits = state.ordinal();
+        bit1.set((bits & 0x1) == 0x1);
+        bit2.set((bits & 0x2) == 0x2);
+        bit3.set((bits & 0x4) == 0x4);
     }
-    private void setBits(int i1, int i2, int i3) {
-        boolean b1 = (i1 == 1) ? true : false;
-        boolean b2 = (i2 == 1) ? true : false;
-        boolean b3 = (i3 == 1) ? true : false;
-        bit1.set(b1);
-        bit2.set(b2);
-        bit3.set(b3);
-    }
-
-
 }
+
