@@ -108,6 +108,7 @@ public class GeminiDrivetrain extends CANDrivetrain {
         return HAL.getBrownedOut();
     }
 
+
     @Override
     public void setVelocity(double left, double right) {
         // convert from ft/s to talon units (enc ticks/ 100ms)
@@ -127,10 +128,15 @@ public class GeminiDrivetrain extends CANDrivetrain {
         return (LightningMath.talon2fps(super.getLeftVelocity()));// / 10)/60);//return fps
     }
 
+    public boolean tryingToMove() {
+        return Math.abs(getLeftMaster().getMotorOutputPercent()) > 0.1 || Math.abs(getRightMaster().getMotorOutputPercent()) > 0.1;
+    }
+
     @Override
     public void initDefaultCommand() {
         // Set the default command for a subsystem here.
         setDefaultCommand(new VelocityTankDrive());
     }
+
 
 }
