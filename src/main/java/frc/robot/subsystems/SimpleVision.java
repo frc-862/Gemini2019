@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.lightning.util.SerialByLine;
+import frc.robot.Robot;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -68,7 +69,10 @@ public class SimpleVision extends Subsystem {
             error = (imageMiddle - x) / imageMiddle;
             errorD = (previousError - error) / deltaT;
             previousError = error;
+
+            Robot.leds.setState(LEDs.State.DRIVER_ASSIST_READY);
         } else {
+            Robot.leds.clearState(LEDs.State.DRIVER_ASSIST_READY);
             error = 0;
             errorD = 0;
             System.out.println("Unable to process Simple Vision: " + update);

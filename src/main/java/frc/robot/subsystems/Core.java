@@ -205,12 +205,17 @@ public class Core extends Subsystem {
 
         pos = -3;
         for (DoubleSupplier sensor : rawSensorValues) {
-
             SmartDashboard.putNumber("Raw Line " + pos, sensor.getAsDouble());
-
             pos += 2;
         }
-        SmartDashboard.putNumber("Distance from center", lineSensor());
+
+        double linePos = lineSensor();
+        SmartDashboard.putNumber("Distance from center", linePos);
+        if (Math.abs(linePos) < 1.2) {
+            Robot.leds.setState(LEDs.State.CENTERED);
+        } else {
+            Robot.leds.clearState(LEDs.State.CENTERED);
+        }
         SmartDashboard.putNumber("line first seen", lineFirstSeen);
         SmartDashboard.putNumber("time saw line", timeOnLine());
     }
