@@ -23,6 +23,7 @@ import frc.lightning.geometry.Rotation2d;
 import frc.lightning.logging.CommandLogger;
 import frc.lightning.logging.DataLogger;
 import frc.lightning.testing.SystemTest;
+import frc.lightning.util.LightningMath;
 import frc.robot.Constants;
 import frc.robot.Robot;
 import frc.robot.RobotMap;
@@ -291,5 +292,9 @@ public class Core extends Subsystem {
 
     public boolean isMoving() {
         return navx.isMoving();
+    }
+
+    public boolean hasStopped(){
+        return (!navx.isMoving() && Robot.drivetrain.tryingToMove());
     }
 }
