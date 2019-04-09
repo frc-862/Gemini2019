@@ -7,12 +7,14 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.lightning.commands.StatefulCommand;
 import frc.lightning.logging.CommandLogger;
 import frc.robot.Constants;
 import frc.robot.Robot;
+import frc.robot.commands.climber.driveforward;
 
 public class DriverAssist extends StatefulCommand {
     // private CommandLogger logger = new CommandLogger("DriverAssist");
@@ -22,6 +24,8 @@ public class DriverAssist extends StatefulCommand {
         VISION_DRIVE,
         VISION_CLOSING,
         LINE_FOLLOW,
+        FOLLOW_BACKWARDS,
+        BAD_DUMB_BACKUP,
         DONE
     }
 
@@ -35,12 +39,15 @@ public class DriverAssist extends StatefulCommand {
 //linefollow
     double turningVelocity = .5;//4
     double straightVelocity = 4 ;//1
-    double turnI = 0.001;
+    double turnI = 0.001/.02;
     double turnD = .5;
     double prevError = 0;
     double errorAcc = 0;
+    boolean seenTwo = false;
     private double turn;
     private double velocity;
+    double stError;
+    double timeStamp;
 
     public DriverAssist() {
         super(States.VISION_AQUIRE);
@@ -53,6 +60,7 @@ public class DriverAssist extends StatefulCommand {
     }
 
     public void visionAquire() {
+        seenTwo = false;
         if (Robot.core.timeOnLine() > 0.254) {
             setState(States.LINE_FOLLOW);
         } else if (Robot.simpleVision.simpleTargetFound()) {
@@ -63,12 +71,29 @@ public class DriverAssist extends StatefulCommand {
     public void visionDrive() {
         if (Robot.core.timeOnLine() > 0.254) {
             setState(States.LINE_FOLLOW);
-        } else if (Robot.simpleVision.getObjectCount() == 1) {
+        } else if (Robot.simpleVision.getObjectCount() == 1 && seenTwo) {
             setState(States.VISION_CLOSING);
-        } else if (Robot.simpleVision.getObjectCount() == 2) {
+        } else if (Robot.simpleVision.getObjectCount() == 1) {
             kP = Constants.velocityMultiplier * kpp;
-            double velocity = 4*
-                              Constants.velocityMultiplier;
+            double velocity = 0;
+            gain = 0;
+            double error = Robot.simpleVision.getError();
+
+            if (Math.abs(error) > onTargetEpsilon) {
+                gain = error * kP;
+
+                if (Math.abs(gain) < minTurnPower) {
+                    gain = minTurnPower * Math.signum(gain);
+                }
+
+                gain += Robot.simpleVision.getErrorD() * kD;
+            }
+
+            Robot.drivetrain.setVelocity(velocity - gain, velocity + gain);
+        } else if (Robot.simpleVision.getObjectCount() == 2) {
+            seenTwo = true;
+            kP = Constants.velocityMultiplier * kpp;
+            double velocity = 3;
             gain = 0;
             double error = Robot.simpleVision.getError();
 
@@ -97,8 +122,12 @@ public class DriverAssist extends StatefulCommand {
         }
     }
 
+    double lastTimmeStamp = Timer.getFPGATimestamp();
+
     private void updateCalculations() {
-        final double error = Robot.core.lineSensor();
+        double elapsedTime =Timer.getFPGATimestamp()-lastTimmeStamp;
+        lastTimmeStamp = Timer.getFPGATimestamp();
+        final double error = Robot.core.lineSensor();//in off cntr
 
         turnP = SmartDashboard.getNumber("Turn Power", turnP);
         straightVelocity = SmartDashboard.getNumber("Straight Vel", straightVelocity);
@@ -109,10 +138,10 @@ public class DriverAssist extends StatefulCommand {
         if (Double.isNaN(error) || Math.abs(error) <= 1) {
             errorAcc = 0;
         } else {
-            errorAcc += error;
+            errorAcc += error * elapsedTime;
         }
 
-        turn = (error * turnP) + (errorAcc * turnI)-(prevError-error)*turnD;
+        turn = (error * turnP) + (errorAcc * turnI)-(((prevError-error)/elapsedTime)*turnD);
         velocity = (Math.abs(error) <= 1) ? straightVelocity : turningVelocity;
 
 
@@ -124,16 +153,34 @@ public class DriverAssist extends StatefulCommand {
         updateCalculations();
         Robot.drivetrain.setVelocity(velocity + turn, velocity - turn);
 
-        //if (!Robot.core.isMoving() && Math.abs(prevError)> 1.5) {
-        //    if (Math.abs(prevError)> 1.5) {
-        //        state = State.followBackward;
-        //        backupError = prevError;
-        //    } else {
-        //        Robot.drivetrain.setVelocity(0, 0);
-        //    }
-        //  }
+        if (!Robot.core.hasStopped()) {
+            if (Math.abs(prevError)> 1.5) {
+                stError=prevError;
+                timeStamp=Timer.getFPGATimestamp();
+                setState(States.FOLLOW_BACKWARDS);
+            } else {
+                Robot.drivetrain.setVelocity(0, 0);
+            }
+          }
     }
 
+    public void followBackward() {
+        updateCalculations();
+        turn *= -.5;
+        velocity *= .25;
+        Robot.drivetrain.setVelocity(-velocity + turn, -velocity - turn);
+
+        if (Math.abs(prevError) < stError/2) {
+            setState(States.LINE_FOLLOW);
+        }
+    }
+    public void badDumbBackup(){
+        Robot.drivetrain.setVelocity(-1, -1);
+        if (timeStamp-Timer.getFPGATimestamp()>=1){
+            Robot.drivetrain.setVelocity(0, 0);
+            setState(States.LINE_FOLLOW);
+        }
+    }
     // Make this return true when this Command no longer needs to run execute()
     @Override
     protected boolean isFinished() {

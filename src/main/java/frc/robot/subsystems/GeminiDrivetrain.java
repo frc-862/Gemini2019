@@ -77,6 +77,7 @@ public class GeminiDrivetrain extends CANDrivetrain {
 
     @Override
     public void periodic() {
+        SmartDashboard.putBoolean("trying to move",tryingToMove());
         super.periodic();
     }
 

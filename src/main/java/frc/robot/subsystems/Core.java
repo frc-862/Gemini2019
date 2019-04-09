@@ -24,6 +24,7 @@ import frc.lightning.logging.CommandLogger;
 import frc.lightning.logging.DataLogger;
 import frc.lightning.testing.SystemTest;
 import frc.lightning.util.LightningMath;
+import frc.lightning.util.MovingAverageFilter;
 import frc.robot.Constants;
 import frc.robot.Robot;
 import frc.robot.RobotMap;
@@ -171,6 +172,10 @@ public class Core extends Subsystem {
     }
     @Override
     public void periodic() {
+        SmartDashboard.putBoolean("has stopped",hasStopped());
+        SmartDashboard.putBoolean("is moving",isMoving());
+        SmartDashboard.putNumber("is moving Y",moved());
+        SmartDashboard.putNumber("is moving X",movedX());
         // SmartDashboard.putNumber("Ground Collect Encoder", groundCollectEncoder.getVoltage());
         // System.out.println("GCE: " + groundCollectEncoder.getVoltage());
         SmartDashboard.putNumber("preasure", airPreasure.getVoltage());
@@ -272,13 +277,14 @@ public class Core extends Subsystem {
     }
 
     public double timeOnLine() {
+        return 0;
         // if (!sawLine) return 0;
 
-        double result = Timer.getFPGATimestamp()-lineFirstSeen;
-        if (result < 0.05) {
-            return 0;
-        }
-        return result;
+        // double result = Timer.getFPGATimestamp()-lineFirstSeen;
+        // if (result < 0.05) {
+        //     return 0;
+        // }
+        // return result;
     }
 
     public DoubleSupplier getRawData(int a) {
@@ -292,6 +298,16 @@ public class Core extends Subsystem {
 
     public boolean isMoving() {
         return navx.isMoving();
+    }
+
+    MovingAverageFilter distance = new MovingAverageFilter(10);
+    public double moved() {
+        return distance.filter(navx.getDisplacementY());
+    }
+
+    MovingAverageFilter distance2 = new MovingAverageFilter(10);
+    public double movedX() {
+        return distance2.filter(navx.getDisplacementX());
     }
 
     public boolean hasStopped(){

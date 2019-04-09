@@ -7,7 +7,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class StatefulCommand extends Command {
-    private Enum<?> state;
+    protected Enum<?> state;
     protected Runnable default_action = () -> {};
     private Enum<?> previous_state = null;
     private Enum<?> calling_state = null;

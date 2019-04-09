@@ -52,6 +52,7 @@ public class SimpleVision extends Subsystem {
         double now = Timer.getFPGATimestamp();
 
         lastLine = update;
+        System.out.println(lastLine);
         Matcher m = pattern.matcher(update);
         if (m.find()) {
             final int imageWidth = 320;
