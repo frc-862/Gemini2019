@@ -8,8 +8,10 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.DigitalOutput;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.Robot;
 
 public class LEDs extends Subsystem {
     // Put methods for controlling this subsystem
@@ -67,6 +69,11 @@ public class LEDs extends Subsystem {
     @Override
     public void periodic() {
         SmartDashboard.putString("LED State", this.state.toString());
+
+        DriverStation ds = DriverStation.getInstance();
+        if (ds.getMatchTime() < 30 && ds.isOperatorControl()) {
+            Robot.leds.setState(State.END_OF_MATCH_WARNING);
+        }
     }
 
     private void set() {

@@ -1,5 +1,6 @@
 package frc.lightning.commands;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -11,6 +12,7 @@ public class StatefulCommand extends Command {
     protected Runnable default_action = () -> {};
     private Enum<?> previous_state = null;
     private Enum<?> calling_state = null;
+    private double enteredStateAt = 0;
 
     public void setState(Enum<?> new_state) {
         state = new_state;
@@ -35,6 +37,7 @@ public class StatefulCommand extends Command {
     @Override
     protected void initialize() {
         previous_state = null;
+        enteredStateAt = Timer.getFPGATimestamp();
         calling_state = state;
     }
 
@@ -65,6 +68,10 @@ public class StatefulCommand extends Command {
         return method_name;
     }
 
+    protected double timeInState() {
+        return Timer.getFPGATimestamp() - enteredStateAt;
+    }
+
     @Override
     protected void execute() {
         if (previous_state != state) {
@@ -73,6 +80,7 @@ public class StatefulCommand extends Command {
                 call(exit_method);
             }
 
+            enteredStateAt = Timer.getFPGATimestamp();
             previous_state = state;
             calling_state = state;
             call(methodName(state) + "Enter");
