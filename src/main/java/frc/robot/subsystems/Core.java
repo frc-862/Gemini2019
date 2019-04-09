@@ -123,6 +123,12 @@ public class Core extends Subsystem {
         DataLogger.addDataElement("YAW", () -> getYaw());
         DataLogger.addDataElement("PITCH", () -> getPitch());
         DataLogger.addDataElement("ROLL", () -> getRoll());
+        DataLogger.addDataElement("AccelX", () -> navx.getRawAccelX());
+        DataLogger.addDataElement("AccelY", () -> navx.getRawAccelY());
+        DataLogger.addDataElement("AccelZ", () -> navx.getRawAccelZ());
+        DataLogger.addDataElement("DisplacementX", () -> navx.getDisplacementX());
+        DataLogger.addDataElement("DisplacementY", () -> navx.getDisplacementY());
+        DataLogger.addDataElement("DisplacementZ", () -> navx.getDisplacementZ());
 
         int i = -3;
         for (var sensor : rawSensorValues) {
