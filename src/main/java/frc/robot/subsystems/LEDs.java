@@ -55,7 +55,7 @@ public class LEDs extends Subsystem {
     public void clearState(State old_state) {
         state = State.OFF;
         active[state.ordinal()] = false;
-        for(int i = State.COUNT.ordinal() - 1; i > 0; ++i) {
+        for(int i = State.COUNT.ordinal() - 1; i > 0; --i) {
             if (active[i]) {
                 state = State.values()[i];
                 break;
