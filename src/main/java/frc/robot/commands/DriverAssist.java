@@ -161,7 +161,7 @@ public class DriverAssist extends StatefulCommand {
             } else {
                 Robot.drivetrain.setVelocity(0, 0);
             }
-          }
+        }
     }
 
     public void followBackward() {
@@ -174,9 +174,9 @@ public class DriverAssist extends StatefulCommand {
             setState(States.LINE_FOLLOW);
         }
     }
-    public void badDumbBackup(){
+    public void badDumbBackup() {
         Robot.drivetrain.setVelocity(-1, -1);
-        if (timeStamp-Timer.getFPGATimestamp()>=1){
+        if (timeStamp-Timer.getFPGATimestamp()>=1) {
             Robot.drivetrain.setVelocity(0, 0);
             setState(States.LINE_FOLLOW);
         }

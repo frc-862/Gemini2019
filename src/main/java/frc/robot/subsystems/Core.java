@@ -315,7 +315,7 @@ public class Core extends Subsystem {
         return distance2.filter(navx.getDisplacementX());
     }
 
-    public boolean hasStopped(){
+    public boolean hasStopped() {
         return (!navx.isMoving() && Robot.drivetrain.tryingToMove());
     }
 }

@@ -5,22 +5,22 @@ import frc.robot.Robot;
 
 public class TrickyHAB2 extends StatefulCommand {
     enum State {
-      DRIVE_BACK1,
-      LOWER_LIFT1,
-      DRIVE_BACK2,
-      RAISE_LIFT1,
-      DRIVE_BACK3,
-      LOWER_LIFT2,
-      DRIVE_BACK4,
-      RAISE_LIFT2,
-      DRIVE_BACK5,
-      DONE
+        DRIVE_BACK1,
+        LOWER_LIFT1,
+        DRIVE_BACK2,
+        RAISE_LIFT1,
+        DRIVE_BACK3,
+        LOWER_LIFT2,
+        DRIVE_BACK4,
+        RAISE_LIFT2,
+        DRIVE_BACK5,
+        DONE
     }
 
     TrickyHAB2() {
-      super(State.DRIVE_BACK1);
-      requires(Robot.drivetrain);
-      requires(Robot.climber);
+        super(State.DRIVE_BACK1);
+        requires(Robot.drivetrain);
+        requires(Robot.climber);
     }
 
     public void driveBack1() {
