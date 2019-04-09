@@ -26,6 +26,7 @@ public class LEDs extends Subsystem {
         CLIMBING,
         DRIVER_ASSIST_READY,
         CENTERED,
+        READY,
 
         COUNT
     }
