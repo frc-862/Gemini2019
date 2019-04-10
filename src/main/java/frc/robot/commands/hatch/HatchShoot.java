@@ -12,11 +12,11 @@ import edu.wpi.first.wpilibj.command.InstantCommand;
 import frc.robot.Robot;
 
 public class HatchShoot extends CommandGroup {
-  
-  public HatchShoot() {
 
-    addParallel(new ExtendHatchCollector());
-    addParallel(new InstantCommand(Robot.hatchPanelCollector, () -> Robot.hatchPanelCollector.eject()));
+    public HatchShoot() {
 
-  }
+        addParallel(new ExtendHatchCollector());
+        addParallel(new InstantCommand(Robot.hatchPanelCollector, () -> Robot.hatchPanelCollector.eject()));
+
+    }
 }

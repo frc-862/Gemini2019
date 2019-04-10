@@ -13,44 +13,44 @@ import frc.robot.Robot;
 
 public class StatefulHatchDeploy extends StatefulCommand {
 
-  private final double waitTime = 0.25;
+    private final double waitTime = 0.25;
 
-  enum States {
-    EXTEND,
-    DEPLOY,
-    RETRACT,
-    DONE
-  }
+    enum States {
+        EXTEND,
+        DEPLOY,
+        RETRACT,
+        DONE
+    }
 
-  public StatefulHatchDeploy() {
-    super(States.EXTEND);
-  }
+    public StatefulHatchDeploy() {
+        super(States.EXTEND);
+    }
 
-  @Override
-  protected void initialize() {
-    setState(States.EXTEND);
-  }
+    @Override
+    protected void initialize() {
+        setState(States.EXTEND);
+    }
 
-  @Override
-  protected boolean isFinished() {
-    return this.getState() == States.DONE;
-  }
+    @Override
+    protected boolean isFinished() {
+        return this.getState() == States.DONE;
+    }
 
-  //STATE COMMANDS
-  
-  private void extend(){
-    Robot.hatchPanelCollector.extend();
-    if(this.timeInState()>waitTime)setState(States.DEPLOY);
-  }
+    //STATE COMMANDS
 
-  private void deploy(){
-    Robot.hatchPanelCollector.eject();
-    if(this.timeInState()>waitTime)setState(States.RETRACT);
-  }
+    private void extend() {
+        Robot.hatchPanelCollector.extend();
+        if(this.timeInState()>waitTime)setState(States.DEPLOY);
+    }
 
-  private void retract(){
-    Robot.hatchPanelCollector.retract();
-    if(this.timeInState()>)setState(States.DONE);
-  }
+    private void deploy() {
+        Robot.hatchPanelCollector.eject();
+        if(this.timeInState()>waitTime)setState(States.RETRACT);
+    }
+
+    private void retract() {
+        Robot.hatchPanelCollector.retract();
+        if(this.timeInState()>)setState(States.DONE);
+    }
 
 }
