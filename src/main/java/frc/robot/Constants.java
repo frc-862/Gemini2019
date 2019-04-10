@@ -102,7 +102,7 @@ public class Constants extends ConstantBase {
     public static final double geminiMinRightInside = 1.17;
     public static final double geminiMinRightOutside = 1.25;
 
-    public static final double movingCurrent = 8;
+    public static final double movingCurrent = 6;
     public static final double movingVelocity = 1;
 
     public static final int stallDetectLoopDelay = 4;
