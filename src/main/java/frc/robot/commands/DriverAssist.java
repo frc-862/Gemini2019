@@ -30,10 +30,11 @@ public class DriverAssist extends StatefulCommand {
 
     private double gain;
     double kpp = .188;
+    double kppPivot = .188;
     double kP = Constants.velocityMultiplier * kpp;
     double kD = .0;
     double minTurnPower = 1;
-    double onTargetEpsilon = 0.1;  // scaled 0..1
+    double onTargetEpsilon = .1;  // scaled 0..1
     double turnP = .475;
     double turningVelocity = .5;//4
     double straightVelocity = 4 ;//1
@@ -95,8 +96,9 @@ public class DriverAssist extends StatefulCommand {
         } else if (Robot.simpleVision.getObjectCount() == 1 && seenTwo) {
             setState(States.VISION_CLOSING);
         } else if (Robot.simpleVision.getObjectCount() == 1) {
-            kP = Constants.velocityMultiplier * kpp;
-            double velocity = 0;
+            //kP = Constants.velocityMultiplier * kpp;
+            kP = Constants.velocityMultiplier * kppPivot;
+            double velocity = 1;
             visionUpdate();
 
             Robot.drivetrain.setVelocity(velocity - gain, velocity + gain);

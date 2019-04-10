@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 import frc.lightning.commands.VelocityMotionProfile;
 import frc.robot.commands.elevator.SetElevatorLow;
 import frc.robot.commands.hatch.CloseHatchCollector;
+import frc.robot.commands.test.ResetDriveSensors;
 
 public class LeftRocket extends CommandGroup {
     /**
@@ -21,6 +22,7 @@ public class LeftRocket extends CommandGroup {
         // e.g. addSequential(new Command1());
         // addSequential(new Command2());
         // these will run in order.
+        addSequential(new ResetDriveSensors());
         addSequential(new CloseHatchCollector());
         addSequential(new SetElevatorLow());
         addSequential(new VelocityMotionProfile("RocketL_StartL_EndN"));
