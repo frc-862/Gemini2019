@@ -28,8 +28,10 @@ import frc.robot.commands.climber.*;
 import frc.robot.commands.driveTrain.ConfigMotors;
 import frc.robot.commands.hatch.CloseHatchCollector;
 import frc.robot.commands.hatch.ExtendHatchCollector;
+import frc.robot.commands.hatch.HatchShoot;
 import frc.robot.commands.hatch.OpenHatchCollector;
 import frc.robot.commands.hatch.RetractHatchCollector;
+import frc.robot.commands.hatch.StatefulHatchDeploy;
 import frc.robot.commands.test.LeftDriveZero;
 import frc.robot.commands.test.ResetDriveSensors;
 import frc.robot.commands.test.RightDriveZero;
@@ -200,6 +202,9 @@ public class OI {
         leftFilter.setRampDelta(0.1);
         rightFilter.setRampDelta(0.1);
         initializeCommands();
+
+        SmartDashboard.putData("Stateful Hatch Deploy", new StatefulHatchDeploy());
+        SmartDashboard.putData("Shoot Hatch", new HatchShoot());
 
         SmartDashboard.putData("open hatch", new OpenHatchCollector());
         SmartDashboard.putData("close hatch", new CloseHatchCollector());
