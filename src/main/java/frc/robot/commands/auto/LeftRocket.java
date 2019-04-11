@@ -8,7 +8,10 @@
 package frc.robot.commands.auto;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
+import frc.lightning.commands.InterruptableVelocityMotionPath;
 import frc.lightning.commands.VelocityMotionProfile;
+import frc.robot.Robot;
+import frc.robot.commands.DriverAssist;
 import frc.robot.commands.elevator.SetElevatorLow;
 import frc.robot.commands.hatch.CloseHatchCollector;
 import frc.robot.commands.test.ResetDriveSensors;
@@ -25,7 +28,12 @@ public class LeftRocket extends CommandGroup {
         addSequential(new ResetDriveSensors());
         addSequential(new CloseHatchCollector());
         addSequential(new SetElevatorLow());
-        addSequential(new VelocityMotionProfile("RocketL_StartL_EndN"));
+        //addSequential(new VelocityMotionProfile("RocketL_StartL_EndN"));
+        addSequential(new InterruptableVelocityMotionPath("RocketL_StartL_EndN", (mp) ->
+                (mp.getDuration() - mp.timeSinceInitialized() < 1.0) &&
+                        ((Robot.core.timeOnLine() > 0.254) || Robot.simpleVision.getObjectCount() == 2)));
+        addSequential(new DriverAssist());
+    }
         //addSequential(new LineFollow(1));
         // To run multiple commands at the same time,
         // use addParallel()
@@ -39,4 +47,4 @@ public class LeftRocket extends CommandGroup {
         // a CommandGroup containing them would require both the chassis and the
         // arm.
     }
-}
+

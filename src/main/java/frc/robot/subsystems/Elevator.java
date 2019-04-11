@@ -109,9 +109,9 @@ public class Elevator extends Subsystem {
         SystemTest.register(new ElevatorTest(Position.MED));
         SystemTest.register(new ElevatorTest(Position.COLLECT));
 
-        DataLogger.addDataElement("ElevatorPosition", () -> elevatorMotor.getSelectedSensorPosition());
-        DataLogger.addDataElement("ElevatorSetpoint", () -> activeTrajectoryPosition);
-        DataLogger.addDataElement("ElevatorCurrent", () -> elevatorMotor.getOutputCurrent());
+//        DataLogger.addDataElement("ElevatorPosition", () -> elevatorMotor.getSelectedSensorPosition());
+//        DataLogger.addDataElement("ElevatorSetpoint", () -> activeTrajectoryPosition);
+//        DataLogger.addDataElement("ElevatorCurrent", () -> elevatorMotor.getOutputCurrent());
     }
 
     @Override
@@ -175,7 +175,7 @@ public class Elevator extends Subsystem {
             stop();
         }
 
-        SmartDashboard.putBoolean("ResetEncoderPos", resetEncoderPos);
+//        SmartDashboard.putBoolean("ResetEncoderPos", resetEncoderPos);
 
     }
 

@@ -10,6 +10,8 @@ package frc.robot.commands.auto;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import frc.lightning.commands.InterruptableVelocityMotionPath;
 import frc.lightning.commands.VelocityMotionProfile;
+import frc.robot.Robot;
+import frc.robot.commands.DriverAssist;
 import frc.robot.commands.elevator.SetElevatorLow;
 import frc.robot.commands.hatch.CloseHatchCollector;
 
@@ -24,7 +26,12 @@ public class RghtRocket extends CommandGroup {
 
         addSequential(new CloseHatchCollector());
         addSequential(new SetElevatorLow());
-        addSequential(new VelocityMotionProfile("RocketR_StartR_EndN"));
+        //addSequential(new VelocityMotionProfile("RocketR_StartR_EndN"));
+        addSequential(new InterruptableVelocityMotionPath("RocketR_StartR_EndN", (mp) ->
+                (mp.getDuration() - mp.timeSinceInitialized() < 1.0) &&
+                        ((Robot.core.timeOnLine() > 0.254) || Robot.simpleVision.getObjectCount() == 2)));
+        addSequential(new DriverAssist());
+
         //addSequential(new LineFollow(1));
 
 

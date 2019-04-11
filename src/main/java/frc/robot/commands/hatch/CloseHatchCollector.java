@@ -28,7 +28,7 @@ public class CloseHatchCollector extends InstantCommand {
     @Override
     protected void initialize() {
         System.out.println("CloseHatchCollector");
-        Robot.hatchPanelCollector.retract();
+        Robot.hatchPanelCollector.eject();
     }
 
 

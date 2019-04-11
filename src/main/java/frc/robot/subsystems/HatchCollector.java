@@ -73,4 +73,12 @@ public class HatchCollector extends Subsystem {
         }
         retracted = true;
     }
+
+    public void toggle() {
+        if (!collecting) {
+            collect();
+        } else {
+            eject();
+        }
+    }
 }

@@ -80,7 +80,7 @@ public class Robot extends LightningRobot {
         registerAutonomousCommmand("Right Rocket",new RghtRocket());
         registerAutonomousCommmand("Center Ship",new CenterPath());
 
-        // CameraServer.getInstance().startAutomaticCapture().setVideoMode(PixelFormat.kMJPEG, 160, 120, 10);
+        CameraServer.getInstance().startAutomaticCapture().setVideoMode(PixelFormat.kMJPEG, 160, 120, 10);
     }
 
     //@Override
@@ -159,7 +159,7 @@ public class Robot extends LightningRobot {
     }
 
     public static boolean isGemini() {
-        return gemini;
+        return true;
     }
 
     public static boolean isNebula() {

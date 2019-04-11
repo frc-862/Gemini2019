@@ -90,7 +90,6 @@ public class Core extends Subsystem {
     };
 
     private DoubleSupplier[] geminiSensorValues = {
-
         () -> outerLeft.get() ? 0 : 1.0,
         () -> midLeft.get() ? 0 : 1.0,
         () -> biasAnalog(innerLeft.getVoltage(), Constants.geminiMinLeftOutside, Constants.geminiMaxLeftOutside),
@@ -109,7 +108,7 @@ public class Core extends Subsystem {
 
     };
 
-    private DoubleSupplier[] sensorValues = Robot.isGemini() ? geminiSensorValues : nebulaSensorValues;
+    private DoubleSupplier[] sensorValues = geminiSensorValues;//Robot.isGemini() ? geminiSensorValues : nebulaSensorValues;
 
     private boolean sawLine;
 
@@ -120,21 +119,21 @@ public class Core extends Subsystem {
 
         navx = new AHRS(SPI.Port.kMXP);
         addChild("NavX", navx);
-        DataLogger.addDataElement("YAW", () -> getYaw());
-        DataLogger.addDataElement("PITCH", () -> getPitch());
-        DataLogger.addDataElement("ROLL", () -> getRoll());
-        DataLogger.addDataElement("AccelX", () -> navx.getRawAccelX());
-        DataLogger.addDataElement("AccelY", () -> navx.getRawAccelY());
-        DataLogger.addDataElement("AccelZ", () -> navx.getRawAccelZ());
-        DataLogger.addDataElement("DisplacementX", () -> navx.getDisplacementX());
-        DataLogger.addDataElement("DisplacementY", () -> navx.getDisplacementY());
-        DataLogger.addDataElement("DisplacementZ", () -> navx.getDisplacementZ());
+//        DataLogger.addDataElement("YAW", () -> getYaw());
+//        DataLogger.addDataElement("PITCH", () -> getPitch());
+//        DataLogger.addDataElement("ROLL", () -> getRoll());
+//        DataLogger.addDataElement("AccelX", () -> navx.getRawAccelX());
+//        DataLogger.addDataElement("AccelY", () -> navx.getRawAccelY());
+//        DataLogger.addDataElement("AccelZ", () -> navx.getRawAccelZ());
+//        DataLogger.addDataElement("DisplacementX", () -> navx.getDisplacementX());
+//        DataLogger.addDataElement("DisplacementY", () -> navx.getDisplacementY());
+//        DataLogger.addDataElement("DisplacementZ", () -> navx.getDisplacementZ());
 
-        int i = -3;
-        for (var sensor : rawSensorValues) {
-            DataLogger.addDataElement("LineFollow" + i, () -> sensor.getAsDouble());
-            i += 2;
-        }
+//        int i = -3;
+//        for (var sensor : rawSensorValues) {
+//            DataLogger.addDataElement("LineFollow" + i, () -> sensor.getAsDouble());
+//            i += 2;
+//        }
 
 
 
@@ -150,14 +149,14 @@ public class Core extends Subsystem {
         // EX - CAN Frame timeout, etc.
         LiveWindow.disableTelemetry(pdp);
 
-        addChild("outerLeft", outerLeft);
+//        addChild("outerLeft", outerLeft);
         addChild("midLeft", midLeft);
-        addChild("innerLeft", innerLeft);
-        addChild("centerLeft", centerLeft);
-        addChild("centerRight", centerRight);
-        addChild("innerRight", innerRight);
-        addChild("midRight", midRight);
-        addChild("outerRight", outerRight);
+//        addChild("innerLeft", innerLeft);
+//        addChild("centerLeft", centerLeft);
+//        addChild("centerRight", centerRight);
+//        addChild("innerRight", innerRight);
+//        addChild("midRight", midRight);
+//        addChild("outerRight", outerRight);
 
         // addChild("extra motor 1", extra1);
         // addChild("extra motor 2", extra2);
@@ -178,26 +177,26 @@ public class Core extends Subsystem {
     }
     @Override
     public void periodic() {
-        SmartDashboard.putBoolean("has stopped",hasStopped());
+/*        SmartDashboard.putBoolean("has stopped",hasStopped());
         SmartDashboard.putBoolean("is moving",isMoving());
         SmartDashboard.putNumber("is moving Y",moved());
         SmartDashboard.putNumber("is moving X",movedX());
-        // SmartDashboard.putNumber("Ground Collect Encoder", groundCollectEncoder.getVoltage());
+ */       // SmartDashboard.putNumber("Ground Collect Encoder", groundCollectEncoder.getVoltage());
         // System.out.println("GCE: " + groundCollectEncoder.getVoltage());
-        SmartDashboard.putNumber("preasure", airPreasure.getVoltage());
-
-        SmartDashboard.putNumber("Heading", navx.getFusedHeading());
-        SmartDashboard.putNumber("Angle", navx.getAngle());
-
-        SmartDashboard.putNumber("YAW", navx.getYaw());
-        SmartDashboard.putNumber("PITCH", navx.getPitch());
-        SmartDashboard.putNumber("ROLL", navx.getRoll());
-
-        SmartDashboard.putNumber("X", navx.getRawGyroX());
-        SmartDashboard.putNumber("Y", navx.getRawGyroY());
-        SmartDashboard.putNumber("Z", navx.getRawGyroZ());
-
-        SmartDashboard.putBoolean("Moving", navx.isMoving());
+//        SmartDashboard.putNumber("preasure", airPreasure.getVoltage());
+//
+//        SmartDashboard.putNumber("Heading", navx.getFusedHeading());
+//        SmartDashboard.putNumber("Angle", navx.getAngle());
+//
+//        SmartDashboard.putNumber("YAW", navx.getYaw());
+//        SmartDashboard.putNumber("PITCH", navx.getPitch());
+//        SmartDashboard.putNumber("ROLL", navx.getRoll());
+//
+//        SmartDashboard.putNumber("X", navx.getRawGyroX());
+//        SmartDashboard.putNumber("Y", navx.getRawGyroY());
+//        SmartDashboard.putNumber("Z", navx.getRawGyroZ());
+//
+//        SmartDashboard.putBoolean("Moving", navx.isMoving());
 
         sawLine = false;
 
@@ -228,7 +227,7 @@ public class Core extends Subsystem {
         } else {
             Robot.leds.clearState(LEDs.State.CENTERED);
         }
-        SmartDashboard.putNumber("line first seen", lineFirstSeen);
+//        SmartDashboard.putNumber("line first seen", lineFirstSeen);
         SmartDashboard.putNumber("time saw line", timeOnLine());
     }
 
@@ -288,14 +287,13 @@ public class Core extends Subsystem {
     }
 
     public double timeOnLine() {
-        return 0;
-        // if (!sawLine) return 0;
 
-        // double result = Timer.getFPGATimestamp()-lineFirstSeen;
-        // if (result < 0.05) {
-        //     return 0;
-        // }
-        // return result;
+        if (!sawLine) return 0;
+         double result = Timer.getFPGATimestamp()-lineFirstSeen;
+         if (result < 0.05) {
+             return 0;
+         }
+         return result;
     }
 
     public DoubleSupplier getRawData(int a) {

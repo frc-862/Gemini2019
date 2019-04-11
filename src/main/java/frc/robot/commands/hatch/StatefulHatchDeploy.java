@@ -13,7 +13,7 @@ import frc.robot.Robot;
 
 public class StatefulHatchDeploy extends StatefulCommand {
 
-    private final double waitTime = 0.25;
+    private final double waitTime = 0.1;
 
     enum States {
         EXTEND,
@@ -24,6 +24,7 @@ public class StatefulHatchDeploy extends StatefulCommand {
 
     public StatefulHatchDeploy() {
         super(States.EXTEND);
+        requires(Robot.hatchPanelCollector);
     }
 
     @Override

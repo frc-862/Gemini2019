@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.command.ConditionalCommand;
 import frc.lightning.commands.InterruptableVelocityMotionPath;
 import frc.lightning.commands.VelocityMotionProfile;
 import frc.robot.Robot;
+import frc.robot.commands.DriverAssist;
 import frc.robot.commands.LineFollow;
 import frc.robot.commands.elevator.SetElevatorLow;
 import frc.robot.commands.hatch.CloseHatchCollector;
@@ -23,21 +24,10 @@ public class CenterPath extends CommandGroup {
     public CenterPath() {
         addSequential(new CloseHatchCollector());
         addSequential(new SetElevatorLow());
-        addSequential(new VelocityMotionProfile("ShipM_StartM_EndR"));
-
-        //addSequential(new InterruptableVelocityMotionPath("ShipM_StartM_EndR", (InterruptableVelocityMotionPath mp) -> {
-        //    return Robot.core.timeOnLine() > 0.2;
-        //}));
-//
-        //addSequential(new LineFollow());
-//
-        //addSequential(new ConditionalCommand(new ExtendHatchCollector()) {
-        //
-        //    @Override
-        //    protected boolean condition() {
-        //        return Math.abs(Robot.core.lineSensor()) < 1.5;
-        //    }
-        //});
-
+//        addSequential(new VelocityMotionProfile("ShipM_StartM_EndR"));
+        addSequential(new InterruptableVelocityMotionPath("ShipM_StartM_EndR", (mp) ->
+                (mp.getDuration() - mp.timeSinceInitialized() < 1.0) &&
+                ((Robot.core.timeOnLine() > 0.254) || Robot.simpleVision.getObjectCount() == 2)));
+        addSequential(new DriverAssist());
     }
 }

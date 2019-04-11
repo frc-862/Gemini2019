@@ -35,16 +35,16 @@ public class DriverAssist extends StatefulCommand {
     double kD = .0;
     double minTurnPower = 1;
     double onTargetEpsilon = .1;  // scaled 0..1
-    double turnP = .475;
-    double turningVelocity = .5;//4
-    double straightVelocity = 4 ;//1
+    double turnP = .4;
+    double turningVelocity = 1;//4
+    double straightVelocity = 6 ;//1
     double turnI = 0.001/.02;
     double turnD = .5;
     double prevError = 0;
     double errorAcc = 0;
     boolean seenTwo = false;
     private double turn;
-    private double velocity;
+    private double velocity = 1;
     double stError;
     double timeStamp;
 
@@ -91,21 +91,21 @@ public class DriverAssist extends StatefulCommand {
     }
 
     public void visionDrive() {
-        if (Robot.core.timeOnLine() > 0.254) {
+        if (Robot.core.timeOnLine() > .08) {
             setState(States.LINE_FOLLOW);
         } else if (Robot.simpleVision.getObjectCount() == 1 && seenTwo) {
             setState(States.VISION_CLOSING);
         } else if (Robot.simpleVision.getObjectCount() == 1) {
             //kP = Constants.velocityMultiplier * kpp;
             kP = Constants.velocityMultiplier * kppPivot;
-            double velocity = 1;
+            velocity = 1;
             visionUpdate();
 
             Robot.drivetrain.setVelocity(velocity - gain, velocity + gain);
         } else if (Robot.simpleVision.getObjectCount() == 2) {
             seenTwo = true;
             kP = Constants.velocityMultiplier * kpp;
-            double velocity = 3;
+            velocity = 3;
             visionUpdate();
 
             SmartDashboard.putNumber("Simple Vision Gain ", gain);
@@ -138,7 +138,7 @@ public class DriverAssist extends StatefulCommand {
     }
 
     public void visionClosing() {
-        if (Robot.core.timeOnLine() > 0.254) {
+        if (Robot.core.timeOnLine() > .08) {
             setState(States.LINE_FOLLOW);
         } else if (Robot.simpleVision.getObjectCount() >= 2) {
             setState(States.VISION_DRIVE);
@@ -189,42 +189,50 @@ public class DriverAssist extends StatefulCommand {
     public void lineFollow() {
         updateCalculations();
         Robot.drivetrain.setVelocity(velocity + turn, velocity - turn);
+        System.out.println("forwardssss correct plz!!");
+        if (timeInState() > .1 && Robot.drivetrain.isStalled()) {
 
-        if (!Robot.core.hasStopped()) {
-            if (Math.abs(prevError)> 1.5) {
+            if (Math.abs(prevError)> 1) {
                 stError=prevError;
                 timeStamp=Timer.getFPGATimestamp();
                 setState(States.FOLLOW_BACKWARDS);
+
             } else {
+
                 Robot.leds.setState(LEDs.State.READY);
                 Robot.drivetrain.setVelocity(0, 0);
                 setState(States.DONE);
+
             }
         }
         updateLogs();
     }
 
-    public void followBackward() {
+    public void followBackwards() {
         updateCalculations();
-        turn *= -.5;
-        velocity *= .25;
+        turn *= -.25;
+        velocity *= .5;
         Robot.drivetrain.setVelocity(-velocity + turn, -velocity - turn);
-
-        if (Math.abs(prevError) < stError/2) {
+        System.out.println("Back it! back it! back it up!");
+        if(Double.isNaN(Robot.core.lineSensor())){
             setState(States.LINE_FOLLOW);
         }
-        updateLogs();
-    }
-
-    public void badDumbBackup() {
-        Robot.drivetrain.setVelocity(-1, -1);
-        if (timeStamp-Timer.getFPGATimestamp()>=1) {
-            Robot.drivetrain.setVelocity(0, 0);
+        if (Math.abs(prevError) < Math.abs(stError/2)) {
             setState(States.LINE_FOLLOW);
         }
 
         updateLogs();
     }
+
+//    public void badDumbBackup() {
+//        Robot.drivetrain.setVelocity(-1, -1);
+//        if (timeStamp-Timer.getFPGATimestamp()>=1) {
+//            Robot.drivetrain.setVelocity(0, 0);
+//            setState(States.LINE_FOLLOW);
+//        }
+//
+//        updateLogs();
+//    }
 
     // Make this return true when this Command no longer needs to run execute()
     @Override

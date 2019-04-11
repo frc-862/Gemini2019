@@ -169,11 +169,10 @@ public class OI {
         (new JoystickButton(driverLeft, 7)).whenPressed(new LeftDriveZero());
         (new JoystickButton(driverRight, 7)).whenPressed(new RightDriveZero());
 
-        (new JoystickButton(copilot, 5)).whenPressed(new InstantCommand(Robot.hatchPanelCollector, () -> Robot.hatchPanelCollector.collect()));
-        (new JoystickButton(copilot, 6)).whenPressed(new InstantCommand(Robot.hatchPanelCollector, () -> Robot.hatchPanelCollector.eject()));
+        (new JoystickButton(copilot, 5)).whenPressed(new HatchShoot());
+        (new JoystickButton(copilot, 6)).whenPressed(new InstantCommand(Robot.hatchPanelCollector, () -> Robot.hatchPanelCollector.collect()));
 
-        (new JoystickButton(driverLeft, 1)).whenPressed(new ToggleCommand(new InstantCommand(Robot.hatchPanelCollector, () -> Robot.hatchPanelCollector.collect()),
-                new InstantCommand(Robot.hatchPanelCollector, () -> Robot.hatchPanelCollector.eject())));
+        (new JoystickButton(driverLeft, 1)).whenPressed(new InstantCommand(() -> Robot.hatchPanelCollector.toggle()));
 
         (new JoystickButton(driverRight, 1)).whileHeld(new DriverAssist());
 

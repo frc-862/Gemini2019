@@ -22,8 +22,8 @@ public class Constants extends ConstantBase {
     public static final int climberOffHardStop = 100;
     public static final int climberEpsilon = 100;
     public final static Gains climberPIDF = new Gains(2.54, 0, 1, 0.0, 0, 0);
-    public final static int climberCruiseVelocity = 1400;
-    public final static int climberAcceleration = 250;
+    public final static int climberCruiseVelocity = 2500;
+    public final static int climberAcceleration = 600;
 
     // PIDs
     public final static int kSensorUnitsPerRotation = 4 * 360;
@@ -92,15 +92,15 @@ public class Constants extends ConstantBase {
 
     //Gemini
     //max
-    public static final double geminiMaxLeftOutside = 4.12;
-    public static final double geminiMaxLeftInside = 3.62;
-    public static final double geminiMaxRightInside = 3.65;
-    public static final double geminiMaxRightOutside = 3.75;
+    public static final double geminiMaxLeftOutside = 3.85;
+    public static final double geminiMaxLeftInside = 3.30;
+    public static final double geminiMaxRightInside = 3.45;
+    public static final double geminiMaxRightOutside = 3.55;
     //min
-    public static final double geminiMinLeftOutside = 1.82;
-    public static final double geminiMinLeftInside = 1.33;
-    public static final double geminiMinRightInside = 1.17;
-    public static final double geminiMinRightOutside = 1.25;
+    public static final double geminiMinLeftOutside = 1.41;
+    public static final double geminiMinLeftInside = 1.05;
+    public static final double geminiMinRightInside = .91;
+    public static final double geminiMinRightOutside = 1.01;
 
     public static final double movingCurrent = 5;
     public static final double movingVelocity = 1;

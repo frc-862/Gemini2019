@@ -7,13 +7,14 @@
 
 package frc.robot.commands.hatch;
 
+import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.InstantCommand;
 import frc.robot.Robot;
 
 /**
  * Add your docs here.
  */
-public class ExtendHatchCollector extends InstantCommand {
+public class ExtendHatchCollector extends Command {
     /**
      * Add your docs here.
      */

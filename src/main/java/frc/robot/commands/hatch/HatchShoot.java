@@ -9,14 +9,19 @@ package frc.robot.commands.hatch;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.InstantCommand;
+import edu.wpi.first.wpilibj.command.TimedCommand;
 import frc.robot.Robot;
 
 public class HatchShoot extends CommandGroup {
 
     public HatchShoot() {
 
-        addParallel(new ExtendHatchCollector());
-        addParallel(new InstantCommand(Robot.hatchPanelCollector, () -> Robot.hatchPanelCollector.eject()));
+        addSequential(new OpenHatchCollector());
+        //addSequential(new TimedCommand(0.05));
+        addSequential(new TimedCommand(0.0));
+        addSequential(new ExtendHatchCollector());
+        addSequential(new TimedCommand(0.5));
+        addSequential(new RetractHatchCollector());
 
     }
 }
