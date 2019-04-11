@@ -50,7 +50,7 @@ public class StatefulHatchDeploy extends StatefulCommand {
 
     private void retract() {
         Robot.hatchPanelCollector.retract();
-        if(this.timeInState()>)setState(States.DONE);
+        if(this.timeInState()> waitTime) setState(States.DONE);
     }
 
 }

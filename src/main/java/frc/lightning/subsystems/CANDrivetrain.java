@@ -246,26 +246,34 @@ public abstract class CANDrivetrain extends LightningDrivetrain {
         withEachMaster((m) -> m.setSelectedSensorPosition(0));
     }
 
-    private int stallCount = 0;
+    private boolean[] stallFlags = new boolean[7];
+    private int stallIndex = 0;
+
     public boolean isStalled() {
-        return stallCount > Constants.stallDetectLoopDelay;
+        int stallCount = 0;
+        for (boolean s : stallFlags) {
+            stallCount += s ? 1 : 0;
+            if (stallCount >= 4) return true;
+        }
+        return false;
     }
 
+    static int slowDrive = (int) LightningMath.fps2talon(1);
     @Override
     public void periodic() {
-        if (Math.abs(leftMaster.getSelectedSensorVelocity()) < Constants.movingVelocity &&
-                Math.abs(rightMaster.getSelectedSensorVelocity()) < Constants.movingVelocity &&
+        boolean stalled = false;
+        if (Math.abs(leftMaster.getSelectedSensorVelocity()) <= slowDrive &&
+                Math.abs(rightMaster.getSelectedSensorVelocity()) <= slowDrive &&
                 leftMaster.getOutputCurrent() > Constants.movingCurrent &&
                 rightMaster.getOutputCurrent() > Constants.movingCurrent) {
-            stallCount += 1;
+            stalled = true;
         } else if (HAL.getBrownedOut()) {
-            stallCount += 1;
-        } else {
-            stallCount = 0;
+            stalled = true;
         }
+        stallFlags[(++stallIndex % stallFlags.length)] = stalled;
+
         SmartDashboard.putNumber("Left Current", leftMaster.getOutputCurrent());
         SmartDashboard.putNumber("Right Current", rightMaster.getOutputCurrent());
-        SmartDashboard.putNumber("Stall Count", stallCount);
         SmartDashboard.putBoolean("Stalled", isStalled());
 
     }
