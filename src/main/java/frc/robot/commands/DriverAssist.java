@@ -27,7 +27,8 @@ public class DriverAssist extends StatefulCommand {
         BAD_DUMB_BACKUP,
         DONE
     }
-
+    boolean offLine=false;
+    boolean beenOff =false;
     private double gain;
     double kpp = .188;
     double kppPivot = .188;
@@ -211,15 +212,22 @@ public class DriverAssist extends StatefulCommand {
     public void followBackwards() {
         updateCalculations();
         turn *= -.25;
-        velocity *= .5;
-        Robot.drivetrain.setVelocity(-velocity + turn, -velocity - turn);
+        velocity = -1;
+
+        Robot.drivetrain.setVelocity(velocity + turn, velocity - turn);
         System.out.println("Back it! back it! back it up!");
         if(Double.isNaN(Robot.core.lineSensor())){
+            Robot.drivetrain.setVelocity(1,1);
+             offLine =true;
+             beenOff=true;
+        }else {offLine =false;beenOff=false;}
+        if (!offLine && beenOff){
             setState(States.LINE_FOLLOW);
         }
-        if (Math.abs(prevError) < Math.abs(stError/2)) {
+        if ((Math.abs(prevError) <= Math.abs(stError/2)||Math.abs(prevError) <= Math.abs(1.5))||timeInState()>=.5) {
             setState(States.LINE_FOLLOW);
         }
+
 
         updateLogs();
     }
@@ -235,9 +243,14 @@ public class DriverAssist extends StatefulCommand {
 //    }
 
     // Make this return true when this Command no longer needs to run execute()
+
+    @Override
+    protected void interrupted(){
+        end();
+    }
     @Override
     protected boolean isFinished() {
-        return getState() == States.DONE;
+        return getState() == States.DONE  || (Robot.oi.getLeftPower()>.5|| Robot.oi.getRightPower()>.5);
     }
 
     @Override
