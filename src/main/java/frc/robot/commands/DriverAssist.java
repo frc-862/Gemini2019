@@ -25,6 +25,7 @@ public class DriverAssist extends StatefulCommand {
         LINE_FOLLOW,
         FOLLOW_BACKWARDS,
         BAD_DUMB_BACKUP,
+        FIND_THE_LINE,
         DONE
     }
     boolean offLine=false;
@@ -66,6 +67,7 @@ public class DriverAssist extends StatefulCommand {
     @Override
     protected void initialize() {
         setState(States.VISION_AQUIRE);
+        logger.reset();
     }
 
     private void updateLogs() {
@@ -189,7 +191,13 @@ public class DriverAssist extends StatefulCommand {
 
     public void lineFollow() {
         updateCalculations();
-        Robot.drivetrain.setVelocity(velocity + turn, velocity - turn);
+
+        if (turn > 0) {
+            Robot.drivetrain.setVelocity(velocity + turn * 2, velocity);
+        } else {
+            Robot.drivetrain.setVelocity(velocity, velocity + turn * -2);
+        }
+
         System.out.println("forwardssss correct plz!!");
         if (timeInState() > .1 && Robot.drivetrain.isStalled()) {
 
@@ -216,20 +224,23 @@ public class DriverAssist extends StatefulCommand {
 
         Robot.drivetrain.setVelocity(velocity + turn, velocity - turn);
         System.out.println("Back it! back it! back it up!");
-        if(Double.isNaN(Robot.core.lineSensor())){
-            Robot.drivetrain.setVelocity(1,1);
-             offLine =true;
-             beenOff=true;
-        }else {offLine =false;beenOff=false;}
-        if (!offLine && beenOff){
-            setState(States.LINE_FOLLOW);
-        }
-        if ((Math.abs(prevError) <= Math.abs(stError/2)||Math.abs(prevError) <= Math.abs(1.5))||timeInState()>=.5) {
-            setState(States.LINE_FOLLOW);
+
+        if(Double.isNaN(Robot.core.lineSensor())) {
+            setState(States.FIND_THE_LINE);
         }
 
+        if (Math.abs(prevError) <= Math.abs(1.5) || timeInState() > 1) {
+            setState(States.LINE_FOLLOW);
+        }
 
         updateLogs();
+    }
+
+    public void findTheLine() {
+        Robot.drivetrain.setVelocity(1,1);
+        if (!Double.isNaN(Robot.core.lineSensor())) {
+            setState(States.LINE_FOLLOW);
+        }
     }
 
 //    public void badDumbBackup() {
@@ -256,6 +267,8 @@ public class DriverAssist extends StatefulCommand {
     @Override
     protected void end() {
         Robot.drivetrain.stop();
+        logger.drain();
+        logger.flush();
     }
 }
 
