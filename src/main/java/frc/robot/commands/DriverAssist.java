@@ -21,6 +21,7 @@ public class DriverAssist extends StatefulCommand {
     enum States {
         VISION_AQUIRE,
         VISION_DRIVE,
+        VISION_SEEKING,
         VISION_CLOSING,
         LINE_FOLLOW,
         FOLLOW_BACKWARDS,
@@ -28,23 +29,25 @@ public class DriverAssist extends StatefulCommand {
         FIND_THE_LINE,
         DONE
     }
+
     boolean offLine=false;
     boolean beenOff =false;
     private double gain;
-    double kpp = .188;
-    double kppPivot = .188;
+    double kpp = .118;
+    double kppPivot = .118;
     double kP = Constants.velocityMultiplier * kpp;
     double kD = .0;
     double minTurnPower = 1;
     double onTargetEpsilon = .1;  // scaled 0..1
-    double turnP = .4;
-    double turningVelocity = 1;//4
-    double straightVelocity = 6 ;//1
+    double turnP = 1;
+    double turningVelocity = 1.25;///4
+    double straightVelocity = 1.25;//1
     double turnI = 0.001/.02;
-    double turnD = .5;
+    double turnD = .6;
     double prevError = 0;
     double errorAcc = 0;
     boolean seenTwo = false;
+
     private double turn;
     private double velocity = 1;
     double stError;
@@ -84,7 +87,13 @@ public class DriverAssist extends StatefulCommand {
         if (Robot.core.timeOnLine() > 0.254) {
             setState(States.LINE_FOLLOW);
         } else if (Robot.simpleVision.simpleTargetFound()) {
-            setState(States.VISION_DRIVE);
+            if (Robot.simpleVision.getObjectCount() == 1) {
+                setState(States.VISION_SEEKING);
+            } else {
+                setState(States.VISION_DRIVE);
+            }
+        }else{
+            setState(States.FIND_THE_LINE);
         }
 
         logger.set("gainP", 0);
@@ -94,27 +103,33 @@ public class DriverAssist extends StatefulCommand {
     }
 
     public void visionDrive() {
-        if (Robot.core.timeOnLine() > .08) {
+        if (Robot.core.timeOnLine() > .04) {
             setState(States.LINE_FOLLOW);
-        } else if (Robot.simpleVision.getObjectCount() == 1 && seenTwo) {
-            setState(States.VISION_CLOSING);
         } else if (Robot.simpleVision.getObjectCount() == 1) {
-            //kP = Constants.velocityMultiplier * kpp;
-            kP = Constants.velocityMultiplier * kppPivot;
-            velocity = 1;
-            visionUpdate();
-
-            Robot.drivetrain.setVelocity(velocity - gain, velocity + gain);
-        } else if (Robot.simpleVision.getObjectCount() == 2) {
-            seenTwo = true;
+            setState(States.VISION_CLOSING);
+        } else {
             kP = Constants.velocityMultiplier * kpp;
-            velocity = 3;
+            velocity = 2;
             visionUpdate();
 
             SmartDashboard.putNumber("Simple Vision Gain ", gain);
             Robot.drivetrain.setVelocity(velocity - gain, velocity + gain);
         }
 
+        updateLogs();
+    }
+
+    public void visionSeeking() {
+        if (Robot.core.timeOnLine() > .04) {
+            setState(States.LINE_FOLLOW);
+        } else if (Robot.simpleVision.getObjectCount() == 2) {
+            setState(States.VISION_DRIVE);
+        }
+
+        kP = Constants.velocityMultiplier * kppPivot;
+        velocity = 2;
+        visionUpdate();
+        Robot.drivetrain.setVelocity(velocity - gain, velocity + gain);
         updateLogs();
     }
 
@@ -141,7 +156,7 @@ public class DriverAssist extends StatefulCommand {
     }
 
     public void visionClosing() {
-        if (Robot.core.timeOnLine() > .08) {
+        if (Robot.core.timeOnLine() > .04) {
             setState(States.LINE_FOLLOW);
         } else if (Robot.simpleVision.getObjectCount() >= 2) {
             setState(States.VISION_DRIVE);
@@ -180,6 +195,11 @@ public class DriverAssist extends StatefulCommand {
         double gainD = ((prevError - error) / elapsedTime) * turnD;
         turn = gainP + gainI + gainD;
 
+        if (Math.abs(error) > 0.99) {
+            if (Math.abs(turn) < .75) {
+                turn = Math.signum(turn) * .75;
+            }
+        }
         velocity = (Math.abs(error) <= 1) ? straightVelocity : turningVelocity;
         prevError = error;
 
@@ -199,7 +219,7 @@ public class DriverAssist extends StatefulCommand {
         }
 
         System.out.println("forwardssss correct plz!!");
-        if (timeInState() > .1 && Robot.drivetrain.isStalled()) {
+        if (timeInState() > .04 && Robot.drivetrain.isStalled()) {
 
             if (Math.abs(prevError)> 1) {
                 stError=prevError;
@@ -219,7 +239,7 @@ public class DriverAssist extends StatefulCommand {
 
     public void followBackwards() {
         updateCalculations();
-        turn *= -.25;
+        turn *= -.0;
         velocity = -1;
 
         Robot.drivetrain.setVelocity(velocity + turn, velocity - turn);
@@ -229,7 +249,7 @@ public class DriverAssist extends StatefulCommand {
             setState(States.FIND_THE_LINE);
         }
 
-        if (Math.abs(prevError) <= Math.abs(1.5) || timeInState() > 1) {
+        if (timeInState() > 1.5) {
             setState(States.LINE_FOLLOW);
         }
 
@@ -237,10 +257,17 @@ public class DriverAssist extends StatefulCommand {
     }
 
     public void findTheLine() {
-        Robot.drivetrain.setVelocity(1,1);
+        Robot.drivetrain.setVelocity(2,2);
         if (!Double.isNaN(Robot.core.lineSensor())) {
             setState(States.LINE_FOLLOW);
+        } else if (Robot.simpleVision.simpleTargetFound()) {
+            if (Robot.simpleVision.getObjectCount() == 1) {
+                setState(States.VISION_SEEKING);
+            } else {
+                setState(States.VISION_DRIVE);
+            }
         }
+
     }
 
 //    public void badDumbBackup() {

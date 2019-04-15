@@ -175,6 +175,8 @@ public class OI {
         (new JoystickButton(driverLeft, 1)).whenPressed(new InstantCommand(() -> Robot.hatchPanelCollector.toggle()));
 
         (new JoystickButton(driverRight, 1)).whileHeld(new DriverAssist());
+        (new JoystickButton(driverRight, 4)).whileHeld(new LineFollow());
+        (new JoystickButton(driverRight, 3)).whileHeld(new SimpleFollowVision());
 
         (new JoystickButton(copilot, JoystickConstants.highButton)).            whenPressed(new InstantCommand(Robot.elevator, () -> Robot.elevator.goToHigh()));
         (new JoystickButton(copilot, JoystickConstants.midButton)).             whenPressed(new InstantCommand(Robot.elevator, () -> Robot.elevator.goToMid()));

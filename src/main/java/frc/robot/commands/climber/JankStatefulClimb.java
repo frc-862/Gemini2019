@@ -50,12 +50,13 @@ public class JankStatefulClimb extends StatefulCommand {
 
     public void startClimb() {
         Robot.climber.extendJack();
-        Robot.climber.extendSkids();
-        setState(States.WAIT_TO_DRIVE_FORWARD);
+
+        setState(States.WAIT_TO_DEPLOY_SKIDS);
     }
 
     public void waitToDeploySkids() {
-        if (Robot.climber.getJackPosition() >= Constants.deployShockPositioin) {
+        if (timeInState() >= .1) {
+
             setState(States.DEPLOY_SKIDS);
         }
     }

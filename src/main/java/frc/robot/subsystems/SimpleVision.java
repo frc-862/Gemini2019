@@ -42,7 +42,7 @@ public class SimpleVision extends Subsystem {
             camera.writeString("setpar serout USB\n");
             camera.writeString("streamon\n");
             camera.flush();
-            new SerialByLine(camera, this::positionUpdate);
+            new SerialByLine(camera, this::positionUpdate, 115200, port);
         } catch(RuntimeException e) {
             System.out.println("Unable to open simpleVision camera on port " + port);
         }

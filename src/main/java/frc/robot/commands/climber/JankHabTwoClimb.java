@@ -1,4 +1,4 @@
-/*----------------------------------------------------------------------------*/
+ /*----------------------------------------------------------------------------*/
 /* Copyright (c) 2018 FIRST. All Rights Reserved.                             */
 /* Open Source Software - may be modified and shared by FRC teams. The code   */
 /* must be accompanied by the FIRST BSD license file in the root directory of */
@@ -45,19 +45,20 @@ public class JankHabTwoClimb extends StatefulCommand {
     }
 
     public void startClimb() {
-        Robot.climber.extendJackHabTwo();
+
         Robot.climber.extendSkids();
         setState(States.WAIT_TO_DEPLOY_SKIDS);
     }
 
     public void waitToDeploySkids() {
-        if (Robot.climber.getJackPosition() >= 0) {
+        if (timeInState() >= 1) {
             setState(States.DEPLOY_SKIDS);
         }
     }
 
     public void deploySkids() {
         Robot.climber.extendSkids();
+        Robot.climber.extendJackHabTwo();
         setState(States.WAIT_TO_DRIVE_FORWARD);
     }
 

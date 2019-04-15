@@ -79,6 +79,8 @@ public class SimpleFollowVision extends Command {
 
             SmartDashboard.putNumber("Simple Vision Gain ", gain);
             Robot.drivetrain.setVelocity(velocity - gain, velocity + gain);
+        }else{
+            Robot.drivetrain.setVelocity(2,2);
         }
     }
 
