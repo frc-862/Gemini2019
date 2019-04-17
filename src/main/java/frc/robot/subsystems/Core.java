@@ -75,7 +75,7 @@ public class Core extends Subsystem {
         }
     }
 
-    private double[] lineWeights = {-7, -5, -3, -1, 1, 3, 5, 7};
+    private double[] lineWeights = {-7.0, -5.0, -3.0, -1.0, 1.0, 3.0, 5.0, 7.0};
 
 
     private DoubleSupplier[] nebulaSensorValues = {
@@ -277,6 +277,18 @@ public class Core extends Subsystem {
     public double lineSensor() {
         double weight = 0;
         double sensors = 0;
+
+        // e.g. -1 sensor is reading 0.7
+        // weight = -0.7
+        // sensors = 0.7
+        // return => -1 (the right answer would be either -0.7 or -1.3 hard to say what is correct)
+
+        // e.g. -1 sensor is reading 0.7, 1 sensor is reading 0.1
+        // weight = -0.7 + 0.1 = -0.6
+        // sensors = 0.7 + 0.1 = 0.8
+        // return => -0.75 eek!
+
+        // TODO FIX! this is broken for analog sensors
         for(int loop=0; loop <= 7; loop++) {
             double value = sensorValues[loop].getAsDouble();
             weight += value * lineWeights[loop];

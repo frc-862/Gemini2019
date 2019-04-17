@@ -47,6 +47,11 @@ public class DriverAssist extends StatefulCommand {
     double prevError = 0;
     double errorAcc = 0;
     boolean seenTwo = false;
+    final double minStateStallDetect = 0.04;
+    final double lineFollowMinError = 1.0;
+    final double backupSpeed = -1.5;
+    final double lineLength = 1.5; // 18 in = 1.5 feet
+    final double backupTime = Math.abs(lineLength / backupSpeed); 
 
     private double turn;
     private double velocity = 1;
@@ -82,9 +87,11 @@ public class DriverAssist extends StatefulCommand {
         logger.write();
     }
 
+    private final double lineWait = 0.1;
+
     public void visionAquire() {
         seenTwo = false;
-        if (Robot.core.timeOnLine() > 0.254) {
+        if (Robot.core.timeOnLine() > lineWait) {
             setState(States.LINE_FOLLOW);
         } else if (Robot.simpleVision.simpleTargetFound()) {
             if (Robot.simpleVision.getObjectCount() == 1) {
@@ -103,8 +110,13 @@ public class DriverAssist extends StatefulCommand {
     }
 
     public void visionDrive() {
-        if (Robot.core.timeOnLine() > .04) {
+        if (Robot.core.timeOnLine() > lineWait) {
             setState(States.LINE_FOLLOW);
+
+          // assumption, been following two target for a while
+          // now lost one to the belt, don't want to turn hard
+          // centering on the remaining (now much closer) target,
+          // so Vision Closing just uses last error
         } else if (Robot.simpleVision.getObjectCount() == 1) {
             setState(States.VISION_CLOSING);
         } else {
@@ -118,14 +130,24 @@ public class DriverAssist extends StatefulCommand {
 
         updateLogs();
     }
-
+    
+        //assumption: far away and only see one target
+        //action: navigate towards single target
     public void visionSeeking() {
-        if (Robot.core.timeOnLine() > .04) {
+        if (Robot.core.timeOnLine() > lineWait) {
             setState(States.LINE_FOLLOW);
-        } else if (Robot.simpleVision.getObjectCount() == 2) {
+            return;
+
+          // assume that if we now see more than 1 target, Luke
+          // (or vision) has us pointed where we need to be
+          // and the center most 2, are the ones we want  
+        } else if (Robot.simpleVision.getObjectCount() >= 2) {
             setState(States.VISION_DRIVE);
+            return;
         }
 
+        // e.g. kp = 0.188, velocityMultiplier = 11.7 => largest gain ~ 2.2
+        // worst case error, ~-.1, ~4 turn
         kP = Constants.velocityMultiplier * kppPivot;
         velocity = 2;
         visionUpdate();
@@ -155,12 +177,19 @@ public class DriverAssist extends StatefulCommand {
         logger.set("gain", gain);
     }
 
+    //assumption, had good vision, but one target went bad (belt blocking target)
+    // continue based on last valid target recieved 
+    // primarily that we are very close and if we adjust on one target it will
+    // cause us to over correct
     public void visionClosing() {
-        if (Robot.core.timeOnLine() > .04) {
+        if (Robot.core.timeOnLine() > lineWait) {
             setState(States.LINE_FOLLOW);
         } else if (Robot.simpleVision.getObjectCount() >= 2) {
             setState(States.VISION_DRIVE);
         } else {
+
+            // assume that the previous gain is probably the best gain until
+            // we either see the line, or get both vision targets back
             Robot.drivetrain.setVelocity(velocity - gain, velocity + gain);
         }
 
@@ -212,22 +241,44 @@ public class DriverAssist extends StatefulCommand {
     public void lineFollow() {
         updateCalculations();
 
-        if (turn > 0) {
-            Robot.drivetrain.setVelocity(velocity + turn * 2, velocity);
-        } else {
-            Robot.drivetrain.setVelocity(velocity, velocity + turn * -2);
+        // check, did we lose the line? 
+        // if so restart the process, keeps us
+        // from stopping and gives both
+        // vision and line follow a chance to 
+        // restart
+        if (Double.isNaN(prevError)) {
+            setState(States.VISION_AQUIRE);
+            return;
         }
 
-        System.out.println("forwardssss correct plz!!");
-        if (timeInState() > .04 && Robot.drivetrain.isStalled()) {
+        // only add power to one side, don't subtract from the other
+        // this keeps enough power to turn the robot when one side is
+        // pinned against the rocket/loader/cargo wall
+        if (turn > 0) {
+            Robot.drivetrain.setVelocity(velocity + (turn * 2.0), velocity);
+        } else {
+            // the -2 is because in this case turn is already less than zero
+            // (see condition above), and we actually need to add the power to
+            // this side, in most of our other control loops we add to one side
+            // and subtract from the other, which would make this subtracting a
+            // negative, which is the same as adding...
+            Robot.drivetrain.setVelocity(velocity, velocity + (turn * -2.0));
+        }
 
-            if (Math.abs(prevError)> 1) {
+        // have we been in line follow at least for a tiny bit and we are
+        // stalled...
+        if ((timeInState() > minStateStallDetect) && Robot.drivetrain.isStalled()) {
+
+            if (Math.abs(prevError) > lineFollowMinError) {
+                // Should be against the wall, but not close enough
+                // to deploy/collect a hatch
                 stError=prevError;
                 timeStamp=Timer.getFPGATimestamp();
                 setState(States.FOLLOW_BACKWARDS);
 
             } else {
-
+                // We are well aligned, and should be safe to 
+                // deploy/collect a hatch
                 Robot.leds.setState(LEDs.State.READY);
                 Robot.drivetrain.setVelocity(0, 0);
                 setState(States.DONE);
@@ -238,18 +289,17 @@ public class DriverAssist extends StatefulCommand {
     }
 
     public void followBackwards() {
-        updateCalculations();
-        turn *= -.0;
-        velocity = -1;
+        velocity = backupSpeed;
 
-        Robot.drivetrain.setVelocity(velocity + turn, velocity - turn);
-        System.out.println("Back it! back it! back it up!");
+        Robot.drivetrain.setVelocity(velocity, velocity);
 
+        // went too far and lost the line
         if(Double.isNaN(Robot.core.lineSensor())) {
             setState(States.FIND_THE_LINE);
-        }
 
-        if (timeInState() > 1.5) {
+          // we have backed up long enough, let's
+          // go forward again
+        } else if (timeInState() > backupTime) {
             setState(States.LINE_FOLLOW);
         }
 
@@ -257,9 +307,13 @@ public class DriverAssist extends StatefulCommand {
     }
 
     public void findTheLine() {
-        Robot.drivetrain.setVelocity(2,2);
-        if (!Double.isNaN(Robot.core.lineSensor())) {
+        Robot.drivetrain.setVelocity(2, 2);
+
+        // as soon as we see a line, we should follow it
+        if (Robot.core.timeOnLine() > lineWait) {
             setState(States.LINE_FOLLOW);
+
+          // no line, but hey vision can see where we are going
         } else if (Robot.simpleVision.simpleTargetFound()) {
             if (Robot.simpleVision.getObjectCount() == 1) {
                 setState(States.VISION_SEEKING);
@@ -270,25 +324,18 @@ public class DriverAssist extends StatefulCommand {
 
     }
 
-//    public void badDumbBackup() {
-//        Robot.drivetrain.setVelocity(-1, -1);
-//        if (timeStamp-Timer.getFPGATimestamp()>=1) {
-//            Robot.drivetrain.setVelocity(0, 0);
-//            setState(States.LINE_FOLLOW);
-//        }
-//
-//        updateLogs();
-//    }
-
     // Make this return true when this Command no longer needs to run execute()
 
     @Override
     protected void interrupted(){
         end();
     }
+
     @Override
     protected boolean isFinished() {
-        return getState() == States.DONE  || (Robot.oi.getLeftPower()>.5|| Robot.oi.getRightPower()>.5);
+        // exit driver assist, if Luke (or anyone) uses the joysticks beyond half power
+        return getState() == States.DONE  || 
+            ((Math.abs(Robot.oi.getLeftPower()) > 0.5) || (Math.abs(Robot.oi.getRightPower()) > 0.5));
     }
 
     @Override
