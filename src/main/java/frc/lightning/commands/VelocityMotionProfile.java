@@ -70,7 +70,7 @@ public class VelocityMotionProfile extends Command {
         emptyPath.put(new InterpolatingDouble(0.0), new InterpolatingMotionPoint(0,0,0,0));
     }
 
-    public VelocityMotionProfile(String fname) {
+    public VelocityMotionProfile(String fname, boolean isMirrored) {
         File deploy = new File(Filesystem.getDeployDirectory(), "paths");
         File left = new File(deploy, fname + "_left.csv");
         File right = new File(deploy, fname +"_right.csv");
@@ -99,6 +99,11 @@ public class VelocityMotionProfile extends Command {
                 configProfile(emptyPath, emptyPath);
             }
         }
+        mirrorPath();
+    }
+
+    public VelocityMotionProfile(String fname){
+        this(fname, false);
     }
 
     private InterpolatingTreeMap<InterpolatingDouble, InterpolatingMotionPoint> readCSVPoints(File fname) {
@@ -140,6 +145,28 @@ public class VelocityMotionProfile extends Command {
     public VelocityMotionProfile(InterpolatingTreeMap<InterpolatingDouble, InterpolatingMotionPoint> left,
                                  InterpolatingTreeMap<InterpolatingDouble, InterpolatingMotionPoint> right) {
         configProfile(left, right);
+    }
+
+    public void mirrorPath(){
+        // y=(27-ypos) | theta*=-1 
+        for(double i = 0 ; i < leftPath.lastKey().value ; i+=0.20){
+            double initPos = leftPath.get(i).position;
+            double initTheta = leftPath.get(i).heading;
+            double newPos = 27 - initPos;
+            double newTheta = initTheta * -1;
+            leftPath.get(i).position = newPos;
+            leftPath.get(i).heading = newTheta;
+
+        }
+        for(double i = 0 ; i < rightPath.lastKey().value ; i+=0.20){
+            double initPos = rightPath.get(i).position;
+            double initTheta = rightPath.get(i).heading;
+            double newPos = 27 - initPos;
+            double newTheta = initTheta * -1;
+            rightPath.get(i).position = newPos;
+            rightPath.get(i).heading = newTheta;
+
+        }
     }
 
     /**
