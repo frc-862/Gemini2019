@@ -37,12 +37,23 @@ public class StatefulAutoClimb extends StatefulCommand {
 
     @Override
     protected void initialize() {
+        Robot.groundCollector.setDefaultCommand(null);
+        Robot.elevator.setDefaultCommand(null);
         setState(States.START_CLIMB);
     }
 
     @Override
+    protected void execute() {
+        super.execute();
+
+        if ((Math.abs(Robot.oi.getMicroAdjAmt()) > 0.5) || (Math.abs(Robot.oi.groundCollectPwr()) > 0.5))
+        {
+            (new ManualClimb()).start();
+        }
+    }
+    @Override
     protected boolean isFinished() {
-        return this.getState() == States.DONE;
+        return ((this.getState() == States.DONE));
     }
 
     public void startClimb() {

@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.command.ConditionalCommand;
 import frc.lightning.commands.InterruptableVelocityMotionPath;
 import frc.lightning.commands.VelocityMotionProfile;
 import frc.robot.Robot;
+import frc.robot.commands.AwaitButton;
 import frc.robot.commands.DriverAssist;
 import frc.robot.commands.LineFollow;
 import frc.robot.commands.elevator.SetElevatorLow;
@@ -22,6 +23,7 @@ import frc.robot.commands.hatch.ExtendHatchCollector;
 public class CenterPath extends CommandGroup {
 
     public CenterPath() {
+        addSequential(new AwaitButton(Robot.oi.awaitingStart));
         addSequential(new CloseHatchCollector());
         addSequential(new SetElevatorLow());
 //        addSequential(new VelocityMotionProfile("ShipM_StartM_EndR"));

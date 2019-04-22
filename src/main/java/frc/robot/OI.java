@@ -20,6 +20,7 @@ import frc.lightning.util.JoystickFilter;
 import frc.lightning.util.TwoButtonTrigger;
 import frc.robot.commands.DriverAssist;
 import frc.robot.commands.LineFollow;
+import frc.robot.commands.SafeDefense;
 import frc.robot.commands.auto.HatchAuton;
 import frc.robot.commands.calibration.TestMove;
 import frc.robot.commands.cargo.DeployCargoCollector;
@@ -58,12 +59,14 @@ public class OI {
     private POVButton hatchExtend = new POVButton(copilot, 0);
     private POVButton hatchRetract = new POVButton(copilot, 180);
 
+    public JoystickButton awaitingStart = new JoystickButton(driverRight, 14);
+
     private Button hatchAuto = new JoystickButton(driverRight, 13);
 
-    private Button waitButton= new JoystickButton(driverRight, 14);//
+    //private Button waitButton= new JoystickButton(driverRight, 14);//
 
     public boolean shouldWait() {
-        return waitButton.get();
+        return false;//waitButton.get();
     }
 
     public boolean getElevatorHighPosSelect() {
@@ -170,6 +173,7 @@ public class OI {
         (new JoystickButton(driverRight, 7)).whenPressed(new RightDriveZero());
 
         (new JoystickButton(copilot, 5)).whenPressed(new HatchShoot());
+        (new JoystickButton(copilot, 6)).whenPressed(new SafeDefense());
         //(new JoystickButton(copilot, 6)).whenPressed(new InstantCommand(Robot.hatchPanelCollector, () -> Robot.hatchPanelCollector.collect()));
 
         (new JoystickButton(driverLeft, 1)).whenPressed(new InstantCommand(() -> Robot.hatchPanelCollector.toggle()));

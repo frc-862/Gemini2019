@@ -30,7 +30,9 @@ public class GroundCollector extends Subsystem {
     public void setGroundCollet(double pwr) {
         groundollect.set(ControlMode.PercentOutput, pwr);
     }
-
+    public void hold(){
+        setGroundCollet(0.1);//TODO need to invert?
+    }
     @Override
     public void initDefaultCommand() {
         // Set the default command for a subsystem here.
