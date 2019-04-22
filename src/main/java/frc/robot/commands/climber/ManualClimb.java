@@ -25,8 +25,8 @@ public class ManualClimb extends Command {
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-        Robot.climber.setLiftPower(Robot.oi.manualClimbPower());
-
+        Robot.climber.setLiftPower(Robot.oi.getMicroAdjAmt());
+        Robot.climber.setClimberDrivePower(Robot.oi.getGroundCollectPower());
         //.set(ControlMode.PercentOutput, Robot.oi.manualElevatorPwr() + Robot.oi.manualElevatorDownPwr());
     }
 
@@ -39,7 +39,8 @@ public class ManualClimb extends Command {
     // Called once after isFinished returns true
     @Override
     protected void end() {
-        Robot.climber.setLiftPower(0);
+        Robot.climber.setLiftPower(0.0);
+        Robot.climber.setClimberDrivePower(0.0);
     }
 
     // Called when another command which requires one or more of the same

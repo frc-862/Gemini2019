@@ -99,7 +99,7 @@ public class VelocityMotionProfile extends Command {
                 configProfile(emptyPath, emptyPath);
             }
         }
-        mirrorPath();
+        if(isMirrored) mirrorPath();
     }
 
     public VelocityMotionProfile(String fname){
