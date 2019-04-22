@@ -29,27 +29,23 @@ import frc.robot.Constants;
 import frc.robot.Robot;
 import frc.robot.RobotMap;
 import frc.robot.commands.test.NavXTest;
+
+import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
 
 /**
  * Add your docs here.
  */
 public class Core extends Subsystem {
-    //private DigitalInput pressure1 = new DigitalInput(0);
+    private DigitalInput outerLeft = new DigitalInput(6);
+    private DigitalInput innerLeft = new DigitalInput(5);
+    private DigitalInput centerLeft = new DigitalInput(4);
 
-//    private WPI_VictorSPX extra1 = new WPI_VictorSPX(RobotMap.extra1CanId);
-//     private WPI_VictorSPX extra2 = new WPI_VictorSPX(RobotMap.extra2CanId);
+    private DigitalInput center = new DigitalInput(3);
 
-    private DigitalInput outerLeft = new DigitalInput(5);
-    private DigitalInput midLeft = new DigitalInput(4);
-    private AnalogInput innerLeft = new AnalogInput(3);
-    private AnalogInput centerLeft = new AnalogInput(2);
-
-
-    private AnalogInput centerRight = new AnalogInput(1);
-    private AnalogInput innerRight = new AnalogInput(0);
-    private DigitalInput midRight = new DigitalInput(3);
-    private DigitalInput outerRight = new DigitalInput(2);
+    private DigitalInput centerRight = new DigitalInput(2);
+    private DigitalInput innerRight = new DigitalInput(1);
+    private DigitalInput outerRight = new DigitalInput(0);
 
     private AnalogInput airPreasure = new AnalogInput(4);
 
@@ -62,6 +58,7 @@ public class Core extends Subsystem {
     private Solenoid ring = new Solenoid (RobotMap.compressorCANId,3);
     private PowerDistributionPanel pdp = new PowerDistributionPanel(RobotMap.pdpCANId);
     private AnalogInput groundCollectEncoder = new AnalogInput(5);
+    private double linePos;
 
     private double biasAnalog(double v, double min, double max) {
         final double midPoint = (max + min) / 2.0;
@@ -75,40 +72,17 @@ public class Core extends Subsystem {
         }
     }
 
-    private double[] lineWeights = {-7.0, -5.0, -3.0, -1.0, 1.0, 3.0, 5.0, 7.0};
+    private double[] lineWeights = {-6.0, -3.0, -1.0, 0.0, 1.0, 3.0, 6.0};
 
-
-    private DoubleSupplier[] nebulaSensorValues = {
-        () -> outerLeft.get() ? 0 : 1.0,
-        () -> midLeft.get() ? 0 : 1.0,
-        () -> biasAnalog(innerLeft.getVoltage(), Constants.nebulaMinLeftOutside, Constants.nebulaMaxLeftOutside),
-        () -> biasAnalog(centerLeft.getVoltage(), Constants.nebulaMinLeftInside, Constants.nebulaMaxLeftInside),
-        () -> biasAnalog(centerRight.getVoltage(), Constants.nebulaMinRightInside, Constants.nebulaMaxRightInside),
-        () -> biasAnalog(innerRight.getVoltage(), Constants.nebulaMinRightOutside, Constants.nebulaMaxRightOutside),
-        () -> midRight.get() ? 0 : 1.0,
-        () -> outerRight.get() ? 0 : 1.0,
+    private BooleanSupplier[] sensorValues = {
+        () -> outerLeft.get(),
+        () -> innerLeft.get(),
+        () -> centerLeft.get(),
+        () -> center.get(),
+        () -> centerRight.get(),
+        () -> innerRight.get(),
+        () -> outerRight.get(),
     };
-
-    private DoubleSupplier[] geminiSensorValues = {
-        () -> outerLeft.get() ? 0 : 1.0,
-        () -> midLeft.get() ? 0 : 1.0,
-        () -> biasAnalog(innerLeft.getVoltage(), Constants.geminiMinLeftOutside, Constants.geminiMaxLeftOutside),
-        () -> biasAnalog(centerLeft.getVoltage(), Constants.geminiMinLeftInside, Constants.geminiMaxLeftInside),
-        () -> biasAnalog(centerRight.getVoltage(), Constants.geminiMinRightInside, Constants.geminiMaxRightInside),
-        () -> biasAnalog(innerRight.getVoltage(), Constants.geminiMinRightOutside, Constants.geminiMaxRightOutside),
-        () -> midRight.get() ? 0 : 1.0,
-        () -> outerRight.get() ? 0 : 1.0,
-    };
-
-    private DoubleSupplier[] rawSensorValues = {
-        () -> innerLeft.getVoltage(),
-        () -> centerLeft.getVoltage(),
-        () -> centerRight.getVoltage(),
-        () -> innerRight.getVoltage(),
-
-    };
-
-    private DoubleSupplier[] sensorValues = geminiSensorValues;//Robot.isGemini() ? geminiSensorValues : nebulaSensorValues;
 
     private boolean sawLine;
 
@@ -119,7 +93,8 @@ public class Core extends Subsystem {
 
         navx = new AHRS(SPI.Port.kMXP);
         addChild("NavX", navx);
-//        DataLogger.addDataElement("YAW", () -> getYaw());
+        DataLogger.addDataElement("Pressure", () -> airPreasure.getVoltage());
+        DataLogger.addDataElement("Heading", () -> navx.getFusedHeading());
 //        DataLogger.addDataElement("PITCH", () -> getPitch());
 //        DataLogger.addDataElement("ROLL", () -> getRoll());
 //        DataLogger.addDataElement("AccelX", () -> navx.getRawAccelX());
@@ -150,7 +125,7 @@ public class Core extends Subsystem {
         LiveWindow.disableTelemetry(pdp);
 
 //        addChild("outerLeft", outerLeft);
-        addChild("midLeft", midLeft);
+//        addChild("midLeft", midLeft);
 //        addChild("innerLeft", innerLeft);
 //        addChild("centerLeft", centerLeft);
 //        addChild("centerRight", centerRight);
@@ -200,29 +175,26 @@ public class Core extends Subsystem {
 
         sawLine = false;
 
-        int pos = -7;
-        for (DoubleSupplier sensor : sensorValues) {
-            double value=sensor.getAsDouble();
-            SmartDashboard.putNumber("Line " + pos, value);
-            if(value>.15) {
-                sawLine=true;
+        double weight = 0;
+        double sensorCount = 0;
+        for(int loop=0; loop < sensorValues.length; loop++) {
+            boolean value = sensorValues[loop].getAsBoolean();
+            double senorWeight = lineWeights[loop];
+            SmartDashboard.putBoolean("LineSenor " + senorWeight, value);
+            if (value) {
+                sawLine = true;
+                weight += lineWeights[loop];
+                sensorCount += 1;
             }
-            pos += 2;
         }
+        linePos = weight / sensorCount;
 
-        if(!sawLine) {
+        if (!sawLine) {
             lineFirstSeen=Timer.getFPGATimestamp();
         }
 
-        pos = -3;
-        for (DoubleSupplier sensor : rawSensorValues) {
-            SmartDashboard.putNumber("Raw Line " + pos, sensor.getAsDouble());
-            pos += 2;
-        }
-
-        double linePos = lineSensor();
         SmartDashboard.putNumber("Distance from center", linePos);
-        if (Math.abs(linePos) < 1.2) {
+        if (Math.abs(linePos) <= 1.0) {
             Robot.leds.setState(LEDs.State.CENTERED);
         } else {
             Robot.leds.clearState(LEDs.State.CENTERED);
@@ -275,27 +247,7 @@ public class Core extends Subsystem {
     }
 
     public double lineSensor() {
-        double weight = 0;
-        double sensors = 0;
-
-        // e.g. -1 sensor is reading 0.7
-        // weight = -0.7
-        // sensors = 0.7
-        // return => -1 (the right answer would be either -0.7 or -1.3 hard to say what is correct)
-
-        // e.g. -1 sensor is reading 0.7, 1 sensor is reading 0.1
-        // weight = -0.7 + 0.1 = -0.6
-        // sensors = 0.7 + 0.1 = 0.8
-        // return => -0.75 eek!
-
-        // TODO FIX! this is broken for analog sensors
-        for(int loop=0; loop <= 7; loop++) {
-            double value = sensorValues[loop].getAsDouble();
-            weight += value * lineWeights[loop];
-            sensors += value;
-        }
-
-        return weight / sensors;
+        return linePos;
     }
 
     public double timeOnLine() {
@@ -308,14 +260,9 @@ public class Core extends Subsystem {
          return result;
     }
 
-    public DoubleSupplier getRawData(int a) {
-        return rawSensorValues[a];
-    }
-
     // TODO implement in a smart way
     public void setHeading(Rotation2d rotation) {
     }
-
 
     public boolean isMoving() {
         return navx.isMoving();

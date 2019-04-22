@@ -202,6 +202,10 @@ public class DriverAssist extends StatefulCommand {
 
     double lastTimeStamp = Timer.getFPGATimestamp();
 
+    double gainP=0;
+    double gainI=0;
+    double gainD=0;
+
     private void updateCalculations() {
         double elapsedTime =Timer.getFPGATimestamp() - lastTimeStamp;
         lastTimeStamp = Timer.getFPGATimestamp();
@@ -213,22 +217,27 @@ public class DriverAssist extends StatefulCommand {
         turnI = SmartDashboard.getNumber("turnI", turnI);
         turnD = SmartDashboard.getNumber("turnD", turnD);
 
-        if (Double.isNaN(error) || Math.abs(error) <= 1) {
+        if (Double.isNaN(error)) {
+            if(Math.abs(error)<= 1){
             errorAcc = 0;
+            }
         } else {
             errorAcc += error * elapsedTime;
-        }
+            gainP = error * turnP;
+            gainI = errorAcc * turnI;
+            gainD = ((prevError - error) / elapsedTime) * turnD;
+            turn = gainP + gainI + gainD;
 
-        double gainP = error * turnP;
-        double gainI = errorAcc * turnI;
-        double gainD = ((prevError - error) / elapsedTime) * turnD;
-        turn = gainP + gainI + gainD;
-
-        if (Math.abs(error) > 0.99) {
-            if (Math.abs(turn) < .75) {
-                turn = Math.signum(turn) * .75;
+            if (Math.abs(error) > 0.99) {
+                if (Math.abs(turn) < .75) {
+                    turn = Math.signum(turn) * .75;
+                }
             }
         }
+
+
+
+
         velocity = (Math.abs(error) <= 1) ? straightVelocity : turningVelocity;
         prevError = error;
 
