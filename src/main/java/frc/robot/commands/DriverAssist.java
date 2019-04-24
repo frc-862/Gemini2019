@@ -38,7 +38,7 @@ public class DriverAssist extends StatefulCommand {
     double kP = Constants.velocityMultiplier * kpp;
     double kD = .0;
     double minTurnPower = 1;
-    double onTargetEpsilon = .1;  // scaled 0..1
+    double onTargetEpsilon = 0.1;  // scaled 0..1
     double turnP = 1;
     double turningVelocity = 1.25;///4
     double straightVelocity = 1.25;//1
@@ -51,7 +51,7 @@ public class DriverAssist extends StatefulCommand {
     final double lineFollowMinError = 1.0;
     final double backupSpeed = -1.5;
     final double lineLength = 1.5; // 18 in = 1.5 feet
-    final double backupTime = Math.abs(lineLength / backupSpeed); 
+    final double backupTime = Math.abs(lineLength / backupSpeed);
 
     private double turn;
     private double velocity = 1;
@@ -103,6 +103,7 @@ public class DriverAssist extends StatefulCommand {
             setState(States.FIND_THE_LINE);
         }
 
+        logger.set("gain", 0);
         logger.set("gainP", 0);
         logger.set("gainI", 0);
         logger.set("gainD", 0);
@@ -130,7 +131,7 @@ public class DriverAssist extends StatefulCommand {
 
         updateLogs();
     }
-    
+
         //assumption: far away and only see one target
         //action: navigate towards single target
     public void visionSeeking() {
@@ -140,7 +141,7 @@ public class DriverAssist extends StatefulCommand {
 
           // assume that if we now see more than 1 target, Luke
           // (or vision) has us pointed where we need to be
-          // and the center most 2, are the ones we want  
+          // and the center most 2, are the ones we want
         } else if (Robot.simpleVision.getObjectCount() >= 2) {
             setState(States.VISION_DRIVE);
             return;
@@ -178,7 +179,7 @@ public class DriverAssist extends StatefulCommand {
     }
 
     //assumption, had good vision, but one target went bad (belt blocking target)
-    // continue based on last valid target recieved 
+    // continue based on last valid target received
     // primarily that we are very close and if we adjust on one target it will
     // cause us to over correct
     public void visionClosing() {
