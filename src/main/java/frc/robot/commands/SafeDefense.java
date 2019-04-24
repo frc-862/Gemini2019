@@ -22,7 +22,7 @@ public class SafeDefense extends Command {
   @Override
   protected void initialize() {
     Robot.hatchPanelCollector.retract();
-    Robot.hatchPanelCollector.collect();
+    Robot.hatchPanelCollector.eject();
   }
 
   // Called repeatedly when this Command is scheduled to run
