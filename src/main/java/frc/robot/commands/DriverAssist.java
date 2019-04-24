@@ -33,7 +33,7 @@ public class DriverAssist extends StatefulCommand {
     boolean offLine=false;
     boolean beenOff =false;
     private double gain;
-    double kpp = .118;
+    double kpp = .254;
     double kppPivot = .118;
     double kP = Constants.velocityMultiplier * kpp;
     double kD = .0;

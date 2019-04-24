@@ -60,18 +60,24 @@ public class SimpleVision extends Subsystem {
             final double imageMiddle = imageWidth / 2.0;
 
             objectCount = Integer.parseInt(m.group(1));
-            x = Integer.parseInt(m.group(2));
-            y = Integer.parseInt(m.group(3));
-            width = Integer.parseInt(m.group(4));
-            height = Integer.parseInt(m.group(5));
+            if (objectCount > 0){
+                x = Integer.parseInt(m.group(2));
+                y = Integer.parseInt(m.group(3));
+                width = Integer.parseInt(m.group(4));
+                height = Integer.parseInt(m.group(5));
 
-            double deltaT = previousTimestamp - now;
-            previousTimestamp = now;
-            error = (imageMiddle - x) / imageMiddle;
-            errorD = (previousError - error) / deltaT;
-            previousError = error;
+                double deltaT = previousTimestamp - now;
+                previousTimestamp = now;
+                error = (imageMiddle - x) / imageMiddle;
+                errorD = (previousError - error) / deltaT;
+                previousError = error;
 
-            Robot.leds.setState(LEDs.State.DRIVER_ASSIST_READY);
+                Robot.leds.setState(LEDs.State.DRIVER_ASSIST_READY);
+            } else {
+                Robot.leds.clearState(LEDs.State.DRIVER_ASSIST_READY);
+                error = 0;
+                errorD = 0;
+            }
         } else {
             Robot.leds.clearState(LEDs.State.DRIVER_ASSIST_READY);
             error = 0;

@@ -76,9 +76,9 @@ public class Robot extends LightningRobot {
         registerAutoOptions();
 
         registerAutonomousCommmand("Tank", new VelocityTankDrive());
-        registerAutonomousCommmand("Left Rocket",new LeftRocket());
-        registerAutonomousCommmand("Right Rocket",new RghtRocket());
-        registerAutonomousCommmand("Center Ship",new CenterPath());
+        //registerAutonomousCommmand("Left Rocket",new LeftRocket());
+        //registerAutonomousCommmand("Right Rocket",new RghtRocket());
+        //registerAutonomousCommmand("Center Ship",new CenterPath());
 
         CameraServer.getInstance().startAutomaticCapture().setVideoMode(PixelFormat.kMJPEG, 160, 120, 10);
     }

@@ -37,7 +37,7 @@ import java.util.function.DoubleSupplier;
  * Add your docs here.
  */
 public class Core extends Subsystem {
-    private DigitalInput outerLeft = new DigitalInput(6);
+    private DigitalInput outerLeft = new DigitalInput(9);
     private DigitalInput innerLeft = new DigitalInput(5);
     private DigitalInput centerLeft = new DigitalInput(4);
 
@@ -188,6 +188,10 @@ public class Core extends Subsystem {
             }
         }
         linePos = weight / sensorCount;
+        if (sensorCount == sensorValues.length) {
+            sawLine = false;
+            linePos = 0;
+        }
 
         if (!sawLine) {
             lineFirstSeen=Timer.getFPGATimestamp();
