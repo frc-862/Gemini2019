@@ -34,7 +34,7 @@ public class SafeDefense extends Command {
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return false;
+    return Math.abs(Robot.oi.groundCollectPwr()) > 0.5;
   }
 
   // Called once after isFinished returns true

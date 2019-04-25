@@ -39,7 +39,7 @@ public class DriverAssist extends StatefulCommand {
     double kD = .0;
     double minTurnPower = 1;
     double onTargetEpsilon = 0.1;  // scaled 0..1
-    double turnP = 1;
+    double turnP = 1.1;
     double turningVelocity = 1.25;///4
     double straightVelocity = 1.25;//1
     double turnI = 0.001/.02;
@@ -75,6 +75,8 @@ public class DriverAssist extends StatefulCommand {
     @Override
     protected void initialize() {
         setState(States.VISION_AQUIRE);
+        Robot.hatchPanelCollector.close();
+        Robot.hatchPanelCollector.retract();
         logger.reset();
     }
 
@@ -90,6 +92,7 @@ public class DriverAssist extends StatefulCommand {
     private final double lineWait = 0.1;
 
     public void visionAquire() {
+
         seenTwo = false;
         if (Robot.core.timeOnLine() > lineWait) {
             setState(States.LINE_FOLLOW);
@@ -232,6 +235,8 @@ public class DriverAssist extends StatefulCommand {
             if (Math.abs(error) > 0.99) {
                 if (Math.abs(turn) < .75) {
                     turn = Math.signum(turn) * .75;
+                } else if (turn > 4) {
+                    turn = Math.signum(turn) * 4;
                 }
             }
         }
@@ -250,7 +255,7 @@ public class DriverAssist extends StatefulCommand {
 
     public void lineFollow() {
         updateCalculations();
-
+    velocity=1.5;
         // check, did we lose the line? 
         // if so restart the process, keeps us
         // from stopping and gives both
@@ -265,14 +270,14 @@ public class DriverAssist extends StatefulCommand {
         // this keeps enough power to turn the robot when one side is
         // pinned against the rocket/loader/cargo wall
         if (turn > 0) {
-            Robot.drivetrain.setVelocity(velocity + (turn * 2.0), velocity);
+            Robot.drivetrain.setVelocity(velocity + (turn * 1.50), velocity);
         } else {
             // the -2 is because in this case turn is already less than zero
             // (see condition above), and we actually need to add the power to
             // this side, in most of our other control loops we add to one side
             // and subtract from the other, which would make this subtracting a
             // negative, which is the same as adding...
-            Robot.drivetrain.setVelocity(velocity, velocity + (turn * -2.0));
+            Robot.drivetrain.setVelocity(velocity, velocity + (turn * -1.50));
         }
 
         // have we been in line follow at least for a tiny bit and we are

@@ -10,10 +10,12 @@ package frc.robot.commands.climber;
 import java.sql.Time;
 
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.command.Command;
 import frc.lightning.commands.StatefulCommand;
 import frc.lightning.util.LightningMath;
 import frc.robot.Constants;
 import frc.robot.Robot;
+import frc.robot.commands.DoNothing;
 import frc.robot.subsystems.LEDs;
 
 public class JankStatefulClimb extends StatefulCommand {
@@ -113,12 +115,34 @@ public class JankStatefulClimb extends StatefulCommand {
         setState(States.SLEEP);
     }
 
+    public void sleep() {
+        if (timeInState() > 1) {
+            setState(States.DONE);
+        }
+    }
+
     @Override
     protected void end() {
         Robot.climber.setClimberDrivePower(0);
         Robot.climber.setLiftPower(0);
         Robot.drivetrain.stop();
 
+
+        Robot.groundCollector.getCurrentCommand().cancel();
+        Robot.groundCollector.setDefaultCommand(new DoNothing());
+
+        Robot.elevator.getCurrentCommand().cancel();
+        Robot.elevator.setDefaultCommand(new DoNothing());
+
+        //  Robot.climber.getCurrentCommand().cancel();
+        Robot.climber.setDefaultCommand(new ManualClimb());
+        Command cmd = Robot.climber.getCurrentCommand();
+        if (cmd != null) {
+            cmd.start();
+        } else {
+            System.out.println("No climber command!!!");
+        }
+        //(new ManualClimb()).start();
         // Robot.leds.clearState(LEDs.State.CLIMBING);
     }
 }

@@ -8,10 +8,10 @@
 package frc.robot.subsystems;
 
 import com.kauailabs.navx.frc.AHRS;
+import edu.wpi.first.hal.util.UncleanStatusException;
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.PWM;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.Solenoid;
@@ -20,32 +20,32 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.lightning.geometry.Rotation2d;
-import frc.lightning.logging.CommandLogger;
 import frc.lightning.logging.DataLogger;
 import frc.lightning.testing.SystemTest;
-import frc.lightning.util.LightningMath;
 import frc.lightning.util.MovingAverageFilter;
-import frc.robot.Constants;
 import frc.robot.Robot;
 import frc.robot.RobotMap;
 import frc.robot.commands.test.NavXTest;
 
 import java.util.function.BooleanSupplier;
-import java.util.function.DoubleSupplier;
 
 /**
  * Add your docs here.
  */
 public class Core extends Subsystem {
-    private DigitalInput outerLeft = new DigitalInput(9);
-    private DigitalInput innerLeft = new DigitalInput(5);
-    private DigitalInput centerLeft = new DigitalInput(4);
+    private DigitalInput left_4 = new DigitalInput(4);//9
+    private DigitalInput left_3 = new DigitalInput(22);//5
+    private DigitalInput left_2 = new DigitalInput(5);//4
+    private DigitalInput left_1 = new DigitalInput(21);//10
 
-    private DigitalInput center = new DigitalInput(3);
+    private DigitalInput center = new DigitalInput(18);//3
 
-    private DigitalInput centerRight = new DigitalInput(2);
-    private DigitalInput innerRight = new DigitalInput(1);
-    private DigitalInput outerRight = new DigitalInput(0);
+    private DigitalInput right_1 = new DigitalInput(20);//11
+    private DigitalInput right_2 = new DigitalInput(2);//2
+    private DigitalInput right_3 = new DigitalInput(19);//1
+    private DigitalInput right_4 = new DigitalInput(3);//0
+
+    private DigitalInput[] sensors = new DigitalInput[8];
 
     private AnalogInput airPreasure = new AnalogInput(4);
 
@@ -53,7 +53,8 @@ public class Core extends Subsystem {
     private double lineFirstSeen = Timer.getFPGATimestamp();
     // Put methods for controlling this subsystem
     // here. Call these from Commajnds.
-    private AHRS navx;
+    private AHRS navx = new AHRS(SPI.Port.kMXP);
+
     private Compressor compressor = new Compressor(RobotMap.compressorCANId);
     private Solenoid ring = new Solenoid (RobotMap.compressorCANId,3);
     private PowerDistributionPanel pdp = new PowerDistributionPanel(RobotMap.pdpCANId);
@@ -72,16 +73,20 @@ public class Core extends Subsystem {
         }
     }
 
-    private double[] lineWeights = {-6.0, -3.0, -1.0, 0.0, 1.0, 3.0, 6.0};
+    private boolean[] validSensors = new boolean[512];
+
+    private double[] lineWeights = {-5.8125, -3.0, -1.875, -0.875, 0.125, 1.125, 2.125, 3.125, 6.125};
 
     private BooleanSupplier[] sensorValues = {
-        () -> outerLeft.get(),
-        () -> innerLeft.get(),
-        () -> centerLeft.get(),
-        () -> center.get(),
-        () -> centerRight.get(),
-        () -> innerRight.get(),
-        () -> outerRight.get(),
+        () -> !left_4.get(),
+        () -> !left_3.get(),
+        () -> !left_2.get(),
+        () -> !left_1.get(),
+        () -> !center.get(),
+        () -> !right_1.get(),
+        () -> !right_2.get(),
+        () -> !right_3.get(),
+        () -> !right_4.get(),
     };
 
     private boolean sawLine;
@@ -89,9 +94,45 @@ public class Core extends Subsystem {
     public Core() {
         setName("Core");
 
+        for(int i = 0; i < validSensors.length; ++i) {
+            validSensors[i] = false;
+        }
+        validSensors[0b100000000] = true;
+        validSensors[0b110000000] = true;
+        validSensors[0b010000000] = true;
+        validSensors[0b011000000] = true;
+        validSensors[0b011100000] = true;
+        validSensors[0b001000000] = true;
+        validSensors[0b001100000] = true;
+        validSensors[0b001110000] = true;
+        validSensors[0b000100000] = true;
+        validSensors[0b000110000] = true;
+        validSensors[0b000111000] = true;//cntr
+        validSensors[0b000010000] = true;//cntr too
+        validSensors[0b000011000] = true;
+        validSensors[0b000011100] = true;
+        validSensors[0b000001000] = true;
+        validSensors[0b000001100] = true;
+        validSensors[0b000001110] = true;
+        validSensors[0b000000100] = true;
+        validSensors[0b000000110] = true;
+        validSensors[0b000000010] = true;
+        validSensors[0b000000011] = true;
+        validSensors[0b000000001] = true;
+
+//        for (int i = 0; i < sensors.length; ++i) {
+//            System.out.println("Init sensor " + (i + 18));
+//            try {
+//                sensors[i] = new DigitalInput(i + 18);
+//            } catch (UncleanStatusException err) {
+//                System.out.println("Unable to initialize " + (i + 18));
+//            }
+//        }
+
+        //that was fun.
+
         addChild("Compressor", compressor);
 
-        navx = new AHRS(SPI.Port.kMXP);
         addChild("NavX", navx);
         DataLogger.addDataElement("Pressure", () -> airPreasure.getVoltage());
         DataLogger.addDataElement("Heading", () -> navx.getFusedHeading());
@@ -124,14 +165,14 @@ public class Core extends Subsystem {
         // EX - CAN Frame timeout, etc.
         LiveWindow.disableTelemetry(pdp);
 
-//        addChild("outerLeft", outerLeft);
+//        addChild("left_4", left_4);
 //        addChild("midLeft", midLeft);
-//        addChild("innerLeft", innerLeft);
-//        addChild("centerLeft", centerLeft);
-//        addChild("centerRight", centerRight);
-//        addChild("innerRight", innerRight);
+//        addChild("left_3", left_3);
+//        addChild("left_2", left_2);
+//        addChild("right_2", right_2);
+//        addChild("right_3", right_3);
 //        addChild("midRight", midRight);
-//        addChild("outerRight", outerRight);
+//        addChild("right_4", right_4);
 
         // addChild("extra motor 1", extra1);
         // addChild("extra motor 2", extra2);
@@ -187,6 +228,11 @@ public class Core extends Subsystem {
                 sensorCount += 1;
             }
         }
+
+//        for (int i = 0; i < sensors.length; ++i) {
+//            SmartDashboard.putBoolean("Sensor " + (i + 18), sensors[i].get());
+//        }
+
         linePos = weight / sensorCount;
         if (sensorCount == sensorValues.length) {
             sawLine = false;

@@ -31,8 +31,8 @@ public class HatchCollector extends Subsystem {
         addChild("Grabber", grabber);
 
         // constructor - DoubleSolenoid(moduleNumber, forwardChannel, reverseChannel)
-        hatchDetector = new DigitalInput(RobotMap.hatchDetector); // TODO check wiring
-        addChild("Detector", hatchDetector);
+        //hatchDetector = new DigitalInput(RobotMap.hatchDetector); // TODO check wiring
+        //addChild("Detector", hatchDetector);
     }
 
     public void extend() {

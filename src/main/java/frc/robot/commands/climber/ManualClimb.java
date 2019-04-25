@@ -26,7 +26,7 @@ public class ManualClimb extends Command {
     @Override
     protected void execute() {
         Robot.climber.setLiftPower(Robot.oi.getMicroAdjAmt());
-        Robot.climber.setClimberDrivePower(Robot.oi.getGroundCollectPower());
+        Robot.climber.setClimberDrivePower(-Robot.oi.getGroundCollectPower());
         //.set(ControlMode.PercentOutput, Robot.oi.manualElevatorPwr() + Robot.oi.manualElevatorDownPwr());
     }
 

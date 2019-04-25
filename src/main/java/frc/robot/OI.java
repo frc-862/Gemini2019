@@ -36,6 +36,7 @@ import frc.robot.commands.hatch.StatefulHatchDeploy;
 import frc.robot.commands.test.LeftDriveZero;
 import frc.robot.commands.test.ResetDriveSensors;
 import frc.robot.commands.test.RightDriveZero;
+import frc.robot.commands.test.TestManualClimb;
 import frc.robot.commands.vision.SimpleFollowVision;
 import frc.robot.commands.vision.StereoTurn;
 import frc.robot.commands.vision.VisionTurn;
@@ -212,6 +213,7 @@ public class OI {
         SmartDashboard.putData("Shoot Hatch", new HatchShoot());
 
         SmartDashboard.putData("open hatch", new OpenHatchCollector());
+        SmartDashboard.putData("test manual climb", new TestManualClimb());
         SmartDashboard.putData("close hatch", new CloseHatchCollector());
 
         SmartDashboard.putData("config motors", new ConfigMotors());
