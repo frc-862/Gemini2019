@@ -27,7 +27,8 @@ public class ClimbGoToPosition extends Command {
     // Make this return true when this Command no longer needs to run execute()
     @Override
     protected boolean isFinished() {
-        return false;
+
+        return ((Math.abs(Robot.climber.getJackPosition()) < 5) || (timeSinceInitialized() > 5));//ticks
     }
 
     // Called once after isFinished returns true

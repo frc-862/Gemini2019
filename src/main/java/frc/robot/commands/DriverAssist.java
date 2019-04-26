@@ -39,11 +39,11 @@ public class DriverAssist extends StatefulCommand {
     double kD = .0;
     double minTurnPower = 1;
     double onTargetEpsilon = 0.1;  // scaled 0..1
-    double turnP = 1.1;
+    double turnP = 2.;
     double turningVelocity = 1.25;///4
     double straightVelocity = 1.25;//1
     double turnI = 0.001/.02;
-    double turnD = .6;
+    double turnD = 0;
     double prevError = 0;
     double errorAcc = 0;
     boolean seenTwo = false;
@@ -62,6 +62,7 @@ public class DriverAssist extends StatefulCommand {
         super(States.VISION_AQUIRE);
         requires(Robot.drivetrain);
 
+        logger.addDataElement("gain");
         logger.addDataElement("gainP");
         logger.addDataElement("gainI");
         logger.addDataElement("gainD");
@@ -75,17 +76,40 @@ public class DriverAssist extends StatefulCommand {
     @Override
     protected void initialize() {
         setState(States.VISION_AQUIRE);
-        Robot.hatchPanelCollector.close();
+        Robot.hatchPanelCollector.eject();
         Robot.hatchPanelCollector.retract();
         logger.reset();
     }
 
+    private double visionError() {
+        if (Robot.simpleVision == null) {
+            return 0;
+        } else {
+            return Robot.simpleVision.getError();
+        }
+    }
+
+    private double visionObjects() {
+        if (Robot.simpleVision == null) {
+            return 0;
+        } else {
+            return Robot.simpleVision.getObjectCount();
+        }
+    }
+    private boolean visionTargetFound() {
+        if (Robot.simpleVision == null) {
+            return false;
+        } else {
+            return Robot.simpleVision.simpleTargetFound();
+        }
+    }
+
     private void updateLogs() {
         logger.set("lineError", Robot.core.lineSensor());
-        logger.set("visionError", Robot.simpleVision.getError());
+        logger.set("visionError", visionError());
         logger.set("timeOnLine", Robot.core.timeOnLine());
         logger.set("mode", this.getState().ordinal());
-        logger.set("visionCount", Robot.simpleVision.getObjectCount());
+        logger.set("visionCount", visionObjects());
         logger.write();
     }
 
@@ -96,8 +120,8 @@ public class DriverAssist extends StatefulCommand {
         seenTwo = false;
         if (Robot.core.timeOnLine() > lineWait) {
             setState(States.LINE_FOLLOW);
-        } else if (Robot.simpleVision.simpleTargetFound()) {
-            if (Robot.simpleVision.getObjectCount() == 1) {
+        } else if (visionTargetFound()) {
+            if (visionObjects() == 1) {
                 setState(States.VISION_SEEKING);
             } else {
                 setState(States.VISION_DRIVE);
@@ -121,7 +145,7 @@ public class DriverAssist extends StatefulCommand {
           // now lost one to the belt, don't want to turn hard
           // centering on the remaining (now much closer) target,
           // so Vision Closing just uses last error
-        } else if (Robot.simpleVision.getObjectCount() == 1) {
+        } else if (visionObjects() == 1) {
             setState(States.VISION_CLOSING);
         } else {
             kP = Constants.velocityMultiplier * kpp;
@@ -145,7 +169,7 @@ public class DriverAssist extends StatefulCommand {
           // assume that if we now see more than 1 target, Luke
           // (or vision) has us pointed where we need to be
           // and the center most 2, are the ones we want
-        } else if (Robot.simpleVision.getObjectCount() >= 2) {
+        } else if (visionObjects() >= 2) {
             setState(States.VISION_DRIVE);
             return;
         }
@@ -161,13 +185,13 @@ public class DriverAssist extends StatefulCommand {
 
     private void visionUpdate() {
         gain = 0;
-        double error = Robot.simpleVision.getError();
+        double error = visionError();
         double gainP = 0;
         double gainD = 0;
 
         if (Math.abs(error) > onTargetEpsilon) {
             gainP = error * kP;
-            gainD = Robot.simpleVision.getErrorD() * kD;
+            gainD = visionErrorD() * kD;
             gain = gainP + gainD;
 
             if (Math.abs(gain) < minTurnPower) {
@@ -181,6 +205,11 @@ public class DriverAssist extends StatefulCommand {
         logger.set("gain", gain);
     }
 
+    public double visionErrorD(){
+        if(Robot.simpleVision == null) return 0;
+        return Robot.simpleVision.getErrorD();
+    }
+
     //assumption, had good vision, but one target went bad (belt blocking target)
     // continue based on last valid target received
     // primarily that we are very close and if we adjust on one target it will
@@ -188,7 +217,7 @@ public class DriverAssist extends StatefulCommand {
     public void visionClosing() {
         if (Robot.core.timeOnLine() > lineWait) {
             setState(States.LINE_FOLLOW);
-        } else if (Robot.simpleVision.getObjectCount() >= 2) {
+        } else if (visionObjects() >= 2) {
             setState(States.VISION_DRIVE);
         } else {
 
@@ -329,8 +358,8 @@ public class DriverAssist extends StatefulCommand {
             setState(States.LINE_FOLLOW);
 
           // no line, but hey vision can see where we are going
-        } else if (Robot.simpleVision.simpleTargetFound()) {
-            if (Robot.simpleVision.getObjectCount() == 1) {
+        } else if (visionTargetFound()) {
+            if (visionObjects() == 1) {
                 setState(States.VISION_SEEKING);
             } else {
                 setState(States.VISION_DRIVE);
@@ -339,6 +368,15 @@ public class DriverAssist extends StatefulCommand {
 
     }
 
+    public void done() {
+        if (Math.round(timeInState() * 5) % 2 == 0) {
+            Robot.core.ringOff();
+        }
+        else
+        {
+            Robot.core.ringOn();
+        }
+    }
     // Make this return true when this Command no longer needs to run execute()
 
     @Override
@@ -349,12 +387,15 @@ public class DriverAssist extends StatefulCommand {
     @Override
     protected boolean isFinished() {
         // exit driver assist, if Luke (or anyone) uses the joysticks beyond half power
-        return getState() == States.DONE  || 
-            ((Math.abs(Robot.oi.getLeftPower()) > 0.5) || (Math.abs(Robot.oi.getRightPower()) > 0.5));
+//        return getState() == States.DONE  ||
+//            ((Math.abs(Robot.oi.getLeftPower()) > 0.5) || (Math.abs(Robot.oi.getRightPower()) > 0.5));
+        return false;
     }
 
     @Override
     protected void end() {
+        Robot.core.ringOn();
+
         Robot.drivetrain.stop();
         logger.drain();
         logger.flush();

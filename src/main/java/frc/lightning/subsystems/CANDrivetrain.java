@@ -258,7 +258,7 @@ public abstract class CANDrivetrain extends LightningDrivetrain {
         return false;
     }
 
-    static int slowDrive = (int) LightningMath.fps2talon(1);
+    static int slowDrive = (int) LightningMath.fps2talon(0.3);
     @Override
     public void periodic() {
         boolean stalled = false;

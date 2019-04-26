@@ -127,7 +127,6 @@ public class JankStatefulClimb extends StatefulCommand {
         Robot.climber.setLiftPower(0);
         Robot.drivetrain.stop();
 
-
         Robot.groundCollector.getCurrentCommand().cancel();
         Robot.groundCollector.setDefaultCommand(new DoNothing());
 

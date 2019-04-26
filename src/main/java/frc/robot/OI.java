@@ -27,12 +27,7 @@ import frc.robot.commands.cargo.DeployCargoCollector;
 import frc.robot.commands.cargo.RetractCargoCollector;
 import frc.robot.commands.climber.*;
 import frc.robot.commands.driveTrain.ConfigMotors;
-import frc.robot.commands.hatch.CloseHatchCollector;
-import frc.robot.commands.hatch.ExtendHatchCollector;
-import frc.robot.commands.hatch.HatchShoot;
-import frc.robot.commands.hatch.OpenHatchCollector;
-import frc.robot.commands.hatch.RetractHatchCollector;
-import frc.robot.commands.hatch.StatefulHatchDeploy;
+import frc.robot.commands.hatch.*;
 import frc.robot.commands.test.LeftDriveZero;
 import frc.robot.commands.test.ResetDriveSensors;
 import frc.robot.commands.test.RightDriveZero;
@@ -177,7 +172,7 @@ public class OI {
         (new JoystickButton(copilot, 6)).whenPressed(new SafeDefense());
         //(new JoystickButton(copilot, 6)).whenPressed(new InstantCommand(Robot.hatchPanelCollector, () -> Robot.hatchPanelCollector.collect()));
 
-        (new JoystickButton(driverLeft, 1)).whenPressed(new InstantCommand(() -> Robot.hatchPanelCollector.toggle()));
+        (new JoystickButton(driverLeft, 1)).whenPressed(new SmartHatchCollect());
 
         (new JoystickButton(driverRight, 1)).whileHeld(new DriverAssist());
         (new JoystickButton(driverRight, 4)).whileHeld(new LineFollow());
@@ -316,5 +311,13 @@ public class OI {
             break;
         }
         return nextSeg;
+    }
+
+    public boolean getLeftTrigger() {
+        return driverLeft.getRawButton(1);
+    }
+
+    public boolean getRightTrigger() {
+        return !driverRight.getRawButton(1);
     }
 }

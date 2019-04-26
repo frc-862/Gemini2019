@@ -189,31 +189,10 @@ public class Core extends Subsystem {
         ring.set(true);
     }
     public void ringOff() {
-        ring.set(true);
+        ring.set(false);
     }
     @Override
     public void periodic() {
-/*        SmartDashboard.putBoolean("has stopped",hasStopped());
-        SmartDashboard.putBoolean("is moving",isMoving());
-        SmartDashboard.putNumber("is moving Y",moved());
-        SmartDashboard.putNumber("is moving X",movedX());
- */       // SmartDashboard.putNumber("Ground Collect Encoder", groundCollectEncoder.getVoltage());
-        // System.out.println("GCE: " + groundCollectEncoder.getVoltage());
-//        SmartDashboard.putNumber("preasure", airPreasure.getVoltage());
-//
-//        SmartDashboard.putNumber("Heading", navx.getFusedHeading());
-//        SmartDashboard.putNumber("Angle", navx.getAngle());
-//
-//        SmartDashboard.putNumber("YAW", navx.getYaw());
-//        SmartDashboard.putNumber("PITCH", navx.getPitch());
-//        SmartDashboard.putNumber("ROLL", navx.getRoll());
-//
-//        SmartDashboard.putNumber("X", navx.getRawGyroX());
-//        SmartDashboard.putNumber("Y", navx.getRawGyroY());
-//        SmartDashboard.putNumber("Z", navx.getRawGyroZ());
-//
-//        SmartDashboard.putBoolean("Moving", navx.isMoving());
-
         sawLine = false;
 
         double weight = 0;
@@ -221,17 +200,13 @@ public class Core extends Subsystem {
         for(int loop=0; loop < sensorValues.length; loop++) {
             boolean value = sensorValues[loop].getAsBoolean();
             double senorWeight = lineWeights[loop];
-            SmartDashboard.putBoolean("LineSenor " + senorWeight, value);
+            // SmartDashboard.putBoolean("LineSenor " + senorWeight, value);
             if (value) {
                 sawLine = true;
                 weight += lineWeights[loop];
                 sensorCount += 1;
             }
         }
-
-//        for (int i = 0; i < sensors.length; ++i) {
-//            SmartDashboard.putBoolean("Sensor " + (i + 18), sensors[i].get());
-//        }
 
         linePos = weight / sensorCount;
         if (sensorCount == sensorValues.length) {
@@ -250,7 +225,7 @@ public class Core extends Subsystem {
             Robot.leds.clearState(LEDs.State.CENTERED);
         }
 //        SmartDashboard.putNumber("line first seen", lineFirstSeen);
-        SmartDashboard.putNumber("time saw line", timeOnLine());
+        // SmartDashboard.putNumber("time saw line", timeOnLine());
     }
 
     public boolean hasCargo() {
