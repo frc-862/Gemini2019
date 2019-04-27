@@ -53,7 +53,6 @@ public class SimpleVision extends Subsystem {
         double now = Timer.getFPGATimestamp();
 
         lastLine = update;
-        System.out.println(lastLine);
         Matcher m = pattern.matcher(update);
         if (m.find()) {
             final int imageWidth = 320;
@@ -72,14 +71,11 @@ public class SimpleVision extends Subsystem {
                 errorD = (previousError - error) / deltaT;
                 previousError = error;
 
-                Robot.leds.setState(LEDs.State.DRIVER_ASSIST_READY);
             } else {
-                Robot.leds.clearState(LEDs.State.DRIVER_ASSIST_READY);
                 error = 0;
                 errorD = 0;
             }
         } else {
-            Robot.leds.clearState(LEDs.State.DRIVER_ASSIST_READY);
             error = 0;
             errorD = 0;
             System.out.println("Unable to process Simple Vision: " + update);

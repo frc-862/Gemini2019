@@ -38,11 +38,11 @@ public class AutomatedCargoEject extends CommandGroup {
 
         requires(Robot.elevator);
 
-        addSequential(new InstantCommand(() -> Robot.leds.setState(LEDs.State.AUTONOMOUS)));
+        //addSequential(new InstantCommand(() -> Robot.leds.setState(LEDs.State.AUTONOMOUS)));
         addSequential(new SetElevatorToSelectedState());
         addSequential(new EjectElevatorCargo());
         addSequential(new SetElevatorCollect());
-        //addSequential(new StopCargoCollector());
-        addSequential(new InstantCommand(() -> Robot.leds.clearState(LEDs.State.AUTONOMOUS)));
+        addSequential(new StopCargoCollector());
+        //addSequential(new InstantCommand(() -> Robot.leds.clearState(LEDs.State.AUTONOMOUS)));
     }
 }

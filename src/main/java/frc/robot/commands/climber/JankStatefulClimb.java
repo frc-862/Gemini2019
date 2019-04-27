@@ -42,7 +42,7 @@ public class JankStatefulClimb extends StatefulCommand {
     @Override
     protected void initialize() {
         setState(States.START_CLIMB);
-        Robot.leds.setState(LEDs.State.CLIMBING);
+        Robot.led.setState(LEDs.State.CLIMBING);
     }
 
     @Override
@@ -123,6 +123,8 @@ public class JankStatefulClimb extends StatefulCommand {
 
     @Override
     protected void end() {
+        Robot.led.clearState(LEDs.State.CLIMBING);
+
         Robot.climber.setClimberDrivePower(0);
         Robot.climber.setLiftPower(0);
         Robot.drivetrain.stop();

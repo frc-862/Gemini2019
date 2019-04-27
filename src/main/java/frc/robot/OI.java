@@ -7,6 +7,7 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
@@ -319,5 +320,14 @@ public class OI {
 
     public boolean getRightTrigger() {
         return !driverRight.getRawButton(1);
+    }
+
+    public void rummbleOn() {
+        copilot.setRumble(GenericHID.RumbleType.kLeftRumble,1);
+        copilot.setRumble(GenericHID.RumbleType.kRightRumble,1);
+    }
+    public void rummbleOff() {
+        copilot.setRumble(GenericHID.RumbleType.kLeftRumble,0);
+        copilot.setRumble(GenericHID.RumbleType.kRightRumble,0);
     }
 }

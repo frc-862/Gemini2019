@@ -15,6 +15,8 @@ import frc.robot.Constants;
 import frc.robot.Robot;
 import frc.robot.subsystems.LEDs;
 
+import java.rmi.server.RemoteObject;
+
 public class DriverAssist extends StatefulCommand {
     private CommandLogger logger = new CommandLogger("DriverAssist");
 
@@ -48,7 +50,7 @@ public class DriverAssist extends StatefulCommand {
     double errorAcc = 0;
     boolean seenTwo = false;
     final double minStateStallDetect = 0.04;
-    final double lineFollowMinError = 1.0;
+    final double lineFollowMinError = 1.5;
     final double backupSpeed = -1.5;
     final double lineLength = 1.5; // 18 in = 1.5 feet
     final double backupTime = Math.abs(lineLength / backupSpeed);
@@ -75,9 +77,11 @@ public class DriverAssist extends StatefulCommand {
 
     @Override
     protected void initialize() {
+        Robot.core.ringOn();
         setState(States.VISION_AQUIRE);
         Robot.hatchPanelCollector.eject();
         Robot.hatchPanelCollector.retract();
+        Robot.led.setState(LEDs.State.DRIVER_ASSIST);
         logger.reset();
     }
 
@@ -323,7 +327,7 @@ public class DriverAssist extends StatefulCommand {
             } else {
                 // We are well aligned, and should be safe to 
                 // deploy/collect a hatch
-                Robot.leds.setState(LEDs.State.READY);
+                //Robot.leds.setState(LEDs.State.READY);
                 Robot.drivetrain.setVelocity(0, 0);
                 setState(States.DONE);
 
@@ -369,14 +373,11 @@ public class DriverAssist extends StatefulCommand {
     }
 
     public void done() {
-        if (Math.round(timeInState() * 5) % 2 == 0) {
             Robot.core.ringOff();
-        }
-        else
-        {
-            Robot.core.ringOn();
-        }
+            Robot.led.setState(LEDs.State.CENTERED);
+            Robot.oi.rummbleOn();
     }
+
     // Make this return true when this Command no longer needs to run execute()
 
     @Override
@@ -394,8 +395,11 @@ public class DriverAssist extends StatefulCommand {
 
     @Override
     protected void end() {
-        Robot.core.ringOn();
 
+        Robot.core.ringOff();
+        Robot.oi.rummbleOff();
+        Robot.led.clearState(LEDs.State.DRIVER_ASSIST);
+        Robot.led.clearState(LEDs.State.CENTERED);
         Robot.drivetrain.stop();
         logger.drain();
         logger.flush();

@@ -13,6 +13,7 @@ import frc.lightning.util.LightningMath;
 import frc.robot.Constants;
 import frc.robot.Robot;
 import frc.robot.commands.DoNothing;
+import frc.robot.subsystems.LEDs;
 
 public class JankHabTwoClimb extends StatefulCommand {
     enum States {
@@ -37,6 +38,7 @@ public class JankHabTwoClimb extends StatefulCommand {
 
     @Override
     protected void initialize() {
+        Robot.led.setState(LEDs.State.CLIMBING);
         setState(States.START_CLIMB);
     }
 
@@ -118,6 +120,7 @@ public class JankHabTwoClimb extends StatefulCommand {
 
     @Override
     protected void end() {
+        Robot.led.clearState(LEDs.State.CLIMBING);
         Robot.climber.setClimberDrivePower(0);
         Robot.climber.setLiftPower(0);
         Robot.drivetrain.stop();

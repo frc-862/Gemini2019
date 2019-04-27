@@ -10,6 +10,7 @@ package frc.robot.commands.driveTrain;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Constants;
 import frc.robot.Robot;
+import frc.robot.subsystems.LEDs;
 
 public class VelocityTankDrive extends Command {
     public VelocityTankDrive() {
@@ -33,6 +34,13 @@ public class VelocityTankDrive extends Command {
 
         Robot.drivetrain.setVelocity(Robot.oi.getLeftPower() * Constants.velocityMultiplier,
                                      Robot.oi.getRightPower()* Constants.velocityMultiplier);
+
+        if (Math.abs(Robot.core.lineSensor()) < 1.5) {
+            Robot.led.setState(LEDs.State.DRIVER_CENTERED);
+        } else {
+            Robot.led.clearState(LEDs.State.DRIVER_CENTERED);
+        }
+
 
         // SmartDashboard.putNumber("RAW_LeftVelocity", Robot.drivetrain.getLeftVelocity());
         // SmartDashboard.putNumber("RAW_RightVelocity", Robot.drivetrain.getRightVelocity());

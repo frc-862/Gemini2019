@@ -179,7 +179,7 @@ public class Core extends Subsystem {
 
         SystemTest.register(new NavXTest());
 
-        ringOn();
+       // ringOn();
     }
 
     public boolean isVisionReady() {
@@ -219,11 +219,6 @@ public class Core extends Subsystem {
         }
 
         SmartDashboard.putNumber("Distance from center", linePos);
-        if (Math.abs(linePos) <= 1.0) {
-            Robot.leds.setState(LEDs.State.CENTERED);
-        } else {
-            Robot.leds.clearState(LEDs.State.CENTERED);
-        }
 //        SmartDashboard.putNumber("line first seen", lineFirstSeen);
         // SmartDashboard.putNumber("time saw line", timeOnLine());
     }

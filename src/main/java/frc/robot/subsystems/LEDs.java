@@ -21,12 +21,12 @@ public class LEDs extends Subsystem {
         //Normal
         OFF,
         STD_BLUE_ORANGE_CHASE,
-        AUTONOMOUS,
-        END_OF_MATCH_WARNING,
-        CLIMBING,
-        DRIVER_ASSIST_READY,
+        DRIVER_ASSIST,
         CENTERED,
-        READY,
+        DRIVER_CENTERED,
+        SKIP1,
+        SKIP2,
+        CLIMBING,
 
         COUNT
     }
@@ -42,9 +42,12 @@ public class LEDs extends Subsystem {
     public LEDs() {
         state = State.STD_BLUE_ORANGE_CHASE;
         active[state.ordinal()] = true;
+        SmartDashboard.putNumber("LED Force", 0);
+
     }
 
     public void setState(State new_state) {
+        System.out.println("SetState:  " + state);
         active[new_state.ordinal()] = true;
         if (new_state.ordinal() > state.ordinal()) {
             state = new_state;
@@ -53,14 +56,15 @@ public class LEDs extends Subsystem {
     }
 
     public void clearState(State old_state) {
-        state = State.OFF;
-        active[state.ordinal()] = false;
-        for(int i = State.COUNT.ordinal() - 1; i > 0; --i) {
-            if (active[i]) {
-                state = State.values()[i];
-                break;
-            }
-        }
+        state = State.STD_BLUE_ORANGE_CHASE;
+//        System.out.println("ClearState:  " + state);
+//        state = State.OFF;
+//        active[state.ordinal()] = false;
+//        for(int i = 0; i < State.COUNT.ordinal(); ++i) {
+//            if (active[i]) {
+//                state = State.values()[i];
+//            }
+//        }
         set();
     }
 
@@ -69,12 +73,21 @@ public class LEDs extends Subsystem {
 
     @Override
     public void periodic() {
-        SmartDashboard.putString("LED State", this.state.toString());
+        SmartDashboard.putNumber("LED State", this.state.ordinal());
 
-        DriverStation ds = DriverStation.getInstance();
-        if (ds.getMatchTime() < 30 && ds.isOperatorControl()) {
-            Robot.leds.setState(State.END_OF_MATCH_WARNING);
-        }
+//        DriverStation ds = DriverStation.getInstance();
+//        if (ds.getMatchTime() < 30 && ds.isOperatorControl()) {
+//            Robot.leds.setState(State.END_OF_MATCH_WARNING);
+//        }
+
+//        int val = (int) SmartDashboard.getNumber("LED Force", 0);
+//        set(val);
+    }
+
+    private void set(int bits) {
+        bit1.set((bits & 0x1) == 0x1);
+        bit2.set((bits & 0x2) == 0x2);
+        bit3.set((bits & 0x4) == 0x4);
     }
 
     private void set() {

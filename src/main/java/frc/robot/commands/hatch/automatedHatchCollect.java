@@ -35,7 +35,7 @@ public class automatedHatchCollect extends CommandGroup {
         // a CommandGroup containing them would require both the chassis and the arm.
         requires(Robot.hatchPanelCollector);
 
-        addSequential(new InstantCommand(() -> Robot.leds.setState(LEDs.State.AUTONOMOUS)));
+        //addSequential(new InstantCommand(() -> Robot.leds.setState(LEDs.State.AUTONOMOUS)));
         addSequential(new SetElevatorLow());
         addSequential(new ExtendHatchCollector());
         addSequential(new DeployGroundHatchCollector());
@@ -43,6 +43,6 @@ public class automatedHatchCollect extends CommandGroup {
         addSequential(new waitForHatchPanel());
         addSequential(new RetractHatchCollector());
         addSequential(new DriveBackDuration(1));
-        addSequential(new InstantCommand(() -> Robot.leds.clearState(LEDs.State.AUTONOMOUS)));
+        //addSequential(new InstantCommand(() -> Robot.leds.clearState(LEDs.State.AUTONOMOUS)));
     }
 }

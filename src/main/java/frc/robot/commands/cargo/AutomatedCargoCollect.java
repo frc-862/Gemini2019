@@ -36,13 +36,12 @@ public class AutomatedCargoCollect extends CommandGroup {
         // arm.
         requires(Robot.cargoCollector);
         requires(Robot.elevator);
-        addSequential(new InstantCommand(() -> Robot.leds.setState(LEDs.State.AUTONOMOUS)));
+        //addSequential(new InstantCommand(() -> Robot.leds.setState(LEDs.State.AUTONOMOUS)));
         addSequential(new DeployCargoCollector());
         addSequential(new StartCollectCargo());
         addSequential(new WaitForCargo());
         addSequential(new StartEjectCargo());
         addSequential(new SetElevatorLow());
         addSequential(new RetractCargoCollector());
-        addSequential(new InstantCommand(() -> Robot.leds.clearState(LEDs.State.AUTONOMOUS)));
     }
 }

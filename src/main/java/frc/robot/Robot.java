@@ -35,7 +35,7 @@ public class Robot extends LightningRobot {
     //Subsystems
     public static GeminiDrivetrain drivetrain;
     public static Core core;
-    public static LEDs leds;
+    public static LEDs led;
     public static HatchCollector hatchPanelCollector;
     public static CargoCollector cargoCollector;
     public static HatchGroundCollector hatchGroundCollector;
@@ -54,7 +54,7 @@ public class Robot extends LightningRobot {
         System.out.println("Initializing our robot");
 
         drivetrain = GeminiDrivetrain.create();
-        leds = new LEDs();
+        led = new LEDs();
         hatchGroundCollector = new HatchGroundCollector();
         hatchPanelCollector = new HatchCollector();
         cargoCollector = CargoCollector.create();
@@ -149,6 +149,24 @@ public class Robot extends LightningRobot {
 //            e.printStackTrace();
 //        }
 
+    }
+
+    @Override
+    public void disabledInit() {
+        super.disabledInit();
+        led.clearState(LEDs.State.STD_BLUE_ORANGE_CHASE);
+    }
+
+    @Override
+    public void autonomousInit() {
+        super.autonomousInit();
+        led.setState(LEDs.State.STD_BLUE_ORANGE_CHASE);
+    }
+
+    @Override
+    public void teleopInit() {
+        super.teleopInit();
+        led.setState(LEDs.State.STD_BLUE_ORANGE_CHASE);
     }
 
     @Override
