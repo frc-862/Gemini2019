@@ -116,9 +116,9 @@ public class OI {
     private final double deadBand = 0.10;
     private final double minPower = 0.1;
     private final double maxPower = 1.0;
-    private JoystickFilter driveFilter = new JoystickFilter(deadBand, minPower, maxPower, JoystickFilter.Mode.CUBED);
-    private JoystickFilter leftFilter = new JoystickFilter(deadBand, minPower, maxPower, JoystickFilter.Mode.CUBED, 0.1);
-    private JoystickFilter rightFilter = new JoystickFilter(deadBand, minPower, maxPower, JoystickFilter.Mode.CUBED, 0.1);
+    private JoystickFilter driveFilter = new JoystickFilter(deadBand, minPower, maxPower, JoystickFilter.Mode.SQUARED);
+    private JoystickFilter leftFilter = new JoystickFilter(deadBand, minPower, maxPower, JoystickFilter.Mode.SQUARED, 0.1);
+    private JoystickFilter rightFilter = new JoystickFilter(deadBand, minPower, maxPower, JoystickFilter.Mode.SQUARED   , 0.1);
 
     public double getLeftPower() {
         if (driverLeft == null) return 0;
@@ -230,6 +230,7 @@ public class OI {
                                new InstantCommand(Robot.elevator, () -> Robot.elevator.goToHigh()));
         SmartDashboard.putData(new ClimbGoToPosition());
         SmartDashboard.putData(new AutoClimb());
+        SmartDashboard.putData(new SafeDefense());
 
         SmartDashboard.putData("CLimber To Zero", new InstantCommand(Robot.climber, () -> Robot.climber.goToPos(0)));
 

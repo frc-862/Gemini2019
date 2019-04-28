@@ -7,6 +7,7 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
@@ -29,6 +30,9 @@ import frc.robot.commands.test.RightEncoderTest;
  * Add your docs here.
  */
 public class GeminiDrivetrain extends CANDrivetrain {
+    private WPI_VictorSPX left2;
+    private WPI_VictorSPX right2;
+
     public static GeminiDrivetrain create() {
         return new GeminiDrivetrain(
                    new WPI_TalonSRX(RobotMap.geminiLeftMaster),//CAN ID 1
@@ -45,6 +49,9 @@ public class GeminiDrivetrain extends CANDrivetrain {
         // Invert the right
         addLeftFollower(left2, false  );
         addRightFollower(right2,true);
+
+        this.left2 = left2;
+        this.right2 = right2;
 
         /* Needed? */
         addChild(left2);
@@ -136,8 +143,17 @@ public class GeminiDrivetrain extends CANDrivetrain {
     @Override
     public void initDefaultCommand() {
         // Set the default command for a subsystem here.
-        setDefaultCommand(new VelocityTankDrive());
+        setDefaultCommand(new TankDrive());
     }
+
+    @Override
+    public void setPower(double left, double right) {
+        getLeftMaster().set(ControlMode.PercentOutput, left);
+        getRightMaster().set(ControlMode.PercentOutput, right);
+        left2.set(ControlMode.PercentOutput, left);
+        right2.set(ControlMode.PercentOutput, right);
+    }
+
 
 
 }

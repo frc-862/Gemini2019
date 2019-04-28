@@ -18,6 +18,7 @@ import frc.lightning.commands.VelocityMotionProfile;
 import frc.robot.commands.auto.CenterPath;
 import frc.robot.commands.auto.LeftRocket;
 import frc.robot.commands.auto.RghtRocket;
+import frc.robot.commands.driveTrain.TankDrive;
 import frc.robot.commands.driveTrain.VelocityTankDrive;
 import frc.robot.commands.elevator.SetElevatorCollect;
 import frc.robot.commands.elevator.SetElevatorHigh;
@@ -75,7 +76,7 @@ public class Robot extends LightningRobot {
 
         registerAutoOptions();
 
-        registerAutonomousCommmand("Tank", new VelocityTankDrive());
+        registerAutonomousCommmand("Tank", new TankDrive());
         //registerAutonomousCommmand("Left Rocket",new LeftRocket());
         //registerAutonomousCommmand("Right Rocket",new RghtRocket());
         //registerAutonomousCommmand("Center Ship",new CenterPath());
