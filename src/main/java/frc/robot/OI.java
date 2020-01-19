@@ -28,6 +28,7 @@ import frc.robot.commands.cargo.DeployCargoCollector;
 import frc.robot.commands.cargo.RetractCargoCollector;
 import frc.robot.commands.climber.*;
 import frc.robot.commands.driveTrain.ConfigMotors;
+import frc.robot.commands.driveTrain.Fowards;
 import frc.robot.commands.hatch.*;
 import frc.robot.commands.test.LeftDriveZero;
 import frc.robot.commands.test.ResetDriveSensors;
@@ -175,24 +176,27 @@ public class OI {
 
         (new JoystickButton(driverLeft, 1)).whenPressed(new SmartHatchCollect());
 
-        (new JoystickButton(driverRight, 1)).whileHeld(new DriverAssist());
+        //(new JoystickButton(driverRight, 1)).whileHeld(new DriverAssist());
+        (new JoystickButton(driverRight, 1)).whileHeld(new Fowards(10));
+//        (new JoystickButton(driverRight, 1)).whenPressed(new InstantCommand(() -> { rummbleOn(); }));
+//        (new JoystickButton(driverRight, 1)).whenReleased(new InstantCommand(() -> { rummbleOff(); }));
         (new JoystickButton(driverRight, 4)).whileHeld(new LineFollow());
         (new JoystickButton(driverRight, 3)).whileHeld(new SimpleFollowVision());
 
-        (new JoystickButton(copilot, JoystickConstants.highButton)).            whenPressed(new InstantCommand(Robot.elevator, () -> Robot.elevator.goToHigh()));
-        (new JoystickButton(copilot, JoystickConstants.midButton)).             whenPressed(new InstantCommand(Robot.elevator, () -> Robot.elevator.goToMid()));
-        (new JoystickButton(copilot, JoystickConstants.elevatorCollectButton)). whenPressed(new InstantCommand(Robot.elevator, () -> Robot.elevator.goToCollect()));
-        (new JoystickButton(copilot, JoystickConstants.lowButton)).             whenPressed(new InstantCommand(Robot.elevator, () -> Robot.elevator.goToLow()));
-        (new JoystickButton(copilot, JoystickConstants.bottomButton)).          whenPressed(new InstantCommand(Robot.elevator, () -> Robot.elevator.goToBottom()));
-        (new JoystickButton(driverRight, 11)).whenPressed(new JankStatefulClimb());
-        (new JoystickButton(driverLeft, 11)).whenPressed(new ClimbGoToPosition());
+        (new JoystickButton(copilot, JoystickConstants.highButton)).            whileHeld(new InstantCommand(Robot.elevator, () -> Robot.elevator.goToHigh()));
+        (new JoystickButton(copilot, JoystickConstants.midButton)).             whileHeld(new InstantCommand(Robot.elevator, () -> Robot.elevator.goToMid()));
+        (new JoystickButton(copilot, JoystickConstants.elevatorCollectButton)). whileHeld(new InstantCommand(Robot.elevator, () -> Robot.elevator.goToCollect()));
+        (new JoystickButton(copilot, JoystickConstants.lowButton)).             whileHeld(new InstantCommand(Robot.elevator, () -> Robot.elevator.goToLow()));
+        (new JoystickButton(copilot, JoystickConstants.bottomButton)).          whileHeld(new InstantCommand(Robot.elevator, () -> Robot.elevator.goToBottom()));
+        //(new JoystickButton(driverRight, 11)).whenPressed(new JankStatefulClimb());
+        //(new JoystickButton(driverLeft, 11)).whenPressed(new ClimbGoToPosition());
 
 
-        (new JoystickButton(copilot, JoystickConstants.highButton)).            whileHeld(new InstantCommand(() -> Robot.elevator.resetTimer()));
-        (new JoystickButton(copilot, JoystickConstants.midButton)).             whileHeld(new InstantCommand(() -> Robot.elevator.resetTimer()));
-        (new JoystickButton(copilot, JoystickConstants.elevatorCollectButton)). whileHeld(new InstantCommand(() -> Robot.elevator.resetTimer()));
-        (new JoystickButton(copilot, JoystickConstants.lowButton)).             whileHeld(new InstantCommand(() -> Robot.elevator.resetTimer()));
-        (new JoystickButton(copilot, JoystickConstants.bottomButton)).          whileHeld(new InstantCommand(() -> Robot.elevator.resetTimer()));
+//        (new JoystickButton(copilot, JoystickConstants.highButton)).            whileHeld(new InstantCommand(() -> Robot.elevator.resetTimer()));
+//        (new JoystickButton(copilot, JoystickConstants.midButton)).             whileHeld(new InstantCommand(() -> Robot.elevator.resetTimer()));
+//        (new JoystickButton(copilot, JoystickConstants.elevatorCollectButton)). whileHeld(new InstantCommand(() -> Robot.elevator.resetTimer()));
+//        (new JoystickButton(copilot, JoystickConstants.lowButton)).             whileHeld(new InstantCommand(() -> Robot.elevator.resetTimer()));
+//        (new JoystickButton(copilot, JoystickConstants.bottomButton)).          whileHeld(new InstantCommand(() -> Robot.elevator.resetTimer()));
 
     }
 

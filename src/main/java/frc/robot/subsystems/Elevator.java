@@ -37,7 +37,9 @@ public class Elevator extends Subsystem {
     // here. Call these from Commands.
 
     private boolean resetEncoderPos = true;
-
+    boolean firstTime=true;
+    double timestamp=0;
+    double elapse=0;
     public WPI_TalonSRX elevatorMotor;
     public AnalogInput pieceDetector;
 
@@ -160,6 +162,8 @@ public class Elevator extends Subsystem {
             } else if (sensors.isRevLimitSwitchClosed()) {//if at bottom, set to 0
                 elevatorMotor.setSelectedSensorPosition(0);//Constants.elevatorBottomHeight);
                 resetEncoderPos = false;
+                elapse=0;
+                firstTime=true;
             }
         } else if((pos > Constants.elevatorInchHigh) && (pos < Constants.elevatorTopHeight)) { //if between inch high and top height, reset encoders next cycle
             resetEncoderPos = true;
@@ -180,8 +184,26 @@ public class Elevator extends Subsystem {
     }
 
     public void setPosition(double pos) {
-        elevatorMotor.set(ControlMode.MotionMagic, pos);
-        activeTrajectoryPosition = pos;
+
+        if (pos>0){
+            if(firstTime) {
+                timestamp = Timer.getFPGATimestamp();
+                firstTime = false;
+            }else {
+                elapse=Timer.getFPGATimestamp()-timestamp;
+            }
+        }else {
+            timestamp=0;
+            elapse=0;
+        }
+        if(elapse>10){
+            stop();
+        }else {
+            elevatorMotor.set(ControlMode.MotionMagic, pos);
+            activeTrajectoryPosition = pos;
+        }
+        System.out.println(elapse+" time up");
+        System.out.println(timestamp+" time stamp");
     }
 
     public void MicroAdjustUp() {

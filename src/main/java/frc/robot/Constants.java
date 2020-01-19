@@ -16,14 +16,15 @@ public class Constants extends ConstantBase {
     public static final double hasCargoDistance = 0.7;
     // Climber
     public static final int climberRetractedPosition = 0;
-    public final static int deployShockPositioin = 100;
-    public static final int climberExtenedPosition = 10250; // TODO calibrate this value
-    public static final int climberMaxHeight = 11800;
-    public static final int climberOffHardStop = 100;
-    public static final int climberEpsilon = 100;
+    public static double multiplier = 2.75;
+    public final static int deployShockPositioin = (int) Math.round(multiplier*100);
+    public static final int climberExtenedPosition = (int) Math.round(multiplier*10250); // TODO calibrate this value
+    public static final int climberMaxHeight = (int) Math.round(multiplier*11800);
+    public static final int climberOffHardStop = (int) Math.round(multiplier*100);
+    public static final int climberEpsilon = (int) Math.round(multiplier*100);
     public final static Gains climberPIDF = new Gains(2.54, 0, 1, 0.0, 0, 0);
-    public final static int climberCruiseVelocity = 2500;
-    public final static int climberAcceleration = 600;
+    public final static int climberCruiseVelocity = 5000;
+    public final static int climberAcceleration = 1000;
 
     // PIDs
     public final static int kSensorUnitsPerRotation = 4 * 360;

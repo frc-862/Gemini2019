@@ -143,6 +143,7 @@ public class GeminiDrivetrain extends CANDrivetrain {
     @Override
     public void initDefaultCommand() {
         // Set the default command for a subsystem here.
+        // setDefaultCommand(new VelocityTankDrive());
         setDefaultCommand(new TankDrive());
     }
 

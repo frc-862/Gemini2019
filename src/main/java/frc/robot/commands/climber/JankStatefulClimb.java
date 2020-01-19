@@ -57,8 +57,7 @@ public class JankStatefulClimb extends StatefulCommand {
     }
 
     public void waitToDeploySkids() {
-        if (timeInState() >= .1) {
-
+        if (timeInState() >= .3) {
             setState(States.DEPLOY_SKIDS);
         }
     }
@@ -129,15 +128,17 @@ public class JankStatefulClimb extends StatefulCommand {
         Robot.climber.setLiftPower(0);
         Robot.drivetrain.stop();
 
-        Robot.groundCollector.getCurrentCommand().cancel();
+        Command cmd = Robot.groundCollector.getCurrentCommand();
+        if (cmd != null) cmd.cancel();
         Robot.groundCollector.setDefaultCommand(new DoNothing());
 
-        Robot.elevator.getCurrentCommand().cancel();
+        cmd = Robot.elevator.getCurrentCommand();
+        if (cmd != null) cmd.cancel();
         Robot.elevator.setDefaultCommand(new DoNothing());
 
         //  Robot.climber.getCurrentCommand().cancel();
         Robot.climber.setDefaultCommand(new ManualClimb());
-        Command cmd = Robot.climber.getCurrentCommand();
+        cmd = Robot.climber.getCurrentCommand();
         if (cmd != null) {
             cmd.start();
         } else {
